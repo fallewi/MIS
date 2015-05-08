@@ -1,0 +1,100 @@
+# Magento related #
+######################
+nbproject/
+php.ini.sample
+app/etc/local.xml
+media/catalog/product/cache
+media/tmp/
+media/js/
+media/css/
+media/.thumbs/
+media/*
+./Images/
+.project
+.htaccess
+app/etc/local.xml.local
+n98-magerun.phar
+
+# Var Specific #
+#####################
+var/cache/*
+var/full_page_cache/*
+var/session/*
+var/export/*
+var/import/*
+var/importexport/*
+var/locks/*
+var/logging/*
+var/report/*
+var/tmp/*
+var/*.csv
+var/*.txt
+var/*.json
+var/log/*
+var/backups/*
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.swp
+
+# Frontend Development *
+########################
+node_modules/
+node_modules/*
+.sass-cache/
+.sass-cache/*
+*.map
+*.scssc
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.bz2
+*.tgz
+
+# Logs and databases #
+######################
+*.log
+*.sqlite
+*.tmp
+*.bak
+
+# OS generated files #
+######################
+.DS_Store?
+Icon?
+
+*.orig
+*.~*
+*~
+.DS_Store*
+._*
+*esproj*
+.DS_Store
+._*
+./._*
+test.php
+test2.php
+includes/src/
+.idea/
+
+## CLIENT SPECIFIC ##
+#####################
+*.patch
+*.diff
+
