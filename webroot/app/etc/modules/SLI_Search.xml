@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <SLI_Search>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_CatalogSearch/>
+            </depends>
+        </SLI_Search>
+    </modules>
+</config>
