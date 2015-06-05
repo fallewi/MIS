@@ -1,0 +1,35 @@
+/* Split Button */
+.split-button { display:inline-block; z-index:1; position:relative; max-width:300px; white-space:nowrap;}
+.split-button.clickable:active { left:1px; top:1px; }
+.split-button { background:url(../images/bkg_btn.gif) no-repeat 0 0; height:21px; padding:0 0 0 10px; margin:0; }
+.split-button.active { z-index:100; }
+.split-button strong { cursor:default; font-weight:bold; text-transform:uppercase; font-size:11px; background:url(../images/bkg_btn.gif) no-repeat 100% 0; height:19px; padding:3px 30px 0 5px; margin:0; display:block; overflow-x:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.split-button.clickable > strong,
+.split-button strong[onclick] { text-transform:uppercase; font-size:11px; color:#C73615; text-transform:uppercase; cursor:pointer; }
+.split-button .change { display:inline-block; border:1px solid; border-color:transparent transparent transparent #999; background:url(../images/bkg_btn-split-change.png) 5px 50% no-repeat; text-indent:-999em; overflow:hidden; width:15px; cursor:pointer; height:11px; margin-left:8px; vertical-align:middle; }
+.split-button .change { position:absolute; right:5px; top:0px; height:19px; border-left-color:#ccc; }
+
+.split-button.light { background:none; height:auto; padding:0; }
+.split-button.light.clickable:active { top:auto; left:auto; }
+.split-button.light strong { display:inline-block; font-size:11px; text-transform:none; background:none; font-weight:normal; padding:0; height:auto; overflow:visible; white-space:normal; text-overflow:visible; }
+.split-button.light.clickable > strong,
+.split-button.light strong[onclick] { text-transform:none; text-decoration:underline; color:#999; }
+.split-button.light.clickable > strong:hover,
+.split-button.light strong[onclick]:hover { text-decoration:none; }
+.split-button.light .change { position:static; right:auto; top:auto; height:11px; border-left-color:#999; }
+
+.split-button.active .change,
+.split-button .change:hover { background-position:-995px 50%; }
+.split-button .list-container { position:absolute; display:none; right:0; top:100%; padding:0; min-width:100%; max-width:300px; float:left; }
+.split-button.active .list-container { display:block; }
+.split-button .list-container ul { background:#fff; border:1px solid rgba(0,0,0,0.1); position:relative; }
+.split-button .list-container ul > li { white-space:nowrap; background:url(../images/bkg_btn-split-item.png) no-repeat -10000px -10000px; border:1px solid #c1c1c1; border-top-width:0; margin:0; display:block!important; margin:0!important; }
+.split-button .list-container ul > li:first-child { border-top-width:1px; }
+.split-button .list-container li a,
+.split-button .list-container li span { display:block; line-height:1.2!important; cursor:pointer; padding:5px 18px 5px 18px; color:#999; font-size:11px; text-transform:none; text-decoration:none; text-align:left; text-overflow:ellipsis; overflow:hidden; }
+.split-button .list-container li:hover a,
+.split-button .list-container li:hover span,
+.split-button .list-container li:hover { color:#fff; text-decoration:none; }
+.split-button .list-container li:hover { background-color:#999; background-position:5px -984px; }
+.split-button .list-container li.new { color:#d33911; background-color:#eee; background-position:5px 7px; }
+.split-button .list-container li.new:hover { background-color:#999; background-position:5px -485px; }

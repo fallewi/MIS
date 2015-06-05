@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn\CmsStyleUpdate
+* @version     1.0.1
+* @author      Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2014 Blue Acorn, Inc.
+*/
+-->
+<config>
+    <modules>
+        <BlueAcorn_CmsStyleUpdate>
+            <version>1.0.1</version>
+        </BlueAcorn_CmsStyleUpdate>
+    </modules>
+    <global>
+        <helpers>
+            <blueacorn_cmsstyleupdate>
+                <class>BlueAcorn_CmsStyleUpdate_Helper</class>
+            </blueacorn_cmsstyleupdate>
+        </helpers>
+        <resources>
+            <cmsstyleupdate_setup>
+                <setup>
+                    <module>BlueAcorn_CmsStyleUpdate</module>
+                </setup>
+            </cmsstyleupdate_setup>
+        </resources>
+        <models>
+            <blueacorn_cmsstyleupdate>
+                <class>BlueAcorn_CmsStyleUpdate_Model</class>
+                <resourceModel>cmsstyleupdate_mysql4</resourceModel>
+            </blueacorn_cmsstyleupdate>
+        </models>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <blueacorn_cmsstyleupdate module="BlueAcorn_CmsStyleUpdate">
+                    <file>blueacorn/blueacorn_cssstyleupdate.xml</file>
+                </blueacorn_cmsstyleupdate>
+            </updates>
+        </layout>
+    </frontend>
+
+    <adminhtml>
+        <events>
+            <adminhtml_cms_page_edit_tab_design_prepare_form>
+                <observers>
+                    <blueacorn_cmsstyleupdate>
+                        <class>blueacorn_cmsstyleupdate/observer</class>
+                        <method>onDesignTabPrepareForm</method>
+                    </blueacorn_cmsstyleupdate>
+                </observers>
+            </adminhtml_cms_page_edit_tab_design_prepare_form>
+        </events>
+    </adminhtml>
+</config>

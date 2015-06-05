@@ -1,0 +1,491 @@
+//
+// Magento Enterprise Edition
+//
+// NOTICE OF LICENSE
+//
+// This source file is subject to the Magento Enterprise Edition End User License Agreement
+// that is bundled with this package in the file LICENSE_EE.txt.
+// It is also available through the world-wide-web at this URL:
+// http://www.magento.com/license/enterprise-edition
+// If you did not receive a copy of the license and are unable to
+// obtain it through the world-wide-web, please send an email
+// to license@magento.com so we can send you a copy immediately.
+//
+// DISCLAIMER
+//
+// Do not edit or add to this file if you wish to upgrade Magento to newer
+// versions in the future. If you wish to customize Magento for your
+// needs please refer to http://www.magento.com for more information.
+//
+// @category    design
+// @package     rwd_default
+// @copyright Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
+// @license http://www.magento.com/license/enterprise-edition
+//
+
+// =============================================
+// Compass Defaults
+// =============================================
+
+// Border Radius
+
+$default-border-radius: 5px;
+
+// Transition
+
+$default-transition-property: all;
+$default-transition-duration: 200ms;
+$default-transition-function: linear;
+$default-transition-delay: 0;
+
+// =============================================
+// Primary Break Points
+// =============================================
+
+// These should be used with the bp (max-width, xx) mixin
+// where a min-width is used, remember to +1 to break correctly.
+// If these are changed, they must also be updated in app.js
+
+$bp-xsmall: 479px;
+$bp-small: 599px;
+$bp-medium: 770px;
+$bp-large: 979px;
+$bp-xlarge: 1199px;
+
+// =============================================
+// Primary Break Points
+// =============================================
+
+$spriteW: 600px;
+$spriteH: 300px;
+
+// =============================================
+// Base Values
+// =============================================
+
+// Spacing
+
+$gap: 10px;
+
+$trim: 30px;
+// This will get applied on viewports smaller than 480px
+$trim-small: 15px;
+
+// Padding that will get applied to content areas
+$box-spacing-large: 20px;
+
+// Standard padding around box elements such as banner messages, etc
+$box-spacing: 10px;
+
+// Standard spacing between elements within a box, such as "Add to cart", "Price box", etc
+$element-spacing: 7px;
+
+// Dimensions
+
+$max-content-width: 1200px;
+$max-container-width: $trim + $max-content-width + $trim;
+$max-std-formatted-width: 50em;
+
+// Grayscale
+$white:                    #fff;
+$black-5:                  darken($white, 5%);
+$black-10:                 darken($white, 10%);
+$black-20:                 darken($white, 20%);
+$black-30:                 darken($white, 30%);
+$black-40:                 darken($white, 40%);
+$black-50:                 darken($white, 50%);
+$black-60:                 darken($white, 60%);
+$black-70:                 darken($white, 70%);
+$black-80:                 darken($white, 80%);
+$black-90:                 darken($white, 90%);
+$black:                    #000;
+
+// =============================================
+// Brand Colors
+// =============================================
+
+// Usually not used directly in Sass partials.
+// Only used to define context-based color vars in this file.
+
+$c-blue: #00247B;
+$c-green: #5DCA86;
+$c-pink: #D85378;
+$c-orange: #F3793B;
+$c-red: #EC3837;
+$c-yellow: #FDC44B;
+$c-black: #000000;
+$c-gray: #333333;
+
+$brand-primary: $c-blue;
+$brand-secondary: $c-yellow;
+$brand-action: $c-red;
+$brand-success: $c-green;
+$brand-tertiary: $c-pink;
+$brand-warning: $c-orange;
+$brand-danger: $c-red;
+$brand-info: #4D587A;
+$brand-dark: #4D4D4D;
+$brand-light: #F6F6F6;
+
+// =============================================
+// Base Colors
+// =============================================
+
+// Text
+
+$c-text: #262626;
+$brand-text: $c-text;
+$c-text-gray: $black-50;
+$c-text-white: $black-10;
+// Primary font color for headings and other non-link text
+$c-text-primary: $c-text;
+
+
+// Interaction
+
+$c-action: $brand-primary;
+$c-stimulus: darken($brand-primary, 15%);
+$c-subtle: $black-10;
+
+// Notifications
+
+$c-danger: $brand-danger;
+$c-danger-background: $white;
+
+$c-success: $c-green;
+$c-success-background: $white;
+
+$c-warn: $brand-warning;
+$c-warn-background: $white;
+
+$c-dark: $brand-dark;
+
+// Global Elements
+
+$c-divider-border: $black-10;
+
+// =============================================
+// Element Colors
+// =============================================
+
+// Buttons
+
+$c-button: $brand-secondary;
+$c-button-hover: #84D7A3;
+$c-button-active: $c-green;
+
+// Secondary Buttons
+
+$c-button-secondary: $brand-primary;
+$c-button-secondary-hover: #767F9A;
+$c-button-secondary-active: $brand-info;
+
+// Tertiary Buttons
+
+$c-button-tertiary: $c-green;
+$c-button-tertiary-hover: #767676;
+$c-button-tertiary-active: $brand-dark;
+
+// Cart Buttons
+
+$c-button-cart: $brand-action;
+$c-button-cart-hover: #767676;
+$c-button-cart-active: $brand-dark;
+
+$c-button-subtle: #ECECEC;
+
+// Forms
+
+$c-input-border: #4D597A;
+$c-input-border-focus: $brand-secondary;
+
+$c-input-placeholder: $c-text-gray;
+$c-input-text: $c-text;
+
+$c-fieldset-border: #CCCCCC;
+$c-fieldset-border-light: #EDEDED;
+
+// Headings
+
+$c-h1: $brand-action;
+$c-h2: $c-text;
+$c-h3: $c-text;
+$c-h4: $c-text;
+$c-h5: $c-text;
+$c-h6: $c-text;
+
+// Link
+$c-link: $c-action;
+$c-link-hover: $brand-info;
+$c-link-focus: $brand-info;
+$c-link-active: $brand-info;
+
+// Module (generic)
+
+$c-module-background: #F4F4F4;
+$c-module-background-hover: shade($c-module-background, 3%);
+$c-module-background-secondary: #EAF8FF;
+$c-module-background-dark: #AAAAAA;
+// This should be applied whenever the border is surrounding a white element and/or is directly showing on white.
+$c-module-border: #CCCCCC;
+// This should be applied whenever the border is wrapping an element with $c-module-background
+$c-module-border-light: #EDEDED;
+$c-module-border-dark: #777777;
+$c-module-border-highlight: $c-blue;
+
+// Table
+
+$c-table-background: #F4F4F4;
+$c-table-border: #C0C0C0;
+
+$c-table-zebra-odd: #F8F7F5;
+$c-table-zebra-even: #EEEDED;
+
+// Tabs
+
+$c-tabs-background: #F0F0F0;
+
+// Email
+$c-email-background: #EBEBEB;
+$c-email-background-secondary: #E1F0F8;
+$c-email-border: #C3CED4;
+$c-email-action: #3696C2;
+$c-email-cell: #F1F1F1;
+$c-email-highlighted-background: #FFFDD9;
+$c-email-highlighted-border: #FFF74C;
+
+// Product
+$product-column-spacing: 20px;
+
+// =============================================
+// Typography
+// =============================================
+
+@font-face {
+    font-family: 'font-awesome';
+    src: url('../fonts/fontawesome-webfont.eot');
+    src: url('../fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/fontawesome-webfont.woff2') format('woff2'),
+         url('../fonts/fontawesome-webfont.woff') format('woff'),
+         url('../fonts/fontawesome-webfont.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'din';
+    src: url('../fonts/din_alternate_bold-webfont.eot');
+    src: url('../fonts/din_alternate_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/din_alternate_bold-webfont.woff2') format('woff2'),
+         url('../fonts/din_alternate_bold-webfont.woff') format('woff'),
+         url('../fonts/din_alternate_bold-webfont.ttf') format('truetype');
+}
+
+// Google Web Font stylesheet is included via layout XML
+
+// Font Stacks
+
+$f-stack-sans: 'gesta', Verdana, Arial, sans-serif;
+$f-stack-serif: Georgia, Times, 'Times New Roman', serif;
+$f-stack-special: 'din', 'Helvetica Neue', Verdana, Arial, sans-serif;
+$f-stack-icon: "SSStandard";
+$f-stack-icon-alt: "font-awesome";
+$f-stack-default: $f-stack-sans;
+
+// Font Sizes
+
+$f-size-xxl: 18px;
+$f-size-xl: 16px;
+$f-size-l: 15px;
+
+$f-size: 14px;
+
+$f-size-s: 13px;
+$f-size-xs: 12px;
+$f-size-xxs: 11px;
+
+// Base Measures
+
+$b-line-height: 1.5;
+$b-margin-bottom: 1.5em;
+
+//
+// Mixins: vendor prefixes
+// --------------------------------------------------
+
+// Box sizing
+@mixin box-sizing($box-model) {
+  box-sizing: $box-model;
+}
+
+// Single side border-radius
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+}
+
+// Drop shadows
+@mixin box-shadow($shadow) {
+  box-shadow: $shadow;
+}
+
+// Transitions
+@mixin transition($transition) {
+  transition: $transition;
+}
+@mixin transition-delay($transition-delay) {
+  transition-delay: $transition-delay;
+}
+@mixin transition-duration($transition-duration) {
+  transition-duration: $transition-duration;
+}
+
+// Transformations
+@mixin rotate($degrees) {
+  transform: rotate($degrees);
+}
+@mixin scale($ratio) {
+  transform: scale($ratio);
+}
+@mixin translate($x, $y) {
+  transform: translate($x, $y);
+}
+@mixin skew($x, $y) {
+  transform: skew($x, $y);
+  @include backface-visibility(hidden);
+}
+@mixin translate3d($x, $y, $z) {
+  transform: translate3d($x, $y, $z);
+}
+
+// Backface visibility
+@mixin backface-visibility($visibility){
+  backface-visibility: $visibility;
+}
+
+// User select
+@mixin user-select($select) {
+  user-select: $select;
+}
+
+// Opacity
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity-ie})";
+}
+
+// Placeholder text
+@mixin placeholder($color: $input-color-placeholder) {
+  &::-moz-placeholder           { color: $color; } // Firefox 19+
+  &:-ms-input-placeholder       { color: $color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+}
+
+// Resize anything
+@mixin resizable($direction) {
+  resize: $direction; // Options: horizontal, vertical, both
+  overflow: auto; // Safari fix
+}
+
+// CSS3 Content Columns
+@mixin content-columns($width, $count, $gap) {
+  column-width: $width;
+  column-count: $count;
+  column-gap: $gap;
+}
+
+// Optional hyphenation
+@mixin hyphens($mode: auto) {
+  word-wrap: break-word;
+  hyphens: $mode;
+}
+
+// Gradients
+@mixin gradient-horizontal($startColor: #555, $endColor: #333) {
+  background-color: $endColor;
+  background-image: linear-gradient(to right, $startColor, $endColor); // Standard, IE10
+  background-repeat: repeat-x;
+  filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{argb($startColor)}', endColorstr='#{argb($endColor)}', GradientType=1)"; // IE9 and down
+}
+@mixin gradient-vertical($startColor: #555, $endColor: #333) {
+  background-color: $endColor;
+  background-image: linear-gradient(to bottom, $startColor, $endColor); // Standard, IE10
+  background-repeat: repeat-x;
+  filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{argb($startColor)}', endColorstr='#{argb($endColor)}', GradientType=0)"; // IE9 and down
+}
+
+// Reset filters for IE
+//
+// Useful for when you want to remove a gradient from an element.
+@mixin reset-filter() {
+  filter: "progid:DXImageTransform.Microsoft.gradient(enabled = false)";
+}
+
+//
+// Mixins: utilities
+// --------------------------------------------------
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// Center-align a block level element
+@mixin center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Sizing shortcuts
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+@mixin square($size) {
+  @include size($size, $size);
+}
+
+// Text overflow
+//
+// Requires inline-block or block for proper styling
+@mixin text-truncate() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Retina images
+//
+// Retina background-image support with non-retina fall back
+@mixin retina-image($file-1x, $file-2x, $width-1x, $height-1x, $posX:"", $posY:"") {
+  background-image: url($file-1x);
+
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (   min--moz-device-pixel-ratio: 2),
+  only screen and (     -o-min-device-pixel-ratio: 2/1),
+  only screen and (        min-device-pixel-ratio: 2),
+  only screen and (                min-resolution: 192dpi),
+  only screen and (                min-resolution: 2dppx) {
+    background: url($file-2x);
+    background-size: $width-1x $height-1x;
+    background-position: $posX $posY;
+  }
+}

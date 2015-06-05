@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    <default>
+        <reference name="head">
+            <action method="removeItem"><type>skin_css</type><name>css/enterprise.css</name></action>
+            <action method="removeItem"><type>skin_css</type><name>css/enterprise-ie8.css</name></action>
+        </reference>
+        <reference name="before_body_end">
+            <block type="page/html_head" name="footerjs" as="footerjs" after="-" template="page/html/footerjs.phtml">
+                <action method="addItem"><type>skin_js</type><name>jsmin/blueacorn.min.js</name><params/></action>
+                <action method="addItem" ifconfig="styleguide/development/enable_development"><type>skin_js</type><name>jsmin/blueacorn.development.min.js</name><params/></action>
+                <action method="addItem"><type>skin_js</type><name>js/vendor/jquery.fancybox.pack.js</name><params/></action>
+            </block>
+        </reference>
+    </default>
+
+    <!-- Adding Page Specific Style Sheets to Category & Search Result Pages -->
+    <catalog_theme_changes>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/styles-category-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
+            <action method="addItem"><type>skin_css</type><name>css/styles-category.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+    </catalog_theme_changes>
+
+    <catalog_category_default>
+        <update handle="catalog_theme_changes" />
+    </catalog_category_default>
+
+    <catalog_category_view>
+        <update handle="catalog_theme_changes" />
+    </catalog_category_view>
+
+    <catalog_category_layered>
+        <update handle="catalog_theme_changes" />
+    </catalog_category_layered>
+
+    <catalogsearch_result_index>
+        <update handle="catalog_theme_changes" />
+    </catalogsearch_result_index>
+
+    <catalogsearch_advanced_index>
+        <update handle="catalog_theme_changes" />
+    </catalogsearch_advanced_index>
+
+    <catalogsearch_advanced_result>
+        <update handle="catalog_theme_changes" />
+    </catalogsearch_advanced_result>
+
+    <catalogsearch_term_popular>
+        <update handle="catalog_theme_changes" />
+    </catalogsearch_term_popular>
+
+    <!-- Adding Page Specific Style Sheets to Product Pages -->
+    <product_theme_changes>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/styles-product-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
+            <action method="addItem"><type>skin_css</type><name>css/styles-product.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+    </product_theme_changes>
+
+    <catalog_product_view>
+        <update handle="product_theme_changes" />
+    </catalog_product_view>
+
+    <cart_theme_changes>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/styles-cart-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
+            <action method="addItem"><type>skin_css</type><name>css/styles-cart.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+    </cart_theme_changes>
+
+    <checkout_cart_index>
+        <update handle="cart_theme_changes" />
+    </checkout_cart_index>
+
+    <checkout_theme_changes>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/styles-checkout-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
+            <action method="addItem"><type>skin_css</type><name>css/styles-checkout.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+    </checkout_theme_changes>
+
+    <checkout_onepage_index>
+        <update handle="checkout_theme_changes" />
+    </checkout_onepage_index>
+
+    <checkout_onepage_success>
+        <update handle="checkout_theme_changes" />
+    </checkout_onepage_success>
+
+    <customer_theme_changes>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/styles-account-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
+            <action method="addItem"><type>skin_css</type><name>css/styles-account.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+    </customer_theme_changes>
+
+    <customer_account>
+        <update handle="customer_theme_changes" />
+    </customer_account>
+
+    <customer_account_login>
+        <update handle="customer_theme_changes" />
+    </customer_account_login>
+
+    <customer_account_logoutsuccess>
+        <update handle="customer_theme_changes" />
+    </customer_account_logoutsuccess>
+
+    <customer_account_create>
+        <update handle="customer_theme_changes" />
+    </customer_account_create>
+
+    <customer_account_forgotpassword>
+        <update handle="customer_theme_changes" />
+    </customer_account_forgotpassword>
+
+    <customer_account_resetpassword>
+        <update handle="customer_theme_changes" />
+    </customer_account_resetpassword>
+
+    <customer_account_confirmation>
+        <update handle="customer_theme_changes" />
+    </customer_account_confirmation>
+
+    <customer_account_edit>
+        <update handle="customer_theme_changes" />
+    </customer_account_edit>
+
+    <review_product_list>
+        <action block="head" method="addItem"><type>skin_js</type><script>js/lib/elevatezoom/jquery.elevateZoom-3.0.8.min.js</script></action>
+    </review_product_list>
+
+</layout>
