@@ -86,7 +86,7 @@
 
     #header-nav {
         display: block; /* Force visibility */
-        border-bottom: 1px solid $c-module-border-light;
+        background: $brand-primary;
     }
 
 }
@@ -97,8 +97,17 @@
 
 @include bp(min-width, $bp-medium + 1) {
     .nav-primary {
+        position: relative;
+        text-align: justify;
         display: block;
-        margin-top: 15px;
+        margin: 0 auto;
+        height: 48px;
+
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+        }
     }
 
 }
@@ -114,9 +123,11 @@ $nav-primary-height: 30px;
         text-decoration: none;
         position: relative;
         display: block;
-        color: $c-text;
         line-height: $nav-primary-height;
-        font-family: $f-stack-special;
+        color: $white;
+        font-size: 15px;
+        font-family: $f-stack-sans;
+        padding: 8px 10px 9px;
     }
 
     li {
@@ -124,7 +135,13 @@ $nav-primary-height: 30px;
     }
 
     li.level1 a {
-        border-bottom: 1px solid $c-module-border;
+        font-size: 15px;
+        line-height: 22px;
+        color: $c-text;
+
+        &.nav-shop-all {
+            color: $brand-action;
+        }
     }
 }
 
@@ -200,7 +217,8 @@ $nav-primary-height: 30px;
     .nav-primary {
 
         a.level0 {
-            padding: 0 25px;
+            padding: 9px 25px;
+            letter-spacing: 1px;
         }
 
         li.level0,
@@ -214,7 +232,8 @@ $nav-primary-height: 30px;
 
         a:hover,
         li:hover > a {
-            color: $c-action;
+            background: $white;
+            color: $brand-action;
         }
 
         .menu-active {
@@ -223,15 +242,18 @@ $nav-primary-height: 30px;
 
         /* Default styles for 1+ drop-down menus */
         li.level0 ul {
-            @include menu;
             position: absolute;
             left: 0;
-            top: $nav-primary-height; /* Height of ".nav-primary a.level0" */
+            top: 48px; /* Height of ".nav-primary a.level0" */
             z-index: 10;
             width: 250px;
-            padding-left: $box-spacing;
-            padding-right: $box-spacing;
+            padding: 18px 10px;
             display: none; /* Hide until displayed. */
+
+            background: $white;
+            color: $c-text;
+
+
         }
 
         /* Level 2+ */

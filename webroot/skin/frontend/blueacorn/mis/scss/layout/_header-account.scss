@@ -35,13 +35,14 @@
 
     &:not(.skip-active):hover {
         .icon {
-            background-position: -50px+4px (-50px + ($toolbar-icon-padding-offset/2) + 2px);
+            
         }
     }
 
     .icon {
-        @extend .icon-sprite;
-        background-position: -0px+4px (-50px + ($toolbar-icon-padding-offset/2) + 2px);
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
+        width: 17px;
+        height: 15px;
     }
 }
 
@@ -54,21 +55,47 @@
         width: auto;
         vertical-align: top;
         display: inline-block;
-        padding: 0 10px;
+        padding: 10px 12px;
         text-transform: uppercase;
-    }
+        background: $white;
+        color: $brand-primary;
+        font-size: 15px;
+        font-weight: 400;
+        font-family: $f-stack-sans;
+        letter-spacing: 1px;
+        margin-right: 7px;
 
-    .skip-account:hover {
+        &:hover {
+            background: $brand-primary;
+            color: $white;
+
+            .icon {
+                background-position: -101px -67px;
+            }
+        }
     }
 
     #header-account.skip-active {
-        @include menu;
+        background: $brand-primary;
         display: block;
         position: absolute;
         z-index: 200;
-        top: 40px;
-        right: 115px;
-        width: 200px;
+        top: 62px;
+        right: 123px;
+        width: 144px;
+
+        a {
+            color: $white;
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            text-transform: uppercase;
+
+            &:hover {
+                background: $white;
+                color: $brand-primary;
+                text-decoration: none;
+            }
+        }
     }
 
     #header-account a {

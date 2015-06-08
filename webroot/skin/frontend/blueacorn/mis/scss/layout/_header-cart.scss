@@ -34,13 +34,19 @@
 .skip-cart {
     &:not(.skip-active):hover {
         .icon {
-            background-position: -50px (-100px + ($toolbar-icon-padding-offset/2) + 1px);
+            
         }
     }
 
     .icon {
-        @extend .icon-sprite;
-        background-position: 0 (-100px + ($toolbar-icon-padding-offset/2) + 1px);
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -109px, 0);
+        width: 20px;
+        height: 20px;
+        display: none;
+    }
+
+    .no-count .icon {
+        display: block;
     }
 }
 
@@ -57,14 +63,15 @@
     }
 
     #header-cart.skip-active {
-        @include menu;
+        background: $white;
         display: block;
         position: absolute;
-        z-index: 200;
-        top: 40px;
+        z-index: 999;
+        top: 60px;
         right: 0;
         width: 320px;
         background: white;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .16);
     }
 
 }
@@ -107,28 +114,33 @@
 }
 
 @include bp(min-width, $bp-medium + 1) {
-    .skip-cart {
-        color: $c-action;
+    .button.skip-cart {
+        color: $white;
         text-transform: uppercase;
+        font-weight: 400;
+        letter-spacing: 1px;
+        padding: 10px 12px;
 
         &:hover {
             text-decoration: none;
+
+            .count {
+                color: $brand-success;
+            }
         }
 
         .count {
-            @include border-radius(0px);
+            @include border-radius(50%);
             position: static;
-            background: none;
+            background: $white;
+            color: $brand-secondary;
             margin-left: 0;
             font-size: $f-size;
-            width: auto;
-
-            &:before {
-                content: '(';
-            }
-            &:after {
-                content: ')';
-            }
+            text-align: center;
+            padding-left: 2px;
+            margin-right: 4px;
+            width: 20px;
+            height: 20px;
         }
     }
     .skip-cart .count,

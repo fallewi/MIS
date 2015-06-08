@@ -30,9 +30,8 @@
 @include bp(min-width, $bp-medium + 1) {
 
     .page-header {
-        max-width: $max-container-width;
-        margin: 0 auto;
-        padding: 0 $trim;
+        background: #EEEEEE;
+        padding: 0;
     }
 
     .page-header-container {
@@ -113,6 +112,16 @@
 
 }
 
+.store-phone {
+    display: inline-block;
+    font-size: 20px;
+    color: #D0021B;
+    letter-spacing: 1.11px;
+    position: relative;
+    top: -10px;
+    margin-right: 11px;
+}
+
 /* ============================================ *
  * Logo
  * ============================================ */
@@ -124,7 +133,7 @@
     min-width: 100px;
     min-height: 44px;
     text-align: center;
-    padding: $gap;
+    padding: 20px;
 
     img {
         max-width: 100%;
@@ -138,17 +147,13 @@
     }
 }
 
-.logo:hover {
-    opacity: 0.8;
-}
-
 // ---------------------------------------------
 
 @include bp(min-width, $bp-medium + 1) {
 
     .logo {
         max-width: 300px;
-        min-height: 90px;
+        min-height: 80px;
 
         .small {
             display: none;
@@ -189,19 +194,12 @@
     position: relative;
     float: left;
     width: 20%;
-    height: 44px;
-    background: #FFFFFF;
     color: $c-text;
-    line-height: 42px;
     text-align: center;
 }
 
 a.skip-link {
     text-decoration: none;
-}
-
-.skip-link:not(.skip-active):hover {
-    opacity: 0.8;
 }
 
 // ---------------------------------------------
@@ -263,7 +261,7 @@ a.skip-link {
 @include bp(min-width, 500px) {
 
     .skip-link .icon {
-        margin-right: 3px;
+        margin-right: 5px;
     }
 
 }
@@ -332,8 +330,8 @@ a.skip-link {
 
 .account-cart-wrapper {
     position: absolute;
-    top:0px;
-    right:0px;
+    top: 20px;
+    right: 20px;
 
     @include bp(max-width, $bp-medium) {
         position: static;

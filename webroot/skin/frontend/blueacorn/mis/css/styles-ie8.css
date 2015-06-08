@@ -261,7 +261,7 @@ a:hover {
   text-decoration: underline; }
 
 a:focus {
-  outline-color: #4D587A;
+  outline: none;
   color: black; }
 
 ol,
@@ -578,7 +578,7 @@ body:not(.customer-account) .block:first-child .block-title {
   .cart-table .product-cart-actions .button.btn-small,
   #co-shipping-method-form .buttons-set .button.btn-small,
   .footer .button.btn-small {
-    padding: 11px 35px 10px; }
+    padding: 10px 35px 10px; }
 
 a.button {
   text-decoration: none; }
@@ -692,7 +692,7 @@ a.button:hover {
  * Icons
  */
 .icon-sprite, .btn-remove2, .sorter > .sort-by .sort-by-switcher, .sorter > .view-mode .grid,
-.sorter > .view-mode .list, .skip-nav .icon, .skip-search .icon, #search_mini_form .search-button:before, .skip-account .icon, .skip-cart .icon {
+.sorter > .view-mode .list, .skip-nav .icon {
   background-image: url(../images/icon_sprite.png);
   background-repeat: no-repeat;
   text-indent: -9999px; }
@@ -2298,9 +2298,8 @@ body {
  * Header
  * ============================================ */
 .page-header {
-  max-width: 1260px;
-  margin: 0 auto;
-  padding: 0 30px; }
+  background: #EEEEEE;
+  padding: 0; }
 
 .page-header-container {
   position: relative; }
@@ -2344,6 +2343,15 @@ body {
 .header-language-background a {
   color: #e6e6e6; }
 
+.store-phone {
+  display: inline-block;
+  font-size: 20px;
+  color: #D0021B;
+  letter-spacing: 1.11px;
+  position: relative;
+  top: -10px;
+  margin-right: 11px; }
+
 /* ============================================ *
  * Logo
  * ============================================ */
@@ -2354,7 +2362,7 @@ body {
   min-width: 100px;
   min-height: 44px;
   text-align: center;
-  padding: 10px; }
+  padding: 20px; }
   .logo img {
     max-width: 100%; }
   .logo .small {
@@ -2362,12 +2370,9 @@ body {
   .logo .large {
     display: none; }
 
-.logo:hover {
-  opacity: 0.8; }
-
 .logo {
   max-width: 300px;
-  min-height: 90px; }
+  min-height: 80px; }
   .logo .small {
     display: none; }
   .logo .large {
@@ -2392,17 +2397,11 @@ body {
   position: relative;
   float: left;
   width: 20%;
-  height: 44px;
-  background: #FFFFFF;
   color: #262626;
-  line-height: 42px;
   text-align: center; }
 
 a.skip-link {
   text-decoration: none; }
-
-.skip-link:not(.skip-active):hover {
-  opacity: 0.8; }
 
 .skip-link {
   width: 25%; }
@@ -2424,7 +2423,7 @@ a.skip-link {
   margin-right: 3px; }
 
 .skip-link .icon {
-  margin-right: 3px; }
+  margin-right: 5px; }
 
 /* -------------------------------------------- *
  * Skip Link - Label
@@ -2450,8 +2449,8 @@ a.skip-link {
  * ============================================ */
 .account-cart-wrapper {
   position: absolute;
-  top: 0px;
-  right: 0px; }
+  top: 20px;
+  right: 20px; }
 
 /* ============================================ *
  * Nav - Skip Link
@@ -2481,14 +2480,21 @@ a.skip-link {
 #header-nav {
   display: block;
   /* Force visibility */
-  border-bottom: 1px solid #EDEDED; }
+  background: #00247B; }
 
 /* ============================================ *
  * Nav Primary
  * ============================================ */
 .nav-primary {
+  position: relative;
+  text-align: justify;
   display: block;
-  margin-top: 15px; }
+  margin: 0 auto;
+  height: 48px; }
+  .nav-primary:after {
+    content: '';
+    display: inline-block;
+    width: 100%; }
 
 /* ============================================ *
  * General Navigation Styles
@@ -2497,15 +2503,21 @@ a.skip-link {
   text-decoration: none;
   position: relative;
   display: block;
-  color: #262626;
   line-height: 30px;
-  font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif; }
+  color: #fff;
+  font-size: 15px;
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  padding: 8px 10px 9px; }
 
 .nav-primary li {
   position: relative; }
 
 .nav-primary li.level1 a {
-  border-bottom: 1px solid #CCCCCC; }
+  font-size: 15px;
+  line-height: 22px;
+  color: #262626; }
+  .nav-primary li.level1 a.nav-shop-all {
+    color: #EC3837; }
 
 .nav-primary .menu-active > ul.level0,
 .nav-primary li.level0 li.sub-menu-active > ul {
@@ -2527,7 +2539,8 @@ a.skip-link {
   /* Correct menus that will hang off the page (class added by js) */
   /* Level 1+ */ }
   .nav-primary a.level0 {
-    padding: 0 25px; }
+    padding: 9px 25px;
+    letter-spacing: 1px; }
   .nav-primary li.level0,
   .nav-primary a.level0 {
     display: inline-block; }
@@ -2535,22 +2548,22 @@ a.skip-link {
     border-bottom: none; }
   .nav-primary a:hover,
   .nav-primary li:hover > a {
-    color: #00247B; }
+    background: #fff;
+    color: #EC3837; }
   .nav-primary .menu-active {
     z-index: 200; }
   .nav-primary li.level0 ul {
-    background: #FBFBFB;
-    border: solid 1px #CCCCCC;
     position: absolute;
     left: 0;
-    top: 30px;
+    top: 48px;
     /* Height of ".nav-primary a.level0" */
     z-index: 10;
     width: 250px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 18px 10px;
     display: none;
-    /* Hide until displayed. */ }
+    /* Hide until displayed. */
+    background: #fff;
+    color: #262626; }
   .nav-primary li.level1 ul {
     left: 60px;
     top: 15px; }
@@ -2585,11 +2598,15 @@ a.skip-link {
 /* ============================================ *
  * Search - Skip Link
  * ============================================ */
-.skip-search:not(.skip-active):hover .icon {
-  background-position: -46px -146px; }
-
 .skip-search .icon {
-  background-position: 4px -146px; }
+  background-image: url("../images/sprite.png");
+  width: 21px;
+  height: 21px; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .skip-search .icon {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -48px 0; } }
 
 .skip-search {
   display: none; }
@@ -2603,10 +2620,11 @@ a.skip-link {
 #header-search {
   display: block;
   position: absolute;
-  top: 55px;
-  right: 0;
-  width: 25%;
+  top: 20px;
+  left: 50%;
+  width: 310px;
   height: 50px;
+  margin-left: -155px;
   padding: 0; }
 
 /* ============================================ *
@@ -2624,6 +2642,27 @@ a.skip-link {
   height: 40px;
   padding-right: 40px;
   font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif; }
+  #search::-webkit-input-placeholder {
+    color: #00247B;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: right; }
+  #search::-moz-placeholder {
+    color: #00247B;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: right; }
+  #search:-ms-input-placeholder {
+    color: #00247B;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: right; }
+  #search:focus::-webkit-input-placeholder {
+    color: #fff; }
+  #search:focus::-moz-placeholder {
+    color: #fff; }
+  #search:focus::-ms-input-placeholder {
+    color: #fff; }
 
 #search_mini_form .search-button {
   text-indent: -9999px;
@@ -2633,18 +2672,22 @@ a.skip-link {
   width: 40px;
   height: 40px;
   border: 0;
-  background: none; }
+  background: none;
+  padding: 9px; }
+  #search_mini_form .search-button span {
+    display: none; }
 
 #search_mini_form .search-button:before {
   content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  margin-top: -15px;
-  margin-left: -15px;
-  background-position: 4px -146px; }
+  display: block;
+  background-image: url("../images/sprite.png");
+  width: 21px;
+  height: 21px; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    #search_mini_form .search-button:before {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -59px -161px; } }
 
 #search_mini_form .search-button:hover:before {
   opacity: 0.8; }
@@ -2659,29 +2702,53 @@ a.skip-link {
 /* -------------------------------------------- *
  * Skip Link - Account
  */
-.skip-account:not(.skip-active):hover .icon {
-  background-position: -46px -44px; }
-
 .skip-account .icon {
-  background-position: 4px -44px; }
+  background-image: url("../images/sprite.png");
+  width: 17px;
+  height: 15px; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .skip-account .icon {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -76px -67px; } }
 
 .skip-account {
   float: none;
   width: auto;
   vertical-align: top;
   display: inline-block;
-  padding: 0 10px;
-  text-transform: uppercase; }
+  padding: 10px 12px;
+  text-transform: uppercase;
+  background: #fff;
+  color: #00247B;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  letter-spacing: 1px;
+  margin-right: 7px; }
+  .skip-account:hover {
+    background: #00247B;
+    color: #fff; }
+    .skip-account:hover .icon {
+      background-position: -101px -67px; }
 
 #header-account.skip-active {
-  background: #FBFBFB;
-  border: solid 1px #CCCCCC;
+  background: #00247B;
   display: block;
   position: absolute;
   z-index: 200;
-  top: 40px;
-  right: 115px;
-  width: 200px; }
+  top: 62px;
+  right: 123px;
+  width: 144px; }
+  #header-account.skip-active a {
+    color: #fff;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-size: 15px;
+    text-transform: uppercase; }
+    #header-account.skip-active a:hover {
+      background: #fff;
+      color: #00247B;
+      text-decoration: none; }
 
 #header-account a {
   display: block;
@@ -2714,26 +2781,34 @@ a.skip-link {
 /* -------------------------------------------- *
  * Skip Link - Cart
  */
-.skip-cart:not(.skip-active):hover .icon {
-  background-position: -50px -95px; }
-
 .skip-cart .icon {
-  background-position: 0 -95px; }
+  background-image: url("../images/sprite.png");
+  width: 20px;
+  height: 20px;
+  display: none; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .skip-cart .icon {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -109px 0; } }
+
+.skip-cart .no-count .icon {
+  display: block; }
 
 .skip-cart {
   width: auto;
   padding: 0 10px; }
 
 #header-cart.skip-active {
-  background: #FBFBFB;
-  border: solid 1px #CCCCCC;
+  background: #fff;
   display: block;
   position: absolute;
-  z-index: 200;
-  top: 40px;
+  z-index: 999;
+  top: 60px;
   right: 0;
   width: 320px;
-  background: white; }
+  background: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16); }
 
 /* -------------------------------------------- *
  * Skip Cart Notifier
@@ -2759,22 +2834,28 @@ a.skip-link {
 .skip-cart.no-count .count {
   display: none; }
 
-.skip-cart {
-  color: #00247B;
-  text-transform: uppercase; }
-  .skip-cart:hover {
+.button.skip-cart {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding: 10px 12px; }
+  .button.skip-cart:hover {
     text-decoration: none; }
-  .skip-cart .count {
-    border-radius: 0px;
+    .button.skip-cart:hover .count {
+      color: #5DCA86; }
+  .button.skip-cart .count {
+    border-radius: 50%;
     position: static;
-    background: none;
+    background: #fff;
+    color: #FDC44B;
     margin-left: 0;
     font-size: 14px;
-    width: auto; }
-    .skip-cart .count:before {
-      content: '('; }
-    .skip-cart .count:after {
-      content: ')'; }
+    text-align: center;
+    padding-left: 2px;
+    margin-right: 4px;
+    width: 20px;
+    height: 20px; }
 
 .skip-cart .count,
 .skip-link.skip-active .count {

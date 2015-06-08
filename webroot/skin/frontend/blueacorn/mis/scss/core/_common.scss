@@ -71,7 +71,7 @@ a:hover {
 }
 
 a:focus {
-    outline-color: $c-link-active;
+    outline: none;
     color: darken($c-action, 30%);
 }
 
@@ -417,7 +417,7 @@ $button-padding: 17px 60px 16px;
     }
 
     &.btn-small {
-        padding: 11px 35px 10px;
+        padding: 10px 35px 10px;
     }
 }
 
