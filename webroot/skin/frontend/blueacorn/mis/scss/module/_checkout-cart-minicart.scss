@@ -82,6 +82,7 @@
 
             .product-details {
                 position: relative;
+                margin-bottom: 30px;
             }
 
             .remove {
@@ -93,16 +94,53 @@
                 height: 20px;
                 text-indent: -9999em;
             }
+
+            .link-wishlist {
+                display: block;
+                font-size: 14px;
+                line-height: 30px;
+                text-align: center;
+                font-family: $f-stack-sans;
+                letter-spacing: 1px;
+                background: $white;
+                width: 100%;
+
+                &:after {
+                    @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -128px, -69px);
+                    position: relative;
+                    display: inline-block;
+                    content: "";
+                    width: 10px;
+                    height: 14px;
+                    top: 4px;
+                    margin-left: 9px;
+                }
+
+                &:hover {
+                    background: $brand-primary;
+                    color: $white;
+                    text-decoration: none;
+
+                    &:after {
+                        background-position: -148px -69px;
+                    }
+                }
+            }
         }
     }
 
     .product-details {
         .product-name {
             padding-top: 0px;
+            margin-bottom: 0;
 
             a {
                 color: $c-action;
             }
+        }
+
+        .qty-multiplier-icon {
+            margin-left: 5px;
         }
     }
 
@@ -111,7 +149,7 @@
 
         th {
             text-transform: uppercase;
-            padding-right: $gap;
+            padding-right: 7px;
         }
         td {
             color: $c-text-primary;
@@ -165,21 +203,32 @@
     }
 
     .minicart-actions {
-        padding: $box-spacing;
-        margin-top: 0px;
+        padding: 0;
+        margin-top: 20px;
         overflow: hidden;
         position: relative;
-        text-align: center;
-
-        .checkout-button {
-            min-width: 145px;
-        }
 
         .cart-link {
-            height: 33px;
-            line-height: 39px;
-            text-transform: uppercase;
-            font-size: $f-size-s;
+            width: 130px;
+            padding: 17px 10px 16px;
+            margin-right: 16px;
+            font-family: $f-stack-sans;
+            font-weight: 400;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .checkout-types.minicart {
+            display: inline-block;
+        }
+
+        .checkout-button {
+            width: 130px;
+            padding: 17px 10px 16px;
+            font-family: $f-stack-sans;
+            font-weight: 400;
+            text-align: center;
+            display: inline-block;
         }
 
         .paypal-logo {

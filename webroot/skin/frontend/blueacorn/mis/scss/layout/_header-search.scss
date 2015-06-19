@@ -63,16 +63,24 @@
 // ---------------------------------------------
 
 @include bp(min-width, $bp-medium + 1) {
-
     #header-search {
         display: block; // Force visibility
         position: absolute;
         top: 20px;
-        left: 50%;
+        left: auto;
+        right: 445px;
+        margin-left: 0;
         width: 310px;
+        padding: 0;
+    }
+}
+
+@include bp(min-width, 1201px) {
+
+    #header-search {
+        left: 50%;
         height: 50px;
         margin-left: -155px;
-        padding: 0;
     }
 
 }

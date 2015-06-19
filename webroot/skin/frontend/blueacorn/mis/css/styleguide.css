@@ -369,10 +369,13 @@ p.product-name {
  * ============================================ */
 .mini-products-list .product-image {
   float: left;
-  min-width: 50px; }
+  min-width: 50px;
+  border: none;
+  padding: 7px;
+  background: #fff; }
 
 .mini-products-list .product-details {
-  margin-left: 60px; }
+  margin-left: 93px; }
 
 .mini-products-list .product-details .product-name {
   padding-top: 10px; }
