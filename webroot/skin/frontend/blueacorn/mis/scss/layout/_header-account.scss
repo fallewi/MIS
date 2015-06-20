@@ -43,75 +43,105 @@
         @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
         width: 17px;
         height: 15px;
+
+        @include bp(max-width, $bp-medium) {
+            background-position: -77px 0;
+            width: 22px;
+            height: 20px;
+        }
     }
 }
 
 // ---------------------------------------------
 
-@include bp(min-width, $bp-medium + 1) {
+.skip-account {
+    float: none;
+    width: auto;
+    vertical-align: top;
+    display: inline-block;
+    padding: 10px 12px;
+    text-transform: uppercase;
+    background: $white;
+    color: $brand-primary;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: $f-stack-sans;
+    letter-spacing: 1px;
+    margin-right: 7px;
 
-    .skip-account {
-        float: none;
-        width: auto;
-        vertical-align: top;
-        display: inline-block;
-        padding: 10px 12px;
-        text-transform: uppercase;
-        background: $white;
-        color: $brand-primary;
-        font-size: 15px;
-        font-weight: 400;
-        font-family: $f-stack-sans;
-        letter-spacing: 1px;
-        margin-right: 7px;
+    &:hover,
+    &.skip-active {
+        background: $brand-primary;
+        color: $white;
 
-        &:hover,
-        &.skip-active {
-            background: $brand-primary;
-            color: $white;
-
-            .icon {
-                background-position: -101px -67px;
-            }
+        .icon {
+            background-position: -47px 0;
         }
     }
-
-    #header-account.skip-active {
-        background: $white;
-        display: block;
-        position: absolute;
-        z-index: 200;
-        top: 62px;
-        right: 122px;
-        width: 144px;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, .16);
-
-        a {
-            color: $brand-primary;
-            font-family: $f-stack-sans;
-            font-size: 15px;
-            text-transform: uppercase;
-
-            &:hover {
-                // background: $brand-primary;
-                // color: $white;
-                // text-decoration: none;
-            }
-        }
-    }
-
-    #header-account a {
-        display: block;
-        padding: 5px 10px;
-        color: $c-text;
-        line-height: 2;
-    }
-
-    #header-account a:hover {
-        color: $c-action;
-    }
-
 }
+
+#header-account.skip-active {
+    background: $white;
+    display: block;
+    position: absolute;
+    z-index: 200;
+    top: 62px;
+    right: 122px;
+    width: 144px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .16);
+
+    a {
+        color: $brand-primary;
+        font-family: $f-stack-sans;
+        font-size: 15px;
+        text-transform: uppercase;
+
+        &:hover {
+            // background: $brand-primary;
+            // color: $white;
+            // text-decoration: none;
+        }
+    }
+
+    @include bp(max-width, 1024px) {
+        top: 60px;
+        right: 70px;
+    }
+}
+
+#header-account a {
+    display: block;
+    padding: 5px 10px;
+    color: $c-text;
+    line-height: 2;
+}
+
+#header-account a:hover {
+    color: $c-action;
+}
+
+
+@include bp(max-width, 1024px) {
+    .skip-account {
+        padding: 9px 12px 9px 11px;
+        display: inline-block;
+
+        .label {
+            display: none;
+        }
+
+        .icon {
+            margin-right: 0px;
+        }
+    }
+}
+
+@include bp(max-width, $bp-medium) {
+    .skip-account {
+        padding: 9px;
+    }
+}
+
 
 /* -------------------------------------------- *
  * Account Links

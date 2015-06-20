@@ -28,35 +28,43 @@
  * ============================================ */
 
 .skip-nav {
-    width: 40%;
+    width: 40px;
+    height: 40px;
+    background: $white;
+    margin-left: 20px;
+    position: absolute;
 
     &:not(.skip-active):hover {
         text-decoration: none;
 
         .icon {
-            background-position: -50px+4px ($toolbar-icon-padding-offset/2);
+            // background-position: -50px+4px ($toolbar-icon-padding-offset/2);
         }
     }
 }
 
 .skip-nav .label {
-    display: inline;
+    display: none;
 }
 
-.skip-nav .icon {
-    @extend .icon-sprite;
-    background-position: 0+4px ($toolbar-icon-padding-offset/2);
-}
-
-// ---------------------------------------------
-
-@include bp(min-width, 500px) {
-
-    .skip-nav {
-        width: 25%;
+.skip-link.skip-nav {
+    .icon {
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -139px, -3px);
+        width: 19px;
+        height: 17px;
+        margin-right: 0;
+        margin-top: 12px;
     }
 
+    &:hover {
+        background: $brand-action;
+
+        .icon {
+            background-position: -170px -66px;
+        }
+    }
 }
+
 
 // ---------------------------------------------
 
@@ -163,10 +171,19 @@ $nav-primary-height: 30px;
 
     .nav-primary {
 
+        li {
+            padding: 0 20px 10px;
+        }
+
         // Increase clickable area of anchors for small viewports
         a.level0,
         a {
-            line-height: $nav-primary-height + 5px;
+            line-height: 28px;
+            padding: 12px 50px 10px 20px;
+            background: $white;
+            color: $brand-primary;
+            font-size: 15px;
+            height: 52px;
         }
 
         // Hide all sub-menus
@@ -176,7 +193,7 @@ $nav-primary-height: 30px;
 
         // Indent sub-menus
         li.level0 li {
-            padding: 0 0 0 25px;
+            padding: 0;
         }
 
         li.level1 a {
@@ -184,26 +201,26 @@ $nav-primary-height: 30px;
         }
 
         li.parent > a:after {
-            @include triangle(right, 5px, #ccc);
-            top: 50%;
-            left: 10px;
-            right: auto;
-            margin-top: -5px;
+            position: absolute;
+            display: block;
+            content: "";
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
+            width: 15px;
+            height: 15px;
+            top: 18px;
+            right: 20px;
         }
 
         // Menu active states
         li.parent.sub-menu-active > a:after,
         li.parent.menu-active > a:after {
-            @include triangle(down, 5px, #ccc);
-            top: 50%;
-            left: 10px;
-            right: auto;
-            margin-top: -5px;
+            
+            background-position: -103px -30px;
         }
 
         li.menu-active > a,
         li.sub-menu-active > a {
-            color: $c-action;
+            color: $brand-action;
         }
     }
 }

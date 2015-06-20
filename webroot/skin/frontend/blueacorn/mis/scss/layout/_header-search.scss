@@ -85,6 +85,25 @@
 
 }
 
+@include bp(max-width, 1024px) {
+    #header-search {
+        right: 306px;
+    }
+}
+
+@include bp(max-width, 885px) {
+    #header-search {
+        right: 120px;
+    }
+}
+
+@include bp(max-width, $bp-medium) {
+    #header-search {
+        padding: 1px 20px 20px 80px;
+        right: 0;
+    }
+}
+
 /* ============================================ *
  * Search Input
  * ============================================ */

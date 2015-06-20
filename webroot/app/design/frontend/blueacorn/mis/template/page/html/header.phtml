@@ -35,10 +35,6 @@
             <img src="<?php echo $this->getLogoSrcSmall() ?>" alt="<?php echo $this->getLogoAlt() ?>" class="small" />
         </a>
 
-        <?php // In order for the language switcher to display next to logo on smaller viewports, it will be moved here.
-              // See app.js for details ?>
-        <div class="store-language-container"></div>
-
         <!-- Skip Links -->
 
         <div class="skip-links">
@@ -81,7 +77,7 @@
 
         <!-- Search -->
 
-        <div id="header-search" class="skip-content">
+        <div id="header-search">
             <?php echo $this->getChildHtml('topSearch') ?>
         </div>
 

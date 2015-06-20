@@ -831,14 +831,14 @@ a.button:hover {
  * Icons
  */
 .icon-sprite, .btn-remove2, .sorter > .sort-by .sort-by-switcher, .sorter > .view-mode .grid,
-.sorter > .view-mode .list, .skip-nav .icon {
+.sorter > .view-mode .list {
   background-image: url(../images/icon_sprite.png);
   background-repeat: no-repeat;
   text-indent: -9999px; }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
   .icon-sprite, .btn-remove2, .sorter > .sort-by .sort-by-switcher, .sorter > .view-mode .grid,
-  .sorter > .view-mode .list, .skip-nav .icon {
+  .sorter > .view-mode .list {
     background-image: url(../images/icon_sprite@2x.png);
     background-size: 100px 1000px; } }
 
@@ -2723,12 +2723,12 @@ body {
 /* ============================================ *
  * Header
  * ============================================ */
-@media only screen and (min-width: 771px) {
-  .page-header {
-    background: #EEEEEE;
-    padding: 0; }
-  .page-header-container {
-    position: relative; } }
+.page-header {
+  background: #EEEEEE;
+  padding: 0; }
+
+.page-header-container {
+  position: relative; }
 
 .header-language-container,
 .page-header {
@@ -2787,6 +2787,9 @@ body {
   position: relative;
   top: -10px;
   margin-right: 11px; }
+  @media only screen and (max-width: 885px) {
+    .store-phone {
+      display: none; } }
 
 /* ============================================ *
  * Logo
@@ -2805,6 +2808,10 @@ body {
     display: block; }
   .logo .large {
     display: none; }
+  @media only screen and (max-width: 770px) {
+    .logo {
+      padding: 20px 20px 17px;
+      float: none; } }
 
 @media only screen and (min-width: 771px) {
   .logo {
@@ -2821,8 +2828,8 @@ body {
 .skip-links {
   clear: both;
   overflow: hidden;
-  border-top: 1px solid #EDEDED;
-  border-bottom: 1px solid #EDEDED; }
+  height: 0;
+  padding: 0; }
 
 @media only screen and (min-width: 771px) {
   .skip-links {
@@ -2901,50 +2908,42 @@ a.skip-link {
 /* ============================================ *
  * Global Header Navigation
  * ============================================ */
-@media only screen and (max-width: 770px) {
-  #header-account li a,
-  .nav-primary a.level0 {
-    padding: 0 15px 0 25px;
-    border-bottom: 1px solid #CCCCCC;
-    text-align: left;
-    color: #262626;
-    text-transform: uppercase;
-    line-height: 30px; }
-  #header-account li:last-child a,
-  .nav-primary li.level0:last-child a.level0 {
-    border-bottom: 0; }
-  .no-touch #header-account a:hover,
-  .no-touch .nav-primary a:hover {
-    background-color: #F4F4F4;
-    text-decoration: none; } }
-
 .account-cart-wrapper {
   position: absolute;
   top: 20px;
   right: 20px; }
-  @media only screen and (max-width: 770px) {
-    .account-cart-wrapper {
-      position: static; } }
 
 /* ============================================ *
  * Nav - Skip Link
  * ============================================ */
 .skip-nav {
-  width: 40%; }
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  margin-left: 20px;
+  position: absolute; }
   .skip-nav:not(.skip-active):hover {
     text-decoration: none; }
-    .skip-nav:not(.skip-active):hover .icon {
-      background-position: -46px 4px; }
 
 .skip-nav .label {
-  display: inline; }
+  display: none; }
 
-.skip-nav .icon {
-  background-position: 4px 4px; }
+.skip-link.skip-nav .icon {
+  background-image: url("../images/sprite.png");
+  width: 19px;
+  height: 17px;
+  margin-right: 0;
+  margin-top: 12px; }
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .skip-link.skip-nav .icon {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -139px -3px; } }
 
-@media only screen and (min-width: 500px) {
-  .skip-nav {
-    width: 25%; } }
+.skip-link.skip-nav:hover {
+  background: #EC3837; }
+  .skip-link.skip-nav:hover .icon {
+    background-position: -170px -66px; }
 
 @media only screen and (min-width: 771px) {
   .skip-nav {
@@ -3012,47 +3011,44 @@ a.skip-link {
  * Small Viewports - Accordion Style Menu
  * ============================================ */
 @media only screen and (max-width: 770px) {
+  .nav-primary li {
+    padding: 0 20px 10px; }
   .nav-primary a.level0,
   .nav-primary a {
-    line-height: 35px; }
+    line-height: 28px;
+    padding: 12px 50px 10px 20px;
+    background: #fff;
+    color: #00247B;
+    font-size: 15px;
+    height: 52px; }
   .nav-primary li.level0 ul {
     display: none; }
   .nav-primary li.level0 li {
-    padding: 0 0 0 25px; }
+    padding: 0; }
   .nav-primary li.level1 a {
     padding: 0 15px 0 25px; }
   .nav-primary li.parent > a:after {
-    content: '';
     position: absolute;
-    width: 0;
-    height: 0;
     display: block;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 5px solid #ccc;
-    border-right: none;
-    top: 50%;
-    left: 10px;
-    right: auto;
-    margin-top: -5px; }
+    content: "";
+    background-image: url("../images/sprite.png");
+    width: 15px;
+    height: 15px;
+    top: 18px;
+    right: 20px; } }
+  @media only screen and (max-width: 770px) and (-webkit-min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min--moz-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-resolution: 192dpi), only screen and (max-width: 770px) and (min-resolution: 2dppx) {
+    .nav-primary li.parent > a:after {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -78px -30px; } }
+
+@media only screen and (max-width: 770px) {
   .nav-primary li.parent.sub-menu-active > a:after,
   .nav-primary li.parent.menu-active > a:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    display: block;
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    border-top: 5px solid #ccc;
-    border-bottom: none;
-    top: 50%;
-    left: 10px;
-    right: auto;
-    margin-top: -5px; }
+    background-position: -103px -30px; }
   .nav-primary li.menu-active > a,
   .nav-primary li.sub-menu-active > a {
-    color: #00247B; } }
+    color: #EC3837; } }
 
 /* ============================================ *
  * Large Viewports - Dropdown Menu
@@ -3162,6 +3158,19 @@ a.skip-link {
     height: 50px;
     margin-left: -155px; } }
 
+@media only screen and (max-width: 1024px) {
+  #header-search {
+    right: 306px; } }
+
+@media only screen and (max-width: 885px) {
+  #header-search {
+    right: 120px; } }
+
+@media only screen and (max-width: 770px) {
+  #header-search {
+    padding: 1px 20px 20px 80px;
+    right: 0; } }
+
 /* ============================================ *
  * Search Input
  * ============================================ */
@@ -3246,50 +3255,74 @@ a.skip-link {
       background: url("../images/sprite@2x.png");
       background-size: 600px 300px;
       background-position: -76px -67px; } }
+  @media only screen and (max-width: 770px) {
+    .skip-account .icon {
+      background-position: -77px 0;
+      width: 22px;
+      height: 20px; } }
 
-@media only screen and (min-width: 771px) {
-  .skip-account {
-    float: none;
-    width: auto;
-    vertical-align: top;
-    display: inline-block;
-    padding: 10px 12px;
-    text-transform: uppercase;
-    background: #fff;
+.skip-account {
+  float: none;
+  width: auto;
+  vertical-align: top;
+  display: inline-block;
+  padding: 10px 12px;
+  text-transform: uppercase;
+  background: #fff;
+  color: #00247B;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  letter-spacing: 1px;
+  margin-right: 7px; }
+  .skip-account:hover,
+  .skip-account.skip-active {
+    background: #00247B;
+    color: #fff; }
+    .skip-account:hover .icon,
+    .skip-account.skip-active .icon {
+      background-position: -47px 0; }
+
+#header-account.skip-active {
+  background: #fff;
+  display: block;
+  position: absolute;
+  z-index: 200;
+  top: 62px;
+  right: 122px;
+  width: 144px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16); }
+  #header-account.skip-active a {
     color: #00247B;
-    font-size: 15px;
-    font-weight: 400;
     font-family: "gesta", Verdana, Arial, sans-serif;
-    letter-spacing: 1px;
-    margin-right: 7px; }
-    .skip-account:hover,
-    .skip-account.skip-active {
-      background: #00247B;
-      color: #fff; }
-      .skip-account:hover .icon,
-      .skip-account.skip-active .icon {
-        background-position: -101px -67px; }
-  #header-account.skip-active {
-    background: #fff;
-    display: block;
-    position: absolute;
-    z-index: 200;
-    top: 62px;
-    right: 122px;
-    width: 144px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16); }
-    #header-account.skip-active a {
-      color: #00247B;
-      font-family: "gesta", Verdana, Arial, sans-serif;
-      font-size: 15px;
-      text-transform: uppercase; }
-  #header-account a {
-    display: block;
-    padding: 5px 10px;
-    color: #262626;
-    line-height: 2; }
-  #header-account a:hover {
-    color: #00247B; } }
+    font-size: 15px;
+    text-transform: uppercase; }
+  @media only screen and (max-width: 1024px) {
+    #header-account.skip-active {
+      top: 60px;
+      right: 70px; } }
+
+#header-account a {
+  display: block;
+  padding: 5px 10px;
+  color: #262626;
+  line-height: 2; }
+
+#header-account a:hover {
+  color: #00247B; }
+
+@media only screen and (max-width: 1024px) {
+  .skip-account {
+    padding: 9px 12px 9px 11px;
+    display: inline-block; }
+    .skip-account .label {
+      display: none; }
+    .skip-account .icon {
+      margin-right: 0px; } }
+
+@media only screen and (max-width: 770px) {
+  .skip-account {
+    padding: 9px; } }
 
 /* -------------------------------------------- *
  * Account Links
@@ -3370,35 +3403,43 @@ a.skip-link {
   .skip-cart .count {
     margin-left: -12px; } }
 
-@media only screen and (min-width: 771px) {
-  .button.skip-cart {
-    color: #fff;
-    text-transform: uppercase;
-    font-weight: 400;
-    letter-spacing: 1px;
-    padding: 10px 12px; }
-    .button.skip-cart:hover {
-      text-decoration: none; }
-      .button.skip-cart:hover .count {
-        color: #5DCA86; }
-    .button.skip-cart .count {
-      border-radius: 50%;
-      position: static;
-      background: #fff;
-      color: #FDC44B;
-      margin-left: 0;
-      font-size: 14px;
-      text-align: center;
-      padding-left: 2px;
-      margin-right: 4px;
-      width: 20px;
-      height: 20px; }
-  .skip-cart .count,
-  .skip-link.skip-active .count {
-    color: #00247B; } }
+.button.skip-cart {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding: 10px 12px; }
+  .button.skip-cart:hover {
+    text-decoration: none; }
+    .button.skip-cart:hover .count {
+      color: #5DCA86; }
+  .button.skip-cart .count {
+    border-radius: 50%;
+    position: static;
+    background: #fff;
+    color: #FDC44B;
+    margin-left: 0;
+    font-size: 14px;
+    text-align: center;
+    padding-left: 2px;
+    margin-right: 4px;
+    width: 20px;
+    height: 20px; }
+
+.skip-cart .count,
+.skip-link.skip-active .count {
+  color: #00247B; }
 
 .skip-cart .count.empty {
   display: none; }
+
+@media only screen and (max-width: 1024px) {
+  .button.skip-cart {
+    padding: 10px 9px 10px 9px;
+    display: inline-block;
+    width: 40px; }
+    .button.skip-cart .label {
+      display: none; } }
 
 /* -------------------------------------------- *
  * Mini Cart - Empty
@@ -4535,9 +4576,6 @@ p.product-name {
  * ============================================ */
 .header-minicart {
   display: inline-block; }
-  @media only screen and (max-width: 770px) {
-    .header-minicart {
-      display: block; } }
   .header-minicart .minicart-message {
     display: block;
     padding: 10px; }

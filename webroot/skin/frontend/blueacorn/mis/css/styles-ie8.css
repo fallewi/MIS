@@ -692,7 +692,7 @@ a.button:hover {
  * Icons
  */
 .icon-sprite, .btn-remove2, .sorter > .sort-by .sort-by-switcher, .sorter > .view-mode .grid,
-.sorter > .view-mode .list, .skip-nav .icon {
+.sorter > .view-mode .list {
   background-image: url(../images/icon_sprite.png);
   background-repeat: no-repeat;
   text-indent: -9999px; }
@@ -2384,8 +2384,8 @@ body {
 .skip-links {
   clear: both;
   overflow: hidden;
-  border-top: 1px solid #EDEDED;
-  border-bottom: 1px solid #EDEDED; }
+  height: 0;
+  padding: 0; }
 
 .skip-links {
   border: 0; }
@@ -2456,20 +2456,33 @@ a.skip-link {
  * Nav - Skip Link
  * ============================================ */
 .skip-nav {
-  width: 40%; }
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  margin-left: 20px;
+  position: absolute; }
   .skip-nav:not(.skip-active):hover {
     text-decoration: none; }
-    .skip-nav:not(.skip-active):hover .icon {
-      background-position: -46px 4px; }
 
 .skip-nav .label {
-  display: inline; }
+  display: none; }
 
-.skip-nav .icon {
-  background-position: 4px 4px; }
+.skip-link.skip-nav .icon {
+  background-image: url("../images/sprite.png");
+  width: 19px;
+  height: 17px;
+  margin-right: 0;
+  margin-top: 12px; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .skip-link.skip-nav .icon {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: -139px -3px; } }
 
-.skip-nav {
-  width: 25%; }
+.skip-link.skip-nav:hover {
+  background: #EC3837; }
+  .skip-link.skip-nav:hover .icon {
+    background-position: -170px -66px; }
 
 .skip-nav {
   display: none; }
@@ -2628,6 +2641,9 @@ a.skip-link {
   width: 310px;
   padding: 0; }
 
+#header-search {
+  right: 306px; }
+
 /* ============================================ *
  * Search Input
  * ============================================ */
@@ -2733,7 +2749,7 @@ a.skip-link {
     color: #fff; }
     .skip-account:hover .icon,
     .skip-account.skip-active .icon {
-      background-position: -101px -67px; }
+      background-position: -47px 0; }
 
 #header-account.skip-active {
   background: #fff;
@@ -2743,7 +2759,9 @@ a.skip-link {
   top: 62px;
   right: 122px;
   width: 144px;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16); }
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.16);
+  top: 60px;
+  right: 70px; }
   #header-account.skip-active a {
     color: #00247B;
     font-family: "gesta", Verdana, Arial, sans-serif;
@@ -2758,6 +2776,14 @@ a.skip-link {
 
 #header-account a:hover {
   color: #00247B; }
+
+.skip-account {
+  padding: 9px 12px 9px 11px;
+  display: inline-block; }
+  .skip-account .label {
+    display: none; }
+  .skip-account .icon {
+    margin-right: 0px; }
 
 /* -------------------------------------------- *
  * Account Links
@@ -2863,6 +2889,13 @@ a.skip-link {
 
 .skip-cart .count.empty {
   display: none; }
+
+.button.skip-cart {
+  padding: 10px 9px 10px 9px;
+  display: inline-block;
+  width: 40px; }
+  .button.skip-cart .label {
+    display: none; }
 
 /* -------------------------------------------- *
  * Mini Cart - Empty

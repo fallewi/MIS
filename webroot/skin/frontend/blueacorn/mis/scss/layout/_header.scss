@@ -27,17 +27,13 @@
  * Header
  * ============================================ */
 
-@include bp(min-width, $bp-medium + 1) {
+.page-header {
+    background: #EEEEEE;
+    padding: 0;
+}
 
-    .page-header {
-        background: #EEEEEE;
-        padding: 0;
-    }
-
-    .page-header-container {
-        position: relative;
-    }
-
+.page-header-container {
+    position: relative;
 }
 
 .header-language-container,
@@ -120,6 +116,10 @@
     position: relative;
     top: -10px;
     margin-right: 11px;
+
+    @include bp(max-width, 885px) {
+        display: none;
+    }
 }
 
 /* ============================================ *
@@ -144,6 +144,11 @@
     }
     .large {
         display: none;
+    }
+
+    @include bp(max-width, $bp-medium) {
+        padding: 20px 20px 17px;
+        float: none;
     }
 }
 
@@ -172,8 +177,8 @@
 .skip-links {
     clear: both;
     overflow: hidden;
-    border-top: 1px solid #EDEDED;
-    border-bottom: 1px solid #EDEDED;
+    height: 0;
+    padding: 0;
 }
 
 // ---------------------------------------------
@@ -185,6 +190,7 @@
     }
 
 }
+
 
 /* -------------------------------------------- *
  * Skip - Link
@@ -305,26 +311,26 @@ a.skip-link {
     // ---------------------------------------------
     // Link
 
-    #header-account li a,
-    .nav-primary a.level0 {
-        padding: 0 15px 0 25px;
-        border-bottom: 1px solid $c-module-border;
-        text-align: left;
-        color: $c-text;
-        text-transform: uppercase;
-        line-height: 30px;
-    }
+    // #header-account li a,
+    // .nav-primary a.level0 {
+    //     padding: 0 15px 0 25px;
+    //     border-bottom: 1px solid $c-module-border;
+    //     text-align: left;
+    //     color: $c-text;
+    //     text-transform: uppercase;
+    //     line-height: 30px;
+    // }
 
-    #header-account li:last-child a,
-    .nav-primary li.level0:last-child a.level0 {
-        border-bottom: 0;
-    }
+    // #header-account li:last-child a,
+    // .nav-primary li.level0:last-child a.level0 {
+    //     border-bottom: 0;
+    // }
 
-    .no-touch #header-account a:hover,
-    .no-touch .nav-primary a:hover {
-        background-color: $c-module-background;
-        text-decoration: none;
-    }
+    // .no-touch #header-account a:hover,
+    // .no-touch .nav-primary a:hover {
+    //     background-color: $c-module-background;
+    //     text-decoration: none;
+    // }
 
 }
 
@@ -332,8 +338,4 @@ a.skip-link {
     position: absolute;
     top: 20px;
     right: 20px;
-
-    @include bp(max-width, $bp-medium) {
-        position: static;
-    }
 }

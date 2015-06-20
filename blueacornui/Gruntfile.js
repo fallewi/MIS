@@ -7,15 +7,6 @@ module.exports = function(grunt){
         pkg: grunt.file.readJSON('package.json'),
         currentYear: grunt.template.today('yyyy'),
 
-        banner: '/**\n' +
-        '* @package     <%= pkg.namespace %>/<%= pkg.module %>\n' +
-        '* @version     <%= pkg.version %>\n' +
-        '* @author      <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
-        '* @copyright   Copyright © <%= currentYear %> Blue Acorn, Inc.\n' +
-        '* @desc        This file was precompiled using modular pre-processor\n' +
-        '*              css and javascript\n' +
-        '*/',
-
         jshint: {
             files: {
                 src: [
@@ -228,23 +219,6 @@ module.exports = function(grunt){
                     src: ['**/*.{png,jpg,gif,svg}'],
                     dest: '<%=skinDir%>/images/'
                 }]
-            }
-        },
-
-        usebanner: {
-            production: {
-                options: {
-                    position: 'top',
-                    banner: '<%= banner %>'
-                },
-                files: {
-                    src: [
-                        '<%=skinDir%>/**/css/style-guide.css',
-                        '<%=skinDir%>/**/css/styles.css',
-                        '<%=skinDir%>/**/jsmin/blueacorn.min.js',
-                        '<%=skinDir%>/**/jsmin/blueacorn.development.min.js'
-                    ]
-                }
             }
         },
 
