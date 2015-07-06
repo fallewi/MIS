@@ -67,8 +67,8 @@
         display: block;
         position: absolute;
         z-index: 999;
-        top: 60px;
-        right: 0;
+        top: 80px;
+        right: 20px;
         width: 320px;
         background: white;
         box-shadow: 0 1px 2px rgba(0, 0, 0, .16);
@@ -141,10 +141,28 @@
         width: 20px;
         height: 20px;
     }
+
+    @include bp(max-width, $bp-medium) {
+        &.cart-count {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -102px, -151px);
+
+            .count {
+                background: none;
+                color: $white;
+                border-radius: 0;
+                position: relative;
+                top: -2px;
+            }
+        }
+    }
 }
 .skip-cart .count,
 .skip-link.skip-active .count {
-    color: $c-action;
+    color: $brand-success;
+}
+
+.skip-link.skip-active {
+    background-color: $brand-success;
 }
 
 .skip-cart .count.empty {
@@ -155,8 +173,13 @@
     .button.skip-cart {
         padding: 10px 9px 10px 9px;
         display: inline-block;
-        width: 40px;
+        width: 90px;
+    }
+}
 
+@include bp(max-width, $bp-medium) {
+    .button.skip-cart {
+        width: 40px;
         .label {
             display: none;
         }

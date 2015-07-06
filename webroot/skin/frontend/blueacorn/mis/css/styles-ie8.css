@@ -2349,8 +2349,10 @@ body {
   color: #D0021B;
   letter-spacing: 1.11px;
   position: relative;
-  top: -10px;
-  margin-right: 11px; }
+  top: 8px;
+  margin-right: 30px; }
+  .store-phone span {
+    display: none; }
 
 /* ============================================ *
  * Logo
@@ -2449,8 +2451,9 @@ a.skip-link {
  * ============================================ */
 .account-cart-wrapper {
   position: absolute;
-  top: 20px;
-  right: 20px; }
+  top: 0;
+  right: 0;
+  z-index: 999; }
 
 /* ============================================ *
  * Nav - Skip Link
@@ -2483,6 +2486,16 @@ a.skip-link {
   background: #EC3837; }
   .skip-link.skip-nav:hover .icon {
     background-position: -170px -66px; }
+
+.skip-link.skip-nav.skip-active {
+  background-color: #fff; }
+  .skip-link.skip-nav.skip-active .icon {
+    background-position: -48px -30px;
+    width: 20px;
+    height: 20px;
+    margin-top: 10px; }
+  .skip-link.skip-nav.skip-active:hover .icon {
+    background-position: -205px -63px; }
 
 .skip-nav {
   display: none; }
@@ -2642,7 +2655,7 @@ a.skip-link {
   padding: 0; }
 
 #header-search {
-  right: 306px; }
+  right: 336px; }
 
 /* ============================================ *
  * Search Input
@@ -2742,7 +2755,9 @@ a.skip-link {
   font-weight: 400;
   font-family: "gesta", Verdana, Arial, sans-serif;
   letter-spacing: 1px;
-  margin-right: 7px; }
+  margin-right: 7px;
+  top: 20px;
+  right: 20px; }
   .skip-account:hover,
   .skip-account.skip-active {
     background: #00247B;
@@ -2830,8 +2845,8 @@ a.skip-link {
   display: block;
   position: absolute;
   z-index: 999;
-  top: 60px;
-  right: 0;
+  top: 80px;
+  right: 20px;
   width: 320px;
   background: white;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16); }
@@ -2885,7 +2900,10 @@ a.skip-link {
 
 .skip-cart .count,
 .skip-link.skip-active .count {
-  color: #00247B; }
+  color: #5DCA86; }
+
+.skip-link.skip-active {
+  background-color: #5DCA86; }
 
 .skip-cart .count.empty {
   display: none; }
@@ -2893,9 +2911,7 @@ a.skip-link {
 .button.skip-cart {
   padding: 10px 9px 10px 9px;
   display: inline-block;
-  width: 40px; }
-  .button.skip-cart .label {
-    display: none; }
+  width: 90px; }
 
 /* -------------------------------------------- *
  * Mini Cart - Empty
@@ -4076,6 +4092,13 @@ p.product-name {
 .header-minicart.skip-active .block-cart,
 .block-cart.skip-active {
   display: block; }
+
+.header-minicart a.skip-cart {
+  top: 20px;
+  right: 20px; }
+  .header-minicart a.skip-cart:active,
+  .header-minicart a.skip-cart:focus {
+    background: #FDC44B; }
 
 .checkout-types.minicart {
   float: none;

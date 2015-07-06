@@ -87,13 +87,13 @@
 
 @include bp(max-width, 1024px) {
     #header-search {
-        right: 306px;
+        right: 336px;
     }
 }
 
 @include bp(max-width, 885px) {
     #header-search {
-        right: 120px;
+        right: 170px;
     }
 }
 
@@ -154,6 +154,23 @@
 
     &:focus::-ms-input-placeholder {
         color: $white;
+    }
+
+    @include bp(max-width, $bp-medium) {
+
+        border: 0;
+
+        &::-webkit-input-placeholder {
+            color: $white;
+        }
+
+        &::-moz-placeholder {
+            color: $white;
+        }
+
+        &::-ms-input-placeholder {
+            color: $white;
+        }
     }
 }
 

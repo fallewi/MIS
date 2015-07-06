@@ -68,6 +68,8 @@
     font-family: $f-stack-sans;
     letter-spacing: 1px;
     margin-right: 7px;
+    top: 20px;
+    right: 20px;
 
     &:hover,
     &.skip-active {
@@ -136,9 +138,17 @@
     }
 }
 
+@include bp(max-width, $bp-large) {
+    .skip-account {
+        right: 110px;
+    }
+}
+
 @include bp(max-width, $bp-medium) {
     .skip-account {
         padding: 9px;
+        position: absolute;
+        right: 60px;
     }
 }
 

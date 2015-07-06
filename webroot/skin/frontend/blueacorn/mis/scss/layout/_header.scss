@@ -114,11 +114,36 @@
     color: #D0021B;
     letter-spacing: 1.11px;
     position: relative;
-    top: -10px;
-    margin-right: 11px;
+    top: 8px;
+    margin-right: 30px;
+
+    span {
+        @include bp(min-width, $bp-medium + 1) {
+            display: none;
+        }
+    }
+
+    @include bp(max-width, 979px) {
+        top: 31px;
+        margin-right: 120px;
+    }
 
     @include bp(max-width, 885px) {
-        display: none;
+        background-color: $brand-action;
+        color: $white;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 30px;
+        text-transform: uppercase;
+        text-align: right;
+        width: 100%;
+        top: 0;
+        margin-bottom: 10px;
+        padding: 0 20px;
+
+        span {
+            float: left;
+        }
     }
 }
 
@@ -336,6 +361,7 @@ a.skip-link {
 
 .account-cart-wrapper {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 0;
+    right: 0;
+    z-index: 999;
 }

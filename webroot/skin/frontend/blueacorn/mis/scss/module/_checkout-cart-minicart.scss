@@ -256,6 +256,23 @@
 .header-minicart.skip-active .block-cart,
 .block-cart.skip-active {
     display: block;
+
+    @include bp(max-width, $bp-medium) {
+        top: 130px;
+        position: relative;
+    }
+}
+
+.header-minicart a.skip-cart {
+    top: 20px;
+    right: 20px;
+
+    @include bp(min-width, $bp-medium + 1) {
+        &:active,
+        &:focus {
+            background: $brand-secondary;
+        }
+    }
 }
 
 @include bp(min-width, $bp-medium + 1) {
@@ -271,7 +288,14 @@
     }
 }
 
+@include bp(max-width, $bp-large) {
+    .header-minicart a.skip-cart {
+        position: absolute;
+    }
+}
+
 @include bp(max-width, $bp-medium) {
+
     .header-minicart {
         .subtotal {
             .label {
@@ -280,7 +304,7 @@
         }
         .minicart-wrapper {
             &:before {
-                background-color: #EDEDED;
+                display: none;
             }
         }
 
@@ -298,12 +322,6 @@
 
         .minicart-actions {
             padding-bottom: 33px;
-
-            .cart-link {
-                bottom: 0;
-                right: $box-spacing;
-                position: absolute;
-            }
 
             .checkout-types.minicart {
                 li {
@@ -336,12 +354,6 @@
 @include bp(max-width, 740px) {
     .header-minicart {
         .minicart-actions {
-            .cart-link {
-                right: auto;
-                left: 0;
-                text-align: center;
-                width: 100%;
-            }
 
             .checkout-types.minicart {
                 li {
@@ -366,8 +378,21 @@
 @include bp(max-width, $bp-small) {
     .header-minicart {
         .minicart-actions {
+            .cart-link,
+            .checkout-types.minicart {
+                width: 47%;
+            }
+
+            .cart-link {
+                margin-right: 4%;
+            }
+
             .checkout-button {
                 width: 100%;
+            }
+
+            .checkout-types.minicart li {
+                display: block;
             }
         }
     }

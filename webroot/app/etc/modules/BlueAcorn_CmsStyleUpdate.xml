@@ -5,6 +5,9 @@
       <active>true</active>
       <codePool>local</codePool>
       <version>1.0.1</version>
+      <depends>
+      	<Enterprise_Cms />
+      </depends>
     </BlueAcorn_CmsStyleUpdate>
   </modules>
 </config>
