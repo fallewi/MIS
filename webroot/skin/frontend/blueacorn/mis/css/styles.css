@@ -2788,8 +2788,13 @@ body {
   top: 8px;
   margin-right: 30px; }
   @media only screen and (min-width: 771px) {
-    .store-phone span {
-      display: none; } }
+    .store-phone {
+      display: none; }
+      .store-phone span {
+        display: none; } }
+  @media only screen and (min-width: 885px) {
+    .store-phone {
+      display: inline-block; } }
   @media only screen and (max-width: 979px) {
     .store-phone {
       top: 31px;
@@ -2818,11 +2823,14 @@ body {
   float: left;
   width: 65%;
   min-width: 100px;
-  min-height: 44px;
-  text-align: center;
+  max-height: 40px;
+  text-align: left;
   padding: 20px; }
   .logo img {
-    max-width: 100%; }
+    max-height: 40px;
+    text-align: left;
+    float: left;
+    width: 193px; }
   .logo .small {
     display: block; }
   .logo .large {
@@ -2830,7 +2838,11 @@ body {
   @media only screen and (max-width: 770px) {
     .logo {
       padding: 20px 20px 17px;
-      float: none; } }
+      float: none;
+      height: 70px;
+      max-height: 70px; }
+      .logo img {
+        width: 169px; } }
 
 @media only screen and (min-width: 771px) {
   .logo {
@@ -3262,14 +3274,12 @@ a.skip-link {
   #search:focus::-ms-input-placeholder {
     color: #fff; }
   @media only screen and (max-width: 770px) {
-    #search {
-      border: 0; }
-      #search::-webkit-input-placeholder {
-        color: #fff; }
-      #search::-moz-placeholder {
-        color: #fff; }
-      #search::-ms-input-placeholder {
-        color: #fff; } }
+    #search::-webkit-input-placeholder {
+      color: #fff; }
+    #search::-moz-placeholder {
+      color: #fff; }
+    #search::-ms-input-placeholder {
+      color: #fff; } }
 
 #search_mini_form .search-button {
   text-indent: -9999px;

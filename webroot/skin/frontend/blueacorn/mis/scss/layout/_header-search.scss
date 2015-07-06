@@ -158,8 +158,6 @@
 
     @include bp(max-width, $bp-medium) {
 
-        border: 0;
-
         &::-webkit-input-placeholder {
             color: $white;
         }
