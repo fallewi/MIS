@@ -213,10 +213,10 @@ p.product-name {
   .products-grid > li:nth-child(odd) {
     clear: none; }
   .products-grid > li:nth-child(even) {
-    margin-right: 3.7037%; }
+    margin-right: 3.5714%; }
   .products-grid > li {
-    width: 30.8642%;
-    margin-right: 3.7037%; }
+    width: 30.9524%;
+    margin-right: 3.5714%; }
   .products-grid > li:nth-child(3n+1) {
     clear: left; }
   .products-grid > li:nth-child(3n) {
@@ -232,15 +232,15 @@ p.product-name {
 
 .products-grid--max-4-col > li:nth-child(even),
 .products-grid--max-4-col > li:nth-child(3n) {
-  margin-right: 2.2222%; }
+  margin-right: 2.1739%; }
 
 /* Set column config */
 .products-grid--max-4-col > li {
-  margin-right: 2.2222%; }
+  margin-right: 2.1739%; }
 
 .products-grid--max-4-col > li {
-  width: 23.3333%;
-  margin-right: 2.2222%; }
+  width: 23.3696%;
+  margin-right: 2.1739%; }
 
 .products-grid--max-4-col > li:nth-child(4n+1) {
   clear: left; }
@@ -258,15 +258,15 @@ p.product-name {
 
 .products-grid--max-5-col > li:nth-child(even),
 .products-grid--max-5-col > li:nth-child(3n) {
-  margin-right: 2.2222%; }
+  margin-right: 2.1739%; }
 
 /* Set column config */
 .products-grid--max-5-col > li {
-  margin-right: 2.2222%; }
+  margin-right: 2.1739%; }
 
 .products-grid--max-5-col > li {
-  width: 18.2222%;
-  margin-right: 2.2222%; }
+  width: 18.2609%;
+  margin-right: 2.1739%; }
 
 .products-grid--max-5-col > li:nth-child(5n+1) {
   clear: left; }
@@ -284,15 +284,15 @@ p.product-name {
 
 .products-grid--max-6-col > li:nth-child(even),
 .products-grid--max-6-col > li:nth-child(3n) {
-  margin-right: 2.2222%; }
+  margin-right: 2.1739%; }
 
 /* Set column config */
 .products-grid--max-6-col > li {
-  margin-right: 2.2222%; }
+  margin-right: 2.1739%; }
 
 .products-grid--max-6-col > li {
-  width: 14.8148%;
-  margin-right: 2.2222%; }
+  width: 14.8551%;
+  margin-right: 2.1739%; }
 
 .products-grid--max-6-col > li:nth-child(6n+1) {
   clear: left; }
@@ -622,12 +622,12 @@ p.product-name {
     margin-bottom: 5px; }
   .product-view .product-shop .extra-info {
     float: left;
-    padding-right: 15px;
+    padding-right: 10px;
     clear: left;
     width: 70%; }
   .product-view .product-shop .price-info {
     float: right;
-    padding-left: 15px;
+    padding-left: 10px;
     text-align: right; }
   .product-view .product-shop .extra-info,
   .product-view .product-shop .price-info {
@@ -744,10 +744,10 @@ p.product-name {
 .product-view .product-shop,
 .product-view .add-to-cart-wrapper,
 .product-view .block-related {
-  padding-left: 15px; }
+  padding-left: 10px; }
 
 .product-img-box {
-  padding-right: 15px; }
+  padding-right: 10px; }
 
 .product-view .product-shop,
 .product-img-box,
@@ -897,7 +897,7 @@ p.product-name {
     .product-collateral .toggle-tabs li > span {
       user-select: none;
       display: inline-block;
-      padding: 0 30px;
+      padding: 0 20px;
       height: 40px;
       line-height: 40px;
       cursor: pointer;
@@ -1950,7 +1950,7 @@ p.product-name {
   padding-right: 0; }
 
 .customer-account-login .col2-set .col-2 {
-  padding-left: 60px;
+  padding-left: 40px;
   border-left: 1px solid #EDEDED; }
 
 .customer-account-create .scaffold-form label:first-child {
@@ -1992,7 +1992,7 @@ p.product-name {
 
 .customer-account-create .fieldset,
 .customer-account-create .buttons-set {
-  margin-left: 30px; }
+  margin-left: 20px; }
 
 .customer-account-create .fieldset .hidden {
   display: none; }
@@ -2002,7 +2002,7 @@ p.product-name {
 
 .customer-account-forgotpassword .fieldset,
 .customer-account-forgotpassword .buttons-set {
-  margin-left: 30px;
+  margin-left: 20px;
   max-width: 400px; }
 
 .customer-account-forgotpassword .fieldset .input-box input.input-text {
@@ -2040,8 +2040,8 @@ body.customer-account .my-account .addresses-list h3 {
   font-weight: 600; }
 
 body.customer-account .my-account .fieldset {
-  margin-top: 30px;
-  margin-bottom: 30px; }
+  margin-top: 20px;
+  margin-bottom: 20px; }
 
 body.customer-account .data-table {
   margin-top: 5px; }
@@ -2066,7 +2066,7 @@ body.customer-account .sidebar .block .block-content p.block-subtitle {
   margin-bottom: 15px; }
 
 body.customer-account .sidebar .block .block-content .actions {
-  margin-top: 30px; }
+  margin-top: 20px; }
 
 body.customer-account .sidebar ol#cart-sidebar-reorder li {
   margin-top: 10px;
@@ -2103,7 +2103,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
  * Dashboard
  * ============================================ */
 .dashboard .box-head {
-  margin-top: 30px;
+  margin-top: 20px;
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 7px; }
   .dashboard .box-head h2 {
@@ -2185,7 +2185,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
   .my-account .addresses-list .col-2 {
     padding-bottom: 0; }
   .my-account .addresses-list .item {
-    margin: 0 0 30px 0; }
+    margin: 0 0 20px 0; }
     .my-account .addresses-list .item p {
       margin-top: 10px; }
 
@@ -2196,7 +2196,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
   padding-bottom: 10px;
   border-bottom: 1px solid #EDEDED;
   width: 100%;
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   .order-info dt,
   .order-info dd,
   .order-info ul,
@@ -2287,7 +2287,7 @@ ol#cart-sidebar-reorder p.product-name {
 
 .dashboard .col2-set .col-1,
 .dashboard .col2-set .col-2 {
-  padding-right: 30px;
+  padding-right: 20px;
   padding-bottom: 0; }
 
 body.customer-account .data-table td.view a {
@@ -2731,7 +2731,7 @@ body.newsletter-manage-index .my-account .form-list {
   margin-bottom: 10px; }
 
 .fieldset .wishlist-empty {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
 
 #wishlist-table .item-manage .split-button {
   float: right;

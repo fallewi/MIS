@@ -23,6 +23,22 @@
         </reference>
     </catalog_theme_changes>
 
+    <cms_index_index>
+        <block type="cms/block" name="homepage_hero" as="homepage_hero">
+             <action method="setBlockId">
+                 <block_id helper="blueacorn_homepage/data/getHeroBlock"/>
+             </action>
+        </block>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <action method="append" ifconfig="homepage/homepage_hero/homepage_hero_enabled">
+                <block>homepage_hero</block>
+            </action>
+        </reference>
+    </cms_index_index>
+
     <catalog_category_default>
         <update handle="catalog_theme_changes" />
     </catalog_category_default>

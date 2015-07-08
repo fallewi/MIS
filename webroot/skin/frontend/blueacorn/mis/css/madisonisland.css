@@ -23,6 +23,77 @@
 /* ============================================ *
  * Homepage
  * ============================================ */
+.hero-container {
+  content: '';
+  display: table;
+  clear: both;
+  background: #F5F5F5;
+  margin-top: 4px; }
+  @media only screen and (max-width: 950px) {
+    .hero-container {
+      width: 100%; } }
+
+.hero-img {
+  float: right;
+  width: 66.66%; }
+  .hero-img img {
+    width: 100%; }
+  @media only screen and (max-width: 950px) {
+    .hero-img {
+      float: none;
+      width: 100%; } }
+
+@media only screen and (min-width: 601px) {
+  .mobile-image {
+    display: none; } }
+
+@media only screen and (max-width: 600px) {
+  .mobile-image {
+    display: block; }
+  .desktop-image {
+    display: none; } }
+
+.hero-content {
+  float: left;
+  width: 33.33%;
+  padding: 67px 40px 20px;
+  text-align: center; }
+  @media only screen and (max-width: 1110px) {
+    .hero-content {
+      padding-top: 30px; } }
+  @media only screen and (max-width: 950px) {
+    .hero-content {
+      float: none;
+      width: 100%; } }
+  @media only screen and (max-width: 600px) {
+    .hero-content {
+      padding: 30px 20px 20px; } }
+  .hero-content h2 {
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    color: #00247B;
+    letter-spacing: 1px;
+    line-height: 42px;
+    font-size: 36px;
+    margin-bottom: 15px; }
+    @media only screen and (max-width: 1110px) {
+      .hero-content h2 {
+        font-size: 24px;
+        line-height: 32px; } }
+  .hero-content p {
+    font-size: 15px; }
+  .hero-content .button.btn-cart {
+    margin-top: 43px;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 1px; }
+    @media only screen and (max-width: 1110px) {
+      .hero-content .button.btn-cart {
+        width: 100%;
+        padding: 17px 20px 16px; } }
+    @media only screen and (max-width: 600px) {
+      .hero-content .button.btn-cart {
+        margin-top: 23px; } }
+
 /* -------------------------------------------- *
  * Primary Banner
  */

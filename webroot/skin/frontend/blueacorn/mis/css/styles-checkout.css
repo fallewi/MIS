@@ -394,7 +394,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   content: '';
   display: table;
   clear: both;
-  margin-top: 30px; }
+  margin-top: 20px; }
   .gift-messages-form .item h5 {
     font-weight: bold; }
   .gift-messages-form .item .product-img-box {
@@ -538,14 +538,14 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   .customer-account-login .col2-set .col-1 {
     padding-right: 0; }
   .customer-account-login .col2-set .col-2 {
-    padding-left: 60px;
+    padding-left: 40px;
     border-left: 1px solid #EDEDED; } }
 
 @media only screen and (max-width: 479px) {
   .customer-account-login .col2-set .col-1 {
-    padding-bottom: 30px; }
+    padding-bottom: 20px; }
   .customer-account-login .col2-set .col-2 {
-    padding-top: 30px;
+    padding-top: 20px;
     border-top: 1px solid #EDEDED; } }
 
 @media only screen and (max-width: 770px) {
@@ -591,7 +591,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 
 .customer-account-create .fieldset,
 .customer-account-create .buttons-set {
-  margin-left: 30px; }
+  margin-left: 20px; }
   @media only screen and (max-width: 479px) {
     .customer-account-create .fieldset,
     .customer-account-create .buttons-set {
@@ -605,7 +605,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 
 .customer-account-forgotpassword .fieldset,
 .customer-account-forgotpassword .buttons-set {
-  margin-left: 30px;
+  margin-left: 20px;
   max-width: 400px; }
   @media only screen and (max-width: 479px) {
     .customer-account-forgotpassword .fieldset,
@@ -647,8 +647,8 @@ body.customer-account .my-account .addresses-list h3 {
   font-weight: 600; }
 
 body.customer-account .my-account .fieldset {
-  margin-top: 30px;
-  margin-bottom: 30px; }
+  margin-top: 20px;
+  margin-bottom: 20px; }
 
 body.customer-account .data-table {
   margin-top: 5px; }
@@ -673,7 +673,7 @@ body.customer-account .sidebar .block .block-content p.block-subtitle {
   margin-bottom: 15px; }
 
 body.customer-account .sidebar .block .block-content .actions {
-  margin-top: 30px; }
+  margin-top: 20px; }
 
 body.customer-account .sidebar ol#cart-sidebar-reorder li {
   margin-top: 10px;
@@ -710,7 +710,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
  * Dashboard
  * ============================================ */
 .dashboard .box-head {
-  margin-top: 30px;
+  margin-top: 20px;
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 7px; }
   .dashboard .box-head h2 {
@@ -792,7 +792,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
   .my-account .addresses-list .col-2 {
     padding-bottom: 0; }
   .my-account .addresses-list .item {
-    margin: 0 0 30px 0; }
+    margin: 0 0 20px 0; }
     .my-account .addresses-list .item p {
       margin-top: 10px; }
   @media only screen and (max-width: 770px) {
@@ -815,7 +815,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
   padding-bottom: 10px;
   border-bottom: 1px solid #EDEDED;
   width: 100%;
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   .order-info dt,
   .order-info dd,
   .order-info ul,
@@ -928,7 +928,7 @@ ol#cart-sidebar-reorder p.product-name {
 @media only screen and (max-width: 1199px) {
   .dashboard .col2-set .col-1,
   .dashboard .col2-set .col-2 {
-    padding-right: 30px;
+    padding-right: 20px;
     padding-bottom: 0; }
   body.customer-account .data-table td.view a {
     white-space: normal; } }
@@ -951,7 +951,7 @@ ol#cart-sidebar-reorder p.product-name {
   .addresses-list .item {
     float: left;
     width: 50%;
-    padding-right: 30px; }
+    padding-right: 20px; }
   .order-info dt {
     display: none; }
   .dashboard .page-title {
@@ -964,7 +964,7 @@ ol#cart-sidebar-reorder p.product-name {
       font-style: italic; }
   .dashboard .box-account {
     padding-bottom: 15px;
-    margin-bottom: 30px; }
+    margin-bottom: 20px; }
   .dashboard .col2-set .col-1,
   .dashboard .col2-set .col-2 {
     width: 48%;
@@ -1025,7 +1025,7 @@ ol#cart-sidebar-reorder p.product-name {
     .order-info-box + .order-info-box {
       padding-bottom: 0;
       border-bottom: 0;
-      margin-bottom: 30px; }
+      margin-bottom: 20px; }
   #my-reviews-table .nobr {
     white-space: normal; } }
 
@@ -1046,7 +1046,7 @@ body.newsletter-manage-index .my-account .form-list {
  * Contacts
  * ============================================ */
 .contacts-index-index .buttons-set {
-  margin-left: 30px;
+  margin-left: 20px;
   max-width: 435px; }
   .contacts-index-index .buttons-set p.required {
     float: left; }
@@ -1481,7 +1481,7 @@ div.paypal-logo {
 body.customer-account .my-account .title-buttons.recurring-profiles-title-buttons {
   float: right;
   text-align: right;
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   @media only screen and (max-width: 479px) {
     body.customer-account .my-account .title-buttons.recurring-profiles-title-buttons {
       text-align: center;
@@ -1501,7 +1501,7 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
  * Billing Agreements
  * ============================================ */
 .billing-agreements .info-box {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   .billing-agreements .info-box:after {
     content: '';
     display: table;
@@ -1693,7 +1693,7 @@ body.customer-account .storecredit .data-table td.last {
   margin-left: 0; }
 
 .gift-registry-view .subtitle {
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 18px; }
   @media only screen and (max-width: 479px) {
     .gift-registry-view .subtitle {

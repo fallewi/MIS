@@ -363,7 +363,7 @@
   padding-right: 0; }
 
 .customer-account-login .col2-set .col-2 {
-  padding-left: 60px;
+  padding-left: 40px;
   border-left: 1px solid #EDEDED; }
 
 .customer-account-create .scaffold-form label:first-child {
@@ -405,7 +405,7 @@
 
 .customer-account-create .fieldset,
 .customer-account-create .buttons-set {
-  margin-left: 30px; }
+  margin-left: 20px; }
 
 .customer-account-create .fieldset .hidden {
   display: none; }
@@ -415,7 +415,7 @@
 
 .customer-account-forgotpassword .fieldset,
 .customer-account-forgotpassword .buttons-set {
-  margin-left: 30px;
+  margin-left: 20px;
   max-width: 400px; }
 
 .customer-account-forgotpassword .fieldset .input-box input.input-text {
@@ -453,8 +453,8 @@ body.customer-account .my-account .addresses-list h3 {
   font-weight: 600; }
 
 body.customer-account .my-account .fieldset {
-  margin-top: 30px;
-  margin-bottom: 30px; }
+  margin-top: 20px;
+  margin-bottom: 20px; }
 
 body.customer-account .data-table {
   margin-top: 5px; }
@@ -479,7 +479,7 @@ body.customer-account .sidebar .block .block-content p.block-subtitle {
   margin-bottom: 15px; }
 
 body.customer-account .sidebar .block .block-content .actions {
-  margin-top: 30px; }
+  margin-top: 20px; }
 
 body.customer-account .sidebar ol#cart-sidebar-reorder li {
   margin-top: 10px;
@@ -516,7 +516,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
  * Dashboard
  * ============================================ */
 .dashboard .box-head {
-  margin-top: 30px;
+  margin-top: 20px;
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 7px; }
   .dashboard .box-head h2 {
@@ -598,7 +598,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
   .my-account .addresses-list .col-2 {
     padding-bottom: 0; }
   .my-account .addresses-list .item {
-    margin: 0 0 30px 0; }
+    margin: 0 0 20px 0; }
     .my-account .addresses-list .item p {
       margin-top: 10px; }
 
@@ -609,7 +609,7 @@ body.customer-account .sidebar .block-reorder ol#cart-sidebar-reorder p.product-
   padding-bottom: 10px;
   border-bottom: 1px solid #EDEDED;
   width: 100%;
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   .order-info dt,
   .order-info dd,
   .order-info ul,
@@ -700,7 +700,7 @@ ol#cart-sidebar-reorder p.product-name {
 
 .dashboard .col2-set .col-1,
 .dashboard .col2-set .col-2 {
-  padding-right: 30px;
+  padding-right: 20px;
   padding-bottom: 0; }
 
 body.customer-account .data-table td.view a {
@@ -723,7 +723,7 @@ body.newsletter-manage-index .my-account .form-list {
  * Contacts
  * ============================================ */
 .contacts-index-index .buttons-set {
-  margin-left: 30px;
+  margin-left: 20px;
   max-width: 435px; }
   .contacts-index-index .buttons-set p.required {
     float: left; }
@@ -1220,7 +1220,7 @@ body.newsletter-manage-index .my-account .form-list {
 body.customer-account .my-account .title-buttons.recurring-profiles-title-buttons {
   float: right;
   text-align: right;
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   body.customer-account .my-account .title-buttons.recurring-profiles-title-buttons .button {
     position: static; }
 
@@ -1236,7 +1236,7 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
  * Billing Agreements
  * ============================================ */
 .billing-agreements .info-box {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   .billing-agreements .info-box:after {
     content: '';
     display: table;
@@ -1404,7 +1404,7 @@ body.customer-account .storecredit .data-table td.last {
   margin-left: 0; }
 
 .gift-registry-view .subtitle {
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 18px; }
 
 .gift-registry-items .btn-update {
@@ -1569,7 +1569,7 @@ body.customer-account .storecredit .data-table td.last {
   margin-bottom: 10px; }
 
 .fieldset .wishlist-empty {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
 
 #wishlist-table .item-manage .split-button {
   float: right;

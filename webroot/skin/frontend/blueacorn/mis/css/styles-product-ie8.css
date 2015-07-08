@@ -58,12 +58,12 @@
     margin-bottom: 5px; }
   .product-view .product-shop .extra-info {
     float: left;
-    padding-right: 15px;
+    padding-right: 10px;
     clear: left;
     width: 70%; }
   .product-view .product-shop .price-info {
     float: right;
-    padding-left: 15px;
+    padding-left: 10px;
     text-align: right; }
   .product-view .product-shop .extra-info,
   .product-view .product-shop .price-info {
@@ -180,10 +180,10 @@
 .product-view .product-shop,
 .product-view .add-to-cart-wrapper,
 .product-view .block-related {
-  padding-left: 15px; }
+  padding-left: 10px; }
 
 .product-img-box {
-  padding-right: 15px; }
+  padding-right: 10px; }
 
 .product-view .product-shop,
 .product-img-box,
@@ -333,7 +333,7 @@
     .product-collateral .toggle-tabs li > span {
       user-select: none;
       display: inline-block;
-      padding: 0 30px;
+      padding: 0 20px;
       height: 40px;
       line-height: 40px;
       cursor: pointer;
@@ -1279,7 +1279,7 @@
   margin-bottom: 10px; }
 
 .fieldset .wishlist-empty {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
 
 #wishlist-table .item-manage .split-button {
   float: right;

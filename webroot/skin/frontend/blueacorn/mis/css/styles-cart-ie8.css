@@ -1134,7 +1134,7 @@ div.paypal-logo {
 body.customer-account .my-account .title-buttons.recurring-profiles-title-buttons {
   float: right;
   text-align: right;
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   body.customer-account .my-account .title-buttons.recurring-profiles-title-buttons .button {
     position: static; }
 
@@ -1150,7 +1150,7 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
  * Billing Agreements
  * ============================================ */
 .billing-agreements .info-box {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
   .billing-agreements .info-box:after {
     content: '';
     display: table;
@@ -1254,7 +1254,7 @@ body.customer-account .storecredit .data-table td.last {
   margin-left: 0; }
 
 .gift-registry-view .subtitle {
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 18px; }
 
 .gift-registry-items .btn-update {
@@ -1388,7 +1388,7 @@ body.customer-account .storecredit .data-table td.last {
   margin-bottom: 10px; }
 
 .fieldset .wishlist-empty {
-  margin-bottom: 30px; }
+  margin-bottom: 20px; }
 
 #wishlist-table .item-manage .split-button {
   float: right;
