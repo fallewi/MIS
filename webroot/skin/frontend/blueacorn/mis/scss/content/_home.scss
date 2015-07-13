@@ -122,6 +122,82 @@
     }
 
 
+
+/* -------------------------------------------- *
+ * Featured Products Block
+ */
+
+.feature-wrap {
+    
+    margin-top: 30px;
+
+    .feature-item {
+        position: relative;
+        width: 23.75%;
+        margin-left: 1.65%;
+        padding: 20px 20px 82px;
+        float: left;
+        border: 1px solid #E1E1E1;
+        text-align: center;
+
+        @include bp(max-width, 950px) {
+            width: 49.15%;
+            margin-bottom: 15px;
+
+            &:nth-child(3) {
+                margin-left: 0;
+            }
+        }
+
+        @include bp(max-width, $bp-small) {
+            width: 100%;
+            margin-left: 0;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        img {
+            padding: 10px;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+        }
+
+        h3 {
+            font-family: $f-stack-sans;
+            color: $brand-primary;
+            line-height: 32px;
+            margin-top: 38px;
+            margin-bottom: 6px;
+        }
+
+        p {
+            font-style: italic;
+        }
+
+        .button-wrap {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            left: 0;
+            padding: 0 20px;
+        }
+
+        .button.btn-small {
+            font-weight: 400;
+            width: 100%;
+            padding: 10px 5px 10px;
+        }
+
+        &.feature-promo h3 {
+            color: $brand-action;
+        }
+    }
+}
+
+
 /* -------------------------------------------- *
  * Primary Banner
  */
