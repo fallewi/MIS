@@ -51,7 +51,7 @@ class SLI_Search_Model_System_Config_Backend_Minigrid extends Mage_Core_Model_Co
         
         return $values;
     }
-    
+
     /**
      * Serialize
      */
@@ -75,5 +75,5 @@ class SLI_Search_Model_System_Config_Backend_Minigrid extends Mage_Core_Model_Co
         parent::_afterLoad();
         $this->setValue(unserialize($this->getValue()));
     }
-        
+
 }

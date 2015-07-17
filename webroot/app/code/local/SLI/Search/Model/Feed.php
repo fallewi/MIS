@@ -45,6 +45,7 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     protected $_websiteId = null;
     protected $_originalStoreId = null;
     protected $_currStoreId = null;
+    protected $_currStoreName = null;
     protected $_attributes = null;
     protected $_useCategories = false;
     protected $_views = null;
@@ -88,9 +89,12 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     protected $_complexProductIds = array();
 
     /**
-     * Generate feed based on store and returns success
+     * Generate feed based on store and returns success or error message
      *
-     * @return boolean 
+     * @param bool $price_feed
+     *
+     * @return bool|string
+     * @throws SLI_Search_Exception
      */
     public function generateFeed($price_feed = false) {
         try {
@@ -107,7 +111,7 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
                 $this->_log("Finished generating price feed.....", 2);
             } else {
                 $this->_log("Adding products to feed.....", 2);
-                
+
                 $this->_addProductsToFeed();
 
                 $this->_log("Finished adding products to feed.......", 2);
@@ -123,15 +127,30 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
             }
 
             $this->_log("--Finished--", 3);
+            return true;
+        } catch (SLI_Search_NotificationException $e) {
+            $this->_log("SLI_Search_NotificationException: {$e->getMessage()}", 1);
+            $this->_unlockFeedGeneration();
+            return $e->getMessage();
+        } catch (SLI_Search_Exception $e) { // Catch SLI_Search_Exception
+            $this->_log("SLI_Search_Exception: {$e->getMessage()}", 1);
+            $this->_unlockFeedGeneration();
+            throw new SLI_Search_Exception( $e->getMessage());
         } catch (Exception $e) {
             $this->_log("Exception: {$e->getMessage()}", 1);
             Mage::log("Exception: {$e->getMessage()}");
             $this->_unlockFeedGeneration();
+            throw new SLI_Search_Exception( $e->getMessage());
         }
     }
 
     /**
      * Provide all front end loading for the feed generation
+     *
+     * @param bool $price_feed
+     *
+     * @throws Mage_Core_Exception
+     * @throws SLI_Search_Exception
      */
     protected function _setupFeed($price_feed = false) {
         if ($this->_feedIsLocked($price_feed)) {
@@ -144,6 +163,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
         $storeId = $this->_getStoreId();
         $this->_currStoreId = $storeId;
 
+        $this->_currStoreName = $this->_getStoreName($storeId);
+
         $this->_log("Store id = " . $storeId . "<<<\n", 2);
 
         $this->_originalStoreId = Mage::app()->getStore()->getId();
@@ -152,12 +173,12 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
 
         if (!Mage::helper('sli_search')->isFeedEnabled($this->_currStoreId)) {
             $this->_log("Feed not enabled for store $storeId", 1);
-            throw new SLI_Search_Exception("Feed not enabled for store $storeId");
+            throw new SLI_Search_NotificationException("Feed not enabled for store $storeId");
         }
 
         if ($price_feed && !Mage::helper('sli_search')->isPriceFeedEnabled($this->_currStoreId)) {
             $this->_log("Price feed not enabled for store $storeId", 1);
-            throw new SLI_Search_Exception("Price feed not enabled for store $storeId");
+            throw new SLI_Search_NotificationException("Price feed not enabled for store $storeId");
         }
 
         $this->_checkWritePermissions($price_feed);
@@ -189,15 +210,17 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
         $self_script = $_SERVER['PHP_SELF'];
         $m_base_url = Mage::getBaseUrl();
         $m_curr_url = Mage::helper('core/url')->getCurrentUrl();
-        $creation_date = date("c");        
-        $ret_val = " storeid=\"" . $this->_currStoreId . "\" server=\"" . $server_name . "\" mage_version=\"" . $mage_version . 
-        	"\" lsc_version=\"" . $lsc_version . "\" m_curr_url=\"" . $m_curr_url . "\" m_base_url=\"" .$m_base_url . 
-        	"\" self_script=\"" . $self_script . "\"" . " creation_date=\"" . $creation_date . "\" ";
+        $creation_date = date("c");
+        $ret_val = " storeid=\"" . $this->_currStoreId . "\" store_name=\"" . $this->_currStoreName . "\" server=\"" . $server_name . "\" mage_version=\"" . $mage_version .
+            "\" lsc_version=\"" . $lsc_version . "\" m_curr_url=\"" . $m_curr_url . "\" m_base_url=\"" .$m_base_url .
+            "\" self_script=\"" . $self_script . "\"" . " creation_date=\"" . $creation_date . "\" ";
         return $ret_val;
     }
 
     /**
      * Provide all back management for the feed generation
+     *
+     * @param bool $price_feed
      */
     protected function _tearDownFeed($price_feed = false) {
         if ($price_feed)
@@ -589,6 +612,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
 
         foreach ($views as $key => $view) {
             $this->_log("View Data:  $key => " . PHP_EOL . print_r($view, 1), 3);
+            //Extra setting to work around flat tables not being able to change the store
+            Mage::getResourceModel('catalog/product_collection')->setStore($sid);
             $products = Mage::getResourceModel('catalog/product_collection')
                     ->addAttributeToFilter('status', 1);
             if (!Mage::helper('sli_search')->isIncludeOutOfStockItems())
@@ -621,10 +646,32 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
 
         if (is_null($this->_views)) {
             $views = array();
-            $attributes = $this->_getAttributes();
+
+            // Make array of attributes we need to price group or generate alone.
+            $separateAttributes =  $this->_priceAttributes;
+
+            // Remove attributes which we must generate in separate views.
+            $attributes = array_diff($this->_getAttributes(), $separateAttributes);
+
             while (count($attributes)) {
                 $views[] = array_splice($attributes, 0, self::VIEW_ATTR_LIMIT);
             }
+
+            // Add solo view attributes to their own view if they have been selected.
+            $priceView = array();
+
+            foreach ($separateAttributes as $attr) {
+                // If separated attribute is selected.
+                if (in_array($attr, $this->_getAttributes())) {
+                    // If the separated view is actually a price element add it to the Pricing View.
+                    if(in_array($attr, $this->_priceAttributes)){
+                        array_push($priceView, $attr);
+                    }
+                }
+            }
+
+            array_push($views, $priceView);
+
             $this->_views = $views;
         }
         return $this->_views;
@@ -987,7 +1034,7 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
         // then other transformations can happen like removing control chars and making it valid for XML
         // we may need to consider doing this in other places in the code where we are using utf8_encode & htmlspecialchars
         $value = utf8_encode($value);
-        $value = preg_replace("/[[:cntrl:]]/", "", $value);
+        $value = preg_replace("/[[:cntrl:]]/", " ", $value);
         $value = htmlspecialchars($value, ENT_QUOTES | 8, 'UTF-8'); //ENT_SUBSTITUTE won't work < PHP 5.4, so we use the wrapper value of 8
 
         return "<$attribute>$value</$attribute>";
@@ -1009,7 +1056,7 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
 
         $paths = $this->_getConnection()->query($select);
 
-        $this->_log("Gathering category information for product {$id}:  " . $select, 3);
+        //$this->_log("Gathering category information for product {$id}:  " . $select, 3);
 
         if (!$paths) {
             return $xml;
@@ -1221,6 +1268,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
      *
      * Back up previous feed into backup directory, previous backup
      * into archive, and remove the last archive.
+     *
+     * @param bool $price_feed
      */
     protected function _backUpFeeds($price_feed = false) {
         $this->_log("Backing up previous feed...", 2);
@@ -1268,8 +1317,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
 
     /**
      * Return the set storeId or defaults to default store
-     *
-     * @return string | int
+     * @return int|string
+     * @throws Mage_Core_Exception
      */
     protected function _getStoreId() {
         if ($this->_storeId === null) {
@@ -1290,9 +1339,21 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     }
 
     /**
+     * Return the set storeName or defaults to default store
+     *
+     * @return string | int
+     */
+    protected function _getStoreName($storeId) {
+        return Mage::getModel('core/store')->load($storeId)->getName();
+    }
+
+    /**
      * Returns the feed file name based on store
      *
+     * @param bool $price_feed
+     *
      * @return string
+     * @throws Mage_Core_Exception
      */
     protected function _getFeedFileName($price_feed = false) {
         if ($this->_feedFileName === null) {
@@ -1317,6 +1378,7 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
      * If need be, opens socket to feed file and writes data to it.
      *
      * @param string $data
+     * @param bool   $price_feed
      */
     protected function _writeToFeedFile($data, $price_feed = false) { 
         if ($this->_feedFileHandle === null) {
@@ -1365,7 +1427,7 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
             $this->_dbConnection = new PDO("mysql:dbname=$name;host=$host", $user, $pass);
         }
         $this->_dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->_log(print_r($this->_dbConnection->errorInfo(), 1), 3);
+
 
         return $this->_dbConnection;
     }
@@ -1373,7 +1435,10 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     /**
      * Sends the feed file using ftp to system configured location
      *
-     * @return boolean
+     * @param bool $price_feed
+     *
+     * @return bool
+     * @throws SLI_Search_Exception
      */
     protected function _sendFeedFile($price_feed = false) {
         try {
@@ -1386,11 +1451,12 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
                 $this->_log("--Feed Sent--", 1);
             } else {
                 $this->_log("--Feed Failed to Uploaded to FTP--", 1);
+                throw new SLI_Search_Exception("Feed Failed to Uploaded to FTP.}");
             }
         } catch (Varien_Io_Exception $e) {
             Mage::logException($e);
-            //@TODO Send message that the ftp transfer failed
             $this->_log("Feed could not be sent via FTP. {$e->getMessage()}", 1);
+            throw new SLI_Search_Exception("Feed could not be sent via FTP. {$e->getMessage()}");
         }
     }
 
@@ -1443,6 +1509,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     /**
      * Returns the file uri to the lock file.
      *
+     * @param bool $price_feed
+     *
      * @return string
      */
     protected function _getFeedLockFile($price_feed = false) {
@@ -1456,6 +1524,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     /**
      * Writes a lock file for this feed so generation for this feed doesnt
      * happen concurrently.
+     *
+     * @param bool $price_feed
      */
     protected function _lockFeedGeneration($price_feed = false) {
         file_put_contents($this->_getFeedLockFile($price_feed), 1);
@@ -1463,6 +1533,8 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
 
     /**
      * Removes the lock file for this feed
+     *
+     * @param bool $price_feed
      */
     protected function _unlockFeedGeneration($price_feed = false) {
         $lockFile = $this->_getFeedLockFile($price_feed);
@@ -1501,6 +1573,10 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
     /**
      * Checks the write permissions on the feed files if they exist and
      * the permissions on the folder that they are located in
+     *
+     * @param bool $price_feed
+     *
+     * @throws SLI_Search_Exception
      */
     protected function _checkWritePermissions($price_feed = false){
     	$file_location = $this->_getFeedFilePath() . DS . $this->_getFeedFileName($price_feed);
@@ -1618,10 +1694,15 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
         }
         $memoryUsage = memory_get_usage(true);
         $memoryUsageFormatted = $memoryUsage / 1024 / 1024 . "M";
+        $percentage = "";
+        $warningMessage = "";
+        $memoryLimit = $this->_memoryLimit;
+        if($memoryLimit != "-1") {
+            $percentage = sprintf("%.0f", (($memoryUsage / $memoryLimit) * 100)) . "%";
+            $warningMessage = $this->_checkMemoryUsage($memoryUsage);
+        }
         $time = sprintf("%.4fs", Mage::helper('sli_search')->mtime() - $this->_startTime);
-        $percentage = sprintf("%.0f", (($memoryUsage / $this->_memoryLimit) * 100));
-        $warningMessage = $this->_checkMemoryUsage($memoryUsage);
-        Mage::log("$time : $memoryUsageFormatted : $percentage% $warningMessage-=- $msg", null, $this->_logFile, $this->_isLog);     
+        Mage::log("$time : $memoryUsageFormatted : $percentage $warningMessage-=- $msg", null, $this->_logFile, $this->_isLog);
     }
     
     public function getAjaxNotice() {
@@ -1643,10 +1724,14 @@ class SLI_Search_Model_Feed extends Mage_Core_Model_Abstract {
         $this->_warningMemoryLimit = $this->_memoryLimit * (self::WARNING_MEMORY_LIMIT / 100);
         $this->_errorMemoryLimit = $this->_memoryLimit * (self::ERROR_MEMORY_LIMIT / 100);
     }
-    
+
     /**
-     * Function to check what the memory usage is currently and how it is compared 
+     * Function to check what the memory usage is currently and how it is compared
      * to the set limits
+     *
+     * @param $currentUsage
+     *
+     * @return string
      */
     protected function _checkMemoryUsage($currentUsage) {
         $message = '';

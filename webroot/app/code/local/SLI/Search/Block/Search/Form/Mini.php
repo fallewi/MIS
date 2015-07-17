@@ -56,17 +56,15 @@ class SLI_Search_Block_Search_Form_Mini extends Mage_Core_Block_Template {
     }
 
     /**
-     * Switch out the default form mini template for the sli version
+     * Use the default SLI layout or the custom layout from the DB
      *
      * @return string
      */
     protected function _toHtml() {
-        if (Mage::helper('sli_search')->isEnabled(Mage::app()->getStore()->getId())) {
-            if(Mage::helper('sli_search')->useCustomForm()) {
-                return $this->getFormData();
-            }else {
-                $this->setTemplate('sli/search/form.mini.phtml');
-            }
+        if(Mage::helper('sli_search')->useCustomForm()) {
+            return $this->getFormData();
+        }else {
+            $this->setTemplate('sli/search/form.mini.phtml');
         }
         return parent::_toHtml();
     }

@@ -33,9 +33,12 @@ class SLI_Search_Model_Email extends Mage_Core_Model_Abstract {
      * @return string
      */
     public function getSubject() {
-        return "SLI Scheduled Feed Generation";
+        return $this->getData('subject');
     }
 
+    public function getEmail(){
+        return $this->getData('email');
+    }
     /**
      * SLI feed generation email body
      *
@@ -43,7 +46,8 @@ class SLI_Search_Model_Email extends Mage_Core_Model_Abstract {
      */
     public function getBody() {
         return <<<BODY
-Status: {$this->getData('msg')}
+Status:
+{$this->getData('msg')}
 
 Please check the sli log files for further information.
 
@@ -51,7 +55,7 @@ BODY;
     }
 
     public function send() {
-        $email = Mage::helper('sli_search')->getCronEmail();
+        $email = $this->getEmail();
         if ($email) {
             mail($email, $this->getSubject(), $this->getBody(), "From: {$this->getFromName()} <{$this->getFromEmail()}>\r\nReply-To: {$this->getFromEmail()}");
         }

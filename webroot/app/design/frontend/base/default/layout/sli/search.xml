@@ -28,8 +28,14 @@
             <block type="sli_search/search_js_top" name="sli_search_top_js" />
         </reference>
         <reference name="header">
-            <action method="unsetBlock"><block>top.search</block></action>
-            <block name="top.search" as="topSearch" type="sli_search/search_form_mini" template="catalogsearch/form.mini.phtml"/>
+            <action method="unsetChild" ifconfig="sli_search/general/form_enabled">
+                <name>topSearch</name>
+            </action>
+            <block name="sliSearch" type="sli_search/search_form_mini" template="sli/search/form.mini.phtml"/>
+            <action method="append" ifconfig="sli_search/general/form_enabled">
+                <block>sliSearch</block>
+                <alias>topSearch</alias>
+            </action>
         </reference>
     </default>
     <sli_search_search_template>

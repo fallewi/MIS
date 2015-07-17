@@ -132,6 +132,8 @@ function baMiniGrid() {
                 input = new Element(this.rowData[field]['type'], {style:"width:98%;",name: rowName + "["+rowId+"][" +field + "]"});
                 input.addClassName("minigrid-field");
                 input.addClassName("minigrid-field-" + field);
+                input.addClassName("validate-minigrid-attribute");
+
                 if (typeof this.rowData[field]['options'] != 'undefined') {
                     var options = this.rowData[field]['options'];
                     if (Object.isArray(options)) {
@@ -176,6 +178,32 @@ function baMiniGrid() {
         }
     }
 }
+
+Validation.add('validate-minigrid-attributes', 'Please remove duplicate attributes.', function (v) {
+    var selectedAttributes = document.getElementsByClassName("validate-minigrid-attribute");
+
+    var hasDuplicates = false;
+    for(var i = 0; i < selectedAttributes.length; i++)
+    {
+        var occurrences = 1;
+        var icurrent = selectedAttributes.item(i).value;
+        for(var j = i+1; j < selectedAttributes.length; j++) {
+            var jcurrent = selectedAttributes.item(j).value;
+            if (icurrent == jcurrent) {
+                occurrences++;
+                if(occurrences > 1){
+                    selectedAttributes.item(i).addClassName('validation-failed');
+                    selectedAttributes.item(j).addClassName('validation-failed');
+                }
+            }
+        }
+        if(occurrences > 1) hasDuplicates = true;
+    }
+    if(hasDuplicates == true) return false;
+    else return true;
+});
+
+
 </script>
     <?php
         return $html . ob_get_clean();

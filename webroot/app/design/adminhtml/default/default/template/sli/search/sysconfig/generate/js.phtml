@@ -46,6 +46,13 @@
                 var responseEl = new Element('p', {id : this.displayId}).addClassName('note');
                 Element.insert($(this.buttonId) , {after: responseEl});
             }
+            if(response.messages) {
+                responseEl.innerHTML = '';
+                for(var message in response.messages) {
+                    responseEl.appendChild( new Element('p').update('<b>' + message + ':</b> ' + response.messages[message]));
+                }
+                return responseEl;
+            }
             if (response.error) {
                 return responseEl.innerHTML = response.error;
             }

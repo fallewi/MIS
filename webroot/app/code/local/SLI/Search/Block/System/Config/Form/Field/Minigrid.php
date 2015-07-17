@@ -112,8 +112,13 @@ class SLI_Search_Block_System_Config_Form_Field_Minigrid extends Varien_Data_For
                 </tr>
             </tfoot>
         </table>
+        <input type="text" class="validate-minigrid-attributes" style="opacity:0" value="">
     </div>
-
+<style>
+    select.validation-failed {
+        border: 1px solid red;
+    }
+</style>
 <script type="text/javascript">
 Event.observe(window,'load', function(){
     (new baMiniGrid()).init($("ba-<?php echo $tableId?>"), 

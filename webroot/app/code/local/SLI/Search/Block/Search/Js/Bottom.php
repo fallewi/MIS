@@ -25,7 +25,7 @@ class SLI_Search_Block_Search_JS_Bottom extends Mage_Core_Block_Text {
     protected function _construct() {
         parent::_construct();
         $helper = Mage::helper('sli_search');
-        if ($helper->isEnabled(Mage::app()->getStore()->getId())) {
+        if ($helper->isFormEnabled(Mage::app()->getStore()->getId())) {
             $this->addText($helper->getFooterJs());
         }
     }

@@ -9,9 +9,9 @@
  * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
  * PARTICULAR PURPOSE.
- * 
+ *
  * Translation and systems configuration helper
- * 
+ *
  * @package SLI
  * @subpackage Search
  */
@@ -26,19 +26,17 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
     const JS_GROUP = "js/";
     const CRON_GROUP = "cron/";
     const ATTR_GROUP = "attributes/";
-    const DEFAULT_ATTRS = "default_attributes/";  
+    const DEFAULT_ATTRS = "default_attributes/";
     const ENABLED = 1;
-    const DISABLED = 2;
-    const FEEDENABLED = 3;  
 
     /**
      * Returns true/false on whether or not the module is enabled
      *
      * @return boolean
      */
-    public function isEnabled($store_id = 0) {
-        $enabled = Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::GENERAL_GROUP . 'enabled');
-        return (bool) ($enabled == self::ENABLED) ? 1 : 0; 
+    public function isFormEnabled($store_id = 0) {
+        $formEnabled = Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::GENERAL_GROUP . 'form_enabled');
+        return (bool) ($formEnabled == self::ENABLED) ? 1 : 0;
     }
 
     /**
@@ -47,8 +45,8 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return boolean
      */
     public function isFeedEnabled($store_id = 0) {
-        $feedEnabled = Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::GENERAL_GROUP . 'enabled');
-        return (bool) ($feedEnabled != self::DISABLED) ? 1 : 0; 
+        $feedEnabled = Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::GENERAL_GROUP . 'feed_enabled');
+        return (bool) ($feedEnabled == self::ENABLED) ? 1 : 0;
     }
 
     /**
@@ -58,8 +56,8 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function isPriceFeedEnabled($store_id = 0) {
         return (bool) Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::GENERAL_GROUP . 'price_feed');
-    }    
-    
+    }
+
     /**
      * Returns an integer which is the log level
      *
@@ -67,7 +65,25 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function getLogLevel($store_id = 0) {
         return (int) Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::GENERAL_GROUP . 'log_level');
-    }    
+    }
+
+    /**
+     * Return the email setting
+     *
+     * @return int
+     */
+    public function getEmailSetting() {
+        return Mage::getStoreConfig(self::SECTION . self::FEED_GROUP . 'email_setting');
+    }
+
+    /**
+     * Return the email address of the person to send to
+     *
+     * @return string
+     */
+    public function getFeedEmail() {
+        return Mage::getStoreConfig(self::SECTION . self::FEED_GROUP . "emailto");
+    }
     
     /**
      * Returns true/false on whether or not we should backup feeds
@@ -94,8 +110,8 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function isIncludeOutOfStockItems($store_id = 0) {
         return (bool) Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::FEED_GROUP . "stockstatus");
-    }    
-    
+    }
+
     /**
      * Returns true/false on whether or not to include disabled categories in feed
      *
@@ -103,8 +119,8 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function isIncludeDisabledCategories($store_id = 0) {
         return (bool) Mage::app()->getStore($store_id)->getConfig(self::SECTION . self::FEED_GROUP . "categorystatus");
-    }   
-    
+    }
+
     /**
      * Returns true/false on whether or not we should drop tables;
      *
@@ -365,7 +381,7 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
         return ((float) $usec + (float) $sec);
     }
 
-     /**
+    /**
      * Returns domain(s) as a js var
      *
      * @return url
@@ -379,7 +395,7 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
         preg_match('/http(s|):\/\/(.+?)\//',$searchURL,$matches);
         $searchURLBase = $searchURL;
         if (isset($matches[2])) {
-                $searchURLBase = $matches[2];
+            $searchURLBase = $matches[2];
         }
         $returnJS = "\n<script type=\"text/javascript\">\nvar slibaseurlsearch = '" . $searchURL ."';\nvar slibaseurl = '" . $searchURLBase . "';\n</script>\n";
 
@@ -406,19 +422,19 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
         return Mage::getStoreConfig(self::SECTION . self::FORM_GROUP . "formcode");
     }
 
-	/**
+    /**
      * Render the cart grand total and total item within the cart
      * @param Mage_Sales_Model_Quote $quote
      * @return array
      */
-	private function _renderCartTotal( $quote )
-    {       
+    private function _renderCartTotal( $quote )
+    {
         if( !$quote ) return false;
-        
+
         //Declare the array container
         $cartInfoArray = array();
-        $quoteItemCount = $quote->getItemsCount();
-                
+        $quoteItemCount = intval($quote->getItemsQty());
+
         //Store the item count to array
         $cartInfoArray['NumberOfItems'] = $quoteItemCount;
 
@@ -426,12 +442,12 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
         if( $totals )
         {
             if( isset($totals['grand_total']) )
-                $cartInfoArray['TotalPrice'] = $totals['grand_total']->getValue();
-            
+                $cartInfoArray['TotalPrice'] = $this->formatCurrency($totals['grand_total']->getValue());
+
             if( isset($totals['tax']) )
-                $cartInfoArray['TotalTax'] = $totals['tax']->getValue();            
+                $cartInfoArray['TotalTax'] = $this->formatCurrency($totals['tax']->getValue());
         }
-        
+
         //Get The Cart Total Discount Amount
         $items = $quote->getAllVisibleItems();
         $itemDiscount = 0;
@@ -440,20 +456,20 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
             if( !$item ) continue;
             $itemDiscount += $item->getDiscountAmount();
         }
-        $cartInfoArray['TotalDiscount'] = $itemDiscount;
-        
+        $cartInfoArray['TotalDiscount'] = $this->formatCurrency($itemDiscount);
+
         //Get The Delivery Cost if applicable
-        $shippingCost = $quote->getShippingAddress()->getShippingAmount(); 
+        $shippingCost = $quote->getShippingAddress()->getShippingAmount();
         $shippingCostTax = $quote->getShippingAddress()->getShippingTaxAmount();
         if($shippingCost == (float)0){
-            $cartInfoArray['DeliveryCost'] = 0;
+            $cartInfoArray['DeliveryCost'] = $this->formatCurrency(0);
         }else{
-            $cartInfoArray['DeliveryCost'] = (float)$shippingCost + (float)$shippingCostTax;
+            $cartInfoArray['DeliveryCost'] = $this->formatCurrency((float)$shippingCost + (float)$shippingCostTax);
         }
-        
+
         return $cartInfoArray;
     }
-    
+
     /**
      * Render the cart item detail
      * @param Mage_Sales_Model_Quote $quote
@@ -466,12 +482,12 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
         if( !$quote ) return false;
 
         $items = $quote->getAllVisibleItems();
-        
+
         foreach( $items as $item )
         {
             /** @var $item Mage_Sales_Model_Quote_Item */
             if( !$item ) continue;
-            
+
             //Declare an array to store item information
             $itemInfo = array();
             /** @var $itemProduct Mage_Catalog_Model_Product */
@@ -479,20 +495,20 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
 
             $itemInfo[ 'title' ] = $item->getName();
             $itemInfo[ 'sku' ] = $item->getSku();
-            $itemInfo[ 'qty' ] = $item->getQty();
+            $itemInfo[ 'qty' ] = intval($item->getQty());
             //Get the item Product Object
             $product = $item->getProduct();
             //Get the original price for item product
-            $itemInfo[ 'price' ] = $product->getPrice();
-            //Get the sale price      
-            $itemInfo[ 'sale_price' ] = $item->getPriceInclTax(); 
-            
+            $itemInfo[ 'price' ] = $this->formatCurrency($product->getPrice());
+            //Get the sale price
+            $itemInfo[ 'sale_price' ] = $this->formatCurrency($item->getPriceInclTax());
+
             $itemInfo[ 'item_url' ] = $this->getItemUrl($item);
-            $itemInfo[ 'remove_url' ] = Mage::getUrl('checkout/cart/delete/', array('id'=>$item->getId()));            
+            $itemInfo[ 'remove_url' ] = Mage::getUrl('checkout/cart/delete/', array('id'=>$item->getId()));
             $itemInfo[ 'image_url' ] = Mage::getModel('catalog/product_media_config')->getMediaUrl($itemProduct->getThumbnail());
 
             $itemsArray[] = $itemInfo;
-        }        
+        }
         return $itemsArray;
     }
 
@@ -506,37 +522,81 @@ class SLI_Search_Helper_Data extends Mage_Core_Helper_Abstract {
         if ($item->getRedirectUrl()) {
             return $item->getRedirectUrl();
         }
-        
+
         $product = $item->getProduct();
         $option  = $item->getOptionByCode('product_type');
         if ($option) {
             $product = $option->getProduct();
         }
         return $product->getUrlModel()->getUrl($product);
-            
+
     }
-    
-    
+
+
     /**
      * Render the JSONP object for SLI
-     * 
+     *
      * @param Mage_Sales_Model_Quote $quote
      * @return string
      */
     public function getCartJSONP( $quote )
     {
-    	$key_values['form_key']     = Mage::getSingleton('core/session')->getFormKey();
+        $key_values['form_key']     = Mage::getSingleton('core/session')->getFormKey();
         $key_values['logged_in']    = Mage::getSingleton('customer/session')->isLoggedIn();
         $key_values['user_name']    = $this->escapeHtml(Mage::getSingleton('customer/session')->getCustomer()->getName());
 
         $cart = $this->_renderCartTotal( $quote );
         $items['items'] = $this->_renderItemsDetail( $quote );
-        
+
         $result = array_merge($key_values, $cart, $items);
-        $jsonResult = json_encode( $result );        
+        $jsonResult = json_encode( $result );
         //Wrap up as jsonp object
         $jsonpResult = "sliCartRequest($jsonResult)";
         return $jsonpResult;
     }
 
+
+    /**
+     * Return whether an email should be sent or not
+     *
+     * @param $error
+     *
+     * @return bool
+     */
+    public function sendEmail($error) {
+        $emailLevel = $this->getEmailSetting();
+        if($emailLevel == 3) {
+            return true;
+        }else if($emailLevel == 2 && isset($error) && $error) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * Format output for email
+     *
+     * @param $messageArray
+     *
+     * @return string
+     */
+    public function formatEmailOutput($messageArray){
+        $output = "";
+        foreach($messageArray as $key => $value) {
+            $output .= "$key: $value\n";
+        }
+        return $output;
+    }
+
+    /**
+     * Currency formatting
+     *
+     * @param $val
+     * @return string
+     */
+    public function formatCurrency( $val )
+    {
+        return Mage::helper('checkout')->getQuote()->getStore()->formatPrice($val, false);
+    }
 }

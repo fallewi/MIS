@@ -24,8 +24,9 @@ class SLI_Search_Model_Cron {
         if(!Mage::getStoreConfig('sli_search/cron/disabled'))
         {
             try {
-                Mage::helper('sli_search/feed')->generateFeedsForAllStores();
-                $msg = "Feeds Generating";
+                /** @var $helper SLI_Search_Helper_Feed */
+                $helper = Mage::helper('sli_search/feed');
+                $msg = $helper->generateFeedsForAllStores();
             }
             catch (SLI_Search_Exception $e) {
                 $msg = $e->getMessage();
@@ -41,8 +42,15 @@ class SLI_Search_Model_Cron {
     /**
      * If there is a system config email set, send out the cron notification
      * email.
+     *
+     * @param $msg String
      */
     protected function _sendEmail($msg) {
-        Mage::getModel('sli_search/email')->setData('msg', $msg)->send();
+        $sliHelper = Mage::helper('sli_search');
+        Mage::getModel('sli_search/email')
+            ->setData('msg', $sliHelper->formatEmailOutput($msg['messages']))
+            ->setData('subject', 'SLI Scheduled Feed Generation')
+            ->setData('email', Mage::helper('sli_search')->getCronEmail())
+            ->send();
     }
 }

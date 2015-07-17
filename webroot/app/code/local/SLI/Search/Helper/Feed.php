@@ -68,29 +68,47 @@ class SLI_Search_Helper_Feed {
         Mage::app()->setCurrentStore($curStore);       
         return $myUrl;
     }
-    
+
     /**
-     * Asynchronously starts a feed generation for each store 
+     * Starts a feed generation for each store
+     * @return array
+     * @throws SLI_Search_Exception
      */
     public function generateFeedsForAllStores() {
         if ($this->thereAreFeedLocks()) {
             throw new SLI_Search_Exception("One or more feeds are being generated. Generation temporarily locked.");
         }
-        $feedUrl = $this->getGenerateFeedUrl();
-        $urlParts = parse_url($feedUrl);
 
-        try{
-            $stores = Mage::getResourceModel('core/store_collection');
+        $toReturn = array();
+        $messages = array();
+        $toReturn['error'] = false;
 
-            foreach($stores as $store){
-                $storeId = $store->getId();
-                Mage::getModel('sli_search/feed')->setData('store_id', $storeId)->generateFeed();
-                Mage::getModel('sli_search/feed')->setData('store_id', $storeId)->generateFeed(true);
+        /** @var $stores Mage_Core_Model_Resource_Store_Collection */
+        $stores = Mage::getResourceModel('core/store_collection');
+
+        foreach($stores as $store){
+            $storeId = $store->getId();
+            try {
+                $productFeedStatus = Mage::getModel('sli_search/feed')->setData('store_id', $storeId)->generateFeed();
+                if (true === $productFeedStatus) {
+                    $messages["Product Feed " . $storeId ] = "Success";
+                } else {
+                    $messages["Product Feed " . $storeId ] = $productFeedStatus;
+                }
+                $priceFeedStatus = Mage::getModel('sli_search/feed')->setData('store_id', $storeId)->generateFeed(true);
+                if (true === $priceFeedStatus) {
+                    $messages["Price Feed " . $storeId] = "Success";
+                } else {
+                    $messages["Price Feed " . $storeId] = $priceFeedStatus;
+                }
+            }catch (Exception $e) {
+                Mage::logException($e);
+                $toReturn['error'] = true;
+                $messages["Feed " .$storeId] = "Exception generating feed $storeId -> " . $e->getMessage();
             }
         }
-        catch (Exception $e) {
-            Mage::logException($e);
-        }
+        $toReturn['messages'] = $messages;
+        return $toReturn;
     }
     
     /**
