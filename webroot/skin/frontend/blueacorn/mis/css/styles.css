@@ -2019,6 +2019,8 @@ form .legend {
     position: absolute;
     top: 36px;
     left: -22px; }
+  .input-box.select-container.validation-passed:before {
+    top: 14px; }
 
 li.centinel-logos div.input-box img {
   display: inline;

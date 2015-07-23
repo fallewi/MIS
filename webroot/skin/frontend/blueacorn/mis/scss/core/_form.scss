@@ -78,6 +78,11 @@ form .legend {
         top: 36px;
         left: -22px;
     }
+
+//    Selects are off position
+    &.select-container.validation-passed:before{
+        top:14px;
+    }
 }
 
 li.centinel-logos div.input-box  {

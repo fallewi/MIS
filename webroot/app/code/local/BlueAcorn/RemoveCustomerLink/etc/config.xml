@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RemoveCustomerLink module extends Mage_Core_Block_Template
+ *
+ * @package BlueAcorn
+ * @subpackage RemoveCustomerLink
+ * @version 1.0.0
+ * @author Robert Henderson
+ */
+-->
+<config>
+    <modules>
+        <BlueAcorn_RemoveCustomerLink>
+            <version>1.0.0</version>
+        </BlueAcorn_RemoveCustomerLink>
+    </modules>
+    <global>
+        <blocks>
+            <blueacorn_removecustomerlink>
+                <class>BlueAcorn_RemoveCustomerLink_Block</class>
+            </blueacorn_removecustomerlink>
+            <customer>
+                <rewrite>
+                    <account_navigation>BlueAcorn_RemoveCustomerLink_Block_Account_Navigation</account_navigation>
+                </rewrite>
+            </customer>
+        </blocks>
+    </global>
+</config>
