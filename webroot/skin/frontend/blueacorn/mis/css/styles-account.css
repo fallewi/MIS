@@ -1687,12 +1687,23 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
   line-height: 76px;
   height: 46px; }
 
-.my-account #giftcard-form .input-box.validation-passed:before {
+.my-account .widget-addbysku .input-box.validation-passed:before {
+  left: -18px; }
+
+.account-login #giftcard-form .input-box.validation-passed:before,
+.account-login .registered-users .input-box.validation-passed:before,
+.account-login .widget-addbysku .input-box.validation-passed:before,
+.my-account #giftcard-form .input-box.validation-passed:before,
+.my-account .registered-users .input-box.validation-passed:before,
+.my-account .widget-addbysku .input-box.validation-passed:before {
   top: 14px; }
 
-.my-account .widget-addbysku .input-box.validation-passed:before {
-  top: 14px;
-  left: -18px; }
+.account-login .input-box.email.validation-passed:before,
+.account-login .input-box.company.validation-passed:before,
+.account-login .input-box.address.validation-passed:before, .my-account .input-box.email.validation-passed:before,
+.my-account .input-box.company.validation-passed:before,
+.my-account .input-box.address.validation-passed:before {
+  top: 14px; }
 
 /* ============================================ *
  * RMA List

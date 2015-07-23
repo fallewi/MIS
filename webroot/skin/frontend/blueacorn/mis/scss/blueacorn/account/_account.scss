@@ -1,5 +1,4 @@
 .my-account{
-
     .count-container{
         p{
             line-height:76px;
@@ -7,19 +6,25 @@
         }
     }
 
-    #giftcard-form{
-        .input-box{
-            &.validation-passed:before{
-                top:14px;
-            }
-        }
-    }
-
     .widget-addbysku{
         .input-box.validation-passed:before{
-            top:14px;
             left:-18px;
         }
     }
+}
 
+.account-login, .my-account{
+    #giftcard-form,
+    .registered-users,
+    .widget-addbysku,
+    {
+        .input-box.validation-passed:before{
+            top:14px;
+        }
+    }
+    .input-box.email.validation-passed:before,
+    .input-box.company.validation-passed:before,
+    .input-box.address.validation-passed:before{
+        top:14px;
+    }
 }
