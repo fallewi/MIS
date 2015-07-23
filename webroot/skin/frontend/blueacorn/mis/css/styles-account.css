@@ -1683,6 +1683,17 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
   height: 40px;
   margin-right: 25px; }
 
+.my-account .count-container p {
+  line-height: 76px;
+  height: 46px; }
+
+.my-account #giftcard-form .input-box.validation-passed:before {
+  top: 14px; }
+
+.my-account .widget-addbysku .input-box.validation-passed:before {
+  top: 14px;
+  left: -18px; }
+
 /* ============================================ *
  * RMA List
  * ============================================ */

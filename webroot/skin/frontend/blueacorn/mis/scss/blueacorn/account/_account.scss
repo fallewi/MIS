@@ -1,0 +1,25 @@
+.my-account{
+
+    .count-container{
+        p{
+            line-height:76px;
+            height:46px;
+        }
+    }
+
+    #giftcard-form{
+        .input-box{
+            &.validation-passed:before{
+                top:14px;
+            }
+        }
+    }
+
+    .widget-addbysku{
+        .input-box.validation-passed:before{
+            top:14px;
+            left:-18px;
+        }
+    }
+
+}
