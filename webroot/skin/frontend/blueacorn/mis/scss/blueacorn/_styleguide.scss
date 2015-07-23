@@ -1,0 +1,411 @@
+> h1, .sg-h {
+    margin: 0 0 20px;
+    @include grid-media(m, min) {
+        @include g(m, all, false, true);
+    }
+    @include grid-media(t, min) {
+        @include g(t, all, false, true);
+    }
+    @include grid-media(d, min) {
+        @include reset-g-padding();
+    }
+}
+.sg-h {
+    font-weight: 100;
+    font-family: $f-stack-default;
+    font-size: 32px;
+    margin-bottom: 50px;
+    color: $black-40;
+}
+
+.cms-style-guide section {
+    @include g(m, all);
+    display: none;
+    margin: 0 0 50px;
+    &.active-section {
+        display: block;
+    }
+}
+
+// Colors
+.sg-colors {
+    @include g(m, all);
+    ul {
+        list-style: none;
+        @include g-all;
+        @include grid-media(d, min) {
+            @include reset-g-padding();
+        }
+        li {
+            float: left;
+            margin-bottom: 20px;
+            @include grid-media(m, min-max) {
+                @include g-item(m, 2);
+            }
+            @include grid-media(t, min-max) {
+                @include g-item(t, 4);
+            }
+            @include grid-media(d, min) {
+                @include g-item(d, 5);
+            }
+            span {
+                display: block;
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto 20px;
+                position: relative;
+            }
+            p {
+                @include g(m, all);
+                text-align: center;
+            }
+        }
+    }
+    .code {
+        padding: 10px;
+        @include g-all();
+        text-align: center;
+        color: $white;
+        border-radius: $default-border-radius;
+        text-shadow: 0 0 2px rgba(0, 0, 0, .75);
+    }
+}
+
+.code {
+    display: none;
+    clear: both;
+    width: 100%;
+    pre {
+        border-radius: $default-border-radius;
+        margin-bottom: 10px;
+    }
+}
+.code-active .code { display: block; }
+
+@mixin build-brand-color($color, $var) {
+    .#{$color} {
+        span,
+        .code {
+            background: $var;
+        }
+        span:before {
+            background: lighten($var, 10%);
+        }
+        span:after {
+            background: darken($var, 10%);
+        }
+    }
+}
+
+@include build-brand-color('brand-primary', $brand-primary);
+@include build-brand-color('brand-secondary', $brand-secondary);
+@include build-brand-color('brand-action', $brand-action);
+@include build-brand-color('brand-success', $brand-success);
+@include build-brand-color('brand-warning', $brand-warning);
+@include build-brand-color('brand-danger', $brand-danger);
+@include build-brand-color('brand-info', $brand-info);
+@include build-brand-color('brand-dark', $brand-dark);
+@include build-brand-color('brand-light', $brand-light);
+@include build-brand-color('brand-text', $brand-text);
+
+// Typography
+.sg-typography {
+    .sg-h { padding: 0; }
+    @include g(m, all, false, true);
+    @include grid-media(t, min) {
+        @include g(t, all, false, true);
+    }
+    @include grid-media(d, min) {
+        @include g(d, all, false, false);
+        @include reset-g-padding();
+    }
+    aside {
+        margin-bottom: 30px;
+        padding: 0 20px;
+        @include g(m, all);
+        @include grid-media(t, min) {
+            clear: none;
+            width: 48%;
+            &.headings {
+                float: right;
+            }
+        }
+        @include grid-media(d, min) {
+            width: 48%;
+            clear: none;
+            &.headings {
+                float: right;
+            }
+        }
+        dl {
+            @include g(m, all);
+        }
+        dt {
+            @include g(m, all);
+            text-align: left;
+            color: $black-30;
+            padding: 0 0 10px;
+            @include grid-media(t, min) {
+                text-align: right;
+                width: percentage(1/5);
+            }
+        }
+        dd {
+            @include g(m, all);
+            padding: 0 0 10px;
+            @include grid-media(t, min) {
+                float: right;
+                width: percentage(4/5);
+                padding-left: 20px;
+                clear: none;
+            }
+            h1, h2, h3, h4, h5, h6 { line-height: normal; }
+        }
+        &.bq {
+            clear: both;
+        }
+        &.unordered {
+            ul {
+                clear: both;
+                margin-left: 1em;
+                list-style: disc;
+            }
+        }
+        &.ordered {
+            ol {
+                list-style: decimal;
+                margin-left: 1em;
+            }
+        }
+    }
+}
+
+.sg-button {
+    @include g(m, all);
+    .button {
+        clear: both;
+        float: left;
+    }
+    ul {
+        list-style: none;
+        @include g-all-pad();
+        @include grid-media(d, min) {
+            @include reset-g-padding();
+        }
+        li {
+            float: left;
+            padding: 0 0 30px;
+            margin: 0;
+            @include grid-media(m, min-max) {
+                width: 100%;
+            }
+            @include grid-media(t, min-max) {
+                @include g-item(t, 2);
+            }
+            @include grid-media(d, min) {
+                @include g-item(d, 3);
+            }
+            > small {
+                @include g(m, all);
+                margin-bottom: 10px;
+            }
+        }
+    }
+    .code {
+        @include g-all();
+        margin-top: 10px;
+    }
+}
+
+.sg-form {
+    @include g-all-pad();
+    @include grid-media(d, min) {
+        @include reset-g-padding();
+    }
+    .sg-h { padding: 0; }
+    ul {
+        list-style: none !important;
+        @include g-all();
+        padding: 0;
+        li {
+            margin-left: 0 !important;
+            @include g-all();
+            .field {
+                @include g-all();
+                @include grid-media(t, min-max) {
+                    clear: none;
+                    @include g-item(t, 2);
+                }
+                @include grid-media(d, min) {
+                    clear: none;
+                    @include g-item(d, 2);
+                }
+            }
+        }
+    }
+    li.control {
+        @include grid-media(t, min) {
+            float: left;
+            width: 50%;
+            @include grid-media(t, min-max) {
+                @include g-item(t, 2);
+            }
+            @include grid-media(d, min-max) {
+                @include g-item(d, 2);
+            }
+        }
+    }
+}
+
+.sg-messages {
+    small {
+        margin-bottom: 10px;
+    }
+}
+
+.sg-misc {
+    .toolbar { clear: both; }
+    .col-main {
+        float: right;
+        width: 75%;
+    }
+    .sorter {
+        > .view-mode {
+            float: right;
+            margin: 0;
+        }
+        > .sort-by {
+            width: auto;
+            min-width: 210px;
+        }
+    }
+    .products-grid {
+        list-style: none;
+    }
+    .minicart-wrapper {
+        width: 100%;
+        position: relative;
+        border: 1px solid $c-fieldset-border;
+        float: left;
+        margin-bottom: 30px;
+    }
+    .header-minicart, .minicart-empty {
+        width: 320px;
+    }
+    .minicart-empty { text-align: center; }
+    .cart {
+        clear: both;
+    }
+    h4 {
+        float: left;
+        clear: both;
+    }
+}
+.col1-layout .col-main .col-main {
+    float: right;
+    clear: none;
+    width: 100%;
+    @include bp(min-width, $bp-medium) {
+        width: 75%;
+    }
+}
+ul li.fields, ul li.wide { margin-left: 0; }
+
+.product-view {
+    float: left;
+    width: 100%;
+    clear: both;
+    margin-top: 50px;
+}
+
+.sg-account {
+    .my-account .title-buttons {
+        position: relative;
+        .button {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+    .skip-content {
+        display: block;
+    }
+}
+
+.shiv-active {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background: $black;
+    @include opacity(.5);
+}
+.sg-menu {
+    position: fixed;
+    left: 0;
+    top: 200px;
+    z-index: 99999;
+    .sg-menu-list, .sg-config-list {
+        display: none;
+        float: left;
+        clear: both;
+        width: 100%;
+        li {
+            float: left;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+    button.button {
+        height: 30px;
+        width: 50px;
+        position: relative;
+        padding: 0;
+        span {
+            text-indent: -999em;
+            float: left;
+            display: block;
+        }
+        &:after {
+            content: '';
+            display: block;
+            width: 50px;
+            text-align: center;
+            height: 30px;
+            color: $white;
+            font-family: $f-stack-icon;
+            font-size: 20px;
+            line-height: 35px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+    &.menu-active {
+        left: 50%;
+        top: 50%;
+        float: left;
+        clear: both;
+        @include gradient-vertical($white, darken($white, 2%));
+        box-shadow: 0 1px 4px rgba(0,0,0,.25);
+        border-radius: 5px;
+        border: 1px solid $white;
+        padding: 30px 10px;
+        width: 300px;
+        margin-left: -150px;
+        .sg-menu-list, .sg-config-list {
+            display: block;
+        }
+        button.button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            &:after {
+                content: '␡';
+            }
+        }
+    }
+}
