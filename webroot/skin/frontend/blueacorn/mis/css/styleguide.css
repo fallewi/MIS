@@ -648,6 +648,14 @@ p.product-name {
 /* ============================================ *
  * Catalog - Product
  * ============================================ */
+.top-product-details {
+  margin-bottom: 50px; }
+  .top-product-details .product-name {
+    margin-bottom: 15px; }
+  .top-product-details .details {
+    font-size: 15px;
+    margin-bottom: 8px; }
+
 .product-view .product-essential .extra-info .ratings .rating-box,
 .product-view .product-essential .extra-info .ratings .amount {
   float: left; }
@@ -673,8 +681,28 @@ p.product-name {
   border: 0; }
 
 .product-view .product-shop {
-  width: 50%;
-  float: right; }
+  width: 26.7%;
+  float: right;
+  background: #F6F6F6;
+  padding-top: 20px; }
+  .product-view .product-shop .free-shipping {
+    background: #00247B;
+    color: #fff;
+    font-size: 15px;
+    max-width: 223px;
+    position: relative;
+    line-height: 39px;
+    padding-left: 20px;
+    font-weight: 300; }
+    .product-view .product-shop .free-shipping:after {
+      position: absolute;
+      content: '';
+      width: 0;
+      right: 0;
+      height: 0;
+      border-top: 19.5px solid transparent;
+      border-bottom: 19.5px solid transparent;
+      border-right: 11px solid #F6F6F6; }
   .product-view .product-shop .product-name {
     display: none;
     float: left; }
@@ -739,7 +767,59 @@ p.product-name {
 .product-view .old-price .price-label {
   display: none; }
 
-.product-view .add-to-cart-wrapper,
+.product-view .add-to-cart-wrapper {
+  background: #F6F6F6;
+  width: 26.7%;
+  float: right;
+  clear: right;
+  padding: 30px 20px 0; }
+  .product-view .add-to-cart-wrapper .map-pricing {
+    border: 1px solid #00247B;
+    padding: 12px 20px 20px 20px;
+    font-size: 15px;
+    margin-bottom: 23px;
+    content: '';
+    display: table;
+    clear: both; }
+    .product-view .add-to-cart-wrapper .map-pricing .message {
+      line-height: 24px;
+      margin-bottom: 13px; }
+    .product-view .add-to-cart-wrapper .map-pricing input {
+      border: 1px solid #00247B;
+      float: left;
+      width: 60%;
+      box-sizing: border-box;
+      height: 41px; }
+    .product-view .add-to-cart-wrapper .map-pricing button.button {
+      width: 40%;
+      box-sizing: border-box;
+      float: left;
+      padding: 8px 0;
+      background: #fff;
+      border: 1px solid #00247B;
+      border-left: none; }
+      .product-view .add-to-cart-wrapper .map-pricing button.button span {
+        color: #00247B;
+        font-weight: normal;
+        font-size: 15px;
+        letter-spacing: 1px;
+        line-height: 23px; }
+    .product-view .add-to-cart-wrapper .map-pricing .phone-number {
+      color: #00247B; }
+    .product-view .add-to-cart-wrapper .map-pricing .price {
+      color: #EC3838; }
+  .product-view .add-to-cart-wrapper .price-info {
+    float: left; }
+    .product-view .add-to-cart-wrapper .price-info .price-box .price, .product-view .add-to-cart-wrapper .price-info .price {
+      font-size: 24px;
+      color: #EC3838;
+      line-height: 32px;
+      font-weight: normal; }
+  .product-view .add-to-cart-wrapper .price-text {
+    font-size: 15px;
+    color: #00247B;
+    letter-spacing: 1px; }
+
 .product-view .block-related {
   width: 50%;
   float: right;
@@ -774,12 +854,13 @@ p.product-name {
       display: block; } }
 
 .product-img-box {
-  width: 50%;
+  width: 73%;
   float: left; }
   .product-img-box .product-name h1 {
     border: 0; }
   .product-img-box .product-image {
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    border: none; }
   .product-img-box .product-image img {
     max-width: 100%;
     max-height: 750px;
@@ -834,15 +915,12 @@ p.product-name {
 .no-touch .product-image-thumbs a:hover {
   border-color: #c7c7c7; }
 
-.product-view .product-shop,
-.product-view .add-to-cart-wrapper,
 .product-view .block-related {
   padding-left: 10px; }
 
 .product-img-box {
   padding-right: 10px; }
 
-.product-view .product-shop,
 .product-img-box,
 .product-collateral,
 .product-view .block-related,
@@ -872,15 +950,14 @@ p.product-name {
   .product-view .add-to-cart .qty-wrapper,
   .product-view .add-to-cart .qty-wrapper label {
     margin-right: 7px;
-    float: left; }
+    float: right; }
   .product-view .add-to-cart .qty-wrapper label {
     line-height: 40px; }
   .product-view .add-to-cart .qty-wrapper .qty {
     float: left;
     height: 40px; }
   .product-view .add-to-cart-buttons {
-    float: left;
-    margin-right: 10px;
+    clear: both;
     max-width: 100%; }
     .product-view .add-to-cart-buttons .paypal-logo {
       clear: left;

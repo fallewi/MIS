@@ -27,7 +27,21 @@
  * Catalog - Product
  * ============================================ */
 
+.top-product-details {
+    margin-bottom: 50px;
+
+    .product-name {
+        margin-bottom: 15px;
+    }
+
+    .details {
+        font-size: $f-size-l;
+        margin-bottom: 8px;
+    }
+}
+
 .product-view {
+
     .product-essential {
 
         .extra-info {
@@ -61,8 +75,32 @@
     }
 
     .product-shop {
-        width: 50%;
+        width: 26.7%;
         float: right;
+        background: $brand-light;
+        padding-top: 20px;
+
+        .free-shipping {
+            background: $c-blue;
+            color: $white;
+            font-size: $f-size-l;
+            max-width: 223px;
+            position: relative;
+            line-height: 39px;
+            padding-left: 20px;
+            font-weight: 300;
+
+            &:after {
+                position: absolute;
+                content: '';
+                width: 0;
+                right: 0;
+                height: 0;
+                border-top: 19.5px solid transparent;
+                border-bottom: 19.5px solid transparent;
+                border-right: 11px solid $brand-light;
+            }
+        }
 
         .product-name {
             display: none;
@@ -167,7 +205,78 @@
         }
     }
 
-    .add-to-cart-wrapper,
+    .add-to-cart-wrapper {
+        background: $brand-light;
+        width: 26.7%;
+        float: right;
+        clear: right;
+        padding: 30px 20px 0;
+        
+        .map-pricing {
+            border: 1px solid $c-blue;
+            padding: 12px 20px 20px 20px;
+            font-size: $f-size-l;
+            margin-bottom: 23px;
+            @include clearfix();
+            
+            .message {
+                line-height: 24px;
+                margin-bottom: 13px;
+            }
+
+            input {
+                border: 1px solid $c-blue;
+                float: left;
+                width: 60%;
+                box-sizing: border-box;
+                height: 41px;
+            }
+            
+            button.button {
+                width: 40%;
+                box-sizing: border-box;
+                float: left;
+                padding: 8px 0;
+                background: $white;
+                border: 1px solid $c-blue;
+                border-left: none;
+
+                span {
+                    color: $c-blue;
+                    font-weight: normal;
+                    font-size: 15px;
+                    letter-spacing: 1px;
+                    line-height: 23px;
+                }
+            }
+
+            .phone-number {
+                color: $c-blue;
+            }
+            
+            .price {
+                color: #EC3838;
+            }
+        }
+
+        .price-info {
+            float: left;
+
+            .price-box .price, .price {
+                font-size: 24px;
+                color: #EC3838;
+                line-height: 32px;
+                font-weight: normal;
+            }
+        }
+
+        .price-text {
+            font-size: $f-size-l;
+            color: $c-blue;
+            letter-spacing: 1px;
+        }
+    }
+
     .block-related {
         width: 50%;
         float: right;
@@ -238,7 +347,7 @@
 }
 
 .product-img-box {
-    width: 50%;
+    width: 73%;
     float: left;
 
     .product-name {
@@ -249,6 +358,7 @@
 
     .product-image {
         margin-bottom: $box-spacing;
+        border: none;
     }
 
     .product-image img {
@@ -307,8 +417,6 @@
     }
 }
 
-.product-view .product-shop,
-.product-view .add-to-cart-wrapper,
 .product-view .block-related {
     padding-left: $trim/2;
 }
@@ -317,7 +425,6 @@
     padding-right: $trim/2;
 }
 
-.product-view .product-shop,
 .product-img-box,
 .product-collateral,
 .product-view .block-related,
@@ -355,7 +462,7 @@
     .add-to-cart .qty-wrapper,
     .add-to-cart .qty-wrapper label {
         margin-right: 7px;
-        float: left;
+        float: right;
     }
 
     .add-to-cart .qty-wrapper label {
@@ -368,8 +475,7 @@
     }
 
     .add-to-cart-buttons {
-        float: left;
-        margin-right: 10px;
+        clear: both;
         max-width: 100%; // Constrain width in Firefox
 
         .paypal-logo {
