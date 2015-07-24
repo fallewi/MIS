@@ -78,9 +78,9 @@
         width: 26.7%;
         float: right;
         background: $brand-light;
-        padding-top: 20px;
 
         .free-shipping {
+            margin-top: 20px;
             background: $c-blue;
             color: $white;
             font-size: $f-size-l;
@@ -267,6 +267,10 @@
                 color: #EC3838;
                 line-height: 32px;
                 font-weight: normal;
+            }
+            
+            .price-box {
+                margin-top: 12px;
             }
         }
 
@@ -459,19 +463,40 @@
         margin-bottom: 10px;
     }
 
-    .add-to-cart .qty-wrapper,
-    .add-to-cart .qty-wrapper label {
-        margin-right: 7px;
+    .qty-wrapper {
         float: right;
+        margin-top: 2px;
+        width: 69px;
+
+        span, input {
+            float: left;
+        }
+        
+        span {
+            font-size: $f-size-l;
+            margin-top: 9px;
+        }
     }
 
-    .add-to-cart .qty-wrapper label {
-        line-height: 40px;
+    .qty-wrapper label {
+        display: block;
+        font-size: $f-size-l;
+        font-family: $f-stack-sans;
+        text-transform: uppercase;
+        font-weight: normal;
+        color: $c-blue;
+        letter-spacing: 1px;
+        line-height: 21px;
+        margin-left: 21px;
+        margin-bottom: 10px;
     }
 
-    .add-to-cart .qty-wrapper .qty {
-        float: left;
+    .qty-wrapper .qty {
+        float: right;
         height: 40px;
+        width: 51px;
+        border-color: #C4C4C4;
+        padding: 0 11px;
     }
 
     .add-to-cart-buttons {

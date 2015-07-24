@@ -58,9 +58,9 @@
 .product-view .product-shop {
   width: 26.7%;
   float: right;
-  background: #F6F6F6;
-  padding-top: 20px; }
+  background: #F6F6F6; }
   .product-view .product-shop .free-shipping {
+    margin-top: 20px;
     background: #00247B;
     color: #fff;
     font-size: 15px;
@@ -190,6 +190,8 @@
       color: #EC3838;
       line-height: 32px;
       font-weight: normal; }
+    .product-view .add-to-cart-wrapper .price-info .price-box {
+      margin-top: 12px; }
   .product-view .add-to-cart-wrapper .price-text {
     font-size: 15px;
     color: #00247B;
@@ -322,15 +324,32 @@
   .product-view .add-to-cart-buttons .button,
   .product-view .add-to-cart-buttons .paypal-logo {
     margin-bottom: 10px; }
-  .product-view .add-to-cart .qty-wrapper,
-  .product-view .add-to-cart .qty-wrapper label {
-    margin-right: 7px;
-    float: right; }
-  .product-view .add-to-cart .qty-wrapper label {
-    line-height: 40px; }
-  .product-view .add-to-cart .qty-wrapper .qty {
-    float: left;
-    height: 40px; }
+  .product-view .qty-wrapper {
+    float: right;
+    margin-top: 2px;
+    width: 69px; }
+    .product-view .qty-wrapper span, .product-view .qty-wrapper input {
+      float: left; }
+    .product-view .qty-wrapper span {
+      font-size: 15px;
+      margin-top: 9px; }
+  .product-view .qty-wrapper label {
+    display: block;
+    font-size: 15px;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: normal;
+    color: #00247B;
+    letter-spacing: 1px;
+    line-height: 21px;
+    margin-left: 21px;
+    margin-bottom: 10px; }
+  .product-view .qty-wrapper .qty {
+    float: right;
+    height: 40px;
+    width: 51px;
+    border-color: #C4C4C4;
+    padding: 0 11px; }
   .product-view .add-to-cart-buttons {
     clear: both;
     max-width: 100%; }
