@@ -799,17 +799,14 @@
 .product-options {
     width: 100%;
     margin: 10px 0 0;
-    padding: 10px 15px 15px;
-    border: 1px solid $c-fieldset-border;
     clear: both;
     position: relative;
+
+
 }
 
 .product-options p.required {
-    position: absolute;
-    top: 6px;
-    right: 15px;
-    text-align: right;
+    display: none;
 }
 
 @include bp(max-width, $bp-large) {
