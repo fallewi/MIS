@@ -13,6 +13,12 @@
                 <action method="addItem"><type>skin_js</type><name>js/vendor/jquery.fancybox.pack.js</name><params/></action>
             </block>
         </reference>
+        <reference name="name">
+            <remove name="footer_links" />
+            <remove name="footer_links2" />
+            <!-- <remove name="cms_footer_links"/> -->
+            <!-- <remove name="footer.newsletter"/> -->
+        </reference>
     </default>
 
     <cms_index_index>
