@@ -14,4 +14,13 @@
             <version>0.1.0</version>
         </BlueAcorn_Footer>
     </modules>
+    <global>
+        <resources>
+            <blueacorn_footer_setup>
+                <setup>
+                    <module>BlueAcorn_Footer</module>
+                </setup>
+            </blueacorn_footer_setup>
+        </resources>
+    </global>
 </config>
