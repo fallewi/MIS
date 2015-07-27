@@ -38,6 +38,12 @@
         font-size: $f-size-l;
         margin-bottom: 8px;
     }
+
+    span:last-child {
+        .spacer {
+            display: none;
+        }
+    }
 }
 
 .product-view {

@@ -30,6 +30,8 @@
   .top-product-details .details {
     font-size: 15px;
     margin-bottom: 8px; }
+  .top-product-details span:last-child .spacer {
+    display: none; }
 
 .product-view .product-essential .extra-info .ratings .rating-box,
 .product-view .product-essential .extra-info .ratings .amount {
