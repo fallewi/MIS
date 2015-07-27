@@ -938,8 +938,7 @@ p.product-name {
     clear: both; }
   .product-view .add-to-cart {
     padding-bottom: 3px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #CCCCCC; }
+    margin-bottom: 10px; }
   .product-view .add-to-cart .qty-wrapper,
   .product-view .product-options-bottom .price-box,
   .product-view .add-to-cart-buttons {
@@ -999,14 +998,17 @@ p.product-name {
         line-height: 1;
         text-align: center; }
   .product-view .add-to-cart-buttons .button {
-    min-height: 40px;
-    line-height: 40px;
-    font-size: 16px;
+    min-height: 52px;
+    line-height: 51px;
+    font-size: 18px;
     padding: 0px 30px;
     float: left;
     min-width: 160px;
     width: 100%;
-    white-space: normal; }
+    white-space: normal;
+    background-color: #FDC44B;
+    font-weight: 300;
+    letter-spacing: 1px; }
   .product-view .alert-price,
   .product-view .alert-stock {
     clear: both; }
@@ -1031,23 +1033,23 @@ p.product-name {
 
 .product-view .add-to-links {
   clear: both;
-  margin-top: 0px;
-  margin-right: 15px;
-  float: left; }
+  margin-top: 0px; }
   .product-view .add-to-links:after {
     content: '';
     display: table;
     clear: both; }
   .product-view .add-to-links li {
-    float: left; }
+    float: none;
+    display: block;
+    text-align: center; }
   .product-view .add-to-links a {
-    padding: 2px 7px 2px 0px;
-    margin-left: 7px;
-    border-right: 1px solid #CCCCCC; }
-  .product-view .add-to-links li:first-child a {
-    margin-left: 0px; }
-  .product-view .add-to-links li:last-child a {
-    border-right: 0px; }
+    display: inline-block;
+    padding: 0;
+    background: #fff;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 38px;
+    margin-bottom: 10px; }
 
 .product-view .sharing-links {
   float: left; }
@@ -1311,9 +1313,15 @@ p.product-name {
  */
 .product-options {
   width: 100%;
-  margin: 10px 0 0;
+  margin: 123px 0 0;
   clear: both;
   position: relative; }
+  .product-options .custom-shiv {
+    border-color: #00247B;
+    height: 40px;
+    background: #fff; }
+  .product-options dt label {
+    display: none; }
 
 .product-options p.required {
   display: none; }
