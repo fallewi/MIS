@@ -1524,6 +1524,14 @@ span.weee {
         background-position: -180px -20px;
         overflow: hidden;
         float: left;
+
+        .catalog-product-view & {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -304px, -20px);
+            width: 140px;
+            height: 18px;
+            background-repeat: repeat-x;
+            background-position: -304px -20px;
+        }
     }
     .rating-box .rating {
         @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -180px, 0);
@@ -1531,6 +1539,14 @@ span.weee {
         height: 20px;
         background-repeat: repeat-x;
         background-position: -180px 0;
+
+        .catalog-product-view & {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -304px, 0);
+            width: 140px;
+            height: 18px;
+            background-repeat: repeat-x;
+            background-position: -304px 0;
+        }
     }
     .amount {
         display: block;

@@ -1352,6 +1352,17 @@ span.weee {
         background: url("../images/sprite@2x.png");
         background-size: 600px 300px;
         background-position: -180px -20px; } }
+    .catalog-product-view .ratings .rating-box {
+      background-image: url("../images/sprite.png");
+      width: 140px;
+      height: 18px;
+      background-repeat: repeat-x;
+      background-position: -304px -20px; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .catalog-product-view .ratings .rating-box {
+          background: url("../images/sprite@2x.png");
+          background-size: 600px 300px;
+          background-position: -304px -20px; } }
   .ratings .rating-box .rating {
     background-image: url("../images/sprite.png");
     float: left;
@@ -1363,6 +1374,17 @@ span.weee {
         background: url("../images/sprite@2x.png");
         background-size: 600px 300px;
         background-position: -180px 0; } }
+    .catalog-product-view .ratings .rating-box .rating {
+      background-image: url("../images/sprite.png");
+      width: 140px;
+      height: 18px;
+      background-repeat: repeat-x;
+      background-position: -304px 0; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .catalog-product-view .ratings .rating-box .rating {
+          background: url("../images/sprite@2x.png");
+          background-size: 600px 300px;
+          background-position: -304px 0; } }
   .ratings .amount {
     display: block;
     margin: 5px auto; }
