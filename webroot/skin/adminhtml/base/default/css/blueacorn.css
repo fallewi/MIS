@@ -1,0 +1,65 @@
+.system-config-blueacorn dl {
+    background-color: #eae9e9;
+    margin-bottom: 0 !important;
+    padding-bottom: 16px;
+    -webkit-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+    -moz-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+    box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+}
+.system-config-blueacorn dl dd a {
+    background: #eae9e9;
+    color: #1c2612;
+    -webkit-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+    -moz-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+    box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+}
+.system-config-blueacorn dl dd a:hover {
+    background: #d8d1ca;
+    color: #1c2612;
+    -webkit-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+    -moz-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+    box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.05);
+}
+
+.system-config-blueacorn dl dd span {
+    background-image: none;
+    border-top: 1px solid #d8d1ca;
+}
+
+.system-config-blueacorn dl dd a.active {
+    border-bottom: 0;
+    position: relative;
+}
+
+.system-config-blueacorn dl dd a.active span.active {
+    background: #d8d1ca;
+    color: #1c2612;
+}
+
+.system-config-blueacorn dl dd a:hover span.active {
+    background: ,.25;
+    color: #1c2612;
+}
+
+.system-config-blueacorn dl dd a.active:after {
+    display: block;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12.5px 21.7px 12.5px 0;
+    border-color: transparent #fff transparent transparent;
+}
+
+.system-config-blueacorn dl dt {
+    text-indent: -999em;
+    min-height: 35px;
+    -webkit-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.25);
+    -moz-box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.25);
+    box-shadow: inset -2px 0px 1px 0px rgba(79,43,13,.25);
+    background: #0077c6 url('../images/blueacorn/blueacorn-logo.png') no-repeat 20px 50%;
+}
+

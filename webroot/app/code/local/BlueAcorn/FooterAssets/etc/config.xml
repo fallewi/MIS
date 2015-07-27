@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<BlueAcorn_FooterAssets>
+			<version>0.1.0</version>
+		</BlueAcorn_FooterAssets>
+	</modules>
+
+	<global>
+		<blocks>
+			<blueacorn_footerassets>
+				<class>BlueAcorn_FooterAssets_Block</class>
+			</blueacorn_footerassets>
+		</blocks>
+	</global>
+
+	<frontend>
+		<layout>
+			<updates>
+				<blueacorn_footerassets>
+					<file>blueacorn/footer_assets.xml</file>
+				</blueacorn_footerassets>
+			</updates>
+		</layout>
+	</frontend>
+</config>
