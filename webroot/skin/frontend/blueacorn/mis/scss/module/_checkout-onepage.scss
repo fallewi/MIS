@@ -155,6 +155,7 @@
     @include bp(max-width, $bp-large) {
         padding: $box-spacing;
     }
+
 }
 
 .opc select {
@@ -203,6 +204,9 @@
 .opc #opc-login {
     .step {
         padding: 0px;
+        .input-box.validation-passed:before{
+            top:14px;
+        }
     }
 
     .buttons-set {
@@ -647,7 +651,6 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         }
         .step-title {
             .number {
-                display: none;
             }
         }
     }
@@ -671,5 +674,17 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 #opc-payment.allow.active .paymentinformation,
 #opc-review.allow.active .orderreview {
     background: yellow;
+}
+
+
+// Form Overrides
+.opc #opc-login .input-box,
+.opc .wide .input-box,
+.opc .input-box.select-container,
+.company .input-box,
+.credit-card .input-box{
+    &.validation-passed:before{
+        top:14px;
+    }
 }
 

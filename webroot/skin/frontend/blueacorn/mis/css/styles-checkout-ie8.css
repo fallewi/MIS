@@ -151,6 +151,8 @@
 
 .opc #opc-login .step {
   padding: 0px; }
+  .opc #opc-login .step .input-box.validation-passed:before {
+    top: 14px; }
 
 .opc #opc-login .buttons-set {
   border-top: 0;
@@ -414,9 +416,6 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   clear: both;
   width: 100%; }
 
-.opc .section.allow.active .step-title .number {
-  display: none; }
-
 .stepnumber {
   float: left;
   width: 35px;
@@ -435,6 +434,13 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 #opc-payment.allow.active .paymentinformation,
 #opc-review.allow.active .orderreview {
   background: yellow; }
+
+.opc #opc-login .input-box.validation-passed:before,
+.opc .wide .input-box.validation-passed:before,
+.opc .input-box.select-container.validation-passed:before,
+.company .input-box.validation-passed:before,
+.credit-card .input-box.validation-passed:before {
+  top: 14px; }
 
 /* ============================================ *
  * Checkout - Success
