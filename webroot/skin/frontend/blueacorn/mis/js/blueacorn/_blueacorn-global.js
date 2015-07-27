@@ -7,7 +7,10 @@ jQuery(document).ready(function($){
 
             var self = this;
 
+            self.bp = 650;
+
             self.setupObservers();
+            self.setupFooter();
         },
 
         setupObservers: function(){
@@ -26,6 +29,34 @@ jQuery(document).ready(function($){
                     $('.skip-links').after($('#header-nav'));
                     $('.account-cart-wrapper').prepend($('.store-phone'));
                 }
+            });
+        },
+
+        setupFooter: function(){
+            
+            var self = this;
+            
+            self.flagSet = false;
+
+            self.checkForWidth(self.flagSet);
+
+            $(window).resize(function(){
+                self.checkForWidth(self.flagSet);                
+            });
+        },
+
+        checkForWidth: function(flagSet){
+            var self = this;
+
+            if($(window).innerWidth() <= self.bp && flagSet === false){
+                self.setupAccordion();
+                self.flagSet = true;
+            }
+        },
+
+        setupAccordion: function(){
+            $('.footer .links h5').on('click', function(){
+                $(this).toggleClass('open-links');
             });
         }
 

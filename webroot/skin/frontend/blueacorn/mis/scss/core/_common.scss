@@ -805,7 +805,7 @@ a.button:hover {
  * Container
  */
 
-.main-container,
+.main,
 .footer-container {
     position: relative;
     max-width: $max-container-width;
@@ -819,14 +819,10 @@ a.button:hover {
 
 @include bp(min-width, 480px) {
 
-    .main-container,
+    .main,
     .footer-container {
         padding: $trim;
     }
-}
-
-.footer-container {
-    padding-top: 0;
 }
 
 /* -------------------------------------------- *

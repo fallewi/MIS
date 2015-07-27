@@ -851,24 +851,21 @@ a.button:hover {
 /* -------------------------------------------- *
  * Container
  */
-.main-container,
+.main,
 .footer-container {
   position: relative;
   max-width: 1240px;
   margin: 0 auto;
   padding: 15px; }
-  .main-container:after,
+  .main:after,
   .footer-container:after {
     content: '';
     display: table;
     clear: both; }
 
-.main-container,
+.main,
 .footer-container {
   padding: 20px; }
-
-.footer-container {
-  padding-top: 0; }
 
 /* -------------------------------------------- *
  * Column Layouts
@@ -2323,6 +2320,12 @@ body {
   display: table;
   clear: both; }
 
+.page {
+  background: #F5F5F5; }
+
+.main-container {
+  background: #fff; }
+
 /* ============================================ *
  * Header
  * ============================================ */
@@ -3017,46 +3020,66 @@ a.skip-link {
 /* -------------------------------------------- *
  * Footer
  */
-.footer,
-.footer button {
-  font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif; }
+.footer-container {
+  background: #F5F5F5;
+  padding-top: 20px; }
 
 .footer {
   clear: both;
   width: 100%;
-  border-top: 1px solid #CCCCCC;
   padding-top: 20px;
   /* -------------------------------------------- *
      * Social icons
      */ }
   .footer .block-title {
     border-bottom: 0;
-    padding: 3px 0; }
+    padding: 3px 0;
+    margin-bottom: 17px;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    text-transform: uppercase;
+    color: #00247B;
+    font-size: 15px;
+    font-weight: 400;
+    border: 0; }
   .footer .block-title strong {
     font-weight: normal; }
-  .footer .block-title,
-  .footer address {
-    color: #262626; }
+  .footer .links-container .links {
+    margin-left: 27px; }
+    .footer .links-container .links:first-child {
+      margin-left: 0; }
   .footer .links {
     float: left;
-    width: 17%;
     padding: 0 20px 0 0;
     margin-bottom: 20px; }
+    .footer .links ul {
+      margin-bottom: 29px; }
     .footer .links li {
       word-break: break-all;
       line-height: 1.4;
-      padding: 4px 0; }
+      padding: 4px 0 5px; }
     .footer .links a {
-      color: #262626; }
+      color: #4D4D4D;
+      font-size: 15px; }
       .footer .links a:hover {
         color: #00247B; }
   .footer .block-subscribe {
     float: right;
-    width: 320px;
-    margin-bottom: 20px; }
+    width: 290px;
+    margin-bottom: 30px;
+    margin-top: 7px;
+    background: #fff;
+    padding: 20px; }
+    .footer .block-subscribe .block-title {
+      color: #EC3837;
+      font-size: 24px;
+      line-height: 32px;
+      margin: 4px 0 3px;
+      text-transform: none; }
+    .footer .block-subscribe p {
+      font-size: 15px;
+      line-height: 21px; }
   .footer .links,
   .footer .block-subscribe {
-    text-transform: uppercase;
     font-size: 12px; }
   .footer .form-subscribe-header {
     display: none; }
@@ -3098,10 +3121,25 @@ a.skip-link {
     padding-top: 0; }
   .footer .block-subscribe .input-text {
     width: 100%;
-    border-right: 0;
-    border-radius: 0; }
+    height: 40px;
+    border-color: #1E1E1E; }
+  .footer .block-subscribe .button {
+    background: #fff;
+    border: 1px solid #1E1E1E;
+    border-left: 0;
+    color: #1E1E1E;
+    padding: 12px 19px 26px;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-weight: 400;
+    text-transform: none;
+    font-size: 15px;
+    letter-spacing: 1px; }
+    .footer .block-subscribe .button:hover {
+      background: #737373;
+      border-color: #737373;
+      color: #fff; }
   .footer .block-subscribe .block-content {
-    padding-top: 7px; }
+    padding-top: 8px; }
     .footer .block-subscribe .block-content:after {
       content: '';
       display: table;
@@ -3128,22 +3166,50 @@ a.skip-link {
   .footer .currency-switcher {
     display: none; }
   .footer address {
-    border-top: 1px solid #CCCCCC;
-    text-align: center;
+    text-align: left;
     width: 100%;
     font-size: 11px;
-    margin-top: 20px;
-    padding: 20px 0; }
-  .footer .links {
-    width: 22.6562%;
-    padding-right: 0;
-    margin-right: 3.125%; }
-  .footer .links:nth-child(4) {
-    margin-right: 0; }
-  .footer .block-subscribe {
-    clear: both;
-    float: none;
-    margin: 0 auto 20px auto; }
+    margin-top: 0;
+    padding: 0 0 20px; }
+
+.about-us-container {
+  float: left;
+  width: 240px;
+  margin-right: 46px; }
+  .about-us-container .block-title {
+    margin-bottom: 26px; }
+  .about-us-container p {
+    font-size: 15px;
+    line-height: 21px; }
+
+.connect-container {
+  float: right; }
+
+.social-links {
+  padding: 0 22px; }
+  .social-links .icon {
+    background-image: url("../images/sprite.png");
+    width: 50px;
+    height: 50px;
+    text-indent: -9999em;
+    display: inline-block;
+    margin-left: 12px; }
+    @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+      .social-links .icon {
+        background: url("../images/sprite@2x.png");
+        background-size: 600px 300px;
+        background-position: 0 -91px; } }
+    .social-links .icon:hover {
+      opacity: 0.75;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; }
+    .social-links .icon:first-child {
+      margin-left: 0; }
+  .social-links .instagram-icon {
+    background-position: -60px -91px; }
+  .social-links .facebook-icon {
+    background-position: -120px -91px; }
+  .social-links .youtube-icon {
+    background-position: -180px -91px; }
 
 /* ================================================= *
  * General Product List Styles (not module-specific)

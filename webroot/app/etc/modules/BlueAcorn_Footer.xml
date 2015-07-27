@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<BlueAcorn_Footer>
+			<active>true</active>
+			<codePool>local</codePool>
+		</BlueAcorn_Footer>
+	</modules>
+</config>

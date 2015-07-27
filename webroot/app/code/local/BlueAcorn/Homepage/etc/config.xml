@@ -18,5 +18,19 @@
                 <class>BlueAcorn_Homepage_Helper</class>
             </blueacorn_homepage>
         </helpers>
+        <blocks>
+            <blueacorn_homepage>
+                <class>BlueAcorn_Homepage_Block</class>
+            </blueacorn_homepage>
+        </blocks>
+        <models>
+            <blueacorn_homepage>
+                <class>BlueAcorn_Homepage_Model</class>
+                <resourceModel>blueacorn_homepage_resource</resourceModel>
+            </blueacorn_homepage>
+            <blueacorn_homepage_resource>
+                <class>BlueAcorn_Homepage_Model_Resource</class>
+            </blueacorn_homepage_resource>
+        </models>
     </global>
 </config>
