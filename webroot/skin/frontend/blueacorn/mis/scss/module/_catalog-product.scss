@@ -44,6 +44,16 @@
             display: none;
         }
     }
+
+    .no-rating {
+        margin-top: 13px;
+        
+        a {
+            font-size: $f-size-l;
+            color: $c-blue;
+            text-decoration: underline;
+        }
+    }
 }
 
 .product-view {
