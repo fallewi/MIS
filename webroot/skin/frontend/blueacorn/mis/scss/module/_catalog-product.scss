@@ -47,7 +47,7 @@
 
     .no-rating {
         margin-top: 13px;
-        
+
         a {
             font-size: $f-size-l;
             color: $c-blue;
@@ -883,6 +883,10 @@
     margin: 123px 0 0;
     clear: both;
     position: relative;
+    
+    .select-container.validation-error .custom-shiv {
+        line-height: 35px;
+    }
 
     .custom-shiv {
         border-color: $c-blue;
@@ -969,7 +973,7 @@
     padding-top: 0;
 
     &.validation-passed:before {
-        background: none;
+        background: none; 
         top: 7px;
     }
 }

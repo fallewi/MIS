@@ -754,6 +754,8 @@
   margin: 123px 0 0;
   clear: both;
   position: relative; }
+  .product-options .select-container.validation-error .custom-shiv {
+    line-height: 35px; }
   .product-options .custom-shiv {
     border-color: #00247B;
     height: 40px;
