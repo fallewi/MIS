@@ -426,4 +426,16 @@
     }
 }
 
+@media all and (max-width: 1185px) and (min-width: 951px) {
+    .footer {
+        .links-container .links {
+            float: none;
+            margin-left: 0;
+        }
 
+        .tablet-links {
+            float: left;
+            width: 18%;
+        }
+    }
+}

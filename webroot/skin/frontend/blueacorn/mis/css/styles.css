@@ -3909,6 +3909,14 @@ a.skip-link {
   .social-links .youtube-icon {
     background-position: -180px -91px; }
 
+@media all and (max-width: 1185px) and (min-width: 951px) {
+  .footer .links-container .links {
+    float: none;
+    margin-left: 0; }
+  .footer .tablet-links {
+    float: left;
+    width: 18%; } }
+
 /* ================================================= *
  * General Product List Styles (not module-specific)
  * ================================================= */
