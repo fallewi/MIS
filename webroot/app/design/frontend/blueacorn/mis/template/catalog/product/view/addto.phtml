@@ -32,7 +32,7 @@
 <ul class="add-to-links">
 
 <?php if ($_product->getFinanceLink() && $_product->getFinanceLinkText()) : ?>
-    <li><a href="<?php echo $_financeUrl ?>" class="link-finance"><?php echo $_product->getFinanceLinkText() ?></a></li>
+    <li><a target="_blank" href="<?php echo $_financeUrl ?>" class="link-finance"><?php echo $_product->getFinanceLinkText() ?></a></li>
 <?php endif; ?>
 
 <?php if ($this->helper('wishlist')->isAllow()) : ?>
