@@ -147,7 +147,8 @@
   width: 26.7%;
   float: right;
   clear: right;
-  padding: 30px 20px 0; }
+  padding: 30px 20px 0;
+  margin-bottom: 20px; }
   .product-view .add-to-cart-wrapper .map-pricing {
     border: 1px solid #00247B;
     padding: 12px 20px 20px 20px;
@@ -192,6 +193,19 @@
       font-weight: normal; }
     .product-view .add-to-cart-wrapper .price-info .price-box {
       margin-top: 12px; }
+      .product-view .add-to-cart-wrapper .price-info .price-box.bundle {
+        margin-top: 2px; }
+      .product-view .add-to-cart-wrapper .price-info .price-box .price-as-configured .price-label {
+        font-weight: 300;
+        display: block;
+        font-family: "gesta", Verdana, Arial, sans-serif;
+        font-size: 15px;
+        color: #00247B;
+        letter-spacing: 1px;
+        line-height: 21px;
+        margin-bottom: 12px; }
+      .product-view .add-to-cart-wrapper .price-info .price-box .price-as-configured .full-product-price {
+        display: block; }
   .product-view .add-to-cart-wrapper .price-text {
     font-size: 15px;
     color: #00247B;
@@ -281,7 +295,7 @@
     clear: both; }
   .product-view .add-to-cart {
     padding-bottom: 3px;
-    margin-bottom: 10px; }
+    margin-bottom: 7px; }
   .product-view .add-to-cart .qty-wrapper,
   .product-view .product-options-bottom .price-box,
   .product-view .add-to-cart-buttons {
@@ -294,7 +308,8 @@
   .product-view .qty-wrapper {
     float: right;
     margin-top: 2px;
-    width: 69px; }
+    width: 69px;
+    margin-bottom: 10px; }
     .product-view .qty-wrapper span, .product-view .qty-wrapper input {
       float: left; }
     .product-view .qty-wrapper span {
@@ -362,7 +377,8 @@
 
 .product-view .add-to-links {
   clear: both;
-  margin-top: 0px; }
+  margin-top: 0px;
+  margin-bottom: 11px; }
   .product-view .add-to-links:after {
     content: '';
     display: table;
@@ -373,12 +389,48 @@
     text-align: center; }
   .product-view .add-to-links a {
     display: inline-block;
-    padding: 0;
+    position: relative;
+    padding: 0 29px 0 16px;
     background: #fff;
     font-size: 12px;
     letter-spacing: 1px;
     line-height: 38px;
     margin-bottom: 10px; }
+    .product-view .add-to-links a:hover {
+      text-decoration: none;
+      background: #EAEAEA; }
+    .product-view .add-to-links a:before {
+      position: absolute;
+      right: 0;
+      top: 13px;
+      content: '';
+      display: block; }
+    .product-view .add-to-links a.link-wishlist {
+      padding: 0 35px 0 20px; }
+    .product-view .add-to-links a.link-finance:before {
+      background-image: url("../images/sprite.png");
+      width: 11px;
+      height: 13px;
+      right: 15px;
+      background-repeat: repeat-x;
+      background-position: -263px -70px; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .product-view .add-to-links a.link-finance:before {
+          background: url("../images/sprite@2x.png");
+          background-size: 600px 300px;
+          background-position: -263px -70px; } }
+    .product-view .add-to-links a.link-wishlist:before {
+      background-image: url("../images/sprite.png");
+      width: 10px;
+      height: 14px;
+      right: 20px;
+      background-repeat: repeat-x;
+      background-position: -128px -69px; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .product-view .add-to-links a.link-wishlist:before {
+          background: url("../images/sprite@2x.png");
+          background-size: 600px 300px;
+          background-position: -128px -69px; } }
 
 .product-view .sharing-links {
   float: left; }
@@ -490,9 +542,7 @@
  * Catalog - Grouped Product List
  */
 .grouped-items-table-wrapper {
-  border: solid 1px #C0C0C0;
   width: 100%;
-  padding: 10px;
   margin-bottom: 15px; }
   .grouped-items-table-wrapper tbody tr:last-child td {
     border-bottom: none; }
@@ -502,13 +552,18 @@
   font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif; }
 
 .grouped-items-table .qty-wrapper {
-  padding-top: 7px; }
-
-.grouped-items-table .qty-label {
-  margin-left: 7px; }
+  padding-top: 7px;
+  float: left;
+  width: 100%; }
+  .grouped-items-table .qty-wrapper .qty-label {
+    margin-left: 0; }
+  .grouped-items-table .qty-wrapper .qty {
+    float: left; }
 
 .grouped-items-table td {
-  padding: 4px; }
+  padding: 10px 4px; }
+  .grouped-items-table td.image img {
+    max-width: 68px; }
   .grouped-items-table td:last-child {
     width: 30%;
     text-align: left; }
@@ -527,7 +582,25 @@
   .product-options .custom-shiv {
     border-color: #00247B;
     height: 40px;
-    background: #fff; }
+    background: #fff;
+    font-size: 15px;
+    color: #00247B;
+    letter-spacing: 1px;
+    line-height: 38px;
+    font-weight: 300;
+    padding: 0 15px; }
+    .product-options .custom-shiv span:after {
+      content: '';
+      background-image: url("../images/sprite.png");
+      width: 16px;
+      height: 9px;
+      background-repeat: repeat-x;
+      background-position: -288px -74px; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .product-options .custom-shiv span:after {
+          background: url("../images/sprite@2x.png");
+          background-size: 600px 300px;
+          background-position: -288px -74px; } }
   .product-options dt label {
     display: none; }
 
@@ -557,9 +630,8 @@
   padding: 0 2px; }
 
 .product-options dd {
-  padding: 0 0 10px 0;
-  margin: 0 0 5px;
-  border-bottom: 1px solid #EDEDED; }
+  padding: 0;
+  margin: 0 0 5px; }
 
 .product-options dl.last dd.last {
   border-bottom: 0;
@@ -571,6 +643,9 @@
 
 .product-options dd .input-box {
   padding-top: 0; }
+  .product-options dd .input-box.validation-passed:before {
+    background: none;
+    top: 7px; }
 
 .product-options dd input.datetime-picker {
   width: 150px; }

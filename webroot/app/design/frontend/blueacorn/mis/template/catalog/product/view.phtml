@@ -80,8 +80,10 @@
                 <?php echo $this->getChildHtml('extrahint') ?>
 
                 <div class="price-info">
-                    <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
-                    <?php echo $this->getPriceHtml($_product); ?>
+                    <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                        <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
+                        <?php echo $this->getPriceHtml($_product); ?>
+                    <?php endif; ?>
                     <?php echo $this->getChildHtml('bundle_prices') ?>
                     <?php echo $this->getTierPriceHtml() ?>
                 </div>
@@ -105,7 +107,6 @@
                             <span class="or"><?php echo $this->__('OR') ?></span>
                         <?php endif; ?>
                         <?php echo $this->getChildHtml('addto') ?>
-                        <?php echo $this->getChildHtml('sharing') ?>
                     </div>
                     <?php echo $this->getChildHtml('extra_buttons') ?>
                 <?php endif; ?>

@@ -211,6 +211,7 @@
         float: right;
         clear: right;
         padding: 30px 20px 0;
+        margin-bottom: 20px;
         
         .map-pricing {
             border: 1px solid $c-blue;
@@ -271,6 +272,27 @@
             
             .price-box {
                 margin-top: 12px;
+                
+                &.bundle {
+                    margin-top: 2px;
+                }
+                
+                .price-as-configured {
+                    .price-label {
+                        font-weight: 300;
+                        display: block;
+                        font-family: $f-stack-sans;
+                        font-size: $f-size-l;
+                        color: $c-blue;
+                        letter-spacing: 1px;
+                        line-height: 21px;
+                        margin-bottom: 12px;
+                    }
+                    .full-product-price {
+                        display: block;
+                    }
+                }
+                
             }
         }
 
@@ -445,7 +467,7 @@
 
     .add-to-cart {
         padding-bottom: 3px;
-        margin-bottom: 10px;
+        margin-bottom: 7px;
     }
 
     /* Set a min-height so that the floated elements break appropriately */
@@ -466,6 +488,7 @@
         float: right;
         margin-top: 2px;
         width: 69px;
+        margin-bottom: 10px;
 
         span, input {
             float: left;
@@ -581,6 +604,7 @@
 .product-view .add-to-links {
     clear: both;
     margin-top: 0px;
+    margin-bottom: 11px;
 
     &:after {
         @include clearfix;
@@ -594,12 +618,48 @@
 
     a {
         display: inline-block;
-        padding: 0;
+        position: relative;
+        padding: 0 29px 0 16px;
         background: $white;
         font-size: $f-size-xs;
         letter-spacing: 1px;
         line-height: 38px;
         margin-bottom: 10px;
+        
+        &:hover {
+            text-decoration: none;
+            background: #EAEAEA;
+        }
+
+        &:before {
+            position: absolute;
+            right: 0;
+            top: 13px;
+            content: '';
+            display: block;
+        }
+
+        &.link-wishlist {
+            padding: 0 35px 0 20px;
+        }
+
+        &.link-finance:before {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -263px, -70px);
+            width: 11px;
+            height: 13px;
+            right: 15px;
+            background-repeat: repeat-x;
+            background-position: -263px -70px;
+        }
+
+        &.link-wishlist:before {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -128px, -69px);
+            width: 10px;
+            height: 14px;
+            right: 20px;
+            background-repeat: repeat-x;
+            background-position: -128px -69px;
+        }
     }
 }
 
@@ -749,9 +809,7 @@
  */
 
 .grouped-items-table-wrapper {
-    border: solid 1px $c-table-border;
     width: 100%;
-    padding: $box-spacing;
     margin-bottom: 15px;
 
     tbody tr:last-child td {
@@ -770,15 +828,25 @@
 
     .qty-wrapper {
         padding-top: $element-spacing;
-    }
+        float: left;
+        width: 100%;
 
-    .qty-label {
-        margin-left: $element-spacing;
+        .qty-label {
+            margin-left: 0;
+        }
+        
+        .qty {
+            float: left;
+        }
     }
 
 
     td {
-        padding: 4px;
+        padding: 10px 4px;
+        
+        &.image img {
+            max-width: 68px;
+        }
 
         &:last-child {
             width: 30%;
@@ -804,6 +872,21 @@
         border-color: $c-blue;
         height: 40px;
         background: $white;
+        font-size: $f-size-l;
+        color: $c-blue;
+        letter-spacing: 1px;
+        line-height: 38px;
+        font-weight: 300;
+        padding: 0 15px;
+
+        span:after {
+            content: '';
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -288px, -74px);
+            width: 16px;
+            height: 9px;
+            background-repeat: repeat-x;
+            background-position: -288px -74px;
+        }
     }
 
     dt label {
@@ -852,9 +935,8 @@
 }
 
 .product-options dd {
-    padding: 0 0 10px 0;
+    padding: 0;
     margin: 0 0 5px;
-    border-bottom: 1px solid $c-fieldset-border-light;
 }
 
 .product-options dl.last dd.last {
@@ -869,6 +951,11 @@
 
 .product-options dd .input-box {
     padding-top: 0;
+
+    &.validation-passed:before {
+        background: none;
+        top: 7px;
+    }
 }
 
 .product-options dd input.datetime-picker {
