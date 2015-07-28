@@ -687,4 +687,10 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         top:14px;
     }
 }
+@include bp(max-width, $bp-medium){
+    .opc .select-container{
+        width:auto;
+    }
+}
+
 

@@ -496,6 +496,10 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 .credit-card .input-box.validation-passed:before {
   top: 14px; }
 
+@media only screen and (max-width: 770px) {
+  .opc .select-container {
+    width: auto; } }
+
 /* ============================================ *
  * Checkout - Success
  * ============================================ */
