@@ -1,0 +1,299 @@
+/*
+ * A partial implementation of the Ruby list functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/lib/compass/sass_extensions/functions/lists.rb
+ */
+/*
+ * A partial implementation of the Ruby constants functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/lib/compass/sass_extensions/functions/constants.rb
+ */
+/*
+ * A partial implementation of the Ruby display functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
+ */
+/*
+// ----------------------------------------------
+// Usage example:
+// For IE set $mq-support to false.
+// Set the fixed value.
+// Then use mixins to test whether styles should be applied.
+// ----------------------------------------------
+
+$mq-support: false;
+$mq-fixed-value: 1024;
+
+// Renders at fixed value
+@include bp (min-width, 300px) { 
+    div { color:#000; }
+}
+
+// Doesn't render without MQ support
+@include bp (min-width, 1200px) { 
+    div { color:#FFF; }
+}
+
+// Doesn't render without MQ support
+@include bp (max-width, 300px) { 
+    div { color:#444; }
+}
+
+// Renders at fixed value
+@include bp (max-width, 1200px) { 
+    div { color:#888; }
+}
+
+// ----------------------------------------------
+*/
+/* line 5, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-success .address-info {
+  border-top: 1px solid #EDEDED;
+  padding: 20px 5px;
+  white-space: normal;
+  word-wrap: break-word; }
+  /* line 10, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .address-info .billing-address {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 50px 0px 50px; }
+    @media only screen and (max-width: 925px) {
+      body.checkout-onepage-success .address-info .billing-address {
+        padding: 0px 20px 10px 20px; } }
+    @media only screen and (max-width: 599px) {
+      body.checkout-onepage-success .address-info .billing-address {
+        display: block;
+        border-bottom: 1px solid #EDEDED;
+        padding-bottom: 10px; } }
+    /* line 23, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-success .address-info .billing-address .billing-title {
+      font-size: 16px;
+      text-transform: uppercase;
+      margin-bottom: 10px; }
+  /* line 31, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .address-info .shipping-cost, body.checkout-onepage-success .address-info .shipping-address {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 50px 0px 50px; }
+    @media only screen and (max-width: 925px) {
+      body.checkout-onepage-success .address-info .shipping-cost, body.checkout-onepage-success .address-info .shipping-address {
+        padding: 0px 20px 10px 20px; } }
+    @media only screen and (max-width: 599px) {
+      body.checkout-onepage-success .address-info .shipping-cost, body.checkout-onepage-success .address-info .shipping-address {
+        display: block;
+        border-bottom: 1px solid #EDEDED;
+        padding-top: 10px; } }
+    /* line 44, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-success .address-info .shipping-cost .shipping-title, body.checkout-onepage-success .address-info .shipping-address .shipping-title {
+      font-size: 16px;
+      text-transform: uppercase;
+      margin-bottom: 10px; }
+  @media only screen and (max-width: 599px) {
+    /* line 51, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-success .address-info .shipping-cost {
+      border-bottom: none;
+      padding-bottom: 0px; } }
+/* line 58, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-success .item-count {
+  border-top: 1px solid #EDEDED;
+  border-bottom: 1px solid #EDEDED;
+  text-align: left;
+  padding: 5px 20px 5px 50px;
+  margin-bottom: 20px; }
+  @media only screen and (max-width: 925px) {
+    body.checkout-onepage-success .item-count {
+      padding: 10px; } }
+/* line 69, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-success .items-list {
+  display: inline-block;
+  float: left;
+  width: 70%;
+  padding: 5px 20px 5px 50px; }
+  @media only screen and (max-width: 925px) {
+    body.checkout-onepage-success .items-list {
+      width: 100%;
+      padding: 10px; } }
+  /* line 79, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .items-list .item-row {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    text-align: left; }
+    /* line 84, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-success .items-list .item-row .item-image {
+      max-width: 100px;
+      display: inline-block;
+      width: 12.987012987%; }
+      /* line 88, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+      body.checkout-onepage-success .items-list .item-row .item-image img {
+        width: 100%; }
+    /* line 93, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-success .items-list .item-row .item-name {
+      display: inline-block;
+      text-align: left;
+      vertical-align: top;
+      width: 72.7272727273%; }
+      /* line 98, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+      body.checkout-onepage-success .items-list .item-row .item-name .item-sku {
+        font-size: 12px;
+        padding-top: 8px;
+        color: #A0A0A0; }
+        /* line 103, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+        body.checkout-onepage-success .items-list .item-row .item-name .item-sku .sku-label {
+          font-weight: 400;
+          color: #A0A0A0; }
+    /* line 112, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-success .items-list .item-row .item-qty {
+      display: inline-block;
+      vertical-align: top;
+      float: right;
+      text-align: center;
+      width: 12.987012987%; }
+/* line 124, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-success .summary {
+  float: right;
+  display: inline-block;
+  width: 30%;
+  vertical-align: top;
+  padding: 5px 50px 5px 20px;
+  min-width: 250px; }
+  @media only screen and (max-width: 925px) {
+    body.checkout-onepage-success .summary {
+      width: 65%;
+      float: none;
+      padding: 10px; } }
+  @media only screen and (max-width: 599px) {
+    body.checkout-onepage-success .summary {
+      width: 100%; } }
+  /* line 139, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary > div {
+    border-radius: 3px;
+    padding-bottom: 10px;
+    border: 1px solid #3399CC; }
+  /* line 145, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary .summary-divider {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #3399CC; }
+  /* line 151, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary .summary-title {
+    font-weight: bold;
+    display: block;
+    line-height: 25px;
+    margin-bottom: 10px;
+    background-color: #3399CC;
+    color: #FFF; }
+  /* line 160, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary .total-label, body.checkout-onepage-success .summary .final-total {
+    font-weight: bold; }
+  /* line 166, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary .subtotal-label, body.checkout-onepage-success .summary .sub-total, body.checkout-onepage-success .summary .discount-label, body.checkout-onepage-success .summary .discount-amount, body.checkout-onepage-success .summary .shipping-label, body.checkout-onepage-success .summary .shipping-total, body.checkout-onepage-success .summary .total-label, body.checkout-onepage-success .summary .final-total {
+    display: inline-block;
+    width: 40%;
+    text-align: left; }
+  /* line 172, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary .sub-total, body.checkout-onepage-success .summary .discount-amount, body.checkout-onepage-success .summary .shipping-total, body.checkout-onepage-success .summary .final-total {
+    text-align: right; }
+  /* line 176, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-success .summary .final-total, body.checkout-onepage-success .summary .total-label {
+    margin-top: 10px; }
+
+/* line 188, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-login ul.form-list .register-control, body.checkout-onepage-index #checkout-step-login ul.form-list .guest-control {
+  position: absolute;
+  left: -999em; }
+/* line 193, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-login .register-block {
+  padding-top: 20px; }
+  /* line 195, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-login .register-block a {
+    cursor: pointer; }
+/* line 199, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-login a.forgot-password {
+  cursor: pointer; }
+@media only screen and (max-width: 770px) {
+  /* line 203, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-login .description {
+    display: inline-block; } }
+@media only screen and (max-width: 599px) {
+  /* line 208, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-login .col-1 {
+    border-bottom: 1px solid #e6e6e6; }
+  /* line 211, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-login .col-2 .register-block {
+    border-top: 1px solid #e6e6e6;
+    margin-top: 10px; } }
+/* line 220, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-billing ul.form-list > .control, body.checkout-onepage-index #checkout-step-shipping ul.form-list > .control, body.checkout-onepage-index #checkout-step-shipping_method ul.form-list > .control {
+  padding: 0px 20px 0px 20px; }
+  @media only screen and (max-width: 599px) {
+    body.checkout-onepage-index #checkout-step-billing ul.form-list > .control, body.checkout-onepage-index #checkout-step-shipping ul.form-list > .control, body.checkout-onepage-index #checkout-step-shipping_method ul.form-list > .control {
+      padding: 0 0 0 0; } }
+/* line 226, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-billing .field, body.checkout-onepage-index #checkout-step-billing .wide, body.checkout-onepage-index #checkout-step-billing .fields .fields, body.checkout-onepage-index #checkout-step-shipping .field, body.checkout-onepage-index #checkout-step-shipping .wide, body.checkout-onepage-index #checkout-step-shipping .fields .fields, body.checkout-onepage-index #checkout-step-shipping_method .field, body.checkout-onepage-index #checkout-step-shipping_method .wide, body.checkout-onepage-index #checkout-step-shipping_method .fields .fields {
+  display: inline-block;
+  float: left;
+  padding: 0px 20px 0px 20px; }
+  @media only screen and (max-width: 599px) {
+    body.checkout-onepage-index #checkout-step-billing .field, body.checkout-onepage-index #checkout-step-billing .wide, body.checkout-onepage-index #checkout-step-billing .fields .fields, body.checkout-onepage-index #checkout-step-shipping .field, body.checkout-onepage-index #checkout-step-shipping .wide, body.checkout-onepage-index #checkout-step-shipping .fields .fields, body.checkout-onepage-index #checkout-step-shipping_method .field, body.checkout-onepage-index #checkout-step-shipping_method .wide, body.checkout-onepage-index #checkout-step-shipping_method .fields .fields {
+      padding: 0 0 0 0; } }
+  /* line 233, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-billing .field .input-box, body.checkout-onepage-index #checkout-step-billing .field input, body.checkout-onepage-index #checkout-step-billing .wide .input-box, body.checkout-onepage-index #checkout-step-billing .wide input, body.checkout-onepage-index #checkout-step-billing .fields .fields .input-box, body.checkout-onepage-index #checkout-step-billing .fields .fields input, body.checkout-onepage-index #checkout-step-shipping .field .input-box, body.checkout-onepage-index #checkout-step-shipping .field input, body.checkout-onepage-index #checkout-step-shipping .wide .input-box, body.checkout-onepage-index #checkout-step-shipping .wide input, body.checkout-onepage-index #checkout-step-shipping .fields .fields .input-box, body.checkout-onepage-index #checkout-step-shipping .fields .fields input, body.checkout-onepage-index #checkout-step-shipping_method .field .input-box, body.checkout-onepage-index #checkout-step-shipping_method .field input, body.checkout-onepage-index #checkout-step-shipping_method .wide .input-box, body.checkout-onepage-index #checkout-step-shipping_method .wide input, body.checkout-onepage-index #checkout-step-shipping_method .fields .fields .input-box, body.checkout-onepage-index #checkout-step-shipping_method .fields .fields input {
+    width: 100%; }
+/* line 237, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-billing .field, body.checkout-onepage-index #checkout-step-billing .fields .fields, body.checkout-onepage-index #checkout-step-shipping .field, body.checkout-onepage-index #checkout-step-shipping .fields .fields, body.checkout-onepage-index #checkout-step-shipping_method .field, body.checkout-onepage-index #checkout-step-shipping_method .fields .fields {
+  width: 50%; }
+  @media only screen and (max-width: 599px) {
+    body.checkout-onepage-index #checkout-step-billing .field, body.checkout-onepage-index #checkout-step-billing .fields .fields, body.checkout-onepage-index #checkout-step-shipping .field, body.checkout-onepage-index #checkout-step-shipping .fields .fields, body.checkout-onepage-index #checkout-step-shipping_method .field, body.checkout-onepage-index #checkout-step-shipping_method .fields .fields {
+      width: 100%; } }
+/* line 243, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkout-step-billing .wide, body.checkout-onepage-index #checkout-step-shipping .wide, body.checkout-onepage-index #checkout-step-shipping_method .wide {
+  width: 100%; }
+  /* line 245, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-billing .wide input, body.checkout-onepage-index #checkout-step-shipping .wide input, body.checkout-onepage-index #checkout-step-shipping_method .wide input {
+    width: 100%; }
+@media only screen and (max-width: 479px) {
+  /* line 250, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkout-step-billing .buttons-set button.button, body.checkout-onepage-index #checkout-step-shipping .buttons-set button.button, body.checkout-onepage-index #checkout-step-shipping_method .buttons-set button.button {
+    margin-right: 0px; }
+    /* line 252, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-index #checkout-step-billing .buttons-set button.button.continue, body.checkout-onepage-index #checkout-step-shipping .buttons-set button.button.continue, body.checkout-onepage-index #checkout-step-shipping_method .buttons-set button.button.continue {
+      margin-top: 10px; } }
+/* line 259, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index .fancybox-inner.forgot-password {
+  text-align: center; }
+  @media only screen and (max-width: 599px) {
+    body.checkout-onepage-index .fancybox-inner.forgot-password {
+      height: auto !important; } }
+  /* line 264, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index .fancybox-inner.forgot-password .buttons-set {
+    text-align: center;
+    border-top: none; }
+    /* line 267, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+    body.checkout-onepage-index .fancybox-inner.forgot-password .buttons-set button {
+      float: none;
+      margin-left: 0px; }
+      /* line 270, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+      body.checkout-onepage-index .fancybox-inner.forgot-password .buttons-set button img {
+        margin: auto; }
+/* line 277, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
+  margin-left: 40px; }
+  /* line 278, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+  body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] dt {
+    display: none; }
+
+/* line 289, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+#checkout-review-table td .inline {
+  display: table-cell;
+  vertical-align: top; }
+
+/* line 297, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+.opc .buttons-set button.button.continue {
+  float: right; }
+
+/* line 302, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
+.inline-block {
+  display: inline-block;
+  vertical-align: top; }
+
+/*# sourceMappingURL=blueacorn-best-practice.css.map */
