@@ -24,8 +24,8 @@ class BlueAcorn_CheckoutCartBestPractice_Helper_Data extends Mage_Core_Helper_Ab
     {
         return Mage::getStoreConfig('bestpractices/'. $step . DS . $field);
     }
-    public function getMediaUrl(){
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    public function getAjaxSpinnerUrl(){
+        return Mage::getDesign()->getSkinUrl('images/ajax-spinner.gif', array());
     }
 
     public function getSystemConfig(array $directories) {

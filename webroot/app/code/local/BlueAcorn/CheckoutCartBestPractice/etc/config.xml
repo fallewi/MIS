@@ -98,7 +98,7 @@
     <jsconfig>
         <media_url>
             <class>BlueAcorn_CheckoutCartBestPractice_Helper_Data</class>
-            <method>getMediaUrl</method>
+            <method>getAjaxSpinnerUrl</method>
         </media_url>
     </jsconfig>
 </config>

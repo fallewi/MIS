@@ -94,7 +94,8 @@ jQuery('document').ready(function($){
                            'ajax' : true},
                     beforeSend: function() {
                         $('.forgot-password button').prop('disabled', true);
-                        $('.forgot-password button span span').html("<img src=\"" + mageConfig.media_url + "blueacorn/images/ajax-spinner.gif\" />");
+
+                        $('.forgot-password button span span').html('<img src="'+mageConfig.ajax_spinner_url+'" />');
                     }
                 }).success(function(data) {
                     $('.forgot-password button span span').html(this.settings.buttontext);
