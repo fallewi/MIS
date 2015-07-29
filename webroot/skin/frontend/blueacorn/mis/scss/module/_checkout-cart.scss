@@ -387,6 +387,8 @@
             margin-bottom: 10px;
             text-align: center;
             width: 3.2em;
+            padding-left:0;
+            padding-right:0;
         }
 
         .button {
@@ -951,5 +953,15 @@
     .shipping-form .form-list label:before,
     .input-box.validation-passed:before{
         display:none;
+    }
+}
+
+.checkout-cart-index{
+    .select-container{
+        .custom-shiv span{
+            position: absolute;
+            top:0;
+            right: 0;
+        }
     }
 }
