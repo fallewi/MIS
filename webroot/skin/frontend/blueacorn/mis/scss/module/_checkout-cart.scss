@@ -945,3 +945,11 @@
         }
     }
 }
+
+// Remove psuedo elements since there isn't enough room for them
+.checkout-cart-index{
+    .shipping-form .form-list label:before,
+    .input-box.validation-passed:before{
+        display:none;
+    }
+}

@@ -1730,6 +1730,10 @@ p.product-name {
   float: left; }
 
 /* Change the layout to 2 columns at a breakpoint that is higher than a 3 columns layout would normally break */
+.checkout-cart-index .shipping-form .form-list label:before,
+.checkout-cart-index .input-box.validation-passed:before {
+  display: none; }
+
 /* ============================================ *
  * Configurable Swatches
  * ============================================ */

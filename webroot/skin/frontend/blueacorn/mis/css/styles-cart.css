@@ -650,6 +650,10 @@
   .crosssell ul .product-details .crosssell-actions {
     padding: 0 5px; } }
 
+.checkout-cart-index .shipping-form .form-list label:before,
+.checkout-cart-index .input-box.validation-passed:before {
+  display: none; }
+
 /* ============================================ *
  * Configurable Swatches
  * ============================================ */
