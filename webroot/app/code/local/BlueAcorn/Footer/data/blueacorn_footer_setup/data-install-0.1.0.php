@@ -9,7 +9,7 @@ $installer = $this;
 
 $installer->startSetup();
 
-$content = <<<CONTENT
+$footerContent = <<<CONTENT
 <div class="tablet-links">
 <div class="links">
 <h5 class="block-title">Company Info</h5>
