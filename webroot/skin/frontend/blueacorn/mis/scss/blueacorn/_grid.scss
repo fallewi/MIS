@@ -1,0 +1,178 @@
+//  Blue Acorn Grid System
+
+@function grid($prefix) {
+    @if $prefix == m  { @return (1.25,15.625,17.5,17.5,15.625,1.25); }
+    @if $prefix == t  { @return (3.90625,11.979166667,9.635416667,10.807291666000001,10.807291666000001,9.635416667,11.979166667,3.90625); }
+    @if $prefix == d  { @return (7.6171875,14.453125,8.10546875,11.23046875,11.328125,8.10546875,14.453125,7.6171875); }
+}
+
+@function gutter($prefix) {
+    $gutter: 0;
+    @if $prefix == m  { $gutter: 6.25; }
+    @if $prefix == t  { $gutter: 3.90625; }
+    @if $prefix == d  { $gutter: 2.44140625; }
+    @return $gutter;
+}
+
+@function contraints($prefix) {
+
+  @if $prefix == m  { @return (false,false,false,false,false,false); }
+  @if $prefix == t  { @return (false,false,false,false,false,false,false,false); }
+  @if $prefix == d  { @return (false,false,false,false,false,false,false,false); }
+
+}
+
+@function gutter-offset($width, $cols, $grid, $first-margin) {
+
+    $gutter-offset: $cols;
+    $additional-width: #{(gutter($grid)/$gutter-offset)};
+
+    @if $first-margin == false {
+        @return #{($width + $additional-width) + '%'};
+    } @else {
+        @return #{$width + '%'}
+    }
+
+}
+
+@mixin grid-media($prefix, $type: false) {
+
+  @if $prefix == m {
+    @if ($type == min) or ($type == min-max) {
+        @if ($type == min) {
+            @media only screen and (min-width: 320px) { @content; }
+        } @else {
+            @media only screen and (min-width: 320px) and (max-width: 767px) { @content; }
+        }
+    }
+    @else { @content; }
+  }
+  @else if $prefix == t {
+    @if ($type == min) or ($type == min-max) {
+        @if ($type == min) {
+            @media only screen and (min-width: 768px) { @content; }
+        } @else {
+            @media only screen and (min-width: 768px) and (max-width: 1023px){ @content; }
+        }
+    }
+    @else { @content; }
+  }
+  @else if $prefix == d {
+    @if ($type == min) or ($type == min-max) {
+        @media only screen and (min-width: 1024px) { @content; }
+    }
+    @else { @content; }
+  }
+
+}
+
+@function grid-margin($grid, $spanstart) {
+    @if ($spanstart > 1) {
+        $start: 1;
+        $end: $spanstart - 1;
+
+        @if $end == $start { $end: false; }
+
+        $margin: grid-width($grid, $start, $end);
+        $gutter: gutter($grid);
+
+        @return $margin + $gutter;
+
+    } @else {
+
+        @return 0;
+
+    }
+}
+
+@function grid-width($grid, $start, $end: false) {
+
+    $cols: grid($grid);
+    $gutter: gutter($grid);
+    $measure: 0;
+    $gutters: 0;
+    $i: $start;
+
+    @if $end != false {
+        @if($end - $start) > 0 {
+            $gutters: ($gutter * ($end - $start));
+        }
+
+        @while $i <= $end {
+            $measure: $measure + nth($cols, $i);
+            $i: $i + 1;
+        }
+    } @else {
+        $conscols: contraints($grid);
+        $conscol: nth($conscols, $start);
+
+        $measure: nth($cols, $start);
+    }
+
+    @return $measure + $gutters;
+
+}
+
+@function g-col-width($prefix, $column) {
+    $column-width: #{grid-width($prefix, $column, $column) + '%'};
+    @return $column-width;
+}
+
+@mixin g($grid, $start, $end: false, $pad: false) {
+    @if $start == all {
+        float: left;
+        clear: both;
+        width: 100%;
+        @if ($grid == m) and ($pad == true){
+            $first-column: grid-width(m, 1);
+            padding: 0 #{($first-column + gutter($grid)) + '%'}
+        }
+        @if ($grid !=m) and ($pad == true){
+            padding: 0 #{gutter($grid) + '%'};
+        }
+    } @else {
+        @if $start > 1{
+            margin-left: #{gutter($grid) + '%'};
+        }
+        width: #{grid-width($grid, $start, $end) + '%'};
+    }
+}
+
+@mixin g-item($grid, $cols, $first-margin: false) {
+    $column-division: (1/$cols)*100;
+    $column-margin: $column-division - gutter($grid);
+    $additional-width: gutter($grid)/$cols;
+
+    margin-left: #{gutter($grid) + '%'};
+    @if ((1/$cols)*100) > gutter($grid) {
+        width: #{($additional-width + $column-margin) + '%'};
+    } @else {
+        width: #{$column-division + '%'};
+    }
+
+    @if $first-margin == false {
+        &:nth-child(#{$cols + 'n'} + #{'1'}){
+            margin-left: 0;
+            clear: both;
+        }
+    }
+}
+
+@mixin g-all() {
+    @include g(m, all);
+}
+
+@mixin g-all-pad() {
+    @include g(m, all, false, true);
+    @include grid-media(t, min) {
+        @include g(t, all, false, true);
+    }
+    @include grid-media(d, min) {
+        @include g(d, all, false, true);
+    }
+}
+
+@mixin reset-g-padding() {
+    padding-left: 0;
+    padding-right: 0;
+}

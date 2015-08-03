@@ -1,0 +1,1668 @@
+<h1>Style Guide</h1>
+
+<div class="sg-menu">
+    <button class="button sg-button"><span><span>Style Guide Menu</span></span></button>
+    <ul class="sg-menu-list"></ul>
+    <ul class="sg-config-list">
+        <li>
+            <input type="checkbox" class="checkbox showcode" name="showcode" />
+            <label for="showcode">Show Code Blocks</label>
+        </li>
+    </ul>
+</div>
+<div class="sg-shiv"></div>
+
+<section class="sg-colors">
+    <h3 class="sg-h">Colors</h3>
+    <ul>
+        <li class="brand-primary">
+            <span></span>
+            <p>Brand Primary</p>
+            <div class="code">$brand-primary</div>
+        </li>
+        <li class="brand-secondary">
+            <span></span>
+            <p>Brand Secondary</p>
+            <div class="code">$brand-secondary</div>
+        </li>
+        <li class="brand-action">
+            <span></span>
+            <p>Brand Action</p>
+            <div class="code">$brand-action</div>
+        </li>
+        <li class="brand-success">
+            <span></span>
+            <p>Brand Success</p>
+            <div class="code">$brand-success</div>
+        </li>
+        <li class="brand-warning">
+            <span></span>
+            <p>Brand Warning</p>
+            <div class="code">$brand-warning</div>
+        </li>
+        <li class="brand-danger">
+            <span></span>
+            <p>Brand Danger</p>
+            <div class="code">$brand-danger</div>
+        </li>
+        <li class="brand-info">
+            <span></span>
+            <p>Brand Info</p>
+            <div class="code">$brand-info</div>
+        </li>
+        <li class="brand-dark">
+            <span></span>
+            <p>Brand Dark</p>
+            <div class="code">$brand-dark</div>
+        </li>
+        <li class="brand-light">
+            <span></span>
+            <p>Brand Light</p>
+            <div class="code">$brand-light</div>
+        </li>
+        <li class="brand-text">
+            <span></span>
+            <p>Brand Text</p>
+            <div class="code">$brand-text</div>
+        </li>
+    </ul>
+</section>
+
+<section class="sg-typography">
+    <h3 class="sg-h">Typography</h3>
+    <aside class="base">
+        <dl>
+            <dt>Paragraph</dt>
+                <dd class="sg-paragaphs source"><p>Donec ullamcorper nulla non metus auctor fringilla. <a href="#">Maecenas</a> sed diam eget risus varius blandit sit amet non magna.</p></dd>
+                <dd class="sg-paragaphs-code code"><pre><code class="language-markup"></code></pre></dd>
+            <dt>Links</dt>
+                <dd class="sg-links source"><a href="#">This is a text link.</a></dd>
+                <dd class="sg-links-code code"><pre><code class="language-markup"></code></pre></dd>
+            <dt>Strong Text</dt>
+                <dd class="sg-strong source"><strong>Strong is used to indicate strong importance</strong></dd>
+                <dd class="sg-strong-code code"><pre><code class="language-markup"></code></pre></dd>
+            <dt>Emphasis Text</dt>
+                <dd class="sg-emphasis source"><em>This text has added emphasis</em></dd>
+                <dd class="sg-emphasis-code code"><pre><code class="language-markup"></code></pre></dd>
+        </dl>
+    </aside>
+    <aside class="headings">
+        <ul>
+            <li><span class="source"><h1>Heading 1</h1></span><span class="code"><pre><code class="language-markup"></code></pre></span></li>
+            <li><span class="source"><h2>Heading 2</h2></span><span class="code"><pre><code class="language-markup"></code></pre></span></li>
+            <li><span class="source"><h3>Heading 3</h3></span><span class="code"><pre><code class="language-markup"></code></pre></span></li>
+            <li><span class="source"><h4>Heading 4</h4></span><span class="code"><pre><code class="language-markup"></code></pre></span></li>
+            <li><span class="source"><h5>Heading 5</h5></span><span class="code"><pre><code class="language-markup"></code></pre></span></li>
+            <li><span class="source"><h6>Heading 6</h6></span><span class="code"><pre><code class="language-markup"></code></pre></span></li>
+        </ul>
+    </aside>
+    <aside class="unordered">
+        <h4>Unordered List</h4>
+<span class="source"><ul>
+    <li>This is a list item in an unordered list</li>
+    <li>The sequence of items is not important.</li>
+    <li>Lists can be nested inside of each other
+        <ul>
+            <li>This is a nested list item</li>
+            <li>This is another nested list item</li>
+        </ul>
+    </li>
+    <li>This is the last list item</li>
+</ul></span>
+        <span class="code"><pre><code class="language-markup"></code></pre></span>
+    </aside>
+    <aside class="ordered">
+        <h4>Ordered List</h4>
+        <span class="source"><ol>
+    <li>This is a list item in an ordered list</li>
+    <li>The sequence of items is important.</li>
+    <li>Lists can be nested inside of each other
+        <ol>
+            <li>This is a nested list item</li>
+            <li>This is another nested list item</li>
+        </ol>
+    </li>
+    <li>This is the last list item</li>
+</ol></span>
+        <span class="code"><pre><code class="language-markup"></code></pre></span>
+    </aside>
+    <aside class="bq">
+        <h4>Block Quote</h4>
+        <span class="source"><blockquote>Nullam id dolor id nibh ultricies vehicula ut id elit.</blockquote></span>
+        <span class="code"><pre><code class="language-markup"></code></pre></span>
+    </aside>
+</section>
+
+<section class="sg-button">
+    <h3 class="sg-h">Buttons</h3>
+    <ul>
+        <li>
+            <span class="source"><button class="button"><span><span>Primary</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><button class="button btn-small"><span><span>Primary</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><a class="button"><span>Primary</span></a></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+
+        <li>
+            <span class="source"><button class="button button-secondary"><span><span>Secondary</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><button class="button btn-small button-secondary"><span><span>Secondary</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><a class="button button-secondary"><span>Secondary</span></a></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><button class="button button-tertiary"><span><span>Tertiary</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><button class="button btn-small button-tertiary"><span><span>Tertiary</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><a class="button button-tertiary"><span>Tertiary</span></a></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><button class="button btn-cart"><span><span>Action</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><button class="button btn-small btn-cart"><span><span>Action</span></span></button></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><a class="button btn-cart"><span>Action</span></a></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+        <li>
+            <span class="source"><p class="back-link"><a href="#"><small>« </small>Back</a></p></span>
+            <span class="code"><pre><code class="language-markup"></code></pre></span>
+        </li>
+    </ul>
+</section>
+
+<section class="sg-form">
+    <h3 class="sg-h">Forms</h3>
+    <form>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="sg-text" class="required"><em>*</em>Text Input</label>
+                    <div class="input-box source"><input name="sg-text" type="text" class="input-text required-entry" /></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+                <div class="field">
+                    <label for="sg-text-placeholder" class="required"><em>*</em>Placeholder Input</label>
+                    <div class="input-box source"><input name="sg-text" type="text" class="input-text required-entry" placeholder="Placeholder" /></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="sg-text-error" class="required"><em>*</em>Email Input - Validation Error</label>
+                    <div class="source"><div class="input-box validation-error"><input name="sg-text" type="email" class="input-text required-entry validation-failed" /><div class="validation-advice">Please enter a valid email address. For example johndoe@domain.com.</div></div></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+                <div class="field">
+                    <label for="sg-text-passed" class="required"><em>*</em>Email Input - Validation Passed</label>
+                    <div class="source"><div class="input-box validation-passed"><input name="sg-text" type="email" class="input-text required-entry validation-passed" /></div></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="sg-text-tel" class="required"><em>*</em>Password Input</label>
+                    <div class="input-box source"><input name="sg-text-tel" type="password" value="abcdefg" class="input-text required-entry" /></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+                <div class="field">
+                    <label for="sg-text-tel" class="required"><em>*</em>Telephone Input</label>
+                    <div class="input-box source"><input name="sg-text-tel" type="tel" value="843-412-7401" class="input-text required-entry" /></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+            </li>
+            <li class="wide">
+                <label for="sg-disabled">Text Input - Disabled</label>
+                <div class="input-box source"><input name="sg-disabled" type="text" disabled="disabled" class="input-text" /></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="sg-tel" class="required">Telephone Input <small>Also good for Credit Card Inputs</small></label>
+                    <div class="input-box source"><input name="sg-tel" type="tel" class="input-text" /></div>
+                    <span class="code"><pre><code class="language-markup"></code></pre></span>
+                </div>
+            </li>
+            <li class="control">
+                <div class="source"><input type="radio" class="radio" id="custom-radio1" name="custom-radio" /><label for="custom-radio1">Custom Radio</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="control">
+                <div class="source"><input type="radio" class="radio" id="custom-radio2" name="custom-radio"  checked="checked" /><label for="custom-radio2">Custom Radio Active</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="control">
+                <div class="source"><input type="radio" class="radio" id="custom-radio3" name="custom-radio"  disabled="disabled" /><label for="custom-radio3">Custom Radio Disabled</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="control">
+                <div class="source"><input type="checkbox" class="checkbox" id="custom-checkbox1" name="custom-checkbox" /><label for="custom-checkbox1">Custom Checkbox</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="control">
+                <div class="source"><input type="checkbox" class="checkbox" id="custom-checkbox2" name="custom-checkbox" checked="checked" /><label for="custom-checkbox2">Custom Checkbox Active</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="control">
+                <div class="source"><input type="checkbox" class="checkbox" id="custom-checkbox3" name="custom-checkbox" disabled="disabled" /><label for="custom-checkbox3">Custom Checkbox Disabled</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="control">
+                <div class="source"><input type="radio" class="radio no-style" id="noncustom-radio1" name="noncustom-radio" /><label for="noncustom-radio1">Non-Custom Radio</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+<li class="control">
+                <div class="source"><input type="checkbox" class="checkbox no-style" id="noncustom-checkbox1" name="noncustom-checkbox" /><label for="noncustom-checkbox1">Non-Custom Checkbox</label></div>
+                <span class="code"><pre><code class="language-markup"></code></pre></span>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="custom-select" class="required"><em>*</em>Custom Select</label>
+                    <div class="input-box">
+                        <select id="custom-select" name="custom-select" title="Custom Select" class="validate-select required-entry">
+                            <option value="">Please select a Ninja Turtle, or Character</option>
+                            <option value="1">Leonardo</option>
+                            <option value="2">Michelangelo</option>
+                            <option value="3">Donatello</option>
+                            <option value="999">Raphael</option>
+                            <option value="4">Splinter</option>
+                            <option value="5">April O'Neil</option>
+                            <option value="6">Casey Jones</option>
+                            <option value="7">Shredder</option>
+                            <option value="8">Karai</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="custom-select" class="required"><em>*</em>Custom Select - Validation Error</label>
+                    <div class="input-box validation-error">
+                        <select id="custom-select" name="custom-select" title="Custom Select" class="validate-select required-entry validation-failed">
+                            <option value="">Would you like to know more?</option>
+                            <option value="1">Yes</option>
+                            <option value="3">The only good bug, is a dead bug.</option>
+                        </select>
+                        <div class="validation-advice">Please select an option.</div>
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="custom-select" class="required"><em>*</em>Custom Select Small</label>
+                    <div class="input-box">
+                        <select id="custom-select" name="custom-select" title="Custom Select" class="validate-select required-entry small-select">
+                            <option value="">---</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="unstyled-select" class="required"><em>*</em>Non-Custom Select</label>
+                    <div class="input-box">
+                        <select id="unstyled-select" name="custom-select" title="Custom Select" class="validate-select required-entry no-style">
+                            <option value="">---</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </form>
+</section>
+
+<section class="sg-messages">
+    <h3 class="sg-h">Messages</h3>
+
+    <small>Success Message</small>
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <li><span>Ink Eater: Krylon Bombear Destroyed Tee was added to your shopping cart.</span></li>
+            </ul>
+        </li>
+    </ul>
+
+    <small>Error Message</small>
+    <ul class="messages">
+        <li class="error-msg">
+            <ul>
+                <li><span>There was a problem with the subscription: This email address is already assigned to another user.</span></li>
+            </ul>
+        </li>
+    </ul>
+
+    <small>Notice Message</small>
+    <ul class="messages">
+        <li class="notice-msg">
+            <ul>
+                <li><span>There was a problem with the subscription: This email address is already assigned to another user.</span></li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="sg-misc">
+    <h3 class="sg-h">Product Patterns</h3>
+
+    <div class="col-left sidebar col-left-first">
+        <div class="block block-layered-nav">
+            <div class="block-title">
+                <strong><span>Shop By</span></strong>
+            </div>
+            <div class="block-content toggle-content">
+                <div class="currently">
+                    <p class="block-subtitle">Currently Shopping by:</p>
+                    <ol>
+                        <li>
+                            <a class="btn-remove" href="#" title="Remove This Item">Remove This Item</a>
+                            <span class="label">Type:</span> <span class="value">Shirts</span>
+                        </li>
+                    </ol>
+                </div>
+                <div class="actions"><a href="#">Clear All</a></div>
+                <p class="block-subtitle block-subtitle--filter">Filter</p>
+                <dl id="narrow-by-list">
+                    <dt class="odd">Price</dt>
+                    <dd class="odd">
+                        <ol>
+                            <li><a href="#"><span class="price">$140.00</span> - <span class="price">$149.99</span> <span class="count">(1)</span></a></li>
+                            <li><a href="#"><span class="price">$160.00</span> - <span class="price">$169.99</span> <span class="count">(1)</span></a></li>
+                            <li><a href="#"><span class="price">$190.00</span> and above <span class="count">(1)</span></a></li>
+                        </ol>
+                    </dd>
+                    <dt class="even">Color</dt>
+                    <dd class="even">
+                        <ol>
+                            <li><a href="#">Blue <span class="count">(1)</span></a></li>
+                            <li><a href="#">Charcoal <span class="count">(1)</span></a></li>
+                            <li><a href="#">White <span class="count">(1)</span></a></li>
+                        </ol>
+                    </dd>
+                    <dt class="odd">Occasion</dt>
+                    <dd class="odd">
+                        <ol>
+                            <li><a href="#">Career <span class="count">(1)</span></a></li>
+                            <li><a href="#">Casual <span class="count">(1)</span></a></li>
+                            <li><a href="#">Evening <span class="count">(1)</span></a></li>
+                        </ol>
+                    </dd>
+                    <dt class="even">Sleeve Length</dt>
+                    <dd class="even">
+                        <ol>
+                            <li><a href="#">Long Sleeve <span class="count">(3)</span></a></li>
+                        </ol>
+                    </dd>
+                    <dt class="odd">Fit</dt>
+                    <dd class="odd">
+                        <ol>
+                            <li><a href="#">Regular <span class="count">(2)</span></a></li>
+                            <li><a href="#">Sharp <span class="count">(1)</span></a></li>
+                            <li><a href="#">Slim <span class="count">(1)</span></a></li>
+                        </ol>
+                    </dd>
+                    <dt class="even">Size</dt>
+                    <dd class="even">
+                        <ol>
+                            <li><a href="#">XS <span class="count">(3)</span></a></li>
+                            <li><a href="#">S <span class="count">(2)</span></a></li>
+                            <li><a href="#">M <span class="count">(2)</span></a></li>
+                            <li><a href="#">L <span class="count">(2)</span></a></li>
+                            <li><a href="#">XL <span class="count">(3)</span></a></li>
+                        </ol>
+                    </dd>
+                    <dt class="last odd">Gender</dt>
+                    <dd class="last odd">
+                        <ol>
+                            <li><a href="#">Male <span class="count">(3)</span></a></li>
+                        </ol>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-main">
+        <div class="page-title category-title"><h1>Shirts</h1></div>
+        <div class="category-products">
+            <div class="toolbar">
+                <div class="sorter">
+                    <p class="view-mode">
+                        <label>View as</label>
+                        <strong title="Grid" class="grid">Grid</strong>
+                        <a href="" title="List" class="list">List</a>
+                    </p>
+                    <div class="sort-by">
+                        <label>Sort By</label>
+                        <div class="input-box">
+                            <select title="Sort By" class="select-custom">
+                                <option value="0" selected="selected">Position</option>
+                                <option value="0" selected="selected">Name</option>
+                                <option value="0" selected="selected">Price</option>
+                            </select>
+                        </div>
+                        <a href="#" class="sort-by-switcher sort-by-switcher--asc" title="Set Descending Direction">Set Descending Direction</a>
+                    </div>
+                </div>
+                <div class="pager">
+                    <div class="count-container">
+                        <p class="amount amount--no-pages"><strong>3 Item(s)</strong></p>
+                        <div class="limiter">
+                            <label>Show</label>
+                            <div class="input-box">
+                                <select title="Results per page">
+                                    <option value="0" selected="selected">12</option>
+                                    <option value="0" selected="selected">24</option>
+                                    <option value="0" selected="selected">36</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="products-grid products-grid--max-4-col first last odd">
+                <li class="item last">
+                    <a href="#" title="Chelsea Tee" class="product-image">
+                        <img src="http://placehold.it/210x210" alt="Chelsea Tee">
+                    </a>
+                    <div class="product-info" style="min-height: 170px;">
+                        <h2 class="product-name">
+                            <a href="#" title="Chelsea Tee">Chelsea Tee</a>
+                        </h2>
+                        <div class="price-box">
+                            <span class="regular-price" id="product-price-408">
+                                <span class="price">$75.00</span>
+                            </span>
+                        </div>
+                        <div class="actions">
+                            <a title="View Details" class="button" href="#">View Details</a>
+                            <ul class="add-to-links">
+                                <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                                <li><span class="separator">|</span>
+                                <a href="#" class="link-compare">Add to Compare</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item last">
+                    <a href="#" title="Chelsea Tee" class="product-image">
+                        <img src="http://placehold.it/210x210" alt="Chelsea Tee">
+                    </a>
+                    <div class="product-info" style="min-height: 170px;">
+                        <h2 class="product-name">
+                            <a href="#" title="Chelsea Tee">Chelsea Tee</a>
+                        </h2>
+                        <div class="price-box">
+                            <span class="regular-price" id="product-price-408">
+                                <span class="price">$75.00</span>
+                            </span>
+                        </div>
+                        <div class="ratings">
+                            <div class="rating-box">
+                                <div class="rating" style="width:80%"></div>
+                            </div>
+                            <span class="amount"><a href="#">1 Review(s)</a></span>
+                        </div>
+                        <div class="actions">
+                            <a title="View Details" class="button" href="#">View Details</a>
+                            <ul class="add-to-links">
+                                <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                                <li><span class="separator">|</span>
+                                <a href="#" class="link-compare">Add to Compare</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item last">
+                    <a href="#" title="Chelsea Tee" class="product-image">
+                        <img src="http://placehold.it/210x210" alt="Chelsea Tee">
+                    </a>
+                    <div class="product-info" style="min-height: 170px;">
+                        <h2 class="product-name">
+                            <a href="#" title="Chelsea Tee">Chelsea Tee</a>
+                        </h2>
+                        <div class="price-box">
+                            <p class="old-price">
+                                <span class="price-label">Regular Price:</span>
+                                <span class="price" id="old-price-403">$175.00</span>
+                            </p>
+                            <p class="special-price">
+                                <span class="price-label">Special Price</span>
+                                <span class="price" id="product-price-403">$140.00</span>
+                            </p>
+                        </div>
+                        <div class="actions">
+                            <a title="View Details" class="button" href="#">View Details</a>
+                            <ul class="add-to-links">
+                                <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                                <li><span class="separator">|</span>
+                                <a href="#" class="link-compare">Add to Compare</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item last">
+                    <a href="#" title="Chelsea Tee" class="product-image">
+                        <img src="http://placehold.it/210x210" alt="Chelsea Tee">
+                    </a>
+                    <div class="product-info" style="min-height: 170px;">
+                        <h2 class="product-name">
+                            <a href="#" title="Merino V-Neck Pullover Sweater">Merino V-Neck Pullover Sweater</a>
+                        </h2>
+                        <div class="price-box">
+                            <p class="price-from">
+                                <span class="price-label">From:</span>
+                                <span class="price">$185.00</span>
+                            </p>
+                            <p class="price-to">
+                                <span class="price-label">To:</span>
+                                <span class="price">$275.00</span>
+                            </p>
+                        </div>
+                        <div class="actions">
+                            <a title="View Details" class="button" href="#">View Details</a>
+                            <ul class="add-to-links">
+                                <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                                <li><span class="separator">|</span>
+                                <a href="#" class="link-compare">Add to Compare</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item last">
+                    <a href="#" title="Chelsea Tee" class="product-image">
+                        <img src="http://placehold.it/210x210" alt="Chelsea Tee">
+                    </a>
+                    <div class="product-info" style="min-height: 170px;">
+                        <h2 class="product-name">
+                            <a href="#" title="Lexington Cardigan Sweater">Lexington Cardigan Sweater</a>
+                        </h2>
+                        <div class="price-box">
+                            <span class="regular-price" id="product-price-408">
+                                <span class="price">$240.00</span>
+                            </span>
+                        </div>
+                        <div class="actions">
+                            <a title="View Details" class="button" href="#">View Details</a>
+                            <ul class="add-to-links">
+                                <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                                <li><span class="separator">|</span>
+                                <a href="#" class="link-compare">Add to Compare</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="item last">
+                    <a href="#" title="Chelsea Tee" class="product-image">
+                        <img src="http://placehold.it/210x210" alt="Chelsea Tee">
+                    </a>
+                    <div class="product-info" style="min-height: 170px;">
+                        <h2 class="product-name">
+                            <a href="#" title="Core Striped Sport Shirt">Core Striped Sport Shirt</a>
+                        </h2>
+                        <div class="price-box map-info">
+                            <span class="old-price" id="product-price-392">
+                                <span class="price">$400.00</span>
+                            </span>
+                            <a href="#" id="msrp-click-392beNK0ZzxIcUOc6kyE3Br">Click for price</a>
+                            <script type="text/javascript">
+                                var newLink = Catalog.Map.addHelpLink(
+                                    $('msrp-click-392beNK0ZzxIcUOc6kyE3Br'),
+                                    "Madison LX2200",
+                                    "\n\n\n<div class=\"price-box\">\n<span class=\"regular-price\" id=\"product-price-392\">\n<span class=\"price\">$425.00<\/span><\/span>\n\n<\/div>\n\n",
+                                    '<span class="price">$400.00</span>',
+                                    "#"
+                                );
+                                newLink.product_id = '392';
+                            </script>
+                        </div>
+                        <div class="ratings">
+                            <div class="rating-box">
+                                <div class="rating" style="width:20%"></div>
+                            </div>
+                            <span class="amount"><a href="#">1 Review(s)</a></span>
+                        </div>
+                        <div class="actions">
+                            <a title="View Details" class="button" href="#">View Details</a>
+                            <ul class="add-to-links">
+                                <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                                <li><span class="separator">|</span>
+                                <a href="#" class="link-compare">Add to Compare</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="toolbar">
+                <div class="sorter">
+                    <p class="view-mode">
+                        <label>View as</label>
+                        <strong title="Grid" class="grid">Grid</strong>
+                        <a href="" title="List" class="list">List</a>
+                    </p>
+                    <div class="sort-by">
+                        <label>Sort By</label>
+                        <div class="input-box">
+                            <select title="Sort By" class="select-custom">
+                                <option value="0" selected="selected">Position</option>
+                                <option value="0" selected="selected">Name</option>
+                                <option value="0" selected="selected">Price</option>
+                            </select>
+                        </div>
+                        <a href="#" class="sort-by-switcher sort-by-switcher--asc" title="Set Descending Direction">Set Descending Direction</a>
+                    </div>
+                </div>
+                <div class="pager">
+                    <div class="count-container">
+                        <p class="amount amount--no-pages"><strong>3 Item(s)</strong></p>
+                        <div class="limiter">
+                            <label>Show</label>
+                            <div class="input-box">
+                                <select title="Results per page">
+                                    <option value="0" selected="selected">12</option>
+                                    <option value="0" selected="selected">24</option>
+                                    <option value="0" selected="selected">36</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-view">
+        <div class="product-essential">
+            <form action="#" method="post" id="product_addtocart_form">
+                <input name="form_key" type="hidden" value="kHi3YpXXEFKZSFbX">
+                <div class="no-display">
+                    <input type="hidden" name="product" value="338">
+                    <input type="hidden" name="related_product" id="related-products-field" value="">
+                </div>
+                <div class="product-img-box">
+                    <div class="product-name">
+                        <h1>Jackie O Round Sunglasses</h1>
+                    </div>
+                    <div class="product-image product-image-zoom zoom-available">
+                        <div class="product-image-gallery">
+                            <img id="image-main" class="gallery-image visible" src="http://placehold.it/850x564" alt="Jackie O Round Sunglasses" title="Jackie O Round Sunglasses">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-shop">
+                    <div class="product-name">
+                        <span class="h1">Jackie O Round Sunglasses</span>
+                    </div>
+                    <div class="price-info">
+                        <div class="price-box">
+                            <p class="old-price">
+                                <span class="price-label">Regular Price:</span>
+                                <span class="price" id="old-price-338">$295.00</span>
+                            </p>
+                            <p class="special-price">
+                                <span class="price-label">Special Price</span>
+                                <span class="price" id="product-price-338">$225.00</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="extra-info">
+                        <div class="ratings">
+                            <div class="rating-box">
+                                <div class="rating" style="width:100%"></div>
+                            </div>
+                            <p class="rating-links">
+                                <a href="#">2 Review(s)</a>
+                                <span class="separator">|</span>
+                                <a href="#">Add Your Review</a>
+                            </p>
+                        </div>
+                        <p class="availability in-stock">
+                            <span class="label">Availability:</span>
+                            <span class="value">In stock</span>
+                        </p>
+                    </div>
+
+                    <div class="short-description">
+                        <div class="std">These distinct, feminine frames balance a classic Jackie-O styling with a modern look.</div>
+                    </div>
+                </div>
+
+                <div class="add-to-cart-wrapper">
+                    <div class="add-to-box">
+                        <div class="add-to-cart">
+                            <div class="qty-wrapper">
+                                <label for="qty">Qty:</label>
+                                <input type="text" pattern="\d*" name="qty" id="qty" maxlength="12" value="1" title="Qty" class="input-text qty">
+                            </div>
+                            <div class="add-to-cart-buttons">
+                                <button type="button" title="Add to Cart" class="button btn-cart"><span><span>Add to Cart</span></span></button>
+                            </div>
+                        </div>
+                        <span class="or">OR</span>
+                        <ul class="add-to-links">
+                            <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                            <li><span class="separator">|</span> <a href="#" class="link-compare">Add to Compare</a></li>
+                        </ul>
+
+                        <ul class="sharing-links">
+                            <li><a href="#" class="link-email-friend" title="Email to a Friend">Email to a Friend</a></li>
+                            <li><a href="#" title="Share on Facebook" class="link-facebook">Share Facebook</a></li>
+                            <li><a href="#" title="Share on Twitter" class="link-twitter">Share on Twitter</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="clearer"></div>
+
+            </form>
+        </div>
+
+        <div class="product-collateral toggle-content tabs">
+            <!-- <ul class="toggle-tabs">
+                <li class="current"><span>Description</span></li>
+                <li><span>Additional Information</span></li>
+                <li class="last"><span>Reviews</span></li>
+            </ul> -->
+            <dl id="collateral-tabs" class="collateral-tabs">
+                <dt class="tab current"><span>Description</span></dt>
+                <dd class="tab-container current">
+                    <div class="tab-content"><h2>Details</h2>
+                        <div class="std">Acetate frame. Polycarbonate lenses.</div>
+                    </div>
+                </dd>
+                <dt class="tab"><span>Additional Information</span></dt>
+                <dd class="tab-container">
+                    <div class="tab-content"><h2>Additional Information</h2>
+                        <table class="data-table" id="product-attribute-specs-table">
+                            <colgroup>
+                                <col width="25%">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr class="first odd">
+                                <th class="label">Color</th>
+                                <td class="data last">Red</td>
+                            </tr>
+                            <tr class="even">
+                                <th class="label">Gender</th>
+                                <td class="data last">Female</td>
+                            </tr>
+                            <tr class="last odd">
+                                <th class="label">Material</th>
+                                <td class="data last">Other</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </dd>
+                <dt class="tab last"><span>Reviews</span></dt>
+                <dd class="tab-container last">
+                    <div class="tab-content">
+                        <div class="box-collateral box-reviews" id="customer-reviews">
+                            <div class="review-heading">
+                                <h2>Customer Reviews <span>2 item(s)</span></h2>
+                            </div>
+                            <dl>
+                                <dt><a href="#">Stylish and classic </a></dt>
+                                <dd>I was searching for a long time for a great pair of sunglasses and found these. They are super comfortable, stylish and simply a classic pair of chic sunglasses.
+                                    <table class="ratings-table">
+                                        <colgroup>
+                                            <col width="1">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <th>Value</th>
+                                            <td>
+                                                <div class="rating-box">
+                                                    <div class="rating" style="width:100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Quality</th>
+                                            <td>
+                                                <div class="rating-box">
+                                                    <div class="rating" style="width:100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Price</th>
+                                            <td>
+                                                <div class="rating-box">
+                                                    <div class="rating" style="width:100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <span class="review-meta">Review by Stacy L/(Posted on 5/28/2013)</span>
+                                </dd>
+                                <dt><a href="#">Trendy and chic!</a></dt>
+                                <dd>
+                                    I bought these sunglasses after seeing some similar ones at Ray Ban. They are super cute and trendy! I get compliments all the time when wearing them!
+
+                                    <table class="ratings-table">
+                                        <colgroup>
+                                            <col width="1">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <th>Price</th>
+                                            <td>
+                                                <div class="rating-box">
+                                                    <div class="rating" style="width:100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Value</th>
+                                            <td>
+                                                <div class="rating-box">
+                                                    <div class="rating" style="width:100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Quality</th>
+                                            <td>
+                                                <div class="rating-box">
+                                                    <div class="rating" style="width:100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <span class="review-meta">Review by Denise J / (Posted on 5/28/2013)</span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</section>
+
+<section class="sg-misc">
+    <h3 class="sg-h">Cart Patterns</h3>
+
+    <h4>Mini Cart</h4>
+    <aside class="header-minicart">
+        <div class="minicart-wrapper">
+            <p class="block-subtitle">Recently added item(s) <a class="close skip-link-close" href="#" title="Close">×</a></p>
+            <div>
+                <ul class="mini-products-list" id="cart-sidebar">
+                    <li class="item odd" xmlns="http://www.w3.org/1999/html">
+                        <a class="product-image" href="#" title="MP3 Player with Audio">
+                            <img alt="MP3 Player with Audio" height="50" src="http://placehold.it/50x50" width="50">
+                        </a>
+                        <div class="product-details">
+                            <p class="product-name"><a href="#">MP3 Player with Audio</a></p>
+                            <table class="info-wrapper">
+                                <tbody>
+                                    <tr>
+                                        <th>Price</th>
+                                        <td><span class="price">$185.00</span></td>
+                                    </tr>
+                                    <tr class="qty-wrapper">
+                                        <th>Qty</th>
+                                        <td>
+                                            <input class="qty cart-item-quantity" data-item-id="2529" data-link="#" id="qinput-2529" name="" value="1">
+                                            <button class="button quantity-button" data-item-id="2529" data-update="" disabled="disabled" id="qbutton-2529">ok</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a class="btn-edit" href="#" title="Edit item">Edit item</a> | <a class="remove" data-confirm="Are you sure you would like to remove this item from the shopping cart?" href="#" title="Remove This Item">Remove Item</a>
+                        </div>
+                    </li>
+                    <li class="item last even" xmlns="http://www.w3.org/1999/html">
+                        <a class="product-image" href="#" title="Retro Chic Eyeglasses"><img alt="Retro Chic Eyeglasses" height="50" src="http://placehold.it/50x50" width="50"></a>
+                        <div class="product-details">
+                            <p class="product-name"><a href="#">Retro Chic Eyeglasses</a></p>
+                            <table class="info-wrapper">
+                                <tbody>
+                                    <tr>
+                                        <th>Price</th>
+                                        <td><span class="price">$295.00</span></td>
+                                    </tr>
+                                    <tr class="qty-wrapper">
+                                        <th>Qty</th>
+                                        <td>
+                                            <input class="qty cart-item-quantity" data-item-id="2528" data-link="#" id="qinput-2528" name="" value="1">
+                                            <button class="button quantity-button" data-item-id="2528" data-update="" disabled="disabled" id="qbutton-2528">ok</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a class="btn-edit" href="#" title="Edit item">Edit item</a> | <a class="remove" data-confirm="Are you sure you would like to remove this item from the shopping cart?" href="#" title="Remove This Item">Remove Item</a>
+                        </div>
+                    </li>
+                </ul>
+            </div><script type="text/javascript">
+                decorateList('cart-sidebar', 'none-recursive');
+            </script>
+
+            <div id="minicart-widgets"></div>
+            <div class="block-content">
+                <p class="subtotal"><span class="label">Cart Subtotal:</span> <span class="price">$480.00</span></p>
+            </div>
+            <div class="minicart-actions">
+                <a class="cart-link" href="/checkout/cart/">View Shopping Cart</a>
+                <ul class="checkout-types minicart">
+                    <li>
+                        <a class="button checkout-button" href="/checkout/onepage/" title="Checkout">Checkout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <h4>Empty Mini Cart</h4>
+    <aside class="minicart-empty">
+        <div class="minicart-wrapper">
+            <p class="block-subtitle">
+                Recently added item(s)
+                <a class="close skip-link-close" href="#" title="Close">×</a>
+            </p>
+            <p class="empty">You have no items in your shopping cart.</p>
+        </div>
+    </aside>
+
+    <div class="cart display-single-price">
+    <div class="page-title title-buttons">
+        <h1>Shopping Cart</h1>
+        <ul class="checkout-types top">
+            <li>
+                <button type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"
+                        onclick="window.location='http://gp.dev/checkout/onepage/';"><span><span>Proceed to Checkout</span></span>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <li><span>Jackie O Round Sunglasses was added to your shopping cart.</span></li>
+            </ul>
+        </li>
+    </ul>
+    <form action="http://gp.dev/checkout/cart/updatePost/" method="post">
+        <input name="form_key" type="hidden" value="kHi3YpXXEFKZSFbX">
+        <table id="shopping-cart-table" class="cart-table data-table">
+            <thead>
+            <tr class="first last">
+                <th rowspan="1"><span class="nobr">Product</span></th>
+                <th rowspan="1">&nbsp;</th>
+                <th class="a-center cart-price-head" colspan="1"><span class="nobr">Price</span></th>
+                <th rowspan="1" class="a-center">Qty</th>
+                <th class="a-center cart-total-head" colspan="1">Subtotal</th>
+                <th class="a-center" rowspan="1">&nbsp;</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr class="first last">
+                <td colspan="50" class="a-right cart-footer-actions last">
+                    <!-- Make this button the first responder rather than empty cart -->
+                    <button type="submit" style="visibility:hidden;" name="update_cart_action" value="update_qty" title="Update Shopping Cart" class="button2 btn-update"><span><span>Update Shopping Cart</span></span></button>
+
+                    <button type="submit" name="update_cart_action" value="empty_cart" title="Empty Cart" class="button2 btn-empty" id="empty_cart_button"><span><span>Empty Cart</span></span></button>
+
+                    <button type="submit" name="update_cart_action" value="update_qty" title="Update Shopping Cart" class="button2 btn-update"><span><span>Update Shopping Cart</span></span></button>
+
+                    <span class="or">-or-</span>
+
+                    <button type="button" title="Continue Shopping" class="button2 btn-continue"><span><span>Continue Shopping</span></span></button>
+                </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr class="first last odd">
+                <td class="product-cart-image">
+                    <a href="#" title="Jackie O Round Sunglasses" class="product-image">
+                        <img src="http://placehold.it/180x180" alt="Jackie O Round Sunglasses">
+                    </a>
+                    <ul class="cart-links">
+                        <li><a href="#" title="Edit item parameters">Edit</a></li>
+                    </ul>
+                </td>
+                <td class="product-cart-info">
+                    <a href="#" title="Remove Item" class="btn-remove btn-remove2">Remove Item</a>
+                    <h2 class="product-name">
+                        <a href="#">Jackie O Round Sunglasses</a>
+                    </h2>
+                    <div class="product-cart-sku">
+                        <span class="label">SKU:</span> ace001
+                    </div>
+                </td>
+                <td class="product-cart-price" data-rwd-label="Price" data-rwd-tax-label="Excl. Tax">
+                    <span class="cart-price">
+                        <span class="price">$225.00</span>
+                    </span>
+                </td>
+                <!-- inclusive price starts here -->
+                <td class="product-cart-actions" data-rwd-label="Qty">
+                    <input type="text" pattern="\d*" name="cart[2473][qty]" value="1" size="4" title="Qty"
+                           class="input-text qty" maxlength="12">
+                    <button type="submit" name="update_cart_action" value="update_qty" title="Update" class="button btn-update"><span><span>Update</span></span></button>
+
+                    <ul class="cart-links">
+                        <li><a href="#" title="Edit item parameters">Edit</a></li>
+                    </ul>
+                </td>
+
+                <!--Sub total starts here -->
+                <td class="product-cart-total" data-rwd-label="Subtotal">
+                    <span class="cart-price">
+                        <span class="price">$225.00</span>
+                    </span>
+                </td>
+                <td class="a-center product-cart-remove last">
+                    <a href="#" title="Remove Item" class="btn-remove btn-remove2">Remove Item</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <div class="cart-forms">
+        <form id="discount-coupon-form" action="#" method="post">
+            <div class="discount">
+                <h2>Discount Codes</h2>
+                <div class="discount-form">
+                    <label for="coupon_code">Discount Codes</label>
+                    <input type="hidden" name="remove" id="remove-coupone" value="0">
+                    <div class="field-wrapper">
+                        <input class="input-text" type="text" id="coupon_code" name="coupon_code" value="">
+                        <div class="button-wrapper">
+                            <button type="button" title="Apply" class="button2" value="Apply"><span><span>Apply</span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="giftcard">
+            <h2>Gift Cards</h2>
+            <div id="giftcard_balance_lookup"></div>
+            <span id="gc-please-wait" class="please-wait" style="display:none;">
+            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>" alt="" class="v-middle"> Please wait, loading...</span>
+            <form id="giftcard-form" action="#" method="post">
+                <label for="giftcard_code">Gift Cards</label>
+                <div class="field-wrapper">
+                    <input class="required-entry input-text" type="text" id="giftcard_code" name="giftcard_code" value="">
+                    <div class="button-wrapper">
+                        <button class="button2" type="button" value="Apply"><span><span>Apply</span></span></button>
+                    </div>
+                </div>
+                <a class="button2 check-gc-status" title="Check Gift Card status and balance"><span><span>Check Gift Card status and balance</span></span></a>
+            </form>
+        </div>
+        <div class="shipping">
+            <h2>Estimate Shipping and Tax</h2>
+
+            <div class="shipping-form">
+                <form action="#" method="post" id="shipping-zip-form">
+                    <p class="shipping-desc">Enter your destination to get a shipping estimate.</p>
+                    <ul class="form-list">
+                        <li class="shipping-country">
+                            <label for="country" class="required"><em>*</em>Country</label>
+
+                            <div class="input-box">
+                                <select name="country_id" id="country" class="validate-select select-custom" title="Country">
+                                    <option value="AE">United Arab Emirates</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="US" selected="selected">United States</option>
+                                    <option value="UY">Uruguay</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li class="shipping-region">
+                            <label for="region_id" class="required"><em>*</em>State/Province</label>
+                            <div class="input-box">
+                                <select id="region_id" name="region_id" title="State/Province" defaultvalue="" class="required-entry validate-select select-custom">
+                                    <option value="">Please select region, state or province</option>
+                                    <option value="1" title="Alabama">Alabama</option>
+                                    <option value="2" title="Alaska">Alaska</option>
+                                    <option value="3" title="American Samoa">American Samoa</option>
+                                    <option value="4" title="Arizona">Arizona</option>
+                                    <option value="5" title="Arkansas">Arkansas</option>
+                                    <option value="12" title="California">California</option>
+                                    <option value="13" title="Colorado">Colorado</option>
+                                    <option value="14" title="Connecticut">Connecticut</option>
+                                    <option value="15" title="Delaware">Delaware</option>
+                                    <option value="16" title="District of Columbia">District of Columbia</option>
+                                    <option value="18" title="Florida">Florida</option>
+                                    <option value="19" title="Georgia">Georgia</option>
+                                    <option value="20" title="Guam">Guam</option>
+                                    <option value="21" title="Hawaii">Hawaii</option>
+                                    <option value="22" title="Idaho">Idaho</option>
+                                    <option value="23" title="Illinois">Illinois</option>
+                                    <option value="24" title="Indiana">Indiana</option>
+                                    <option value="25" title="Iowa">Iowa</option>
+                                    <option value="26" title="Kansas">Kansas</option>
+                                    <option value="27" title="Kentucky">Kentucky</option>
+                                    <option value="28" title="Louisiana">Louisiana</option>
+                                    <option value="29" title="Maine">Maine</option>
+                                    <option value="30" title="Marshall Islands">Marshall Islands</option>
+                                    <option value="31" title="Maryland">Maryland</option>
+                                    <option value="32" title="Massachusetts">Massachusetts</option>
+                                    <option value="33" title="Michigan">Michigan</option>
+                                    <option value="34" title="Minnesota">Minnesota</option>
+                                    <option value="35" title="Mississippi">Mississippi</option>
+                                    <option value="36" title="Missouri">Missouri</option>
+                                    <option value="37" title="Montana">Montana</option>
+                                    <option value="38" title="Nebraska">Nebraska</option>
+                                    <option value="39" title="Nevada">Nevada</option>
+                                    <option value="40" title="New Hampshire">New Hampshire</option>
+                                    <option value="41" title="New Jersey">New Jersey</option>
+                                    <option value="42" title="New Mexico">New Mexico</option>
+                                    <option value="43" title="New York">New York</option>
+                                    <option value="44" title="North Carolina">North Carolina</option>
+                                    <option value="45" title="North Dakota">North Dakota</option>
+                                    <option value="47" title="Ohio">Ohio</option>
+                                    <option value="48" title="Oklahoma">Oklahoma</option>
+                                    <option value="49" title="Oregon">Oregon</option>
+                                    <option value="50" title="Palau">Palau</option>
+                                    <option value="51" title="Pennsylvania">Pennsylvania</option>
+                                    <option value="52" title="Puerto Rico">Puerto Rico</option>
+                                    <option value="53" title="Rhode Island">Rhode Island</option>
+                                    <option value="54" title="South Carolina">South Carolina</option>
+                                    <option value="55" title="South Dakota">South Dakota</option>
+                                    <option value="56" title="Tennessee">Tennessee</option>
+                                    <option value="57" title="Texas">Texas</option>
+                                    <option value="58" title="Utah">Utah</option>
+                                    <option value="59" title="Vermont">Vermont</option>
+                                    <option value="60" title="Virgin Islands">Virgin Islands</option>
+                                    <option value="61" title="Virginia">Virginia</option>
+                                    <option value="62" title="Washington">Washington</option>
+                                    <option value="63" title="West Virginia">West Virginia</option>
+                                    <option value="64" title="Wisconsin">Wisconsin</option>
+                                    <option value="65" title="Wyoming">Wyoming</option>
+                                </select>
+                                <input type="text" id="region" name="region" value="" title="State/Province" class="input-text required-entry" style="display: none;">
+                            </div>
+                        </li>
+                        <li class="shipping-region">
+                            <label for="city">City</label>
+                            <div class="input-box">
+                                <input class="input-text" id="city" type="text" name="estimate_city" value="">
+                            </div>
+                        </li>
+                        <li class="shipping-postcode">
+                            <label for="postcode" class="required"><em>*</em>Zip</label>
+                            <div class="input-box">
+                                <input class="input-text validate-postcode" type="text" id="postcode" name="estimate_postcode" value="">
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="buttons-set">
+                        <button type="button" title="Estimate" class="button2"><span><span>Estimate</span></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="cart-totals-wrapper">
+        <div class="cart-totals">
+            <table id="shopping-cart-totals-table">
+                <tfoot>
+                    <tr>
+                        <td style="" class="a-right" colspan="1"><strong>Grand Total</strong></td>
+                        <td style="" class="a-right"><strong><span class="price">$243.56</span></strong></td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td style="" class="a-right" colspan="1">Subtotal</td>
+                        <td style="" class="a-right"><span class="price">$225.00</span></td>
+                    </tr>
+                    <tr>
+                        <td style="" class="a-right" colspan="1">Tax</td>
+                        <td style="" class="a-right"><span class="price">$18.56</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul class="checkout-types bottom">
+                <li class="method-checkout-cart-methods-onepage-bottom">
+                    <button type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span>Proceed to Checkout</span></span></button>
+                </li>
+                <li class="method-giftregistry-cart-link"></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+</section>
+
+<section class="sg-account">
+    <h3 class="sg-h">My Account Patterns</h3>
+
+    <div class="col-left sidebar col-left-first">
+        <div class="block block-account">
+            <div class="block-title">
+                <strong><span>My Account</span></strong>
+            </div>
+            <div class="block-content">
+                <ul>
+                    <li class="current"><a href="/customer/account/"><strong>Account Dashboard</strong></a></li>
+                    <li><a href="/customer/account/edit/">Account Information</a></li>
+                    <li><a href="/customer/address/">Address Book</a></li>
+                    <li><a href="/sales/order/history/">My Orders</a></li>
+                    <li><a href="/sales/billing_agreement/">Billing Agreements</a></li>
+                    <li><a href="/sales/recurring_profile/">Recurring Profiles</a></li>
+                    <li><a href="/review/customer/">My Product Reviews</a></li>
+                    <li><a href="/wishlist/">My Wishlists</a></li>
+                    <li><a href="/oauth/customer_token/">My Applications</a></li>
+                    <li><a href="/newsletter/manage/">Newsletter Subscriptions</a></li>
+                    <li><a href="/downloadable/customer/products/">My Downloadable Products</a></li>
+                    <li><a href="/storecredit/info/">Store Credit</a></li>
+                    <li><a href="/giftcard/customer/">Gift Card</a></li>
+                    <li><a href="/giftregistry/">Gift Registry</a></li>
+                    <li><a href="/reward/customer/info/">Reward Points</a></li>
+                    <li class="last"><a href="/invitation/">My Invitations</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-main">
+        <div class="my-account">
+            <div class="page-title title-buttons">
+                <h1>Address Book</h1>
+                <button type="button" title="Add New Address" class="button"><span><span>Add New Address</span></span></button>
+            </div>
+            <div class="col2-set addresses-list">
+                <div class="col-1 addresses-primary">
+                    <h2>Default Addresses</h2>
+                    <ol>
+                        <li class="item">
+                            <h3>Default Billing Address</h3>
+                            <address>
+                                Greg Harvell<br>
+                                1600 Pennsylvania Avenue NW<br>
+                                Washington,  District of Columbia, 20500<br>
+                                United States<br>
+                                T: 8434127401
+                            </address>
+                            <p><a href="#">Change Billing Address</a></p>
+                        </li>
+                        <li class="item">
+                            <h3>Default Shipping Address</h3>
+                            <address>
+                                Blue Acorn DO NOT PROCESS<br>
+                                Blue Acorn<br>
+                                145 Williman St<br>
+                                Charleston,  South Carolina, 29405<br>
+                                United States<br>
+                                T: 843-641-0045
+                            </address>
+                            <p><a href="#">Change Shipping Address</a></p>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-2 addresses-additional">
+                    <h2>Additional Address Entries</h2>
+                    <ol>
+                        <li class="item">
+                            <address>
+                                Gregory Harvell<br>
+                                Blue Acorn<br>
+                                145 Williman St<br>
+                                Charleston,  South Carolina, 29403<br>
+                                United States<br>
+                                T: 843-412-7401
+                            </address>
+                            <p><a href="#">Edit Address</a> <span class="separator">|</span> <a href="#" class="link-remove">Delete Address</a></p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="page-title title-buttons">
+                <h1>Order #145000007 - Complete</h1>
+                <a href="#" class="link-reorder">Reorder</a>
+                <span class="separator">|</span>
+                <a href="#" class="link-print">Print Order</a>
+            </div>
+            <dl class="order-info">
+                <dt>About This Order:</dt>
+                <dd>
+                    <ul id="order-info-tabs">
+                        <li class="current first">Order Information</li>
+                        <li><a href="#">Invoices</a></li>
+                        <li><a href="#">Shipments</a></li>
+                        <li class="last"><a href="#">Refunds</a></li>
+                    </ul>
+                    <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'),['first','last']);</script>
+                </dd>
+            </dl>
+            <p class="order-date">Order Date: October 15, 2014</p>
+            <div class="col2-set order-info-box">
+                <div class="col-1">
+                    <div class="box">
+                        <div class="box-title">
+                            <h2>Shipping Address</h2>
+                        </div>
+                        <div class="box-content">
+                            <address>Greg Harvell<br>
+                            4213 Club Course Drive<br>
+                            North Charleston,  South Carolina, 29420<br>
+                            United States<br>
+                            T: 8434127401
+                            </address>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="box">
+                        <div class="box-title">
+                            <h2>Shipping Method</h2>
+                        </div>
+                        <div class="box-content">United Parcel Service - Ground</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col2-set order-info-box">
+                <div class="col-1">
+                    <div class="box">
+                        <div class="box-title">
+                            <h2>Billing Address</h2>
+                        </div>
+                        <div class="box-content">
+                            <address>Greg Harvell<br>
+                            4213 Club Course Drive<br>
+                            North Charleston,  South Carolina, 29420<br>
+                            United States<br>
+                            T: 8434127401
+                            </address>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="box box-payment">
+                        <div class="box-title">
+                            <h2>Payment Method</h2>
+                        </div>
+                        <div class="box-content">
+                            <p class="subtitle"><strong>Cash On Delivery</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order-items order-details">
+            <h2 class="table-caption">Items Ordered</h2>
+            <table class="data-table linearize-table-large" id="my-orders-table" summary="Items Ordered">
+                <thead>
+                    <tr class="first last">
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th class="a-right">Price</th>
+                        <th class="a-center">Qty</th>
+                        <th class="a-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr class="subtotal first">
+                        <td class="a-right" colspan="4">Subtotal</td>
+                        <td class="last a-right"><span class="price">$1,539.00</span></td>
+                    </tr>
+                    <tr class="shipping">
+                        <td class="a-right" colspan="4">Shipping &amp; Handling</td>
+                        <td class="last a-right"><span class="price">$0.00</span></td>
+                    </tr>
+                    <tr class="grand_total last">
+                        <td class="a-right" colspan="4"><strong>Grand Total</strong></td>
+                        <td class="last a-right"><strong><span class="price">$1,539.00</span></strong></td>
+                    </tr>
+                </tfoot>
+                <tbody class="odd">
+                    <tr class="border first" id="order-item-row-598">
+                        <td><h3 class="product-name">Tori Tank</h3>
+                            <dl class="item-options">
+                                <dt>Color</dt>
+                                <dd>Indigo</dd>
+                                <dt>Size</dt>
+                                <dd>L</dd>
+                            </dl>
+                        </td>
+                        <td data-rwd-label="SKU">wbk005</td>
+                        <td class="a-right" data-rwd-label="Price">
+                            <span class="price-excl-tax"><span class="cart-price"><span class="price">$60.00</span></span></span>
+                        </td>
+                        <td class="a-right" data-rwd-label="Qty">
+                            <span class="nobr">Ordered: <strong>1</strong><br>
+                            Shipped: <strong>1</strong><br>
+                            Refunded: <strong>1</strong><br></span>
+                        </td>
+                        <td class="a-right last" data-rwd-label="Subtotal">
+                            <span class="price-excl-tax"><span class="cart-price"><span class="price">$60.00</span></span></span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="even">
+                    <tr class="border" id="order-item-row-600">
+                        <td><h3 class="product-name">Around the World in 80 Days</h3>
+                            <dl class="item-options">
+                                <dt>Check Items to Download</dt>
+                                <dd>Around the World in 80 Days</dd>
+                            </dl>
+                        </td>
+                        <td data-rwd-label="SKU">hbm001</td>
+                        <td class="a-right nowrap" data-rwd-label="Price">
+                            <span class="price-excl-tax"><span class="cart-price"><span class="price">$5.00</span></span> <span></span></span>
+                        </td>
+                        <td class="a-right nowrap" data-rwd-label="Qty">
+                            <span class="nobr">Ordered: <strong>2</strong><br></span>
+                        </td>
+                        <td class="a-right nowrap last" data-rwd-label="Subtotal"><span class="price-excl-tax">
+                            <span class="cart-price"><span class="price">$10.00</span></span></span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="odd">
+                    <tr class="border" id="order-item-row-601">
+                        <td><h3 class="product-name">Falling by I Am Not Lefthanded</h3>
+                            <dl class="item-options">
+                                <dt>Check Items to Download</dt>
+                                <dd>Falling</dd>
+                            </dl>
+                        </td>
+                        <td data-rwd-label="SKU">hbm005</td>
+                        <td class="a-right nowrap" data-rwd-label="Price">
+                            <span class="price-excl-tax"><span class="cart-price"><span class="price">$2.00</span></span></span><br>
+                        </td>
+                        <td class="a-right nowrap" data-rwd-label="Qty">
+                            <span class="nobr">Ordered: <strong>1</strong><br></span>
+                        </td>
+                        <td class="a-right nowrap last" data-rwd-label="Subtotal"><span class="price-excl-tax">
+                            <span class="cart-price"><span class="price">$2.00</span></span></span><br>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="even">
+                    <tr class="border" id="order-item-row-602">
+                        <td><h3 class="product-name">Fragrance Diffuser Reeds</h3></td>
+                        <td data-rwd-label="SKU">hdd005</td>
+                        <td class="a-right" data-rwd-label="Price">
+                            <span class="price-excl-tax"><span class="cart-price"><span class="price">$65.00</span></span></span><br>
+                        </td>
+                        <td class="a-right" data-rwd-label="Qty">
+                            <span class="nobr">
+                                Ordered: <strong>3</strong><br>
+                                Shipped: <strong>3</strong><br>
+                            </span>
+                        </td>
+                        <td class="a-right last" data-rwd-label="Subtotal">
+                            <span class="price-excl-tax"><span class="cart-price"><span class="price">$195.00</span></span></span><br>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="odd">
+                    <tr class="bundle parent" id="order-item-row-603">
+                        <td><h3 class="product-name">MP3 Player with Audio</h3></td>
+                        <td data-rwd-label="SKU">hde014-hde012-hde011</td>
+                        <td class="a-right" data-rwd-label="Price"><span class="price-excl-tax"><span class="cart-price"><span class="price">$400.00</span></span></span><br></td>
+                        <td class="a-right lin-hide" data-rwd-label="Qty">&nbsp;</td>
+                        <td class="a-right last" data-rwd-label="Subtotal"><span class="price-excl-tax"><span class="cart-price"><span class="price">$400.00</span></span></span><br></td>
+                    </tr>
+                    <tr class="bundle label">
+                        <td>
+                            <div class="option-label">
+                                Media Player
+                            </div>
+                        </td>
+                        <td class="lin-hide" data-rwd-label="SKU">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Qty">&nbsp;</td>
+                        <td class="lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                    <tr class="bundle child" id="order-item-row-604">
+                        <td>
+                            <div class="option-value">
+                                1 x Madison 8GB Digital Media Player <span class="price">$150.00</span>
+                            </div>
+                        </td>
+                        <td data-rwd-label="SKU">hde012</td>
+                        <td class="a-right lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="a-right" data-rwd-label="Qty"><span class="nobr">Ordered: <strong>1</strong><br>
+                        Shipped: <strong>1</strong><br></span></td>
+                        <td class="a-right lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                    <tr class="bundle label">
+                        <td>
+                            <div class="option-label">
+                                Audio Output
+                            </div>
+                        </td>
+                        <td class="lin-hide" data-rwd-label="SKU">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Qty">&nbsp;</td>
+                        <td class="lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                    <tr class="bundle border child" id="order-item-row-605">
+                        <td>
+                            <div class="option-value">
+                                2 x Madison Overear Headphones <span class="price">$250.00</span>
+                            </div>
+                        </td>
+                        <td data-rwd-label="SKU">hde011</td>
+                        <td class="a-right lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="a-right" data-rwd-label="Qty"><span class="nobr">Ordered: <strong>2</strong><br>
+                        Shipped: <strong>2</strong><br></span></td>
+                        <td class="a-right lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                </tbody>
+                <tbody class="even">
+                    <tr class="border" id="order-item-row-606">
+                        <td><h3 class="product-name">Aviator Sunglasses</h3></td>
+                        <td data-rwd-label="SKU">ace000</td>
+                        <td class="a-right" data-rwd-label="Price"><span class="price-excl-tax"><span class="cart-price"><span class="price">$295.00</span></span></span><br></td>
+                        <td class="a-right" data-rwd-label="Qty"><span class="nobr">Ordered: <strong>1</strong><br>
+                        Shipped: <strong>1</strong><br></span></td>
+                        <td class="a-right last" data-rwd-label="Subtotal"><span class="price-excl-tax"><span class="cart-price"><span class="price">$295.00</span></span></span><br></td>
+                    </tr>
+                </tbody>
+                <tbody class="odd">
+                    <tr class="bundle parent" id="order-item-row-607">
+                        <td><h3 class="product-name">Pillow and Throw Set</h3></td>
+                        <td data-rwd-label="SKU">hdb010-hdb007-hdb005</td>
+                        <td class="a-right" data-rwd-label="Price"><span class="price-excl-tax"><span class="cart-price"><span class="price">$575.00</span></span></span><br></td>
+                        <td class="a-right lin-hide" data-rwd-label="Qty">&nbsp;</td>
+                        <td class="a-right last" data-rwd-label="Subtotal"><span class="price-excl-tax"><span class="cart-price"><span class="price">$575.00</span></span></span><br></td>
+                    </tr>
+                    <tr class="bundle label">
+                        <td>
+                            <div class="option-label">
+                                Accent Pillow
+                            </div>
+                        </td>
+                        <td class="lin-hide" data-rwd-label="SKU">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Qty">&nbsp;</td>
+                        <td class="lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                    <tr class="bundle child" id="order-item-row-608">
+                        <td>
+                            <div class="option-value">
+                                3 x Titian Raw Silk Pillow <span class="price">$300.00</span>
+                            </div>
+                        </td>
+                        <td data-rwd-label="SKU">hdb005</td>
+                        <td class="a-right lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="a-right" data-rwd-label="Qty"><span class="nobr">Ordered: <strong>3</strong><br>
+                        Shipped: <strong>3</strong><br></span></td>
+                        <td class="a-right lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                    <tr class="bundle label">
+                        <td>
+                            <div class="option-label">
+                                Decorative Throw
+                            </div>
+                        </td>
+                        <td class="lin-hide" data-rwd-label="SKU">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="lin-hide" data-rwd-label="Qty">&nbsp;</td>
+                        <td class="lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                    <tr class="bundle border child" id="order-item-row-609">
+                        <td>
+                            <div class="option-value">
+                                1 x Carnegie Alpaca Throw <span class="price">$275.00</span>
+                            </div>
+                        </td>
+                        <td data-rwd-label="SKU">hdb007</td>
+                        <td class="a-right lin-hide" data-rwd-label="Price">&nbsp;</td>
+                        <td class="a-right" data-rwd-label="Qty"><span class="nobr">Ordered: <strong>1</strong><br>
+                        Shipped: <strong>1</strong><br></span></td>
+                        <td class="a-right lin-hide last" data-rwd-label="Subtotal">&nbsp;</td>
+                    </tr>
+                </tbody>
+                <tbody class="even">
+                    <tr class="border last" id="order-item-row-610">
+                        <td><h3 class="product-name">Fire [Kalima remix] by Unannounced Guest</h3>
+                            <dl class="item-options">
+                                <dt>Check Items to Download</dt>
+                                <dd>Fire</dd>
+                            </dl>
+                        </td>
+                        <td data-rwd-label="SKU">hbm010</td>
+                        <td class="a-right nowrap" data-rwd-label="Price"><span class="price-excl-tax"><span class="cart-price"><span class="price">$2.00</span></span></span><br></td>
+                        <td class="a-right nowrap" data-rwd-label="Qty"><span class="nobr">Ordered: <strong>1</strong><br></span></td>
+                        <td class="a-right nowrap last" data-rwd-label="Subtotal"><span class="price-excl-tax"><span class="cart-price"><span class="price">$2.00</span></span></span><br></td>
+                    </tr>
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})
+            </script>
+            <div class="buttons-set">
+                <p class="back-link"><a href="http://gp.dev/sales/order/history/"><small>«</small> Back to My Orders</a></p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn\JavascriptPlugins
+* @version     0.1.0
+* @author      Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2014 Blue Acorn, Inc.
+*/
+-->
+<config>
+
+    <modules>
+        <BlueAcorn_JavascriptPlugins>
+            <version>0.1.0</version>
+        </BlueAcorn_JavascriptPlugins>
+    </modules>
+
+    <frontend>
+        <layout>
+            <updates>
+                <blueacorn_javascriptplugins>
+                    <file>blueacorn/javascriptplugins.xml</file>
+                </blueacorn_javascriptplugins>
+            </updates>
+        </layout>
+    </frontend>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <blueacorn_javascriptplugins>
+                    <file>blueacorn/javascriptplugins.xml</file>
+                </blueacorn_javascriptplugins>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <global>
+        <helpers>
+            <javascriptplugins>
+                <class>BlueAcorn_JavascriptPlugins_Helper</class>
+            </javascriptplugins>
+        </helpers>
+    </global>
+
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <javascriptplugins>
+                                            <title>Blue Acorn Core Tab Settings</title>
+                                        </javascriptplugins>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+</config>
