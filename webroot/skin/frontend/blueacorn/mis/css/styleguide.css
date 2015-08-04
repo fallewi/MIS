@@ -423,7 +423,7 @@ p.product-name {
  * Layered Navigation
  * ============================================ */
 #narrow-by-list {
-  padding: 20px; }
+  padding: 11px 20px; }
 
 .block-layered-nav .block-subtitle--filter {
   display: none;
@@ -495,6 +495,7 @@ p.product-name {
       content: "";
       display: block;
       background-image: url("../images/sprite.png");
+      background-position: -78px -30px;
       width: 15px;
       height: 15px;
       top: 12px;
@@ -547,8 +548,13 @@ p.product-name {
   .block-layered-nav dl dd ol > li > span, .block-layered-nav dl dd ol > li > a {
     padding: 4px 9px 5px;
     display: block;
-    color: #262626;
+    color: #1E1E1E;
     font-size: 15px; }
+
+.block-layered-nav .block-content > dl > dt {
+  color: #022579; }
+  .block-layered-nav .block-content > dl > dt .active {
+    color: #CA123E; }
 
 @media only screen and (min-width: 771px) {
   .block-layered-nav .block-content > dl > dt {
@@ -644,6 +650,11 @@ p.product-name {
 .block-layered-nav .actions {
   text-align: right;
   margin-bottom: 7px; }
+
+.block-layered-nav .block-title {
+  font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+  font-size: 18px;
+  padding: 10px 20px 0 !important; }
 
 /* ============================================ *
  * Catalog - Product
@@ -1092,6 +1103,7 @@ p.product-name {
       content: "";
       display: block;
       background-image: url("../images/sprite.png");
+      background-position: -78px -30px;
       width: 15px;
       height: 15px;
       top: 12px;

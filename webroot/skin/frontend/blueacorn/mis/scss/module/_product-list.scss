@@ -431,9 +431,9 @@ $productsGridActionHeight: 85px;
 /* ============================================ *
  * Layered Navigation
  * ============================================ */
- 
+
 #narrow-by-list {
-    padding: 20px;
+    padding: 11px 20px;
 }
 
 .block-layered-nav .block-subtitle--filter {
@@ -457,8 +457,16 @@ $productsGridActionHeight: 85px;
     ol > li > span, ol > li > a {
         padding: 4px 9px 5px;
         display: block;
-        color: $c-text;
+        color: #1E1E1E;
         font-size: 15px;
+    }
+}
+
+.block-layered-nav .block-content > dl > dt {
+    color: #022579;
+
+    .active {
+        color: #CA123E;
     }
 }
 
@@ -564,4 +572,10 @@ $productsGridActionHeight: 85px;
 .block-layered-nav .actions {
     text-align: right;
     margin-bottom: $element-spacing;
+}
+
+.block-layered-nav .block-title {
+    font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+    font-size: 18px;
+    padding: 10px 20px 0 !important;
 }

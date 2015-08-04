@@ -467,6 +467,7 @@
       content: "";
       display: block;
       background-image: url("../images/sprite.png");
+      background-position: -78px -30px;
       width: 15px;
       height: 15px;
       top: 12px;
