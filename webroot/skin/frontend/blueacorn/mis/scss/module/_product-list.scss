@@ -465,7 +465,7 @@ $productsGridActionHeight: 85px;
 .block-layered-nav .block-content > dl > dt {
     color: #022579;
 
-    .active {
+    &.current {
         color: #CA123E;
     }
 }
@@ -574,8 +574,27 @@ $productsGridActionHeight: 85px;
     margin-bottom: $element-spacing;
 }
 
-.block-layered-nav .block-title {
-    font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
-    font-size: 18px;
-    padding: 10px 20px 0 !important;
+.block-layered-nav {
+
+    .block-title {
+        font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+        font-size: 18px;
+        padding: 10px 20px 0 !important;
+    }
+
+    .currently,
+    .actions {
+        padding: 10px 20px 0;
+    }
+
+    .currently .block-subtitle {
+        font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+        font-weight: normal;
+        line-height: 27px;
+    }
+}
+
+// temporary for this story 'S1', will change to 2-column in story 'S2' and remove the following
+.col3-layout .col-wrapper .col-left {
+    width: 293px;
 }

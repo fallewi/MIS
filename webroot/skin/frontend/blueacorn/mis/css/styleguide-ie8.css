@@ -553,7 +553,7 @@ p.product-name {
 
 .block-layered-nav .block-content > dl > dt {
   color: #022579; }
-  .block-layered-nav .block-content > dl > dt .active {
+  .block-layered-nav .block-content > dl > dt.current {
     color: #CA123E; }
 
 .block-layered-nav .block-content > dl > dt {
@@ -594,6 +594,18 @@ p.product-name {
   font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
   font-size: 18px;
   padding: 10px 20px 0 !important; }
+
+.block-layered-nav .currently,
+.block-layered-nav .actions {
+  padding: 10px 20px 0; }
+
+.block-layered-nav .currently .block-subtitle {
+  font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+  font-weight: normal;
+  line-height: 27px; }
+
+.col3-layout .col-wrapper .col-left {
+  width: 293px; }
 
 /* ============================================ *
  * Catalog - Product
