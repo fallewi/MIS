@@ -14,11 +14,11 @@
             <blueacorn_categorypage_resource>
                 <class>BlueAcorn_CategoryPage_Model_Resource</class>
             </blueacorn_categorypage_resource>
-            <catalog>
-                <rewrite>
-                    <layer_filter_price>BlueAcorn_CategoryPage_Model_Catalog_Layer_Filter_Price</layer_filter_price>
-                </rewrite>
-            </catalog>
+            <!--<catalog>-->
+                <!--<rewrite>-->
+                    <!--<layer_filter_price>BlueAcorn_CategoryPage_Model_Catalog_Layer_Filter_Price</layer_filter_price>-->
+                <!--</rewrite>-->
+            <!--</catalog>-->
         </models>
         <blocks>
             <blueacorn_categorypage>
