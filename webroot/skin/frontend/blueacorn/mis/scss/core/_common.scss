@@ -636,7 +636,7 @@ a.button:hover {
 
 .breadcrumbs {
     overflow: hidden;
-    margin: -15px 0 15px;
+    margin: -15px 0 -5px;
 }
 
 .breadcrumbs li {
@@ -649,6 +649,7 @@ a.button:hover {
 .breadcrumbs a {
     float: left;
     font-size: 13px;
+    color: #002178;
 }
 
 .breadcrumbs a:hover {

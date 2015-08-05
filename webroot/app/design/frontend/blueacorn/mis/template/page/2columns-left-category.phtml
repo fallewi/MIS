@@ -31,6 +31,7 @@
 ?>
 
 <?php
+if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandles())) {
     $catalog_view_block = Mage::app()->getLayout()->createBlock('catalog/category_view');
     $_helper    = $catalog_view_block->helper('catalog/output');
     $_category  = $catalog_view_block->getCurrentCategory();
@@ -39,6 +40,7 @@
         $_imgHtml = '<p class="category-image"><img src="'.$_imgUrl.'" alt="'.$catalog_view_block->escapeHtml($_category->getName()).'" title="'.$catalog_view_block->escapeHtml($_category->getName()).'" /></p>';
         $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,28 +64,29 @@
             <div class="main">
                 <?php echo $this->getChildHtml('breadcrumbs') ?>
 
-                <!--start category title/description here-->
-                <div class="page-title category-title">
-                    <?php if($catalog_view_block->IsRssCatalogEnable() && $catalog_view_block->IsTopCategory()): ?>
-                        <a href="<?php echo $catalog_view_block->getRssLink() ?>" class="link-rss"><?php echo $catalog_view_block->__('Subscribe to RSS Feed') ?></a>
-                    <?php endif; ?>
-                    <h1><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
-                </div>
-
-                <?php echo $catalog_view_block->getMessagesBlock()->toHtml() ?>
-
-                <?php if($_imgUrl): ?>
-                    <?php echo $_imgHtml ?>
-                <?php endif; ?>
-
-                <?php if($_description=$catalog_view_block->getCurrentCategory()->getDescription()): ?>
-                    <div class="category-description std">
-                        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+                <?php if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandles())): ?>
+                    <!--start category title/description here-->
+                    <div class="page-title category-title">
+                        <?php if($catalog_view_block->IsRssCatalogEnable() && $catalog_view_block->IsTopCategory()): ?>
+                            <a href="<?php echo $catalog_view_block->getRssLink() ?>" class="link-rss"><?php echo $catalog_view_block->__('Subscribe to RSS Feed') ?></a>
+                        <?php endif; ?>
+                        <h1><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
                     </div>
-                <?php endif; ?>
-                <!--end category title/description here-->
 
-                <div><?php echo "Move category title and description here!" ?></div>
+                    <?php echo $catalog_view_block->getMessagesBlock()->toHtml() ?>
+
+                    <?php if($_imgUrl): ?>
+                        <?php echo $_imgHtml ?>
+                    <?php endif; ?>
+
+                    <?php if($_description=$catalog_view_block->getCurrentCategory()->getDescription()): ?>
+                        <div class="category-description std">
+                            <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+                        </div>
+                    <?php endif; ?>
+                    <!--end category title/description here-->
+                <?php endif; ?>
+
                 <?php // This left_first block will display above the main content on smaller viewports ?>
                 <?php if ($_leftContent = $this->getChildHtml('left_first')): ?>
                 <div class="col-left sidebar col-left-first"><?php echo $_leftContent;   ?></div>

@@ -847,7 +847,7 @@ a.button:hover {
  */
 .breadcrumbs {
   overflow: hidden;
-  margin: -15px 0 15px; }
+  margin: -15px 0 -5px; }
 
 .breadcrumbs li {
   float: left;
@@ -857,7 +857,8 @@ a.button:hover {
 
 .breadcrumbs a {
   float: left;
-  font-size: 13px; }
+  font-size: 13px;
+  color: #002178; }
 
 .breadcrumbs a:hover {
   color: #00247B; }
@@ -4536,9 +4537,6 @@ p.product-name {
   font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
   font-weight: normal;
   line-height: 27px; }
-
-.col3-layout .col-wrapper .col-left {
-  width: 293px; }
 
 /* ============================================ *
  * Catalog - MSRP MAP Popup
