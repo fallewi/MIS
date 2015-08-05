@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="before_body_end">
+			<block type="blueacorn_footerassets/html_head" name="scripts_in_footer" as="scripts_in_footer">
+                <!--Example below-->
+				<!--<action method="addJs"><script>prototype/prototype.js</script></action>-->
+			</block>
+		</reference>
+	</default>
+</layout>

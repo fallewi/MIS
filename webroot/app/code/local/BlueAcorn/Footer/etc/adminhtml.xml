@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+    /**
+     * @copyright: Copyright (c) 2013 Blue Acorn (http://www.blueacorn.com)
+     * @author: Tyler Craft <tyler@blueacorn.com>
+     * @namespace: BlueAcorn
+     * @module: GlobalConfiguration
+     * Date: 02/16/15
+     */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <ba_footer translate="label">
+                                        <title>Footer</title>
+                                    </ba_footer>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
