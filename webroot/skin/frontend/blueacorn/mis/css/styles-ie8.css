@@ -1022,7 +1022,8 @@ a.button:hover {
 
 .messages .error-msg li {
   color: #fff;
-  background-color: #000; }
+  background-color: #000;
+  height: 100%; }
 
 .messages .notice-msg li {
   color: #fff;
