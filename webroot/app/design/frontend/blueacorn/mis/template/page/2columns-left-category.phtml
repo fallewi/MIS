@@ -31,7 +31,7 @@
 ?>
 
 <?php
-$catalog_view_block = Mage::app()->getLayout()->createBlock('catalog/category_view');
+    $catalog_view_block = Mage::app()->getLayout()->createBlock('catalog/category_view');
     $_helper    = $catalog_view_block->helper('catalog/output');
     $_category  = $catalog_view_block->getCurrentCategory();
     $_imgHtml   = '';
@@ -40,6 +40,7 @@ $catalog_view_block = Mage::app()->getLayout()->createBlock('catalog/category_vi
         $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
     }
 ?>
+
 <!DOCTYPE html>
 
 <!--[if lt IE 7 ]> <html lang="<?php echo $this->getLang(); ?>" id="top" class="no-js ie6"> <![endif]-->
@@ -61,7 +62,6 @@ $catalog_view_block = Mage::app()->getLayout()->createBlock('catalog/category_vi
             <div class="main">
                 <?php echo $this->getChildHtml('breadcrumbs') ?>
 
-
                 <!--start category title/description here-->
                 <div class="page-title category-title">
                     <?php if($catalog_view_block->IsRssCatalogEnable() && $catalog_view_block->IsTopCategory()): ?>
@@ -81,7 +81,6 @@ $catalog_view_block = Mage::app()->getLayout()->createBlock('catalog/category_vi
                         <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
                     </div>
                 <?php endif; ?>
-
                 <!--end category title/description here-->
 
                 <div><?php echo "Move category title and description here!" ?></div>
