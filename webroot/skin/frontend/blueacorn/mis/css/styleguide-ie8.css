@@ -76,7 +76,8 @@ body.catalogsearch-result-index .page-title h1 {
 .products-grid .actions .button {
   white-space: normal;
   font-size: 15px;
-  letter-spacing: 1px; }
+  letter-spacing: 1px;
+  font-weight: normal; }
 
 /* -------------------------------------------- *
  * Product Name
@@ -224,6 +225,20 @@ p.product-name {
     .products-grid .product-image.loading:before,
     .products-grid .product-image.loading:after {
       display: block; }
+
+.category-products .link-wishlist {
+  display: none; }
+
+.category-products .link-compare {
+  position: relative; }
+  .category-products .link-compare:before {
+    content: "";
+    border-style: solid;
+    border-width: 5px 0 5px 7px;
+    border-color: transparent transparent transparent #00257b;
+    position: absolute;
+    right: -13px;
+    top: 6px; }
 
 /* Config: Three columns + flexible gutter */
 .products-grid {
