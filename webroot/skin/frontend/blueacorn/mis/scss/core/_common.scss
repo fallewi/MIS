@@ -1572,10 +1572,10 @@ span.weee {
 .toolbar {
     margin-top: $box-spacing;
     margin-bottom: 15px;
+    // BSB - temp borders for alignment, remove after dev is complete
     border-bottom: 1px solid $c-module-border;
     border-top: 1px solid $c-module-border;
-    background: $c-module-background;
-    padding: 5px 10px 0 10px;
+    padding: 5px 0 0 0;
 
     &:after {
         @include clearfix;
@@ -1593,16 +1593,15 @@ span.weee {
 
 .toolbar,
 .pager {
-    font-family: $f-stack-special;
-    color: $c-text;
-    line-height: 30px;
-    font-size: $f-size-xs;
+    font-family: $f-stack-sans;
+    color: $brand-primary;
+    line-height: 21px;
+    font-size: 15px;
 }
 
 .toolbar label,
 .pager-no-toolbar label {
     font-weight: normal;
-    text-transform: uppercase;
 }
 
 $toolbar-icon-padding-offset: 8px;
@@ -1613,10 +1612,15 @@ $toolbar-icon-padding-offset: 8px;
 
     label {
         float: left;
-        margin-right: 5px;
+        margin: 10px 0 0 10px;
+        font-family: $f-stack-sans;
+        font-size: 15px;
+        line-height: 21px;
+        color: $brand-primary;
 
         &:after {
             content: ':';
+            padding-left: 5px;
         }
     }
 }
@@ -1624,7 +1628,9 @@ $toolbar-icon-padding-offset: 8px;
 .sorter > .sort-by {
     float: left;
     margin-right: 5px;
-    height: 30px;
+    height: 40px;
+    width: 184px;
+    border: 1px solid $brand-primary;
 
     .sort-by-switcher {
         width: 30px;
@@ -1644,10 +1650,24 @@ $toolbar-icon-padding-offset: 8px;
             background-position: -50px+4px (-575px+$toolbar-icon-padding-offset);
         }
     }
+
+    .select-container.small {
+        top: 10px;
+
+        .custom-shiv {
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 21px;
+            color: $brand-primary;
+            font-weight: normal;
+            border: none;
+        }
+    }
 }
 
 .sorter > .view-mode {
     float: right;
+    display: none;
 
     .grid,
     .list {
@@ -1679,7 +1699,10 @@ $toolbar-icon-padding-offset: 8px;
     overflow: hidden;
 
     & > .count-container {
-        float: left;
+        float: right;
+        height: 40px;
+        width: 184px;
+        border: 1px solid $brand-primary;
     }
 
     .amount {
@@ -1696,9 +1719,15 @@ $toolbar-icon-padding-offset: 8px;
 
         & > label {
             padding-right: 5px;
+            margin: 10px 0 0 10px;
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 21px;
+            color: $brand-primary;
 
             &:after {
                 content: ':';
+                padding-left: 5px;
             }
         }
     }
@@ -1709,6 +1738,19 @@ $toolbar-icon-padding-offset: 8px;
         margin-bottom: 5px;
     }
 
+    .select-container.small {
+        top: 10px;
+
+        .custom-shiv {
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 21px;
+            color: $brand-primary;
+            font-weight: normal;
+            border: none;
+            height: 25px;
+        }
+    }
 }
 
 .pages {
@@ -1744,10 +1786,8 @@ $toolbar-icon-padding-offset: 8px;
 
 .pages .current,
 .pages .current:hover {
-    color: $c-text;
-    border: 1px solid $c-module-border;
+    color: $brand-action;
     width: 30px;
-    background-color: #FFFFFF;
     cursor: default;
 }
 

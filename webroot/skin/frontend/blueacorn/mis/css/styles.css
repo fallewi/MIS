@@ -1616,8 +1616,7 @@ span.weee {
   margin-bottom: 15px;
   border-bottom: 1px solid #CCCCCC;
   border-top: 1px solid #CCCCCC;
-  background: #F4F4F4;
-  padding: 5px 10px 0 10px; }
+  padding: 5px 0 0 0; }
   .toolbar:after {
     content: '';
     display: table;
@@ -1631,29 +1630,35 @@ span.weee {
 
 .toolbar,
 .pager {
-  font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif;
-  color: #262626;
-  line-height: 30px;
-  font-size: 12px; }
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  color: #00247B;
+  line-height: 21px;
+  font-size: 15px; }
 
 .toolbar label,
 .pager-no-toolbar label {
-  font-weight: normal;
-  text-transform: uppercase; }
+  font-weight: normal; }
 
 .sorter {
   float: left;
   margin-bottom: 5px; }
   .sorter label {
     float: left;
-    margin-right: 5px; }
+    margin: 10px 0 0 10px;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 21px;
+    color: #00247B; }
     .sorter label:after {
-      content: ':'; }
+      content: ':';
+      padding-left: 5px; }
 
 .sorter > .sort-by {
   float: left;
   margin-right: 5px;
-  height: 30px; }
+  height: 40px;
+  width: 184px;
+  border: 1px solid #00247B; }
   .sorter > .sort-by .sort-by-switcher {
     width: 30px;
     height: 30px;
@@ -1666,9 +1671,19 @@ span.weee {
     background-position: 4px -567px; }
     .sorter > .sort-by .sort-by-switcher--desc:hover {
       background-position: -46px -567px; }
+  .sorter > .sort-by .select-container.small {
+    top: 10px; }
+    .sorter > .sort-by .select-container.small .custom-shiv {
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 21px;
+      color: #00247B;
+      font-weight: normal;
+      border: none; }
 
 .sorter > .view-mode {
-  float: right; }
+  float: right;
+  display: none; }
   .sorter > .view-mode .grid,
   .sorter > .view-mode .list {
     float: left;
@@ -1690,7 +1705,10 @@ span.weee {
   float: right;
   overflow: hidden; }
   .pager > .count-container {
-    float: left; }
+    float: right;
+    height: 40px;
+    width: 184px;
+    border: 1px solid #00247B; }
   .pager .amount {
     float: left;
     font-family: "gesta", Verdana, Arial, sans-serif;
@@ -1701,13 +1719,29 @@ span.weee {
     height: 30px;
     line-height: 30px; }
     .pager .limiter > label {
-      padding-right: 5px; }
+      padding-right: 5px;
+      margin: 10px 0 0 10px;
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 21px;
+      color: #00247B; }
       .pager .limiter > label:after {
-        content: ':'; }
+        content: ':';
+        padding-left: 5px; }
   .pager .amount,
   .pager .limiter,
   .pager .pages {
     margin-bottom: 5px; }
+  .pager .select-container.small {
+    top: 10px; }
+    .pager .select-container.small .custom-shiv {
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 21px;
+      color: #00247B;
+      font-weight: normal;
+      border: none;
+      height: 25px; }
 
 .pages {
   float: right;
@@ -1737,10 +1771,8 @@ span.weee {
 
 .pages .current,
 .pages .current:hover {
-  color: #262626;
-  border: 1px solid #CCCCCC;
+  color: #EC3837;
   width: 30px;
-  background-color: #FFFFFF;
   cursor: default; }
 
 .pages .next,
