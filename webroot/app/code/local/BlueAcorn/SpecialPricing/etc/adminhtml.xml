@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_SpecialPricing extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       BlueAcorn
+ * @package        BlueAcorn_SpecialPricing
+ * @copyright      Copyright (c) 2015
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <blueacorn_specialpricing translate="title" module="blueacorn_specialpricing">
+                                        <title>SpecialPricing</title>
+                                    </blueacorn_specialpricing>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <catalog>
+                        <children>
+                            <blueacorn_specialpricing translate="title" module="blueacorn_specialpricing">
+                                <title>MAP Pricing</title>
+                                <children>
+                                    <token translate="title" module="blueacorn_specialpricing">
+                                        <title>Tokens</title>
+                                        <sort_order>0</sort_order>
+                                    </token>
+                                </children>
+                            </blueacorn_specialpricing>
+                        </children>
+                    </catalog>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <catalog>
+            <children>
+                <blueacorn_specialpricing translate="title" module="blueacorn_specialpricing">
+                    <title>MAP Pricing</title>
+                    <sort_order>25</sort_order>
+                    <children>
+                        <token translate="title" module="blueacorn_specialpricing">
+                            <title>Tokens</title>
+                            <action>adminhtml/specialpricing_token</action>
+                            <sort_order>0</sort_order>
+                        </token>
+                    </children>
+                </blueacorn_specialpricing>
+            </children>
+        </catalog>
+    </menu>
+</config>
