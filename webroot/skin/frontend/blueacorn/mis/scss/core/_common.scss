@@ -1570,12 +1570,10 @@ span.weee {
  */
 
 .toolbar {
-    margin-top: $box-spacing;
     margin-bottom: 15px;
-    // BSB - temp borders for alignment, remove after dev is complete
-    border-bottom: 1px solid $c-module-border;
-    border-top: 1px solid $c-module-border;
     padding: 5px 0 0 0;
+    position: relative;
+    height: 55px;
 
     &:after {
         @include clearfix;
@@ -1607,8 +1605,9 @@ span.weee {
 $toolbar-icon-padding-offset: 8px;
 
 .sorter {
-    float: left;
     margin-bottom: 5px;
+    position: absolute;
+    left: 0;
 
     label {
         float: left;
@@ -1695,8 +1694,9 @@ $toolbar-icon-padding-offset: 8px;
 }
 
 .pager {
-    float: right;
     overflow: hidden;
+    position: absolute;
+    right: 0;
 
     & > .count-container {
         float: right;
@@ -1754,9 +1754,11 @@ $toolbar-icon-padding-offset: 8px;
 }
 
 .pages {
-    float: right;
     overflow: hidden;
-    margin-left: 15px;
+    text-align: center;
+    width: 100%;
+    padding-left: 200px;
+    padding-right: 200px;
 
     strong {
         display: none;

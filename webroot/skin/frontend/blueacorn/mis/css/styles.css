@@ -1612,11 +1612,10 @@ span.weee {
  * Toolbar
  */
 .toolbar {
-  margin-top: 10px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #CCCCCC;
-  border-top: 1px solid #CCCCCC;
-  padding: 5px 0 0 0; }
+  padding: 5px 0 0 0;
+  position: relative;
+  height: 55px; }
   .toolbar:after {
     content: '';
     display: table;
@@ -1640,8 +1639,9 @@ span.weee {
   font-weight: normal; }
 
 .sorter {
-  float: left;
-  margin-bottom: 5px; }
+  margin-bottom: 5px;
+  position: absolute;
+  left: 0; }
   .sorter label {
     float: left;
     margin: 10px 0 0 10px;
@@ -1702,8 +1702,9 @@ span.weee {
     background-position: -39px -517px; }
 
 .pager {
-  float: right;
-  overflow: hidden; }
+  overflow: hidden;
+  position: absolute;
+  right: 0; }
   .pager > .count-container {
     float: right;
     height: 40px;
@@ -1744,9 +1745,11 @@ span.weee {
       height: 25px; }
 
 .pages {
-  float: right;
   overflow: hidden;
-  margin-left: 15px; }
+  text-align: center;
+  width: 100%;
+  padding-left: 200px;
+  padding-right: 200px; }
   .pages strong {
     display: none; }
 
