@@ -161,6 +161,10 @@ $productsGridActionHeight: 85px;
     margin-bottom: 0;
 }
 
+.ie8 .crosssell .product-info {
+    min-height: 270px !important;
+}
+
 // ---------------------------------------------
 
 /* Config: Two columns + flexible gutter */
@@ -431,7 +435,7 @@ $productsGridActionHeight: 85px;
 /* ============================================ *
  * Layered Navigation
  * ============================================ */
- 
+
 #narrow-by-list {
     padding: 20px;
 }
