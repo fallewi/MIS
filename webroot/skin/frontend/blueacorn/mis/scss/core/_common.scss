@@ -1907,6 +1907,14 @@ $toolbar-icon-padding-offset: 8px;
     }
 }
 
+.toolbar-bottom {
+
+    .toolbar {
+        .sorter,
+        .pager { display: none; }
+    }
+}
+
 /* ============================================ *
  * Tax - Full Tax Summary
  * ============================================ */
