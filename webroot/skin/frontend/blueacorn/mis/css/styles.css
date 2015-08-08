@@ -1531,8 +1531,7 @@ span.weee {
 .product-image,
 .no-touch .product-img-box .product-image:not(.zoom-available):hover {
   position: relative;
-  display: block;
-  border: 1px solid #EDEDED; }
+  display: block; }
 
 @media only screen and (max-width: 770px) {
   body .product-img-box .product-image:hover {
@@ -1639,22 +1638,17 @@ span.weee {
   font-weight: normal; }
 
 .sorter {
-  margin-bottom: 5px;
   position: absolute;
   left: 0; }
   .sorter label {
-    float: left;
-    margin: 10px 0 0 10px;
     font-family: "gesta", Verdana, Arial, sans-serif;
     font-size: 15px;
-    line-height: 21px;
     color: #00247B; }
     .sorter label:after {
       content: ':';
       padding-left: 5px; }
 
 .sorter > .sort-by {
-  float: left;
   margin-right: 5px;
   height: 40px;
   width: 184px;
@@ -1672,14 +1666,15 @@ span.weee {
     .sorter > .sort-by .sort-by-switcher--desc:hover {
       background-position: -46px -567px; }
   .sorter > .sort-by .select-container.small {
-    top: 10px; }
+    top: auto; }
     .sorter > .sort-by .select-container.small .custom-shiv {
       font-family: "gesta", Verdana, Arial, sans-serif;
       font-size: 15px;
-      line-height: 21px;
       color: #00247B;
       font-weight: normal;
-      border: none; }
+      border: none;
+      padding: 0;
+      float: none; }
 
 .sorter > .view-mode {
   float: right;
@@ -1706,9 +1701,8 @@ span.weee {
   position: absolute;
   right: 0; }
   .pager > .count-container {
-    float: right;
     height: 40px;
-    width: 184px;
+    width: 143px;
     border: 1px solid #00247B; }
   .pager .amount {
     float: left;
@@ -1716,12 +1710,10 @@ span.weee {
     white-space: nowrap;
     margin: 0 15px 0 0; }
   .pager .limiter {
-    float: left;
     height: 30px;
-    line-height: 30px; }
+    line-height: 30px;
+    text-align: center; }
     .pager .limiter > label {
-      padding-right: 5px;
-      margin: 10px 0 0 10px;
       font-family: "gesta", Verdana, Arial, sans-serif;
       font-size: 15px;
       line-height: 21px;
@@ -1742,7 +1734,8 @@ span.weee {
       color: #00247B;
       font-weight: normal;
       border: none;
-      height: 25px; }
+      height: 25px;
+      padding: 0; }
 
 .pages {
   overflow: hidden;
@@ -4107,7 +4100,9 @@ p.product-name {
 .products-grid > li {
   float: left;
   width: 47.7273%;
-  margin-right: 4.5455%; }
+  padding-right: 4.5455%; }
+  .products-grid > li:hover {
+    outline: 1px solid #000; }
 
 .products-grid > li:nth-child(odd) {
   clear: left; }
@@ -4163,15 +4158,15 @@ p.product-name {
     .products-grid > li:nth-child(odd) {
       clear: none; }
     .products-grid > li:nth-child(even) {
-      margin-right: 1.3462%; }
+      padding-right: 2%; }
     .products-grid > li {
-      width: 27.3%;
-      margin-right: 1.3462%;
-      margin-left: 3.8462%; }
+      width: 32%;
+      padding: 2%;
+      margin-left: 1%; }
     .products-grid > li:nth-child(3n+1) {
       clear: left; }
     .products-grid > li:nth-child(3n) {
-      margin-right: 3.8462%; } }
+      padding-right: 2%; } }
 
 @media only screen and (min-width: 960px) {
   /* Config: Columns + flexible gutter */

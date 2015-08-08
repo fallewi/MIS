@@ -196,7 +196,11 @@ $productsGridActionHeight: 85px;
 .products-grid > li {
     float: left;
     width: percentage(210 / 440);
-    margin-right: percentage(20 / 440);
+    padding-right: percentage(20 / 440);
+
+    &:hover {
+        outline: 1px solid $black;
+    }
 }
 
 .products-grid > li:nth-child(odd) {
@@ -242,7 +246,7 @@ $productsGridActionHeight: 85px;
     // Container: 600 - (2 * 30 trim wide) = 540
     $column-count: 3;
     $column-gutters: 3;
-    $container: 600 - (4 * $trim);
+    $container: 600 - (4 * 20px);
 
     // Math: (540 - (2 * 30 gutter)) / 3 items = 160
     $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
@@ -253,20 +257,20 @@ $productsGridActionHeight: 85px;
             clear: none;
         }
         > li:nth-child(even) {
-            margin-right: percentage($product-column-spacing / $container);
+            padding-right: 2%;
         }
 
         /* Set three-column config */
         > li {
-            width: 27.3%;
-            margin-right: percentage($product-column-spacing / $container);
-            margin-left: percentage($trim / $container);
+            width: 32%;
+            padding: 2%;
+            margin-left: 1%;
         }
         > li:nth-child(#{$column-count}n+1) {
             clear: left;
         }
         > li:nth-child(#{$column-count}n) {
-            margin-right: percentage($trim / $container);
+            padding-right: 2%;
         }
     }
 }
