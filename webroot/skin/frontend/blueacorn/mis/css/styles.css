@@ -1670,6 +1670,7 @@ span.weee {
     .sorter > .sort-by .select-container.small .custom-shiv {
       font-family: "gesta", Verdana, Arial, sans-serif;
       font-size: 15px;
+      line-height: 21px;
       color: #00247B;
       font-weight: normal;
       border: none;
@@ -1699,7 +1700,8 @@ span.weee {
 .pager {
   overflow: hidden;
   position: absolute;
-  right: 0; }
+  right: 0;
+  top: 5px; }
   .pager > .count-container {
     height: 40px;
     width: 143px;
@@ -1740,9 +1742,10 @@ span.weee {
 .pages {
   overflow: hidden;
   text-align: center;
-  width: 100%;
-  padding-left: 200px;
-  padding-right: 200px; }
+  width: 530px;
+  padding-left: 185px;
+  padding-right: 144px;
+  margin: 0 auto; }
   .pages strong {
     display: none; }
 
