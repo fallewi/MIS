@@ -1611,6 +1611,7 @@ $toolbar-icon-padding-offset: 8px;
         font-family: $f-stack-sans;
         font-size: 15px;
         color: $brand-primary;
+        top: -15px;
 
         &:after {
             content: ':';
@@ -1624,12 +1625,14 @@ $toolbar-icon-padding-offset: 8px;
     height: 40px;
     width: 184px;
     border: 1px solid $brand-primary;
+    text-align: center;
 
     .sort-by-switcher {
         width: 30px;
         height: 30px;
         display: inline-block;
         @extend .icon-sprite;
+        display: none;
     }
     .sort-by-switcher--asc {
         background-position: 0+4px (-550px+$toolbar-icon-padding-offset);
@@ -1645,7 +1648,8 @@ $toolbar-icon-padding-offset: 8px;
     }
 
     .select-container.small {
-        top: auto;
+        top: 10px;
+        left: 3px;
 
         .custom-shiv {
             font-family: $f-stack-sans;
@@ -1718,6 +1722,7 @@ $toolbar-icon-padding-offset: 8px;
             font-size: 15px;
             line-height: 21px;
             color: $brand-primary;
+            padding-left: 15px;
 
             &:after {
                 content: ':';

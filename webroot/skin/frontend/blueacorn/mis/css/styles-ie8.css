@@ -1414,7 +1414,8 @@ span.weee {
   .sorter label {
     font-family: "gesta", Verdana, Arial, sans-serif;
     font-size: 15px;
-    color: #00247B; }
+    color: #00247B;
+    top: -15px; }
     .sorter label:after {
       content: ':';
       padding-left: 5px; }
@@ -1423,11 +1424,13 @@ span.weee {
   margin-right: 5px;
   height: 40px;
   width: 184px;
-  border: 1px solid #00247B; }
+  border: 1px solid #00247B;
+  text-align: center; }
   .sorter > .sort-by .sort-by-switcher {
     width: 30px;
     height: 30px;
-    display: inline-block; }
+    display: inline-block;
+    display: none; }
   .sorter > .sort-by .sort-by-switcher--asc {
     background-position: 4px -542px; }
     .sorter > .sort-by .sort-by-switcher--asc:hover {
@@ -1437,7 +1440,8 @@ span.weee {
     .sorter > .sort-by .sort-by-switcher--desc:hover {
       background-position: -46px -567px; }
   .sorter > .sort-by .select-container.small {
-    top: auto; }
+    top: 10px;
+    left: 3px; }
     .sorter > .sort-by .select-container.small .custom-shiv {
       font-family: "gesta", Verdana, Arial, sans-serif;
       font-size: 15px;
@@ -1490,7 +1494,8 @@ span.weee {
       font-family: "gesta", Verdana, Arial, sans-serif;
       font-size: 15px;
       line-height: 21px;
-      color: #00247B; }
+      color: #00247B;
+      padding-left: 15px; }
       .pager .limiter > label:after {
         content: ':';
         padding-left: 5px; }
