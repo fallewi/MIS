@@ -475,14 +475,12 @@ p.product-name {
 /* ============================================ *
  * Catalog - List
  * ============================================ */
-.category-image {
-  border: 1px solid #CCCCCC;
-  padding: 10px; }
-  .category-image img {
-    width: 100%;
-    max-width: 100%; }
-    .category-image img:hidden {
-      display: none; }
+.category-image img {
+  max-width: 312px;
+  float: right;
+  padding: 25px 0 0 30px; }
+  .category-image img:hidden {
+    display: none; }
 
 /* ============================================ *
  * Layered Navigation

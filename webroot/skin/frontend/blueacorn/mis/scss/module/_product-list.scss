@@ -519,12 +519,11 @@ $productsGridActionHeight: 85px;
  * ============================================ */
 
 .category-image {
-    border: 1px solid $c-module-border;
-    padding: 10px;
 
     img {
-        width: 100%;
-        max-width: 100%;
+        max-width: 312px;
+        float: right;
+        padding: 25px 0 0 30px;
 
         &:hidden {
             display: none;
