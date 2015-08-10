@@ -48,7 +48,9 @@ BlueAcornCore.prototype = {
      * @param string
      */
     watchConsole: function (message) {
-        console.log(message);
+        if(this.settings.debug === true && $('.ie8').length === 0) {
+            console.log(message);
+        }
     }
 
 };

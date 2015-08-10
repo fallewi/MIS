@@ -1614,7 +1614,8 @@ span.weee {
   margin-bottom: 15px;
   padding: 5px 0 0 0;
   position: relative;
-  height: 55px; }
+  height: 55px;
+  text-align: center; }
   .toolbar:after {
     content: '';
     display: table;
@@ -1747,10 +1748,7 @@ span.weee {
 .pages {
   overflow: hidden;
   text-align: center;
-  width: 530px;
-  padding-left: 185px;
-  padding-right: 144px;
-  margin: 0 auto; }
+  display: inline-block; }
   .pages strong {
     display: none; }
 

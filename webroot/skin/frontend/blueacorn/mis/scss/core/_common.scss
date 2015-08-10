@@ -1573,7 +1573,7 @@ span.weee {
     padding: 5px 0 0 0;
     position: relative;
     height: 55px;
-
+    text-align: center;
     &:after {
         @include clearfix;
     }
@@ -1756,11 +1756,7 @@ $toolbar-icon-padding-offset: 8px;
 .pages {
     overflow: hidden;
     text-align: center;
-    width: 530px;
-    padding-left: 185px;
-    padding-right: 144px;
-    margin: 0 auto;
-
+    display: inline-block;
     strong {
         display: none;
     }
