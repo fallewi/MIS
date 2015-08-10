@@ -1757,6 +1757,8 @@ $toolbar-icon-padding-offset: 8px;
     overflow: hidden;
     text-align: center;
     display: inline-block;
+    padding-top: 5px;
+
     strong {
         display: none;
     }
@@ -1770,7 +1772,7 @@ $toolbar-icon-padding-offset: 8px;
 .pages .current {
     display: inline-block;
     border: 0;
-    font-size: $f-size-s;
+    font-size: $f-size-l;
     text-align: center;
     text-transform: uppercase;
     vertical-align: middle;
@@ -1798,35 +1800,33 @@ $toolbar-icon-padding-offset: 8px;
     color: transparent;
     background-color: transparent;
     position: relative;
-
-    &:hover {
-        border: 1px solid $c-action;
-    }
 }
 
 .pages .next {
     &:before {
-        @include triangle(right, 4px, $c-action);
-        top: 50%;
-        margin-top: -3px;
-        left: 50%;
-        margin-left: -2px;
-    }
-    &:hover:before {
-        @include triangle(right, 4px, $c-stimulus);
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 7px;
+        width: 8px;
+        height: 16px;
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH);
+        background-position: -263px -108px;
     }
 }
 
 .pages .previous {
     &:before {
-        @include triangle(left, 4px, $c-action);
-        top: 50%;
-        margin-top: -3px;
-        left: 50%;
-        margin-left: -2px;
-    }
-    &:hover:before {
-        @include triangle(left, 4px, $c-stimulus);
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 7px;
+        width: 8px;
+        height: 16px;
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH);
+        background-position: -241px -108px;
     }
 }
 

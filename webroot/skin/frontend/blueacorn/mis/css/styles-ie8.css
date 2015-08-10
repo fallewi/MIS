@@ -1519,7 +1519,8 @@ span.weee {
 .pages {
   overflow: hidden;
   text-align: center;
-  display: inline-block; }
+  display: inline-block;
+  padding-top: 5px; }
   .pages strong {
     display: none; }
 
@@ -1530,7 +1531,7 @@ span.weee {
 .pages .current {
   display: inline-block;
   border: 0;
-  font-size: 13px;
+  font-size: 15px;
   text-align: center;
   text-transform: uppercase;
   vertical-align: middle;
@@ -1555,61 +1556,38 @@ span.weee {
   color: transparent;
   background-color: transparent;
   position: relative; }
-  .pages .next:hover,
-  .pages .previous:hover {
-    border: 1px solid #00247B; }
 
 .pages .next:before {
   content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
   display: block;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-left: 4px solid #00247B;
-  border-right: none;
-  top: 50%;
-  margin-top: -3px;
-  left: 50%;
-  margin-left: -2px; }
-
-.pages .next:hover:before {
-  content: '';
   position: absolute;
-  width: 0;
-  height: 0;
-  display: block;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-left: 4px solid #000e2f;
-  border-right: none; }
+  right: 0;
+  top: 7px;
+  width: 8px;
+  height: 16px;
+  background-image: url("../images/sprite.png");
+  background-position: -263px -108px; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .pages .next:before {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: "" ""; } }
 
 .pages .previous:before {
   content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
   display: block;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-right: 4px solid #00247B;
-  border-left: none;
-  top: 50%;
-  margin-top: -3px;
-  left: 50%;
-  margin-left: -2px; }
-
-.pages .previous:hover:before {
-  content: '';
   position: absolute;
-  width: 0;
-  height: 0;
-  display: block;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-right: 4px solid #000e2f;
-  border-left: none; }
+  left: 0;
+  top: 7px;
+  width: 8px;
+  height: 16px;
+  background-image: url("../images/sprite.png");
+  background-position: -241px -108px; }
+  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .pages .previous:before {
+      background: url("../images/sprite@2x.png");
+      background-size: 600px 300px;
+      background-position: "" ""; } }
 
 .toolbar .view-mode > label {
   display: none; }
