@@ -66,6 +66,11 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
 
                 <?php if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandles())): ?>
                     <!--start category title/description here-->
+
+                    <?php if($_imgUrl): ?>
+                        <?php echo $_imgHtml ?>
+                    <?php endif; ?>
+
                     <div class="page-title category-title">
                         <?php if($catalog_view_block->IsRssCatalogEnable() && $catalog_view_block->IsTopCategory()): ?>
                             <a href="<?php echo $catalog_view_block->getRssLink() ?>" class="link-rss"><?php echo $catalog_view_block->__('Subscribe to RSS Feed') ?></a>
@@ -74,10 +79,6 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
                     </div>
 
                     <?php echo $catalog_view_block->getMessagesBlock()->toHtml() ?>
-
-                    <?php if($_imgUrl): ?>
-                        <?php echo $_imgHtml ?>
-                    <?php endif; ?>
 
                     <?php if($_description=$catalog_view_block->getCurrentCategory()->getDescription()): ?>
                         <div class="category-description std">
