@@ -1011,9 +1011,10 @@ a.button:hover {
   padding: 7px 10px 7px 20px;
   background: #F4F4F4;
   font-size: 16px;
-  height: 42px;
+  min-height: 42px;
   line-height: 24px;
-  text-align: center; }
+  text-align: center;
+  height: 100%; }
 
 .messages li li:before {
   top: 50%;
@@ -1022,8 +1023,7 @@ a.button:hover {
 
 .messages .error-msg li {
   color: #fff;
-  background-color: #000;
-  height: 100%; }
+  background-color: #000; }
 
 .messages .notice-msg li {
   color: #fff;
