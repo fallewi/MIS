@@ -42,7 +42,7 @@
             <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
         <?php endif; ?>
         <?php if($this->canShowOptions()): ?>
-            <p class="block-subtitle block-subtitle--filter"><?php echo $this->__('Filter') ?></p>
+            <p class="block-subtitle block-subtitle--filter"><?php echo $this->__('Product Filter') ?></p>
             <dl id="narrow-by-list">
                 <?php $_filters = $this->getFilters() ?>
                 <?php foreach ($_filters as $_filter): ?>

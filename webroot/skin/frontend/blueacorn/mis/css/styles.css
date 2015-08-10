@@ -872,9 +872,9 @@ a.button:hover {
   padding: 0 3px;
   color: #00247B; }
 
-@media only screen and (max-width: 770px) {
+@media only screen and (max-width: 479px) {
   .breadcrumbs {
-    display: none; } }
+    text-align: center; } }
 
 /* -------------------------------------------- *
  * Button - Remove / Previous
@@ -1620,6 +1620,10 @@ span.weee {
     content: '';
     display: table;
     clear: both; }
+
+@media only screen and (max-width: 770px) {
+  .category-products > .toolbar {
+    display: none; } }
 
 .pager-no-toolbar {
   margin-bottom: 10px; }
@@ -3960,6 +3964,9 @@ body.catalogsearch-result-index .page-title h1 {
 
 .category-image {
   margin-bottom: 1.5em; }
+  @media only screen and (max-width: 770px) {
+    .category-image {
+      display: none; } }
 
 .products-list .action .button,
 .products-grid .actions .button {

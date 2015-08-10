@@ -71,6 +71,9 @@ body.catalogsearch-result-index .page-title h1 {
 
 .category-image {
   margin-bottom: 1.5em; }
+  @media only screen and (max-width: 770px) {
+    .category-image {
+      display: none; } }
 
 .products-list .action .button,
 .products-grid .actions .button {

@@ -667,10 +667,10 @@ a.button:hover {
     color: $brand-primary;
 }
 
-@include bp(max-width, $bp-medium) {
+@include bp(max-width, $bp-xsmall) {
 
     .breadcrumbs {
-        display: none;
+        text-align: center;
     }
 
 }
@@ -1576,6 +1576,12 @@ span.weee {
     text-align: center;
     &:after {
         @include clearfix;
+    }
+}
+
+@include bp(max-width, $bp-medium) {
+    .category-products > .toolbar {
+        display: none;
     }
 }
 
