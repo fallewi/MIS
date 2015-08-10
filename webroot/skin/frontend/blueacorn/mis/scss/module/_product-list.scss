@@ -63,6 +63,7 @@ body.catalogsearch-result-index .page-title h1 {
     letter-spacing: 1px;
     font-weight: normal;
     padding: 10px 24px 10px;
+    width: 100%;
 }
 
 /* -------------------------------------------- *
@@ -195,8 +196,8 @@ $productsGridActionHeight: 85px;
 
 .products-grid > li {
     float: left;
-    width: percentage(210 / 440);
-    padding-right: percentage(20 / 440);
+    width: 100%;
+    padding: 5%;
 
     &:hover {
         outline: 1px solid $black;
@@ -242,6 +243,57 @@ $productsGridActionHeight: 85px;
 // ---------------------------------------------
 
 @include bp(min-width, $bp-xsmall + 1) {
+    $column-count: 2;
+    $column-gutters: 2;
+    $container: 600 - (3 * 20px);
+
+    $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+    .products-grid {
+
+        /* Set column config */
+        > li {
+            width: 48.6%;
+            padding: 2%;
+            margin-left: 1%;
+        }
+        > li:nth-child(#{$column-count}n+1) {
+            clear: left;
+        }
+        > li:nth-child(#{$column-count}n) {
+            padding-right: 2%;
+        }
+    }
+}
+
+// ---------------------------------------------
+
+@include bp(min-width, $bp-medium + 1) {
+    $column-count: 2;
+    $column-gutters: 2;
+    $container: 600 - (3 * 20px);
+
+    $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+    .products-grid {
+        /* Set column config */
+        > li {
+            width: 48.6%;
+            padding: 2%;
+            margin-left: 1%;
+        }
+        > li:nth-child(#{$column-count}n+1) {
+            clear: left;
+        }
+        > li:nth-child(#{$column-count}n) {
+            padding-right: 2%;
+        }
+    }
+}
+
+// ---------------------------------------------
+
+@include bp(min-width, $bp-large + 1) {
     /* Config: Three columns + flexible gutter */
     // Container: 600 - (2 * 30 trim wide) = 540
     $column-count: 3;

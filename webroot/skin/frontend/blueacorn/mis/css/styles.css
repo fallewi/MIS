@@ -3991,7 +3991,8 @@ body.catalogsearch-result-index .page-title h1 {
   font-size: 15px;
   letter-spacing: 1px;
   font-weight: normal;
-  padding: 10px 24px 10px; }
+  padding: 10px 24px 10px;
+  width: 100%; }
 
 /* -------------------------------------------- *
  * Product Name
@@ -4107,8 +4108,8 @@ p.product-name {
 /* Config: Two columns + flexible gutter */
 .products-grid > li {
   float: left;
-  width: 47.7273%;
-  padding-right: 4.5455%; }
+  width: 100%;
+  padding: 5%; }
   .products-grid > li:hover {
     outline: 1px solid #000; }
 
@@ -4159,6 +4160,30 @@ p.product-name {
     top: 6px; }
 
 @media only screen and (min-width: 480px) {
+  .products-grid {
+    /* Set column config */ }
+    .products-grid > li {
+      width: 48.6%;
+      padding: 2%;
+      margin-left: 1%; }
+    .products-grid > li:nth-child(2n+1) {
+      clear: left; }
+    .products-grid > li:nth-child(2n) {
+      padding-right: 2%; } }
+
+@media only screen and (min-width: 771px) {
+  .products-grid {
+    /* Set column config */ }
+    .products-grid > li {
+      width: 48.6%;
+      padding: 2%;
+      margin-left: 1%; }
+    .products-grid > li:nth-child(2n+1) {
+      clear: left; }
+    .products-grid > li:nth-child(2n) {
+      padding-right: 2%; } }
+
+@media only screen and (min-width: 980px) {
   /* Config: Three columns + flexible gutter */
   .products-grid {
     /* Undo two-column config */
