@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <checkout_cart_index>
+        <reference name="checkout.cart">
+            <action method="setCartTemplate"><value>blueacorn/checkout/cart.phtml</value></action>
+            <action method="setEmptyTemplate"><value>checkout/cart/noItems.phtml</value></action>
+            <block type="core/text_list" name="cart.top.widget" as="cart.top.widget" translate="label">
+                <label>Cart Top Widget</label>
+            </block>
+            <block type="core/text_list" name="cart.bottom.widget" as="cart.bottom.widget" translate="label">
+                <label>Cart Bottom Widget</label>
+            </block>
+            <block type="core/text_list" name="cart.totals.top.widget" as="cart.totals.top.widget" translate="label">
+                <label>Cart Totals Top Widget</label>
+            </block>
+        </reference>
+        <remove name="checkout.cart.giftcardaccount"/>
+        <reference name="checkout.cart.extra">
+            <block type="enterprise_giftcardaccount/checkout_cart_giftcardaccount"
+                   template="blueacorn/giftcardaccount/cart/block.phtml" name="ba.checkout.cart.giftcardaccount"
+                   as="ba_giftcards"/>
+        </reference>
+    </checkout_cart_index>
+
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>blueacorn/bestpractices.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/blueacorn-best-practice.css</name>
+            </action>
+        </reference>
+        <reference name="checkout.onepage">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage.phtml</template>
+            </action>
+            <block type="core/text_list" name="checkout.top.widget" as="checkout.top.widget" translate="label">
+                <label>Checkout Top Widget</label>
+            </block>
+        </reference>
+        <reference name="checkout.onepage.login">
+            <action method="setTemplate">
+                <template>blueacorn/persistent/checkout/onepage/login.phtml</template>
+            </action>
+        </reference>
+        <reference name="checkout.onepage.billing">
+            <action method="setTemplate">
+                <template>blueacorn/persistent/checkout/onepage/billing.phtml</template>
+            </action>
+        </reference>
+        <reference name="checkout.onepage.shipping">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/shipping.phtml</template>
+            </action>
+        </reference>
+        <reference name="checkout.onepage.shipping_method">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/shipping_method.phtml</template>
+            </action>
+            <block type="core/text_list" name="shipping.method.top.widget" as="shipping.method.top.widget"
+                   translate="label">
+                <label>Shipping Method Top Widget</label>
+            </block>
+            <block type="core/text_list" name="shipping.method.bottom.widget" as="shipping.method.bottom.widget"
+                   translate="label">
+                <label>Shipping Method Bottom Widget</label>
+            </block>
+        </reference>
+        <reference name="checkout.onepage.payment">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/payment.phtml</template>
+            </action>
+            <block type="core/text_list" name="payment.method.top.widget" as="payment.method.top.widget"
+                   translate="label">
+                <label>Payemnt Method Top Widget</label>
+            </block>
+            <block type="core/text_list" name="payment.method.bottom.widget" as="payment.method.bottom.widget"
+                   translate="label">
+                <label>Payment Method Bottom Widget</label>
+            </block>
+        </reference>
+        <reference name="checkout.onepage.review">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/review.phtml</template>
+            </action>
+        </reference>
+        <reference name="right">
+            <block type="core/text_list" name="checkoutprogress.top.widget" as="checkoutprogress.top.widget" translate="label" before="-">
+                <label>Checkout Progress Top Widget</label>
+            </block>
+            <block type="core/text_list" name="checkoutprogress.bottom.widget" as="checkoutprogress.bottom.widget" translate="label" after="-">
+                <label>Checkout Progress Bottom Widget</label>
+            </block>
+        </reference>
+        <reference name="checkout.progress">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/progress.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_success>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/blueacorn-best-practice.css</name>
+            </action>
+        </reference>
+        <reference name="checkout.success">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/success.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_success>
+
+    <checkout_onepage_review>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/review/info.phtml</template>
+            </action>
+            <action method="addItemRender">
+                <type>default</type>
+                <block>checkout/cart_item_renderer</block>
+                <template>blueacorn/checkout/onepage/review/item.phtml</template>
+            </action>
+            <action method="addItemRender">
+                <type>grouped</type>
+                <block>checkout/cart_item_renderer_grouped</block>
+                <template>blueacorn/checkout/onepage/review/item.phtml</template>
+            </action>
+            <action method="addItemRender">
+                <type>configurable</type>
+                <block>checkout/cart_item_renderer_configurable</block>
+                <template>blueacorn/checkout/onepage/review/item.phtml</template>
+            </action>
+            <block type="core/text_list" name="order.review.bottom.widget" as="order.review.bottom.widget" after="-" translate="label">
+                <label>Order Review Bottom</label>
+            </block>
+        </reference>
+        <reference name="checkout.onepage.review.button">
+            <action method="setTemplate">
+                <template>blueacorn/checkout/onepage/review/button.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_review>
+</layout>

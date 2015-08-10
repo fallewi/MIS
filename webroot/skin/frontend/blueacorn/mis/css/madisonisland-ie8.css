@@ -1,0 +1,186 @@
+/*
+ * A partial implementation of the Ruby list functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/lib/compass/sass_extensions/functions/lists.rb
+ */
+/*
+ * A partial implementation of the Ruby constants functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/lib/compass/sass_extensions/functions/constants.rb
+ */
+/*
+ * A partial implementation of the Ruby display functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
+ */
+@font-face {
+  font-family: 'font-awesome';
+  src: url("../fonts/fontawesome-webfont.eot");
+  src: url("../fonts/fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2") format("woff2"), url("../fonts/fontawesome-webfont.woff") format("woff"), url("../fonts/fontawesome-webfont.ttf") format("truetype"); }
+
+@font-face {
+  font-family: 'din';
+  src: url("../fonts/din_alternate_bold-webfont.eot");
+  src: url("../fonts/din_alternate_bold-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/din_alternate_bold-webfont.woff2") format("woff2"), url("../fonts/din_alternate_bold-webfont.woff") format("woff"), url("../fonts/din_alternate_bold-webfont.ttf") format("truetype"); }
+
+/* ============================================ *
+ * Homepage
+ * ============================================ */
+.hero-container {
+  content: '';
+  display: table;
+  clear: both;
+  background: #F5F5F5;
+  margin-top: 4px; }
+
+.hero-img {
+  float: right;
+  width: 66.66%; }
+  .hero-img img {
+    width: 100%; }
+
+.mobile-image {
+  display: none; }
+
+.hero-content {
+  float: left;
+  width: 33.33%;
+  padding: 67px 40px 20px;
+  text-align: center;
+  padding-top: 30px; }
+  .hero-content h2 {
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    color: #00247B;
+    letter-spacing: 1px;
+    line-height: 42px;
+    font-size: 36px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    line-height: 32px; }
+  .hero-content p {
+    font-size: 15px; }
+  .hero-content .button.btn-cart {
+    margin-top: 43px;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 1px;
+    width: 100%;
+    padding: 17px 20px 16px; }
+
+/* -------------------------------------------- *
+ * Primary Banner
+ */
+body.cms-home .main-container {
+  padding-top: 20px; }
+
+body.cms-home .slideshow-container {
+  margin-top: 0; }
+
+.slideshow .banner-msg {
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+  top: 30%;
+  user-select: none; }
+
+.slideshow .banner-msg h2 {
+  color: #FFFFFF;
+  font-size: 24px;
+  text-shadow: compact(compact(1px 1px 3px false #555555), false, false, false, false, false, false, false, false, false); }
+
+.slideshow .banner-msg h2 strong {
+  font-weight: bold;
+  display: block;
+  font-size: 36px; }
+
+/* -------------------------------------------- *
+ * Promotion Banner Section
+ */
+.promos {
+  margin: 0 0 10px 0;
+  padding: 0;
+  width: 100%; }
+
+.promos:after {
+  content: '';
+  display: table;
+  clear: both; }
+
+/* Specifying the body only in order to override the .std ul li styling */
+body .promos > li {
+  margin: 0 0 10px 0;
+  list-style: none;
+  text-align: center;
+  position: relative;
+  border: 1px solid #CCCCCC;
+  user-select: none; }
+
+.promos > li:last-child {
+  margin-bottom: 0; }
+
+.promos img {
+  max-width: 100%;
+  width: 100%; }
+
+.promos a:hover {
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  display: block; }
+
+.promos span {
+  color: #FFFFFF;
+  text-transform: uppercase;
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 10%;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif;
+  text-shadow: compact(compact(1px 1px 3px false #555555), false, false, false, false, false, false, false, false, false); }
+
+.promos strong {
+  font-weight: 600;
+  font-size: 26px;
+  display: block; }
+
+.promos span {
+  font-size: 16px; }
+
+.promos strong {
+  font-size: 17px; }
+
+/* Config: Three columns + flexible gutter */
+body .promos > li {
+  float: left;
+  width: 31.746%;
+  margin-right: 2.381%; }
+
+.promos > li:nth-child(3n) {
+  margin-right: 0; }
+
+.promos span {
+  font-size: 18px; }
+
+.promos strong {
+  font-size: 24px; }
+
+/* -------------------------------------------- *
+ * New Products Section
+ */
+/* Hiding the reviews content via CSS because we can't modify the template, */
+/* since it may be used in other places where those elements are needed */
+.cms-index-index .products-grid .ratings,
+.cms-index-index .products-grid .actions,
+.cms-index-noroute .products-grid .ratings,
+.cms-index-noroute .products-grid .actions {
+  display: none; }
+
+.cms-index-index h2.subtitle {
+  padding: 6px 0;
+  text-align: center;
+  color: #262626;
+  font-weight: 600;
+  border-bottom: 1px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC; }
+
+.cms-index-noroute h2.subtitle {
+  display: none; }

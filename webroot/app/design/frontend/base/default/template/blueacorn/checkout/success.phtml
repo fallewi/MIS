@@ -1,0 +1,134 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+?>
+<?php $_helper = Mage::helper('blueacorn_checkoutcartbestpractice'); ?>
+<?php $order = $this->getOrder(); ?>
+<?php $items = $order->getAllVisibleItems(); ?>
+
+<div class="page-title">
+    <h1><?php echo ($_helper->getSystemConfig(['checkout','order_success','header']) != "") ? $_helper->getSystemConfig(['checkout','order_success','header']) : $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+
+    <?php if ($this->getCanViewOrder()) :?>
+        <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+    <?php  else :?>
+        <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+    <?php endif;?>
+        <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+    <?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+        <p>
+            <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+            <?php echo $this->getChildHtml() ?>
+        </p>
+    <?php endif;?>
+
+    <?php if($_helper->getSystemConfig(['checkout','order_success','enable_order_details'])): ?>
+        <div class="address-info">
+            <div class="billing-address">
+                <?php $billing_address = $this->getBillingAddress(); ?>
+                <?php $billing_street = $billing_address->getStreet(); ?>
+                <div class="billing-title">Billing Information</div>
+                <div class="billing-name"><?php echo $billing_address->getFirstname() . " " . $billing_address->getLastname(); ?></div>
+                <div class="billing-street1"><?php echo $billing_street[0]; ?></div>
+                <?php if(count($billing_street) > 1) : ?>
+                    <div class="billing-street2"><?php echo $billing_street[1]; ?></div>
+                <?php endif; ?>
+                <div class="billing-location"><?php echo $billing_address->getCity() . ", " . $billing_address->getRegion() . " " . $billing_address->getPostcode()?></div>
+                <div class="billing-email"><?php echo $billing_address->getEmail(); ?></div>
+            </div>
+            <div class="shipping-address">
+                <?php $shipping_address = $this->getShippingAddress(); ?>
+                <?php $shipping_street = $shipping_address->getStreet(); ?>
+                <div class="shipping-title">Shipping Address</div>
+                <div class="shipping-name"><?php echo $shipping_address->getFirstname() . " " . $shipping_address->getLastname(); ?></div>
+                <div class="shipping-street1"><?php echo $shipping_street[0]; ?></div>
+                <?php if(count($shipping_street) > 1) : ?>
+                    <div class="shipping-street2"><?php echo $shipping_street[1]; ?></div>
+                <?php endif; ?>
+                <div class="shipping-location"><?php echo $shipping_address->getCity() . ", " . $shipping_address->getRegion() . " " . $shipping_address->getPostcode()?></div>
+                <div class="shipping-email"><?php echo $shipping_address->getEmail(); ?></div>
+            </div>
+            <div class="shipping-cost">
+                <div class="shipping-title">Shipping Information</div>
+                <div class="shipping-description"><?php echo $order->getShippingDescription(); ?></div>
+                <div class="shipping-amount"><?php echo $this->toCurrency($order->getShippingAmount()); ?></div>
+            </div>
+        </div>
+        <div class="item-count">ITEMS(<?php echo (int)$order->getTotalQtyOrdered();?>)</div>
+        <div class="items-list">
+            <?php foreach($items as $item) : ?>
+                <?php $image = Mage::helper('catalog/image')->init($item->getProduct(), 'thumbnail')->resize('100'); ?>
+                <div class="item-row">
+                    <div class="item-image"><img src="<?php echo $image; ?>" /></div>
+                    <div class="item-name">
+                        <div class="item-name"><?php echo $item->getName(); ?></div>
+                        <div class="item-sku"><span class="sku-label">Style #:</span> <?php echo $item->getSku(); ?></div>
+                    </div>
+                    <div class="item-qty">
+                        <div class="qty-label">QTY</div>
+                        <div class="qty-amount"><?php echo (int)$item->getQtyOrdered(); ?></div>
+                    </div>
+                </div>
+            <?php endforeach ?>
+        </div>
+        <div class="summary">
+            <div>
+                <div class="summary-title">SUMMARY</div>
+                <div class="subtotal-label">Subtotal</div>
+                <div class="sub-total"><?php echo $this->toCurrency($order->getSubtotal()); ?></div>
+                <div class="summary-divider"></div>
+                <div class="discount-label">Discount</div>
+                <div class="discount-amount"><?php echo $this->toCurrency($order->getDiscountAmount()); ?></div>
+                <div class="shipping-label">Shipping</div>
+                <div class="shipping-total"><?php echo $this->toCurrency($order->getShippingAmount()); ?></div>
+                <div class="total-label">Total</div>
+                <div class="final-total"><?php echo $this->toCurrency($order->getBaseGrandTotal()); ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>

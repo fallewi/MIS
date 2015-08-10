@@ -1,0 +1,26 @@
+// Convert PX units to EMs.
+// Ex: margin-right: pem(16);
+
+@function pem($pxval, $base: $font-size-base-num) {
+    @return #{$pxval / $base}em;
+}
+
+// Used to convert PX to EMs
+@mixin scale($props, $sizes, $base: $font-size-base-num) {
+    $values: ();
+    $sublists: false;
+    @each $s in $sizes {
+        @if type-of($s) == list {
+            $sublists: true;
+            $vv: ();
+            @each $ss in $s {
+                $vv: append($vv, if(type-of($ss) == number, #{$ss / $base}em, $ss));
+            }
+            $values: append($values, join((), $vv));
+        } @else {
+            $values: append($values, if(type-of($s) == number, #{$s / $base}em, $s));
+        }
+    }
+    $value: join((), $values, if($sublists, comma, space));
+    @each $prop in $props { #{$prop}: $value }
+}

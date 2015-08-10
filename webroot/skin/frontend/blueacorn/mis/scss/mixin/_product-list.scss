@@ -1,0 +1,40 @@
+// This mixin outputs the styles to allow for grids with more than 3 columns
+@mixin product-grid($column-count, $container-width, $class-append:"") {
+
+    // Allow this mixin to be used for more specific purposes, such as grids contained within widgets
+    @if $class-append != "" {
+        $class-append: -#{$class-append};
+    }
+
+    /* Config: Columns + flexible gutter */
+    $column-gutters: ($column-count) - 1;
+    $container: $container-width - (2 * $trim);
+    $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+    /* Undo three-column config */
+    .products-grid--max-#{$column-count}-col#{$class-append} > li:nth-child(odd) {
+        clear: none;
+    }
+    .products-grid--max-#{$column-count}-col#{$class-append} > li:nth-child(3n+1) {
+        clear: none;
+    }
+    .products-grid--max-#{$column-count}-col#{$class-append} > li:nth-child(even),
+    .products-grid--max-#{$column-count}-col#{$class-append} > li:nth-child(3n) {
+        margin-right: percentage($product-column-spacing / $container);
+    }
+
+    /* Set column config */
+    .products-grid--max-#{$column-count}-col#{$class-append} > li {
+        margin-right: percentage($product-column-spacing / $container);
+    }
+    .products-grid--max-#{$column-count}-col#{$class-append} > li {
+        width: percentage($column-width / $container);
+        margin-right: percentage($product-column-spacing / $container);
+    }
+    .products-grid--max-#{$column-count}-col#{$class-append} > li:nth-child(#{$column-count}n+1) {
+        clear: left;
+    }
+    .products-grid--max-#{$column-count}-col#{$class-append} > li:nth-child(#{$column-count}n) {
+        margin-right: 0;
+    }
+}

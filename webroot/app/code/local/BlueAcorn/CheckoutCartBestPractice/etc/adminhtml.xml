@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn\CheckoutCartBestPractice
+* @version     0.1.0
+* @author      Bret Thomas - Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2015 Blue Acorn, Inc.
+*/
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <bestpractices>
+                                        <title>Blue Acorn Best Practices</title>
+                                    </bestpractices>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,346 @@
+.ba-select-input {
+    position: absolute;
+    left: -999em;
+}
+
+.ba-select-box {
+    position: relative;
+    &.open {
+        .ba-options { display: block; }
+        &.ba-over, &.ba-thumbnail {
+            .ba-shiv {
+                box-shadow: 0 0 0 rgba(255,255,255,0);
+            }
+        }
+    }
+}
+
+.ba-select {
+    display: inline-block;
+    width: 100%;
+    &.disabled {
+        @include opacity(.75);
+    }
+}
+
+.ba-shiv {
+    float: left;
+    position: relative;
+    width: 100%;
+    height: 32px;
+    padding: 0 40px 0 10px;
+    font: 300 1em/30px $f-stack-default;
+    border: 1px solid $white;
+    color: $black-80;
+    @include gradient-vertical($white, darken($white, 2%));
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    .ba-shiv-content {
+        display: inline-block;
+        font: 300 1em/30px $f-stack-default;
+        color: $black-80;
+    }
+    .ba-arrow {
+        &:after {
+            position: absolute;
+            display: block;
+            content: '';
+            font-size: 14px;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            font-family: "SSStandard";
+            right: 0;
+            top: 0;
+            color: $black-80;
+        }
+    }
+}
+
+.ba-options {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0 10px;
+    @include gradient-vertical($white, darken($white, 2%));
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    border: 1px solid $white;
+    cursor: pointer;
+    ul {
+        list-style: none;
+        li {
+            float: left;
+            width: 100%;
+            clear: both;
+            font: normal 14px/normal $f-stack-default;
+            cursor: pointer;
+            font: 300 1em/30px $f-stack-default;
+            color: $black-80;
+            &:hover {
+                color: $brand-primary;
+            }
+        }
+    }
+}
+
+.ba-select-close {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 998;
+}
+
+.ba-select-box.ba-left, .ba-select-box.ba-right, .ba-select-box.ba-under {
+    .ba-options {
+        float: left;
+        width: auto;
+        position: absolute;
+        left: auto;
+        &:after {
+            font-family: $f-stack-icon;
+            font-size: 14px;
+            position: absolute;
+            line-height: 34px;
+            color: $white;
+            @include transition(transform .2s ease);
+            @include transform(rotate(0deg));
+        }
+    }
+    &.open {
+        .ba-shiv {
+            color: $white;
+            border-color: $black-60;
+            @include gradient-vertical($black-60, $black-70);
+        }
+        .ba-shiv-content { color: $white; }
+        .ba-arrow:after {
+            color: $white;
+            top: -2px;
+        }
+    }
+}
+.ba-left {
+    .ba-options:after {
+        content: '▹';
+        right: -12px;
+        text-shadow: 2px 0 2px rgba(0,0,0,.25);
+    }
+    &.open {
+        .ba-arrow:after {
+            @include transform(rotate(90deg));
+        }
+    }
+}
+.ba-right {
+    .ba-options:after {
+        content: '◃';
+        left: -12px;
+        text-shadow: -2px 0 2px rgba(0,0,0,.25);
+    }
+    &.open {
+        .ba-arrow:after {
+            @include transform(rotate(-90deg));
+        }
+    }
+}
+
+.ba-under {
+    .ba-options {
+        top: 100%;
+        width: 100%;
+        &:after {
+            content: '◃';
+            left: 50%;
+            top: -22px;
+            margin-left: -17px;
+            @include transform(rotate(90deg));
+            text-shadow: -2px 0 2px rgba(0,0,0,.25);
+        }
+    }
+    &.open {
+        .ba-arrow:after { top: 0; }
+    }
+}
+
+.ba-thumbnail {
+    .ba-shiv {
+        height: 52px;
+        padding-left: 0;
+        .ba-shiv-content, .ba-img-span, .ba-img {
+            float: left;
+            line-height: 50px;
+            margin-right: 5px;
+        }
+        .ba-arrow:after {
+            height: 52px;
+            line-height: 52px;
+        }
+    }
+    li {
+        padding: 5px;
+        width: 20%;
+        clear: none;
+        float: left;
+        text-align: center;
+        &:first-child {
+            @include g-all();
+        }
+    }
+    .ba-img-span {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background-position: 50% 50%;
+        background-size: 100% auto;
+        border-radius: 5px;
+    }
+    .ba-opt-content {
+        @include g-all();
+    }
+}
+
+.ba-overlay {
+    &.open .ba-shiv {
+        @include box-shadow(0 0 0 rgba(255,255,255,0));
+    }
+    .ba-options {
+        top: 50%;
+    }
+}
+
+.ba-fullscreen {
+    .ba-options {
+        display: block;
+        text-align: center;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        box-shadow: 0 0 0 rgba(255,255,255,0);
+        background: rgba(255,255,255,.9);
+        visibility: hidden;
+        opacity: 0;
+        transform: scale(.9);
+        transition: transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
+        ul {
+            position: absolute;
+            top: 50%;
+            li span {
+                font-size: 32px;
+                line-height: 40px;
+                margin-bottom: 20px;
+                color: $brand-primary;
+                border-bottom: 2px solid rgba(255,255,255,0);
+                &:hover {
+                    border-bottom: 2px solid $black;
+                    color: $black;
+                }
+            }
+        }
+    }
+    &.open .ba-options {
+        visibility: visible;
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+        transition: transform 0.4s, opacity 0.4s;
+    }
+    & + .ba-select-close {
+        position: fixed;
+        left: auto;
+        right: 20px;
+        top: 20px;
+        width: 50px;
+        height: 50px;
+        z-index: 9999;
+        cursor: pointer;
+        &:after {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            content: '␡';
+            color: $black;
+            font-family: $f-stack-icon;
+            font-size: 40px;
+            text-align: right;
+        }
+    }
+}
+
+.ba-fullthumb {
+    .ba-options {
+        display: block;
+        text-align: center;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        box-shadow: 0 0 0 rgba(255,255,255,0);
+        background: rgba(0,0,0,.9);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0s 0.2s;
+        ul {
+            @include g-all();
+            padding: 20px;
+            li span {
+                font-size: 32px;
+                line-height: 40px;
+                margin-bottom: 20px;
+                color: $brand-primary;
+                border-bottom: 2px solid rgba(255,255,255,0);
+                &:hover {
+                    border-bottom: 2px solid $black;
+                    color: $black;
+                }
+            }
+        }
+        li {
+            padding: 5px;
+            @include g-item(d, 5, false);
+            margin-bottom: 20px;
+            clear: none;
+            float: left;
+            text-align: center;
+            background: $white;
+            border-radius: 5px;
+        }
+        .ba-img-span, .ba-color-box {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            min-height: 100px;
+            background-position: 50% 50%;
+            background-size: 100% auto;
+            border-radius: 5px;
+        }
+        .ba-opt-content {
+            @include g-all();
+        }
+    }
+    &.open .ba-options {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.ba-color-name {
+    @include g-all();
+    font-size: 16px;
+}
