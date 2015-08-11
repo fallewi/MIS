@@ -15,7 +15,7 @@ if ($featured_products): ?>
                 <h3><?php echo $product->getName(); ?></h3>
                 <p><?php echo $product->getShortDescription(); ?></p>
                 <div class="button-wrap">
-                    <a href="<?php echo $product->getUrlPath(); ?>" class="button btn-small button-secondary"><?php echo $this->__('View Details'); ?></a>
+                    <a href="<?php echo $product->getUrlKey(); ?>.html" class="button btn-small button-secondary"><?php echo $this->__('View Details'); ?></a>
                 </div>
 			</div>
 
