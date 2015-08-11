@@ -3073,8 +3073,6 @@ a.skip-link {
   .nav-primary li.level0 li {
     padding: 0;
     padding-bottom: 14px; }
-    .nav-primary li.level0 li.view-all {
-      display: none; }
   .nav-primary li.level1 a {
     padding: 0 15px 0 20px;
     height: auto;
