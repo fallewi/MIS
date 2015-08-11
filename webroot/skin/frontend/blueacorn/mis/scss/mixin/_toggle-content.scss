@@ -135,8 +135,8 @@
                 display: block;
                 @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
                 background-position: -78px -30px;
-                width: 15px;
-                height: 15px;
+                width: 16px;
+                height: 16px;
                 top: 12px;
                 right: 12px;
             }

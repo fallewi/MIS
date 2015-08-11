@@ -667,9 +667,33 @@ a.button:hover {
     color: $brand-primary;
 }
 
-@include bp(max-width, $bp-xsmall) {
+@include bp(max-width, $bp-medium) {
 
     .breadcrumbs {
+        margin-top: 20px;
+        color: $brand-primary;
+
+        ul {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+
+            li:not(.home) {
+                text-transform: none;
+            }
+        }
+
+        a,
+        ul li,
+        ul li span,
+        ul li span a {
+            float: none;
+            display: inline-block;
+        }
+    }
+
+    .category-title {
+        margin-top: 30px;
         text-align: center;
     }
 

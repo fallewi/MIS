@@ -40,6 +40,10 @@ body.catalogsearch-result-index .page-title h1 {
     font-weight: normal;
     letter-spacing: 1px;
     margin-bottom: 8px;
+
+    @include bp(max-width, $bp-medium) {
+        text-align: center;
+    }
 }
 
 .category-description {
@@ -555,6 +559,10 @@ $productsGridActionHeight: 85px;
     @include accordion;
     @include accordionCollapse;
     background: $brand-light;
+
+    @include bp(max-width, $bp-medium) {
+        background: $white;
+    }
 }
 
 .block-layered-nav dl dd {
@@ -588,6 +596,10 @@ $productsGridActionHeight: 85px;
 }
 
 @include bp(max-width, $bp-medium) {
+    .category-description {
+        display: none;
+    }
+
     .sidebar .block.block-layered-nav {
         border-bottom: none;
     }
@@ -601,46 +613,65 @@ $productsGridActionHeight: 85px;
     .block-layered-nav .block-content {
         padding-top: 0;
         margin-top: 15px;
+
+        & > dl > dt {
+            margin-bottom: 20px;
+
+            &:after {
+                right: -9999px;
+                top: -9999px;
+            }
+        }
     }
 
     .block-layered-nav .block-subtitle--filter {
-        background-color: $c-action;
+        background-color: $white;
         border: 0;
         margin-bottom: 0;
         display: block;
-        color: #FFFFFF;
+        color: $brand-primary;
+        border: 1px solid $brand-primary;
+        text-align: center;
+        text-transform: uppercase;
 
-        &:after {
-            @include triangle(right, 4px, #FFFFFF);
-            right: 10px;
+        &:before {
+            @include triangle(down, 8px, $brand-primary);
+            right: 75px;
             top: 50%;
             margin-top: -5px;
         }
 
-        &:hover {
-            background-color: $c-button-hover;
-            color: #FFFFFF;
+        &.active {
+            background-color: $brand-primary;
+            color: $white;
+
+            &:before {
+                @include triangle(up, 8px, $white);
+                right: 75px;
+                top: 50%;
+                margin-top: -3px;
+            }
         }
 
+        &:after,
         &.active:after {
-            @include triangle(down, 4px, #FFFFFF);
-            right: 10px;
-            top: 50%;
-            margin-top: -3px;
+            right: -9999px;
+            top: -9999px;
         }
     }
 
     #narrow-by-list,
     #narrow-by-list2 {
-        padding: $box-spacing;
-        border: 1px solid $c-module-border;
-        border-top: 0;
+        padding: 22px 22px 2px 23px;
+        margin-top: 10px;
+        background: $brand-light;
     }
 
     .block-layered-nav dl ol > li > a,
     .block-layered-nav dl ol > li > span {
         padding: 7px;
         margin: 5px;
+        background: $white !important;
     }
 
     .block-layered-nav dl ol > li > a {
