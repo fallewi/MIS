@@ -3632,12 +3632,13 @@ a.skip-link {
   .footer .block-title {
     border-bottom: 0;
     padding: 3px 0;
-    margin-bottom: 17px;
+    margin-bottom: 15px;
     font-family: "gesta", Verdana, Arial, sans-serif;
     text-transform: uppercase;
     color: #00247B;
     font-size: 15px;
     font-weight: 400;
+    letter-spacing: -1px;
     border: 0; }
   .footer .block-title strong {
     font-weight: normal; }
@@ -3657,10 +3658,10 @@ a.skip-link {
     .footer .links li {
       word-break: break-all;
       line-height: 1.4;
-      padding: 4px 0 5px; }
+      padding: 5px 0 6px; }
     .footer .links a {
       color: #4D4D4D;
-      font-size: 15px; }
+      font-size: 14px; }
       .footer .links a:hover {
         color: #00247B; }
   .footer .block-subscribe {
