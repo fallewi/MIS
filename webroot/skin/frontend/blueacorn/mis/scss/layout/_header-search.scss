@@ -68,7 +68,7 @@
         position: absolute;
         top: 20px;
         left: auto;
-        right: 445px;
+        right: 480px;
         margin-left: 0;
         width: 310px;
         padding: 0;
@@ -80,14 +80,14 @@
     #header-search {
         left: 50%;
         height: 50px;
-        margin-left: -155px;
+        margin-left: -190px;
     }
 
 }
 
 @include bp(max-width, 1024px) {
     #header-search {
-        right: 336px;
+        right: 355px;
     }
 }
 

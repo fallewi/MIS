@@ -65,6 +65,47 @@
     padding: 17px 20px 16px; }
 
 /* -------------------------------------------- *
+ * Featured Products Block
+ */
+.feature-wrap {
+  margin-top: 30px; }
+  .feature-wrap .feature-item {
+    position: relative;
+    width: 23.75%;
+    margin-left: 1.65%;
+    padding: 20px 20px 82px;
+    float: left;
+    border: 1px solid #E1E1E1;
+    text-align: center; }
+    .feature-wrap .feature-item:first-child {
+      margin-left: 0; }
+    .feature-wrap .feature-item img {
+      padding: 10px;
+      text-align: center;
+      display: inline-block;
+      width: 100%; }
+    .feature-wrap .feature-item h3 {
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      color: #00247B;
+      line-height: 32px;
+      margin-top: 38px;
+      margin-bottom: 6px; }
+    .feature-wrap .feature-item p {
+      font-style: italic; }
+    .feature-wrap .feature-item .button-wrap {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      left: 0;
+      padding: 0 20px; }
+    .feature-wrap .feature-item .button.btn-small {
+      font-weight: 400;
+      width: 100%;
+      padding: 10px 5px 10px; }
+    .feature-wrap .feature-item.feature-promo h3 {
+      color: #EC3837; }
+
+/* -------------------------------------------- *
  * Primary Banner
  */
 body.cms-home .main-container {

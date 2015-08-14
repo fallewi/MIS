@@ -31,15 +31,14 @@
  * Footer
  */
 
-.footer,
-.footer button {
-    font-family: $f-stack-special;
+.footer-container {
+    background: #F5F5F5;
+    padding-top: 20px;
 }
 
 .footer {
     clear: both;
     width: 100%;
-    border-top: 1px solid $c-module-border;
     padding-top: $trim;
 
     @include bp(max-width, $bp-xsmall) {
@@ -49,31 +48,51 @@
     .block-title {
         border-bottom: 0;
         padding: 3px 0;
+        margin-bottom: 15px;
+        font-family: $f-stack-sans;
+        text-transform: uppercase;
+        color: $brand-primary;
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: -1px;
+        border: 0;
     }
 
     .block-title strong {
         font-weight: normal;
     }
 
-    .block-title,
-    address {
-        color: $c-text-primary;
+    .links-container {
+        .links {
+            margin-left: 27px;
+
+            @include bp(max-width, 950px) {
+                margin-left: 8px;
+            }
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
     }
 
     .links {
         float: left;
-        width: 17%;
         padding: 0 $trim 0 0;
         margin-bottom: $trim;
+
+        ul { margin-bottom: 29px; }
 
         li {
             word-break: break-all;
             line-height: 1.4;
-            padding: 4px 0;
+            padding: 5px 0 6px;
         }
 
         a {
-            color: $c-text;
+            color: #4D4D4D;
+            font-size: 14px;
+
             &:hover {
                 color: $c-action;
             }
@@ -82,13 +101,33 @@
 
     .block-subscribe {
         float: right;
-        width: 320px;
-        margin-bottom: $trim;
+        width: 290px;
+        margin-bottom: 30px;
+        margin-top: 7px;
+        background: $white;
+        padding: 20px;
+
+        .block-title {
+            color: $brand-action;
+            font-size: 24px;
+            line-height: 32px;
+            margin: 4px 0 3px;
+            text-transform: none;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 21px;
+        }
+
+        @include bp(max-width, 870px) {
+            float: none;
+            width: 100%;
+        }
     }
 
     .links,
     .block-subscribe {
-        text-transform: uppercase;
         font-size: $f-size-xs;
     }
 
@@ -145,12 +184,31 @@
 
     .block-subscribe .input-text {
         width: 100%;
-        border-right: 0;
-        @include border-radius(0);
+        height: 40px;
+        border-color: #1E1E1E;
+    }
+
+    .block-subscribe .button {
+        background: $white;
+        border: 1px solid #1E1E1E;
+        border-left: 0;
+        color: #1E1E1E;
+        padding: 12px 19px 26px;
+        font-family: $f-stack-sans;
+        font-weight: 400;
+        text-transform: none;
+        font-size: 15px;
+        letter-spacing: 1px;
+
+        &:hover {
+            background: #737373;
+            border-color: #737373;
+            color: $white;
+        }
     }
 
     .block-subscribe .block-content {
-        padding-top: 7px;
+        padding-top: 8px;
 
         &:after {
             @include clearfix;
@@ -191,26 +249,19 @@
     }
 
     address {
-        border-top: 1px solid $c-module-border;
-        text-align: center;
+        text-align: left;
         width: 100%;
         font-size: $f-size-xxs;
-        margin-top: $trim;
-        padding: $trim 0;
+        margin-top: 0;
+        padding: 0 0 20px;
     }
 
-    @include bp(max-width, $bp-xlarge) {
-        $links-trim: percentage(30px / 960px);
-        $links-width: (100 - ($links-trim * 3)) / 4;
-
+    @include bp(max-width, 870px) {
         .links {
-            width: $links-width;
+            width: 21%;
+            margin-left: 2%;
+            margin-bottom: 0;
             padding-right: 0;
-            margin-right: $links-trim;
-        }
-
-        .links:nth-child(4) {
-            margin-right: 0;
         }
 
         .block-subscribe {
@@ -219,6 +270,63 @@
             margin: 0 auto $trim auto;
         }
     }
+
+    @include bp(max-width, 650px) {
+        .links-container .links {
+            position: relative;
+            float: none;
+            width: 100%;
+            margin-left: 0;
+            padding: 0;
+
+            .block-title {
+                font-size: 15px;
+                letter-spacing: 1.35px;
+                padding: 13px 20px 13px;
+                background: $white;
+                cursor: pointer;
+                margin: 0 0 10px;
+
+                &:after {
+                    @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
+                    display: block;
+                    content: "";
+                    width: 15px;
+                    height: 15px;
+                    position: absolute;
+                    top: 16px;
+                    right: 20px;
+                }
+
+                &:hover {
+                    @include opacity(.60);
+                }
+            }
+
+            ul {
+                margin-bottom: 0;
+                max-height: 0;
+                overflow: hidden;
+                background: $white;
+            }
+
+            .block-title.open-links {
+    
+                color: $brand-action;
+                margin-bottom: 0;
+    
+                & + ul {
+                    max-height: 55em;
+                    padding: 3px 20px 20px;
+                    margin-bottom: 10px;
+                }
+
+                &:after {
+                    background-position: -103px -30px;
+                }
+            }
+        }
+    }    
 
     @include bp(max-width, $bp-medium) {
         .form-language,
@@ -245,6 +353,90 @@
             clear: both;
             float: left;
             width: 100%;
+        }
+    }
+}
+
+.about-us-container {
+    float: left;
+    width: 240px;
+    margin-right: 46px;
+
+    .block-title { margin-bottom: 26px; }
+
+    p {
+        font-size: 15px;
+        line-height: 21px;
+    }
+
+    @include bp(max-width, 950px) {
+        float: none;
+        width: 100%;
+        border: 1px solid $brand-primary;
+        background: $white;
+        padding: 17px 20px 20px;
+        margin-bottom: 20px;
+    }
+}
+
+.connect-container { 
+    float: right;
+
+    @include bp(max-width, 870px) {
+        float: none;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+}
+
+.social-links {
+
+    padding: 0 22px;
+
+    @include bp(max-width, 650px) {
+        display: none;
+    }
+
+    .icon {
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, 0, -91px);
+        width: 50px;
+        height: 50px;
+        text-indent: -9999em;
+        display: inline-block;
+        margin-left: 12px;
+
+        &:hover {
+            @include opacity(.75);
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    .instagram-icon {
+        background-position: -60px -91px;
+    }
+
+    .facebook-icon {
+        background-position: -120px -91px;
+    }
+
+    .youtube-icon {
+        background-position: -180px -91px;
+    }
+}
+
+@media all and (max-width: 1185px) and (min-width: 951px) {
+    .footer {
+        .links-container .links {
+            float: none;
+            margin-left: 0;
+        }
+
+        .tablet-links {
+            float: left;
+            width: 18%;
         }
     }
 }

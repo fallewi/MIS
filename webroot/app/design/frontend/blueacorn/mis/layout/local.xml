@@ -14,21 +14,22 @@
                 <action method="addItem"><type>skin_js</type><name>js/vendor/jquery.fancybox.pack.js</name><params/></action>
             </block>
         </reference>
-    </default>
-
-    <!-- Adding Page Specific Style Sheets to Category & Search Result Pages -->
-    <catalog_theme_changes>
-        <reference name="head">
-            <action method="addItem"><type>skin_css</type><name>css/styles-category-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
-            <action method="addItem"><type>skin_css</type><name>css/styles-category.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        <reference name="name">
+            <remove name="footer_links" />
+            <remove name="footer_links2" />
         </reference>
-    </catalog_theme_changes>
+    </default>
 
     <cms_index_index>
         <block type="cms/block" name="homepage_hero" as="homepage_hero">
              <action method="setBlockId">
                  <block_id helper="blueacorn_homepage/data/getHeroBlock"/>
              </action>
+        </block>
+        <block type="blueacorn_homepage/featuredproducts" name="ba_featured_products" as="ba_featured_products">
+            <action method="setTemplate">
+                <template>blueacorn/featuredproducts/featured-products.phtml</template>
+            </action>
         </block>
         <reference name="root">
             <action method="setTemplate"><template>page/1column.phtml</template></action>
@@ -37,8 +38,19 @@
             <action method="append" ifconfig="homepage/homepage_hero/homepage_hero_enabled">
                 <block>homepage_hero</block>
             </action>
+            <action method="append" ifconfig="homepage/featured_products/featured_products_enabled">
+                <block>ba_featured_products</block>
+            </action>
         </reference>
     </cms_index_index>
+
+    <!-- Adding Page Specific Style Sheets to Category & Search Result Pages -->
+    <catalog_theme_changes>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/styles-category-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
+            <action method="addItem"><type>skin_css</type><name>css/styles-category.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+    </catalog_theme_changes>
 
     <catalog_category_default>
         <update handle="catalog_theme_changes" />

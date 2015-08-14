@@ -42,3 +42,11 @@ body {
 .wrapper:after {
     @include clearfix;
 }
+
+.page {
+	background: #F5F5F5;
+}
+
+.main-container {
+	background: $white;
+}
