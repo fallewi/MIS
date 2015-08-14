@@ -2657,13 +2657,13 @@ a.skip-link {
   position: absolute;
   top: 20px;
   left: auto;
-  right: 445px;
+  right: 480px;
   margin-left: 0;
   width: 310px;
   padding: 0; }
 
 #header-search {
-  right: 336px; }
+  right: 355px; }
 
 /* ============================================ *
  * Search Input

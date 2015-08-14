@@ -3214,7 +3214,7 @@ a.skip-link {
     position: absolute;
     top: 20px;
     left: auto;
-    right: 445px;
+    right: 480px;
     margin-left: 0;
     width: 310px;
     padding: 0; } }
@@ -3223,11 +3223,11 @@ a.skip-link {
   #header-search {
     left: 50%;
     height: 50px;
-    margin-left: -155px; } }
+    margin-left: -190px; } }
 
 @media only screen and (max-width: 1024px) {
   #header-search {
-    right: 336px; } }
+    right: 355px; } }
 
 @media only screen and (max-width: 885px) {
   #header-search {
