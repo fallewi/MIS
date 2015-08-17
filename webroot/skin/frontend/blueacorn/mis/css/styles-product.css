@@ -515,6 +515,9 @@
     background: #fff;
     margin-bottom: 20px;
     padding-top: 0; } }
+  @media only screen and (max-width: 770px) and (max-width: 770px) {
+    .product-collateral.accordion-open > dl > dd.current {
+      margin-top: -5px; } }
 
 @media only screen and (max-width: 770px) {
   .product-view .product-shop,

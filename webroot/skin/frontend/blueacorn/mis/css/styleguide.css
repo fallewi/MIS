@@ -611,6 +611,9 @@ p.product-name {
     background: #fff;
     margin-bottom: 20px;
     padding-top: 0; }
+    @media only screen and (max-width: 770px) {
+      .block-layered-nav .block-content.accordion-open > dl > dd.current {
+        margin-top: -5px; } }
   @media only screen and (max-width: 770px) {
     .block-layered-nav .block-content {
       background: #fff; } }
@@ -752,6 +755,23 @@ p.product-name {
   font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
   font-weight: normal;
   line-height: 27px; }
+
+@media only screen and (max-width: 770px) {
+  .block-layered-nav .currently {
+    padding: 22px 22px 12px 12px;
+    margin: 10px 0;
+    background: #F6F6F6; }
+    .block-layered-nav .currently ol li {
+      background: #fff;
+      padding: 10px 10px 10px 23px; }
+  .block-layered-nav .block-title,
+  .block-layered-nav .currently .block-subtitle,
+  .block-layered-nav .actions {
+    display: none; } }
+
+@media only screen and (max-width: 479px) {
+  .block-layered-nav .currently .value {
+    display: none; } }
 
 /* ============================================ *
  * Catalog - Product
@@ -1248,6 +1268,9 @@ p.product-name {
     background: #fff;
     margin-bottom: 20px;
     padding-top: 0; } }
+  @media only screen and (max-width: 770px) and (max-width: 770px) {
+    .product-collateral.accordion-open > dl > dd.current {
+      margin-top: -5px; } }
 
 @media only screen and (max-width: 770px) {
   .product-view .product-shop,

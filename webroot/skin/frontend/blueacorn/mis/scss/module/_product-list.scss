@@ -730,4 +730,29 @@ $productsGridActionHeight: 85px;
         font-weight: normal;
         line-height: 27px;
     }
+
+    @include bp(max-width, $bp-medium) {
+        .currently {
+            padding: 22px 22px 12px 12px;
+            margin: 10px 0;
+            background: #F6F6F6;
+
+            ol li {
+                background: $white;
+                padding: 10px 10px 10px 23px;
+            }
+        }
+
+        .block-title,
+        .currently .block-subtitle,
+        .actions {
+            display: none;
+        }
+    }
+
+    @include bp(max-width, $bp-xsmall) {
+        .currently .value{
+            display: none;
+        }
+    }
 }
