@@ -37,7 +37,7 @@ $table = $this->getConnection()
     )
     ->addColumn(
         'token',
-        Varien_Db_Ddl_Table::TYPE_INTEGER, null,
+        Varien_Db_Ddl_Table::TYPE_TEXT, null,
         array(
             'nullable'  => false,
             'unsigned'  => true,

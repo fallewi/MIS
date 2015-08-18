@@ -66,4 +66,23 @@
             </children>
         </catalog>
     </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <blueacorn_specialpricing translate="label">
+                                        <title>MAP Pricing</title>
+                                    </blueacorn_specialpricing>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
 </config>

@@ -42,4 +42,24 @@ class BlueAcorn_SpecialPricing_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return $converted;
     }
+
+
+    public function canLowestPriceBeDisplayed($product)
+    {
+        $product = Mage::getModel('catalog/product')->load($product->getId());
+        if(Mage::getSingleton('customer/session')->isLoggedIn())
+        {
+            return true;
+        }
+        if($mapRequired = $product->getAttributeText('map_required'))
+        {
+            if($mapRequired == "Disabled")
+            {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 }

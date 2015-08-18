@@ -19,7 +19,7 @@
 <config>
     <modules>
         <BlueAcorn_SpecialPricing>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </BlueAcorn_SpecialPricing>
     </modules>
     <global>
@@ -83,12 +83,24 @@
             </token>
         </global_search>
     </adminhtml>
+    <frontend>
+        <routers>
+            <map>
+                <use>standard</use>
+                <args>
+                    <module>BlueAcorn_SpecialPricing</module>
+                    <frontName>map</frontName>
+                </args>
+            </map>
+        </routers>
+    </frontend>
     <admin>
         <routers>
             <adminhtml>
                 <args>
                     <modules>
-                        <BlueAcorn_SpecialPricing before="Mage_Adminhtml">BlueAcorn_SpecialPricing_Adminhtml</BlueAcorn_SpecialPricing>
+                        <BlueAcorn_SpecialPricing before="Mage_Adminhtml">BlueAcorn_SpecialPricing_Adminhtml
+                        </BlueAcorn_SpecialPricing>
                     </modules>
                 </args>
             </adminhtml>
