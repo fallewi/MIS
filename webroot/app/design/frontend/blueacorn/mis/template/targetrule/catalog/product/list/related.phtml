@@ -26,64 +26,26 @@
 /* @var $this Enterprise_TargetRule_Block_Catalog_Product_List_Related */
 ?>
 <?php if ($this->hasItems()):?>
+<?php $_columnCount = 4 ?>
 <div class="box-collateral box-related block-related">
     <div class="block-title">
-        <h2><?php echo $this->__('Frequently Bought together') ?></h2>
+        <h2><?php echo $this->__('Frequently Bought Together') ?></h2>
     </div>
-    <ol class="box-content mini-products-list">
+    <ul class="products-grid products-grid--max-<?php echo $_columnCount; ?>-col">
     <?php $i=0; foreach($this->getItemCollection() as $_item): ?>
-        <?php $i++ ?>
-        <?php /*if ($i % $this->getColumnCount() == 0): ?>
-        <ul class="box-content mini-products-list">
-        <?php endif*/ ?>
         <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0): ?> last<?php endif; ?>">
             <?php
                 $itemBlock = $this->getChild('catalog.product.related.item')->setItem($_item)->setPosition($i);
                 echo $itemBlock->toHtml();
             ?>
+            <div class="actions">
+                <button type="button" title="<?php echo $this->quoteEscape($this->__('Configure & Add to Cart')) ?>" class="button btn-small"><span><span><?php echo $this->__('Configure & Add to Cart') ?></span></span></button>
+                <ul class="add-to-links">
+                    <li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Compare') ?></a></li>
+                </ul>
+            </div>
         </li>
-        <?php /*if ($i % $this->getColumnCount() == 0 || $i == $this->getItemsCount()): ?>
-        </ul>
-        <?php endif*/ ?>
     <?php endforeach ?>
-    </ol>
-    <script type="text/javascript">decorateGeneric($$('.box-related ul.box-content'), ['odd','even','first','last'])</script>
-
-    <script type="text/javascript">
-    //<![CDATA[
-    $$('.related-checkbox').each(function(elem){
-        Event.observe(elem, 'click', addRelatedToProduct)
-    });
-
-    var relatedProductsCheckFlag = false;
-    function selectAllRelated(txt){
-        if (relatedProductsCheckFlag == false) {
-            $$('.related-checkbox').each(function(elem){
-                elem.checked = true;
-            });
-            relatedProductsCheckFlag = true;
-            txt.innerHTML = "<strong><?php echo $this->jsQuoteEscape($this->__('unselect all')) ?><\/strong>";
-        } else {
-            $$('.related-checkbox').each(function(elem){
-                elem.checked = false;
-            });
-            relatedProductsCheckFlag = false;
-            txt.innerHTML = "<strong><?php echo $this->jsQuoteEscape($this->__('select all')) ?><\/strong>";
-        }
-        addRelatedToProduct();
-    }
-
-    function addRelatedToProduct(){
-        var checkboxes = $$('.related-checkbox');
-        var values = [];
-        for(var i=0;i<checkboxes.length;i++){
-            if(checkboxes[i].checked) values.push(checkboxes[i].value);
-        }
-        if($('related-products-field')){
-            $('related-products-field').value = values.join(',');
-        }
-    }
-    //]]>
-    </script>
+    </ul>
 </div>
 <?php endif;?>

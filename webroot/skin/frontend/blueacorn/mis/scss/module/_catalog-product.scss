@@ -228,14 +228,14 @@
         clear: right;
         padding: 30px 20px 0;
         margin-bottom: 20px;
-        
+
         .map-pricing {
             border: 1px solid $c-blue;
             padding: 12px 20px 20px 20px;
             font-size: $f-size-l;
             margin-bottom: 23px;
             @include clearfix();
-            
+
             .message {
                 line-height: 24px;
                 margin-bottom: 13px;
@@ -248,7 +248,7 @@
                 box-sizing: border-box;
                 height: 41px;
             }
-            
+
             button.button {
                 width: 40%;
                 box-sizing: border-box;
@@ -270,7 +270,7 @@
             .phone-number {
                 color: $c-blue;
             }
-            
+
             .price {
                 color: #EC3838;
             }
@@ -285,14 +285,14 @@
                 line-height: 32px;
                 font-weight: normal;
             }
-            
+
             .price-box {
                 margin-top: 12px;
-                
+
                 &.bundle {
                     margin-top: 2px;
                 }
-                
+
                 .price-as-configured {
                     .price-label {
                         font-weight: 300;
@@ -308,7 +308,7 @@
                         display: block;
                     }
                 }
-                
+
             }
         }
 
@@ -320,9 +320,7 @@
     }
 
     .block-related {
-        width: 50%;
-        float: right;
-        clear: right;
+        width: 100%;
     }
 
 }
@@ -460,7 +458,7 @@
 }
 
 .product-view .block-related {
-    padding-left: $trim/2;
+    padding-left: 0;
 }
 
 .product-img-box {
@@ -471,7 +469,7 @@
 .product-collateral,
 .product-view .block-related,
 .box-collateral {
-    margin-bottom: $box-spacing;
+    margin-bottom: 40px;
 }
 
 .product-view {
@@ -509,7 +507,7 @@
         span, input {
             float: left;
         }
-        
+
         span {
             font-size: $f-size-l;
             margin-top: 9px;
@@ -641,7 +639,7 @@
         letter-spacing: 1px;
         line-height: 38px;
         margin-bottom: 10px;
-        
+
         &:hover {
             text-decoration: none;
             background: #EAEAEA;
@@ -850,7 +848,7 @@
         .qty-label {
             margin-left: 0;
         }
-        
+
         .qty {
             float: left;
         }
@@ -859,7 +857,7 @@
 
     td {
         padding: 10px 4px;
-        
+
         &.image img {
             max-width: 68px;
         }
@@ -883,7 +881,7 @@
     margin: 123px 0 0;
     clear: both;
     position: relative;
-    
+
     .select-container.validation-error .custom-shiv {
         line-height: 35px;
     }
@@ -973,7 +971,7 @@
     padding-top: 0;
 
     &.validation-passed:before {
-        background: none; 
+        background: none;
         top: 7px;
     }
 }
@@ -1107,7 +1105,6 @@
     }
 
     .block-title {
-        border-bottom: none;
 
         h2 {
             @include h2();
@@ -1120,16 +1117,17 @@
     }
 
     .product {
-        margin-left: 20px;
         position: relative;
     }
+
     .checkbox {
         float: left;
         margin-top: 36px;
+        display: none;
     }
 
-    .product-details {
-        margin-left: 90px;
+    .checkbox-label {
+        display: none;
     }
 
     .product-name {
@@ -1142,8 +1140,8 @@
         a,
         p,
         span {
-            float: left;
             margin-left: 3px;
+            text-align: center;
 
             &:first-child {
                 margin-left: 0;
@@ -1159,6 +1157,13 @@
     .link-wishlist {
         display: none;
     }
+
+    .mini-products-list {
+        li {
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
 }
 
 /* -------------------------------------------- *
@@ -1172,3 +1177,78 @@
         display: none;
     }
 }
+
+/*===================================================
+=            Related and Upsell Products            =
+===================================================*/
+
+.box-up-sell,
+.block-related {
+
+    .item {
+        min-height: 500px;
+    }
+
+    .block-title {
+        margin-bottom: 50px;
+        border: none;
+
+        h2 {
+            font-family: $f-stack-sans;
+            font-size: 36px;
+            font-weight: 400;
+            color: #D0021B;
+            text-transform: none;
+        }
+    }
+
+    h3 {
+
+        &.product-name {
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            text-transform: none;
+
+            a {
+                color: #00247B;
+            }
+        }
+    }
+
+    .price-box {
+        font-family: $f-stack-sans;
+        color: $black;
+
+        span.price {
+            font-size: 18px !important;
+        }
+    }
+
+    .actions {
+        .button {
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: 1px;
+
+            &.btn-small {
+                padding: 12px 31px 13px;
+            }
+        }
+
+        .link-compare {
+            color: #00247B;
+            font-size: 15px;
+            text-transform: uppercase;
+            background: transparent;
+            margin-top: 5px;
+
+            &:before {
+                @include triangle(right, 7px, $c-action);
+                top: 28%;
+                right: 13%;
+            }
+        }
+    }
+}
+
+/*-----  End of Related and Upsell Products  ------*/
