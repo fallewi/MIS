@@ -1,0 +1,175 @@
+//
+// Magento Enterprise Edition
+//
+// NOTICE OF LICENSE
+//
+// This source file is subject to the Magento Enterprise Edition End User License Agreement
+// that is bundled with this package in the file LICENSE_EE.txt.
+// It is also available through the world-wide-web at this URL:
+// http://www.magento.com/license/enterprise-edition
+// If you did not receive a copy of the license and are unable to
+// obtain it through the world-wide-web, please send an email
+// to license@magento.com so we can send you a copy immediately.
+//
+// DISCLAIMER
+//
+// Do not edit or add to this file if you wish to upgrade Magento to newer
+// versions in the future. If you wish to customize Magento for your
+// needs please refer to http://www.magento.com for more information.
+//
+// @category    design
+// @package     rwd_default
+// @copyright Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
+// @license http://www.magento.com/license/enterprise-edition
+//
+
+/* ============================================ *
+ * Header - Account
+ * ============================================ */
+
+/* -------------------------------------------- *
+ * Skip Link - Account
+ */
+
+.skip-account {
+
+    &:not(.skip-active):hover {
+        .icon {
+            
+        }
+    }
+
+    .icon {
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
+        width: 17px;
+        height: 15px;
+
+        @include bp(max-width, $bp-medium) {
+            background-position: -77px 0;
+            width: 22px;
+            height: 20px;
+        }
+    }
+}
+
+// ---------------------------------------------
+
+.skip-account {
+    float: none;
+    width: auto;
+    vertical-align: top;
+    display: inline-block;
+    padding: 10px 12px;
+    text-transform: uppercase;
+    background: $white;
+    color: $brand-primary;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: $f-stack-sans;
+    letter-spacing: 1px;
+    margin-right: 7px;
+    top: 20px;
+    right: 20px;
+
+    &:hover,
+    &.skip-active {
+        background: $brand-primary;
+        color: $white;
+
+        .icon {
+            background-position: -47px 0;
+        }
+    }
+}
+
+#header-account.skip-active {
+    background: $white;
+    display: block;
+    position: absolute;
+    z-index: 200;
+    top: 62px;
+    right: 122px;
+    width: 144px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .16);
+
+    a {
+        color: $brand-primary;
+        font-family: $f-stack-sans;
+        font-size: 15px;
+        text-transform: uppercase;
+
+        &:hover {
+            // background: $brand-primary;
+            // color: $white;
+            // text-decoration: none;
+        }
+    }
+
+    @include bp(max-width, 1024px) {
+        top: 60px;
+        right: 70px;
+    }
+}
+
+#header-account a {
+    display: block;
+    padding: 5px 10px;
+    color: $c-text;
+    line-height: 2;
+}
+
+#header-account a:hover {
+    color: $c-action;
+}
+
+
+@include bp(max-width, 1024px) {
+    .skip-account {
+        padding: 9px 12px 9px 11px;
+        display: inline-block;
+
+        .label {
+            display: none;
+        }
+
+        .icon {
+            margin-right: 0px;
+        }
+    }
+}
+
+@include bp(max-width, $bp-large) {
+    .skip-account {
+        right: 110px;
+    }
+}
+
+@include bp(max-width, $bp-medium) {
+    .skip-account {
+        padding: 9px;
+        position: absolute;
+        right: 60px;
+    }
+}
+
+
+/* -------------------------------------------- *
+ * Account Links
+ */
+
+#header-account {
+    padding: 5px 0;
+}
+
+#header-account a {
+    position: relative;
+    display: block;
+    padding: 5px 10px;
+    line-height:23px;
+    text-align: center;
+}
+
+#header-account a:hover {
+    color: $c-action;
+}
+
