@@ -838,6 +838,13 @@ ol#cart-sidebar-reorder p.product-name {
     padding-left: 0; } }
 
 @media only screen and (max-width: 479px) {
+  .account-login .fieldset,
+  .account-create .fieldset {
+    padding: 0 15px; }
+  body.customer-account .col-main {
+    padding: 0 15px; }
+  body.customer-account .form-list .select-container {
+    width: auto; }
   body.customer-account .my-account .page-title h1 {
     text-align: center; }
   body.customer-account .my-account .title-buttons {
@@ -861,6 +868,8 @@ ol#cart-sidebar-reorder p.product-name {
     width: auto; }
   body.customer-account .my-account .addresses-list h2 {
     margin-bottom: 15px; }
+  body.customer-account .my-account .giftcardaccount .buttons-set .button {
+    white-space: normal; }
   .order-info {
     margin-top: 15px; }
   .data-table.orders .link-reorder,
