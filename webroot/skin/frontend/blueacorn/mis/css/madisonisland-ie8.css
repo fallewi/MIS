@@ -104,6 +104,8 @@
       padding: 10px 5px 10px; }
     .feature-wrap .feature-item.feature-promo h3 {
       color: #EC3837; }
+    .feature-wrap .feature-item a {
+      text-decoration: none; }
 
 /* -------------------------------------------- *
  * Primary Banner
