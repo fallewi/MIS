@@ -1185,10 +1185,6 @@
 .box-up-sell,
 .block-related {
 
-    .item {
-        min-height: 500px;
-    }
-
     .block-title {
         margin-bottom: 50px;
         border: none;
@@ -1199,6 +1195,11 @@
             font-weight: 400;
             color: #D0021B;
             text-transform: none;
+            line-height: 1.2;
+
+            @include bp(max-width, $bp-xsmall){
+                text-align: center;
+            }
         }
     }
 
@@ -1232,6 +1233,7 @@
 
             &.btn-small {
                 padding: 12px 31px 13px;
+                width: 100%;
             }
         }
 
@@ -1252,3 +1254,97 @@
 }
 
 /*-----  End of Related and Upsell Products  ------*/
+
+// TEMPORARY FOR DEVELOPMENT
+.product-collateral.toggle-content.tabs,
+.box-collateral.box-tags { display: none; }
+// TEMPORARY FOR DEVELOPMENT
+
+/*========================================================
+=            Related and Upsell Products Grid            =
+========================================================*/
+
+body.catalog-product-view {
+
+    .box-up-sell,
+    .block-related {
+
+        .products-grid > li {
+            float: left;
+            width: 100%;
+            padding: 5%;
+
+            &:hover {
+                outline: 1px solid $black;
+            }
+        }
+
+        .products-grid .actions {
+            position: relative;
+        }
+
+        // ---------------------------------------------
+
+        @include bp(min-width, $bp-xsmall + 1) {
+            $column-count: 2;
+            $column-gutters: 2;
+            $container: 400 - (2 * 20px);
+
+            $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+            .products-grid {
+
+                /* Set two-column config */
+                > li {
+                    width: 50%;
+                    padding: 2%;
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+                > li:nth-child(#{$column-count}n+1) {
+                    clear: left;
+                }
+                > li:nth-child(#{$column-count}n) {
+                    padding-right: 2%;
+                    clear: none;
+                }
+            }
+        }
+
+        // ---------------------------------------------
+
+        @include bp(min-width, $bp-large + 1) {
+            $column-count: 4;
+            $column-gutters: 4;
+            $container: 600 - (5 * 10px);
+
+            $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+            .products-grid {
+                /* Undo two-column config */
+                > li:nth-child(odd) {
+                    clear: none;
+                }
+                > li:nth-child(even) {
+                    padding-right: 2%;
+                }
+
+                /* Set four-column config */
+                > li {
+                    width: 25%;
+                    padding: 2%;
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+                > li:nth-child(#{$column-count}n+1) {
+                    clear: left;
+                }
+                > li:nth-child(#{$column-count}n) {
+                    padding-right: 2%;
+                }
+            }
+        }
+    }
+}
+
+/*-----  End of Related and Upsell Products Grid  ------*/
