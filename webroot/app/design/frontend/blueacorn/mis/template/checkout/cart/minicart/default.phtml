@@ -162,5 +162,7 @@
 
     </div>
     <a href="<?php echo $this->helper('wishlist')->getAddUrl($this) ?>"
-   class="link-wishlist"><?php echo $this->__('Wishlist') ?></a>
+        class="link-wishlist"><?php echo $this->__('Wishlist') ?></a>
+    <a href="" onclick="popWin('<?php echo $this->helper('catalog/product_compare')->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"
+        class="link-compare"><?php echo $this->__('Compare') ?></a>
 </li>
