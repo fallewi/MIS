@@ -31,7 +31,7 @@
     <div class="box-title block-title">
         <h2><?php echo $this->__('Customers Who Viewed This Item Also Viewed') ?></h2>
     </div>
-    <ul class="products-grid products-grid--max-<?php echo $_columnCount; ?>-col" id="upsell-product-table">
+    <ul class="products-grid owl-carousel-2 products-grid--max-<?php echo $_columnCount; ?>-col" id="upsell-product-table">
     <?php $i=0; foreach ($this->getItemCollection() as $_item): ?>
         <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0):?> last<?php endif;?>">
             <?php

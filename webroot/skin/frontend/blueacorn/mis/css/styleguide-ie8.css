@@ -1502,6 +1502,30 @@ body.catalog-product-view .block-related .products-grid {
     padding-right: 2%; }
 
 /*-----  End of Related and Upsell Products Grid  ------*/
+/*======================================
+=            Owl Carousel 2            =
+======================================*/
+.catalog-product-view .products-grid {
+  width: 100%;
+  overflow: hidden;
+  padding: 1px; }
+
+.catalog-product-view .owl-item {
+  float: left;
+  padding: 20px; }
+  .catalog-product-view .owl-item.active:hover {
+    outline: 1px solid #000; }
+  .catalog-product-view .owl-item .item-info,
+  .catalog-product-view .owl-item .item {
+    text-align: center; }
+  .catalog-product-view .owl-item .add-to-links {
+    display: none; }
+
+.catalog-product-view .owl-nav,
+.catalog-product-view .owl-dots {
+  display: none; }
+
+/*-----  End of Owl Carousel 2  ------*/
 /* ============================================ *
  * Catalog - MSRP MAP Popup
  * ============================================ */

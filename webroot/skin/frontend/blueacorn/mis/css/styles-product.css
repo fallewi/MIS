@@ -1007,10 +1007,21 @@
     color: #D0021B;
     text-transform: none;
     line-height: 1.2; }
-    @media only screen and (max-width: 479px) {
+  @media only screen and (max-width: 599px) {
+    .box-up-sell .block-title,
+    .block-related .block-title {
+      margin-bottom: 30px; }
       .box-up-sell .block-title h2,
       .block-related .block-title h2 {
-        text-align: center; } }
+        text-align: center;
+        font-size: 30px; } }
+  @media only screen and (max-width: 479px) {
+    .box-up-sell .block-title,
+    .block-related .block-title {
+      margin-bottom: 20px; }
+      .box-up-sell .block-title h2,
+      .block-related .block-title h2 {
+        font-size: 24px; } }
 
 .box-up-sell h3.product-name,
 .block-related h3.product-name {
@@ -1124,6 +1135,30 @@ body.catalog-product-view .block-related .products-grid .actions {
       padding-right: 2%; } }
 
 /*-----  End of Related and Upsell Products Grid  ------*/
+/*======================================
+=            Owl Carousel 2            =
+======================================*/
+.catalog-product-view .products-grid {
+  width: 100%;
+  overflow: hidden;
+  padding: 1px; }
+
+.catalog-product-view .owl-item {
+  float: left;
+  padding: 20px; }
+  .catalog-product-view .owl-item.active:hover {
+    outline: 1px solid #000; }
+  .catalog-product-view .owl-item .item-info,
+  .catalog-product-view .owl-item .item {
+    text-align: center; }
+  .catalog-product-view .owl-item .add-to-links {
+    display: none; }
+
+.catalog-product-view .owl-nav,
+.catalog-product-view .owl-dots {
+  display: none; }
+
+/*-----  End of Owl Carousel 2  ------*/
 /* ============================================ *
  * Configurable Swatches
  * ============================================ */

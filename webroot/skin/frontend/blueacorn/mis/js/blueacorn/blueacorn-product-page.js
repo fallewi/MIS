@@ -31,12 +31,41 @@ jQuery(document).ready(function ($) {
         },
 
         imageSlider: function() {
-            var self = this;
+            var self = this,
+                relatedContainer = $('.products-grid.owl-carousel-1'),
+                upsellContainer = $('.products-grid.owl-carousel-2');
 
-            if($(window).innerWidth() <= 431) {     //strange as it fires at 388 or less
-                if($('body').hasClass('catalog-product-view')){
-                    alert('test');
-                }
+            if($('body').hasClass('catalog-product-view')){
+                enquire.register('screen and (max-width:' + (bp.xsmall) + 'px)', {
+                    match: function() {
+                        if(relatedContainer.length > 0){
+                            relatedContainer.owlCarousel({
+                                loop: true,
+                                dots: false,
+                                center: true,
+                                stagePadding: 10,
+                                responsiveClass: true,
+                                items: 1
+                            });
+                        }
+                        if(upsellContainer.length > 0){
+                            upsellContainer.owlCarousel({
+                                loop: true,
+                                dots: false,
+                                center: true,
+                                stagePadding: 10,
+                                responsiveClass: true,
+                                items: 1
+                            });
+                        }
+                    },
+                    unmatch: function() {
+                        relatedContainer.trigger('destroy.owl.carousel').removeClass('owl-carousel-1 owl-loaded');
+                        relatedContainer.find('.owl-stage-outer').children().unwrap();
+                        upsellContainer.trigger('destroy.owl.carousel').removeClass('owl-carousel-2 owl-loaded');
+                        upsellContainer.find('.owl-stage-outer').children().unwrap();
+                    }
+                });
             }
         }
     };

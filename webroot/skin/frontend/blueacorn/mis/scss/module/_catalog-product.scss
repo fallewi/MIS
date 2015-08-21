@@ -1196,9 +1196,22 @@
             color: #D0021B;
             text-transform: none;
             line-height: 1.2;
+        }
 
-            @include bp(max-width, $bp-xsmall){
+        @include bp(max-width, $bp-small){
+            margin-bottom: 30px;
+
+            h2 {
                 text-align: center;
+                font-size: 30px
+            }
+        }
+
+        @include bp(max-width, $bp-xsmall){
+            margin-bottom: 20px;
+
+            h2 {
+                font-size: 24px
             }
         }
     }
@@ -1348,3 +1361,40 @@ body.catalog-product-view {
 }
 
 /*-----  End of Related and Upsell Products Grid  ------*/
+
+/*======================================
+=            Owl Carousel 2            =
+======================================*/
+
+.catalog-product-view {
+    .products-grid {
+        width: 100%;
+        overflow: hidden;
+        padding: 1px;
+    }
+
+    .owl-item {
+        float: left;
+        padding: 20px;
+
+        &.active:hover {
+            outline: 1px solid #000;
+        }
+
+        .item-info,
+        .item {
+            text-align: center;
+        }
+
+        .add-to-links {
+            display: none;
+        }
+    }
+
+    .owl-nav,
+    .owl-dots {
+        display: none;
+    }
+}
+
+/*-----  End of Owl Carousel 2  ------*/
