@@ -2452,8 +2452,7 @@ a.skip-link {
   display: none; }
 
 .skip-content.skip-active {
-  display: block;
-  background: #EDEDED; }
+  display: block; }
 
 /* ============================================ *
  * Global Header Navigation
@@ -4025,7 +4024,10 @@ p.product-name {
     position: relative;
     padding: 20px;
     background: #FFFFFF;
-    border: 0; }
+    border: 0;
+    width: 320px;
+    margin-right: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16); }
     .header-minicart .minicart-wrapper:before {
       content: "";
       display: block;
@@ -4052,7 +4054,8 @@ p.product-name {
       border: none; }
     .header-minicart .mini-products-list li .product-details {
       position: relative;
-      margin-bottom: 30px; }
+      margin-bottom: 20px;
+      min-height: 65px; }
     .header-minicart .mini-products-list li .remove {
       position: absolute;
       top: -20px;
