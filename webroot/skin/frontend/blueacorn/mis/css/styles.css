@@ -2018,6 +2018,17 @@ form .legend {
     top: 36px;
     left: -22px; }
 
+.block-subscribe .input-box.validation-passed:before {
+  content: "\f00c";
+  font-family: "font-awesome";
+  color: #5DCA86;
+  background: #fff;
+  font-size: 17px;
+  position: absolute;
+  top: auto;
+  bottom: 8px;
+  left: -19px; }
+
 li.centinel-logos div.input-box img {
   display: inline;
   vertical-align: middle; }
