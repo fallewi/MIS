@@ -85,11 +85,6 @@ form .legend {
 
         &.validation-passed:before {
             content: "\f00c";
-            font-family: $f-stack-icon-alt;
-            color: $brand-success;
-            background: $white;
-            font-size: 17px;
-            position: absolute;
             top: auto;
             bottom: 8px;
             left: -19px;
