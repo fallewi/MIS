@@ -1,0 +1,32 @@
+// ----------------------------------------------
+// Modules
+
+// The sort order here is important for two reasons:
+//  1. The compiled CSS needs to be logically ordered/grouped (NOT alphabetically ordered)
+//  2. Selectors of equal weight get applied based on which appears last in the stylesheet,
+//     so we should try not to change this order once it is in place
+
+@import "module/catalog-msrp";
+@import "module/configurableswatches";
+@import "module/customer";
+@import "module/contacts";
+@import "module/review";
+@import "module/wishlist";
+@import "module/account-reviews";
+@import "module/tags";
+@import "module/captcha";
+@import "module/account-orders";
+@import "module/recurring-profiles";
+@import "module/billing-agreements";
+@import "module/popular-terms";
+
+
+// ----------------------------------------------
+// Enterprise Modules
+@import "module/account-rma";
+@import "module/store-credit";
+@import "module/gift-registry";
+@import "module/gift-message";
+@import "module/enterprise-wishlist";
+@import "module/customer-order";
+@import "module/gift-message";
