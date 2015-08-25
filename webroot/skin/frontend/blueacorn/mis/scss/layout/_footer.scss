@@ -100,7 +100,6 @@
     }
 
     .block-subscribe {
-        float: right;
         width: 290px;
         margin-bottom: 30px;
         margin-top: 7px;
@@ -311,10 +310,10 @@
             }
 
             .block-title.open-links {
-    
+
                 color: $brand-action;
                 margin-bottom: 0;
-    
+
                 & + ul {
                     max-height: 55em;
                     padding: 3px 20px 20px;
@@ -326,7 +325,7 @@
                 }
             }
         }
-    }    
+    }
 
     @include bp(max-width, $bp-medium) {
         .form-language,
@@ -379,7 +378,7 @@
     }
 }
 
-.connect-container { 
+.connect-container {
     float: right;
 
     @include bp(max-width, 870px) {
