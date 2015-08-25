@@ -12,7 +12,7 @@ $installer->startSetup();
 $footerContent = <<<CONTENT
 <div class="tablet-links">
 <div class="links">
-<h5 class="block-title">Company Info</h5>
+<h5 class="block-title open-links">Company Info</h5>
 <ul>
 <li><a href="{{store url=""}}">MRS Blog</a></li>
 <li><a href="{{store url=""}}">Store Locations</a></li>

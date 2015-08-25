@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $featured_products = Mage::getModel('catalog/category')->load($this->featured_category);
 $featured_promo_category = Mage::getModel('catalog/category')->load($this->featured_promo_btn_link);
@@ -11,9 +11,11 @@ if ($featured_products): ?>
 		<?php foreach ($items as $item): ?>
             <?php $product = Mage::getModel('catalog/product')->load($item->getId()); ?>
 			<div class="feature-item">
+                <a href="<?php echo $product->getUrlKey(); ?>.html">
 				<img src="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->keepFrame(false)->resize(220, 220); ?>" alt="<?php echo $product->getName() . " Image";?>"/>
                 <h3><?php echo $product->getName(); ?></h3>
                 <p><?php echo $product->getShortDescription(); ?></p>
+                </a>
                 <div class="button-wrap">
                     <a href="<?php echo $product->getUrlKey(); ?>.html" class="button btn-small button-secondary"><?php echo $this->__('View Details'); ?></a>
                 </div>
@@ -26,9 +28,11 @@ if ($featured_products): ?>
 		<?php endforeach; ?>
         <?php if($this->featured_promo == 1): ?>
             <div class="feature-item feature-promo">
+                <a href="<?php echo $featured_promo_category->getUrlPath(); ?>.html">
                 <img src="<?php echo Mage::getBaseUrl('media') . 'default/' . $this->featured_promo_img?>" />
                 <h3><?php echo $this->featured_promo_title; ?></h3>
                 <p><?php echo $this->featured_promo_short_desc; ?></p>
+                </a>
                 <div class="button-wrap">
                     <a href="<?php echo $featured_promo_category->getUrlPath(); ?>.html" class="button btn-small btn-cart">
                         <?php echo $this->featured_promo_btn_text; ?>

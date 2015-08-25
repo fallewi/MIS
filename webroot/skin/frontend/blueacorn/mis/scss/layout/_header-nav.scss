@@ -217,7 +217,7 @@ $nav-primary-height: 30px;
         }
 
         li.level1 a {
-            padding: 0 15px 0 20px;
+            padding: 0 40px 0 20px;
             height: auto;
             color: $brand-primary;
             position: relative;
@@ -248,7 +248,7 @@ $nav-primary-height: 30px;
         // Menu active states
         li.parent.sub-menu-active > a:after,
         li.parent.menu-active > a:after {
-            
+
             background-position: -103px -30px;
         }
 

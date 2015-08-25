@@ -2018,6 +2018,12 @@ form .legend {
     top: 36px;
     left: -22px; }
 
+.block-subscribe .input-box.validation-passed:before {
+  content: "\f00c";
+  top: auto;
+  bottom: 8px;
+  left: -19px; }
+
 li.centinel-logos div.input-box img {
   display: inline;
   vertical-align: middle; }
@@ -2937,8 +2943,7 @@ a.skip-link {
   display: none; }
 
 .skip-content.skip-active {
-  display: block;
-  background: #EDEDED; }
+  display: block; }
 
 /* ============================================ *
  * Global Header Navigation
@@ -3075,7 +3080,7 @@ a.skip-link {
     padding: 0;
     padding-bottom: 14px; }
   .nav-primary li.level1 a {
-    padding: 0 15px 0 20px;
+    padding: 0 40px 0 20px;
     height: auto;
     color: #00247B;
     position: relative; }
@@ -3666,7 +3671,6 @@ a.skip-link {
       .footer .links a:hover {
         color: #00247B; }
   .footer .block-subscribe {
-    float: right;
     width: 290px;
     margin-bottom: 30px;
     margin-top: 7px;
@@ -4845,7 +4849,13 @@ p.product-name {
     position: relative;
     padding: 20px;
     background: #FFFFFF;
-    border: 0; }
+    border: 0;
+    width: 320px;
+    margin-right: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16); }
+    @media only screen and (max-width: 330px) {
+      .header-minicart .minicart-wrapper {
+        margin-right: 0; } }
     .header-minicart .minicart-wrapper:before {
       content: "";
       display: block;
@@ -4872,7 +4882,8 @@ p.product-name {
       border: none; }
     .header-minicart .mini-products-list li .product-details {
       position: relative;
-      margin-bottom: 30px; }
+      margin-bottom: 20px;
+      min-height: 65px; }
     .header-minicart .mini-products-list li .remove {
       position: absolute;
       top: -20px;
@@ -5001,7 +5012,7 @@ p.product-name {
   @media only screen and (max-width: 770px) {
     .header-minicart.skip-active .block-cart,
     .block-cart.skip-active {
-      top: 130px;
+      top: 131px;
       position: relative; } }
 
 .header-minicart a.skip-cart {

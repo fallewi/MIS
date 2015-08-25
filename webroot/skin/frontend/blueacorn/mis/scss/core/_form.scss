@@ -80,6 +80,19 @@ form .legend {
     }
 }
 
+.block-subscribe {
+    .input-box {
+
+        &.validation-passed:before {
+            content: "\f00c";
+            top: auto;
+            bottom: 8px;
+            left: -19px;
+        }
+    }
+}
+
+
 li.centinel-logos div.input-box  {
     img {
         display: inline;
