@@ -1697,10 +1697,6 @@ p.product-name {
     right: 13%; }
 
 /*-----  End of Related and Upsell Products  ------*/
-.product-collateral.toggle-content.tabs,
-.box-collateral.box-tags {
-  display: none; }
-
 /*========================================================
 =            Related and Upsell Products Grid            =
 ========================================================*/
