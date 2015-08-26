@@ -172,17 +172,37 @@
         </script>
     </div>
 
-    <div class="product-collateral toggle-content tabs">
-        <?php if ($detailedInfoGroup = $this->getChildGroup('detailed_info', 'getChildHtml')):?>
-            <dl id="collateral-tabs" class="collateral-tabs">
-                <?php foreach ($detailedInfoGroup as $alias => $html):?>
-                    <dt class="tab"><span><?php echo $this->escapeHtml($this->getChildData($alias, 'title')) ?></span></dt>
-                    <dd class="tab-container">
-                        <div class="tab-content"><?php echo $html ?></div>
-                    </dd>
-                <?php endforeach;?>
-            </dl>
-        <?php endif; ?>
+    <div class="product-information-block">
+
+        <div class="description">
+            <h2><?php echo $this->__("Product Description") ?></h2>
+            <?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?>
+        </div>
+
+        <div class="specifications">
+            <?php echo $this->getLayout()->createBlock('catalog/product_view_attributes', '', array('template'=> 'catalog/product/view/attributes.phtml'))->toHtml(); ?>
+        </div>
+
+        <div class="ships-from">
+            <h2><?php echo $this->__("Shipping") ?></h2>
+            <?php echo $_helper->productAttribute($_product, $_product->getShipsFrom(), 'ships_from') ?>
+        </div>
+
+        <div class="resource-badges">
+            <h2><?php echo $this->__("CR2B-FS RESOURCES") ?></h2>
+            <?php echo $_helper->productAttribute($_product, $_product->getResourceBadges(), 'resource_badges') ?>
+        </div>
+
+        <div class="features-benefits">
+            <h2><?php echo $this->__("Features & Benefits") ?></h2>
+            <?php echo $_helper->productAttribute($_product, $_product->getFeaturesBenefits(), 'features_benefits') ?>
+        </div>
+
+        <div class="resourses-downloads">
+            <h2><?php echo $this->__("CR2B-FS RESOURCES") ?></h2>
+            <?php echo $_helper->productAttribute($_product, $_product->getResourceDownloads(), 'resourses_downloads') ?>
+        </div>
+
     </div>
 
     <?php echo $this->getChildHtml('upsell_products') ?>
