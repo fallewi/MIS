@@ -368,7 +368,9 @@ p.required,
     }
 }
 
-#shipping-new-address-form li.control label { margin-left: 20px; }
+@include bp(min-width, $bp-small +1) {
+    #shipping-new-address-form li.control label { margin-left: 20px; }
+}
 
 .product-options ul.options-list label,
 .col2-set .form-list .control label {
