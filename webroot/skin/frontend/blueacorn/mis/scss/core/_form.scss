@@ -368,8 +368,8 @@ p.required,
     }
 }
 
-@include bp(min-width, $bp-small +1) {
-    #shipping-new-address-form li.control label { margin-left: 20px; }
+@include bp(max-width, $bp-small) {
+    #billing-new-address-form li.control { margin-left: 0; }
 }
 
 .product-options ul.options-list label,

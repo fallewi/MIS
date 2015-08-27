@@ -2284,9 +2284,9 @@ p.required,
     .product-options ul.options-list .no-display + label:hover {
       background-color: transparent; }
 
-@media only screen and (min-width: 600px) {
-  #shipping-new-address-form li.control label {
-    margin-left: 20px; } }
+@media only screen and (max-width: 599px) {
+  #billing-new-address-form li.control {
+    margin-left: 0; } }
 
 .product-options ul.options-list label,
 .col2-set .form-list .control label {
