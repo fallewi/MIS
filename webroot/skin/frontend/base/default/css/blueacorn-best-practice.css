@@ -301,3 +301,4 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
 .name-lastname { clear: both; }
 .form-list li.control { clear: both; margin-left: 20px; }
 .opc select { max-width: 100% !important; }
+.ie8 input { line-height: 42px; }
