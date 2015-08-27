@@ -289,7 +289,7 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
 
 /* line 297, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
 .opc .buttons-set button.button.continue {
-  margin-top: 10px; }
+  margin-top: 0; }
 
 /* line 302, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
 .inline-block {
