@@ -65,12 +65,6 @@
                     <linktext>Register with us</linktext>
                     <descriptiontextregister>for future convenience</descriptiontextregister>
                 </stepone>
-                <stepfour>
-                    <button_text>Continue to Payment Method</button_text>
-                </stepfour>
-                <stepfive>
-                    <button_text>Continue to Order Review</button_text>
-                </stepfive>
                 <stepsix>
                     <forgot_item_text>Forgot an Item?</forgot_item_text>
                     <forgot_link_text>Edit Your Cart</forgot_link_text>
