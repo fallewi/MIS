@@ -300,3 +300,4 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
 
 .name-lastname { clear: both; }
 .form-list li.control { clear: both; }
+.opc select { max-width: 100% !important; }
