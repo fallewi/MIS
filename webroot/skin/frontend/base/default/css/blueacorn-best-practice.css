@@ -297,3 +297,6 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
   vertical-align: top; }
 
 /*# sourceMappingURL=blueacorn-best-practice.css.map */
+
+.name-lastname { clear: both; }
+.form-list li.control { clear: both; }
