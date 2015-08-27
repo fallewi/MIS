@@ -694,4 +694,10 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     }
 }
 
-
+@include bp(max-width, $bp-xsmall) {
+    .checkout-review-table th.a-right {
+        float: left;
+        width: 60%;
+        white-space: normal;
+    }
+}

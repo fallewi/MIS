@@ -501,6 +501,12 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   .opc .select-container {
     width: auto; } }
 
+@media only screen and (max-width: 479px) {
+  .checkout-review-table th.a-right {
+    float: left;
+    width: 60%;
+    white-space: normal; } }
+
 /* ============================================ *
  * Checkout - Success
  * ============================================ */
