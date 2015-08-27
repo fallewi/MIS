@@ -210,7 +210,8 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     float: right;
     margin-left: 10px; }
   .sp-methods .price {
-    font-weight: bold; }
+    font-weight: bold;
+    float: right; }
   .sp-methods .form-list {
     padding-left: 20px; }
     .sp-methods .form-list li {
