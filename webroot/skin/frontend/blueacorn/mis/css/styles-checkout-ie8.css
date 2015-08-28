@@ -148,6 +148,8 @@
     line-height: 20px;
     display: inline-block;
     padding: 5px 5px 5px 0; }
+  .opc .buttons-set#billing-buttons-container button:not(.continue) {
+    display: none; }
 
 .opc #opc-login .step {
   padding: 0px; }
