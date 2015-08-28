@@ -1700,8 +1700,7 @@
   overflow: hidden; }
 
 .catalog-product-view .product-view .product-img-box {
-  position: relative;
-  overflow: hidden; }
+  position: relative; }
   .catalog-product-view .product-view .product-img-box .product-image {
     width: 80%;
     position: absolute;
