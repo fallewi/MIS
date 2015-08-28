@@ -306,3 +306,6 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
 .opc select { max-width: 100% !important; }
 .ie8 input { line-height: 42px; }
 body.checkout-onepage-index #checkout-step-shipping ul.form-list > .control { padding-left: 0; }
+@media only screen and (max-width: 499px) {
+  #payment-buttons-container .button.continue { margin-top: 10px; }
+}
