@@ -309,3 +309,15 @@ body.checkout-onepage-index #checkout-step-shipping ul.form-list > .control { pa
 @media only screen and (max-width: 499px) {
   #payment-buttons-container .button.continue { margin-top: 10px; }
 }
+
+body.checkout-onepage-index .page-header-container .skip-links,
+body.checkout-onepage-index .page-header-container #header-nav,
+body.checkout-onepage-index .page-header-container #header-search,
+body.checkout-onepage-index .page-header-container #header-account {
+  display: none;
+}
+body.checkout-onepage-index .page-header-container .logo {
+  margin: 0 auto;
+  float: none;
+}
+body.checkout-onepage-index .page-header-container .logo img { width: 100%; }
