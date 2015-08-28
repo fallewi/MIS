@@ -300,5 +300,9 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
 
 .name-lastname { clear: both; }
 .form-list li.control { clear: both; margin-left: 20px; }
+@media only screen and (max-width: 599px) {
+  .form-list li.control { margin-left: 0; }
+}
 .opc select { max-width: 100% !important; }
 .ie8 input { line-height: 42px; }
+body.checkout-onepage-index #checkout-step-shipping ul.form-list > .control { padding-left: 0; }
