@@ -1695,3 +1695,27 @@
 
 .container-closed:after {
   border-top-color: #777777; }
+
+.catalog-product-view .product-view .product-essential {
+  overflow: hidden; }
+
+.catalog-product-view .product-view .product-img-box {
+  position: relative;
+  overflow: hidden; }
+  .catalog-product-view .product-view .product-img-box .product-image {
+    width: 80%;
+    position: absolute;
+    right: 0;
+    padding: 0 20px; }
+  .catalog-product-view .product-view .product-img-box .more-views {
+    width: 20%;
+    max-width: 180px;
+    float: left; }
+    .catalog-product-view .product-view .product-img-box .more-views h2 {
+      display: none; }
+
+.zoomContainer {
+  display: none; }
+
+.product-image, .no-touch .product-img-box .product-image:not(.zoom-available):hover {
+  position: absolute; }
