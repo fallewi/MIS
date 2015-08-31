@@ -228,14 +228,14 @@
         clear: right;
         padding: 30px 20px 0;
         margin-bottom: 20px;
-        
+
         .map-pricing {
             border: 1px solid $c-blue;
             padding: 12px 20px 20px 20px;
             font-size: $f-size-l;
             margin-bottom: 23px;
             @include clearfix();
-            
+
             .message {
                 line-height: 24px;
                 margin-bottom: 13px;
@@ -248,7 +248,7 @@
                 box-sizing: border-box;
                 height: 41px;
             }
-            
+
             button.button {
                 width: 40%;
                 box-sizing: border-box;
@@ -270,7 +270,7 @@
             .phone-number {
                 color: $c-blue;
             }
-            
+
             .price {
                 color: #EC3838;
             }
@@ -285,14 +285,14 @@
                 line-height: 32px;
                 font-weight: normal;
             }
-            
+
             .price-box {
                 margin-top: 12px;
-                
+
                 &.bundle {
                     margin-top: 2px;
                 }
-                
+
                 .price-as-configured {
                     .price-label {
                         font-weight: 300;
@@ -308,7 +308,7 @@
                         display: block;
                     }
                 }
-                
+
             }
         }
 
@@ -509,7 +509,7 @@
         span, input {
             float: left;
         }
-        
+
         span {
             font-size: $f-size-l;
             margin-top: 9px;
@@ -641,7 +641,7 @@
         letter-spacing: 1px;
         line-height: 38px;
         margin-bottom: 10px;
-        
+
         &:hover {
             text-decoration: none;
             background: #EAEAEA;
@@ -850,7 +850,7 @@
         .qty-label {
             margin-left: 0;
         }
-        
+
         .qty {
             float: left;
         }
@@ -859,7 +859,7 @@
 
     td {
         padding: 10px 4px;
-        
+
         &.image img {
             max-width: 68px;
         }
@@ -883,7 +883,7 @@
     margin: 123px 0 0;
     clear: both;
     position: relative;
-    
+
     .select-container.validation-error .custom-shiv {
         line-height: 35px;
     }
@@ -973,7 +973,7 @@
     padding-top: 0;
 
     &.validation-passed:before {
-        background: none; 
+        background: none;
         top: 7px;
     }
 }
@@ -1172,3 +1172,105 @@
         display: none;
     }
 }
+
+/*=================================================
+=            Product Information Block            =
+=================================================*/
+
+.product-information-block {
+
+    h2 {
+        font-family: $f-stack-sans;
+        color: $brand-primary;
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    p {
+        font-family: $f-stack-sans;
+        font-size: 15px;
+        line-height: 24px;
+        margin-bottom: 10px;
+    }
+
+    .column {
+        float: left;
+        margin-right: 1.5%;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .column-container {
+        margin-bottom: 24px;
+    }
+
+    .column-left {
+        width: 26.7%;
+
+        .resource-badges {
+            img {
+                float: left;
+                padding-right: 10px;
+            }
+        }
+    }
+
+    .column-center {
+        width: 43.6%;
+    }
+
+    .column-right {
+        width: 26.7%;
+
+        .detail {
+            background: $brand-light;
+            padding: 15px 25px;
+
+            p {
+                display: block;
+            }
+
+            span {
+                min-width: 40px;
+                float: left;
+                text-align: center;
+            }
+        }
+
+        .resource-downloads {
+            img {
+                display: inline-block;
+                padding-right: 15px;
+            }
+        }
+    }
+
+    .data-table {
+
+        th,
+        td {
+            height: 30px;
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 24px;
+            padding: 3px 10px;
+            text-transform: none;
+            font-weight: normal;
+            width: 50%;
+        }
+
+        .label {
+            background: none;
+        }
+
+        .even {
+            background: $brand-light;
+        }
+    }
+}
+
+/*-----  End of Product Information Block  ------*/
