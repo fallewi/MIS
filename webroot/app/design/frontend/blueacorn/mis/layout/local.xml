@@ -80,11 +80,18 @@
         <update handle="catalog_theme_changes" />
     </catalogsearch_term_popular>
 
-    <!-- Adding Page Specific Style Sheets to Product Pages -->
     <product_theme_changes>
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>css/styles-product-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
             <action method="addItem"><type>skin_css</type><name>css/styles-product.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+        </reference>
+
+        <reference name="content">
+            <block type="catalog/product_view" name="product.top.details" as="product.top.details" template="blueacorn/catalog/product/topdetails.phtml" before="-"/>
+        </reference>
+
+        <reference name="product.info">
+            <remove name="product.info.options.wrapper.bottom"/>
         </reference>
     </product_theme_changes>
 

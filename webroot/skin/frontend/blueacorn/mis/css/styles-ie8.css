@@ -374,7 +374,14 @@ p {
  * Page Titles
  */
 .page-title h1,
-.page-title h2,
+.page-title h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 1px solid #EDEDED;
+  padding-bottom: 3px;
+  margin-bottom: 15px; }
+
 .product-name h1,
 .product-name .h1 {
   font-size: 24px;
@@ -383,6 +390,15 @@ p {
   border-bottom: 1px solid #EDEDED;
   padding-bottom: 3px;
   margin-bottom: 15px; }
+  .catalog-product-view .product-name h1,
+  .catalog-product-view .product-name .h1 {
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-size: 36px;
+    color: #D0021B;
+    letter-spacing: 1px;
+    line-height: 34px;
+    font-weight: normal;
+    border: none; }
 
 /* -------------------------------------------- *
  * Block Module
@@ -703,6 +719,8 @@ a.button:hover {
 .breadcrumbs {
   overflow: hidden;
   margin: -15px 0 15px; }
+  .catalog-product-view .breadcrumbs {
+    margin: -5px 0 6px; }
 
 .breadcrumbs li {
   float: left;
@@ -1306,8 +1324,7 @@ span.weee {
 .product-image,
 .no-touch .product-img-box .product-image:not(.zoom-available):hover {
   position: relative;
-  display: block;
-  border: 1px solid #EDEDED; }
+  display: block; }
 
 .no-touch .product-image:hover {
   border-color: #00247B; }
@@ -1316,7 +1333,10 @@ span.weee {
  * Ratings
  */
 .ratings {
-  margin: 7px 0; }
+  margin: 7px 0;
+  content: '';
+  display: table;
+  clear: both; }
   .ratings .rating-box,
   .ratings .rating-links {
     margin: 5px 0; }
@@ -1326,27 +1346,58 @@ span.weee {
     width: 100px;
     height: 20px;
     background-repeat: repeat-x;
-    background-position: 0 -615px;
-    overflow: hidden; }
+    background-position: -180px -20px;
+    overflow: hidden;
+    float: left; }
     @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
       .ratings .rating-box {
         background-image: url("../images/sprite@2x.png");
         background-size: 600px 300px; } }
+    .catalog-product-view .ratings .rating-box {
+      background-image: url("../images/sprite.png");
+      background-position: -304px -20px;
+      width: 140px;
+      height: 18px;
+      background-repeat: repeat-x;
+      background-position: -304px -20px; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .catalog-product-view .ratings .rating-box {
+          background-image: url("../images/sprite@2x.png");
+          background-size: 600px 300px; } }
   .ratings .rating-box .rating {
     background-image: url("../images/sprite.png");
     background-position: -180px 0;
     float: left;
     height: 20px;
-    background-repeat: repeat-x; }
+    background-repeat: repeat-x;
+    background-position: -180px 0; }
     @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
       .ratings .rating-box .rating {
         background-image: url("../images/sprite@2x.png");
         background-size: 600px 300px; } }
+    .catalog-product-view .ratings .rating-box .rating {
+      background-image: url("../images/sprite.png");
+      background-position: -304px 0;
+      width: 140px;
+      height: 18px;
+      background-repeat: repeat-x;
+      background-position: -304px 0; }
+      @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+        .catalog-product-view .ratings .rating-box .rating {
+          background-image: url("../images/sprite@2x.png");
+          background-size: 600px 300px; } }
   .ratings .amount {
     display: block;
     margin: 5px auto; }
-  .ratings .rating-links .separator {
-    margin: 0 3px; }
+  .ratings .rating-links {
+    float: left;
+    font-size: 15px;
+    margin-top: 4px;
+    margin-left: 10px; }
+    .ratings .rating-links a {
+      font-size: 15px; }
+    .ratings .rating-links .separator {
+      margin: 0 3px; }
 
 /* -------------------------------------------- *
  * Standard Formatted Text Block

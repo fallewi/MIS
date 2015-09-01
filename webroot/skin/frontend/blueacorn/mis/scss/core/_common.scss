@@ -141,10 +141,24 @@ p { font: 400 16px/23px $f-stack-sans; }
  */
 
 .page-title h1,
-.page-title h2,
+.page-title h2 {
+    @include pageTitle;
+}
+
+
 .product-name h1,
 .product-name .h1 {
     @include pageTitle;
+
+    .catalog-product-view & {
+        font-family: $f-stack-sans;
+        font-size: 36px;
+        color: #D0021B;
+        letter-spacing: 1px;
+        line-height: 34px;
+        font-weight: normal;
+        border: none;
+    }
 }
 
 /* -------------------------------------------- *
@@ -637,6 +651,10 @@ a.button:hover {
 .breadcrumbs {
     overflow: hidden;
     margin: -15px 0 15px;
+
+    .catalog-product-view & {
+        margin: -5px 0 6px;
+    }
 }
 
 .breadcrumbs li {
@@ -1474,7 +1492,6 @@ span.weee {
 .no-touch .product-img-box .product-image:not(.zoom-available):hover {
     position: relative;
     display: block;
-    border: 1px solid $c-module-border-light;
 }
 
 @include bp (max-width, $bp-medium) {
@@ -1493,6 +1510,7 @@ span.weee {
 
 .ratings {
     margin: 7px 0;
+    @include clearfix();
 
     .rating-box,
     .rating-links {
@@ -1504,14 +1522,32 @@ span.weee {
         width: 100px;
         height: 20px;
         background-repeat: repeat-x;
-        background-position: 0 -615px;
+        background-position: -180px -20px;
         overflow: hidden;
+        float: left;
+
+        .catalog-product-view & {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -304px, -20px);
+            width: 140px;
+            height: 18px;
+            background-repeat: repeat-x;
+            background-position: -304px -20px;
+        }
     }
     .rating-box .rating {
         @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -180px, 0);
         float: left;
         height: 20px;
         background-repeat: repeat-x;
+        background-position: -180px 0;
+
+        .catalog-product-view & {
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -304px, 0);
+            width: 140px;
+            height: 18px;
+            background-repeat: repeat-x;
+            background-position: -304px 0;
+        }
     }
     .amount {
         display: block;
@@ -1519,6 +1555,15 @@ span.weee {
     }
 
     .rating-links {
+        float: left;
+        font-size: $f-size-l;
+        margin-top: 4px;
+        margin-left: 10px;
+
+        a {
+            font-size: $f-size-l;
+        }
+
         .separator {
             margin: 0 3px;
         }
