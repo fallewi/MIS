@@ -34,21 +34,21 @@ jQuery(document).ready(function ($) {
         setDescriptionContainerMaxHeight: function() {
             var self = this,
                 wrapper = $('.description'),
-                container = $('.detail'),
+                container = $('.description .detail'),
                 divHeight = $('.specifications');
 
-            container.css({ 'max-height': (divHeight.height() - 95) });
+            container.css({ 'max-height': (divHeight.height() - 93) });
 
             if (container[0].scrollHeight > container.innerHeight()) {
                 wrapper.append('<div class="read-more">Read More</div>');
-                $('.read-more').css({ top: (divHeight.height() + 35) });
+                $('.read-more').css({ top: (divHeight.height() - 60) });
             }
         },
 
         expandDescription: function() {
             var self = this,
                 readMore = $('.read-more'),
-                container = $('.detail'),
+                container = $('.description .detail'),
                 newHeight = $('.detail')[0].scrollHeight;
 
             readMore.on('click', function(){
