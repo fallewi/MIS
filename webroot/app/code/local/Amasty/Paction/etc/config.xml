@@ -9,7 +9,7 @@
 <config>
     <modules>
         <Amasty_Paction>
-            <version>1.5.4</version>
+            <version>1.5.5</version>
         </Amasty_Paction>
     </modules>
     
@@ -29,11 +29,11 @@
         <events>
             <core_block_abstract_to_html_before>
                 <observers>
-                    <amorderattach>
+                    <ampaction>
                         <type>singleton</type>
                         <class>ampaction/observer</class>
                         <method>onCoreBlockAbstractToHtmlBefore</method>
-                    </amorderattach>
+                    </ampaction>
                 </observers>
             </core_block_abstract_to_html_before>
         </events> 

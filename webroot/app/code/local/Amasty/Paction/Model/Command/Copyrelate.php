@@ -134,12 +134,14 @@ class Amasty_Paction_Model_Command_Copyrelate extends Amasty_Paction_Model_Comma
                 ->where('link_id=?', $parentLinkId)
                 ->where('product_link_attribute_id=?', $linkAttributeId);
             $row = $db->fetchRow($select);
-
-            $db->insert($table, array(
-                'product_link_attribute_id' => $linkAttributeId,
-                'link_id' => $newLinkId,
-                'value'   => $row['value'],
-            ));
+            
+            if ($row) {
+                $db->insert($table, array(
+                    'product_link_attribute_id' => $linkAttributeId,
+                    'link_id' => $newLinkId,
+                    'value'   => $row['value'],
+                ));
+            }
         }
 
         return $insertedCnt;
