@@ -6,7 +6,7 @@
  */
 class Amasty_Ogrid_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    static protected $_STATIC_COLUMNS_COUNT = 5;
+    const STATIC_COLUMNS_COUNT = 5;
     protected $_configurableColumns = array(
     );
     
@@ -152,7 +152,7 @@ class Amasty_Ogrid_Helper_Data extends Mage_Core_Helper_Abstract
             $position+=$step;
         }
         
-        for($ind = 1; $ind <= self::$_STATIC_COLUMNS_COUNT; $ind++){
+        for($ind = 1; $ind <= self::STATIC_COLUMNS_COUNT; $ind++){
             $key = 'static_'.$ind;
             $ret[$key] = $this->_getColumn(
                                         $key, 
