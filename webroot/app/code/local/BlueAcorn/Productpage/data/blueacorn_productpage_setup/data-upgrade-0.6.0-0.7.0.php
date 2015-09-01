@@ -79,13 +79,14 @@ $setup->addAttribute(Mage_Catalog_Model_Product::ENTITY, 'resource_downloads', a
 ));
 
 $setup->addAttribute(Mage_Catalog_Model_Product::ENTITY, 'ships_from', array(
+    'source' => 'eav/entity_attribute_source_table',
     'attribute_set' => 'Default',
     'group' => 'Details',
-    'type' => 'text',
+    'type' => 'int',
     'backend' => '',
     'frontend' => '',
     'label' => 'Ships From',
-    'input' => 'textarea',
+    'input' => 'select',
     'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
     'visible' => true,
     'required' => false,
@@ -95,7 +96,7 @@ $setup->addAttribute(Mage_Catalog_Model_Product::ENTITY, 'ships_from', array(
     'comparable' => false,
     'visible_on_front' => false,
     'visible_in_advanced_search' => false,
-    'used_in_product_listing' => false,
+    'used_in_product_listing' => true,
     'unique' => false,
     'visible_on_front' => false,
     'is_html_allowed_on_front' => true

@@ -18,5 +18,10 @@
                 <class>BlueAcorn_Productpage_Helper</class>
             </blueacorn_productpage>
         </helpers>
+        <models>
+            <blueacorn_productpage>
+                <class>BlueAcorn_Productpage_Model</class>
+            </blueacorn_productpage>
+        </models>
     </global>
 </config>
