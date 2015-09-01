@@ -1211,6 +1211,26 @@
     .column-left {
         width: 26.7%;
 
+        .description {
+            position: relative;
+
+            .detail {
+                overflow: hidden;
+            }
+
+            .read-more {
+                position: absolute;
+                top: 0;
+                right: 0;
+                cursor: pointer;
+                color: $brand-primary;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
         .resource-badges {
             img {
                 float: left;
