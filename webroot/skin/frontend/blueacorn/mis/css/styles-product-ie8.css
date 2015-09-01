@@ -220,9 +220,7 @@
     letter-spacing: 1px; }
 
 .product-view .block-related {
-  width: 50%;
-  float: right;
-  clear: right; }
+  width: 100%; }
 
 .product-img-box {
   width: 73%;
@@ -283,7 +281,7 @@
   border-color: #c7c7c7; }
 
 .product-view .block-related {
-  padding-left: 10px; }
+  padding-left: 0; }
 
 .product-img-box {
   padding-right: 10px; }
@@ -292,7 +290,7 @@
 .product-collateral,
 .product-view .block-related,
 .box-collateral {
-  margin-bottom: 10px; }
+  margin-bottom: 40px; }
 
 .product-view {
   /* Set a min-height so that the floated elements break appropriately */ }
@@ -751,33 +749,31 @@
 .block-related li {
   margin-bottom: 7px; }
 
-.block-related .block-title {
-  border-bottom: none; }
-  .block-related .block-title h2 {
-    margin: 0;
-    margin-bottom: 10px;
-    color: #262626;
-    font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif;
-    font-size: 38px;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 37px;
-    text-rendering: optimizeLegibility;
-    margin-bottom: 0; }
+.block-related .block-title h2 {
+  margin: 0;
+  margin-bottom: 10px;
+  color: #262626;
+  font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 37px;
+  text-rendering: optimizeLegibility;
+  margin-bottom: 0; }
 
 .block-related .block-subtitle {
   margin-bottom: 7px; }
 
 .block-related .product {
-  margin-left: 20px;
   position: relative; }
 
 .block-related .checkbox {
   float: left;
-  margin-top: 36px; }
+  margin-top: 36px;
+  display: none; }
 
-.block-related .product-details {
-  margin-left: 90px; }
+.block-related .checkbox-label {
+  display: none; }
 
 .block-related .product-name {
   margin-bottom: 3px; }
@@ -787,8 +783,8 @@
   .block-related .product-details .price-box a,
   .block-related .product-details .price-box p,
   .block-related .product-details .price-box span {
-    float: left;
-    margin-left: 3px; }
+    margin-left: 3px;
+    text-align: center; }
     .block-related .product-details .price-box a:first-child,
     .block-related .product-details .price-box p:first-child,
     .block-related .product-details .price-box span:first-child {
@@ -804,6 +800,10 @@
 .block-related .link-wishlist {
   display: none; }
 
+.block-related .mini-products-list li {
+  display: inline-block;
+  vertical-align: top; }
+
 /* -------------------------------------------- *
  * Upsell Products
  */
@@ -812,6 +812,152 @@
   .box-up-sell .ratings {
     display: none; }
 
+/*===================================================
+=            Related and Upsell Products            =
+===================================================*/
+.box-up-sell .block-title,
+.block-related .block-title {
+  margin-bottom: 50px;
+  border: none; }
+  .box-up-sell .block-title h2,
+  .block-related .block-title h2 {
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: #D0021B;
+    text-transform: none;
+    line-height: 1.2; }
+
+.box-up-sell h3.product-name,
+.block-related h3.product-name {
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  font-size: 15px;
+  text-transform: none; }
+  .box-up-sell h3.product-name a,
+  .block-related h3.product-name a {
+    color: #00247B; }
+
+.box-up-sell .price-box,
+.block-related .price-box {
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  color: #000; }
+  .box-up-sell .price-box span.price,
+  .block-related .price-box span.price {
+    font-size: 18px !important; }
+
+.box-up-sell .actions .button,
+.block-related .actions .button {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 1px; }
+  .box-up-sell .actions .button.btn-small,
+  .block-related .actions .button.btn-small {
+    padding: 12px 31px 13px;
+    width: 100%; }
+
+.box-up-sell .actions .link-compare,
+.block-related .actions .link-compare {
+  color: #00247B;
+  font-size: 15px;
+  text-transform: uppercase;
+  background: transparent;
+  margin-top: 5px; }
+  .box-up-sell .actions .link-compare:before,
+  .block-related .actions .link-compare:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    display: block;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #00247B;
+    border-right: none;
+    top: 28%;
+    right: 13%; }
+
+/*-----  End of Related and Upsell Products  ------*/
+/*========================================================
+=            Related and Upsell Products Grid            =
+========================================================*/
+body.catalog-product-view .box-up-sell .products-grid > li,
+body.catalog-product-view .block-related .products-grid > li {
+  float: left;
+  width: 100%;
+  padding: 5%; }
+  body.catalog-product-view .box-up-sell .products-grid > li:hover,
+  body.catalog-product-view .block-related .products-grid > li:hover {
+    outline: 1px solid #000; }
+
+body.catalog-product-view .box-up-sell .products-grid .actions,
+body.catalog-product-view .block-related .products-grid .actions {
+  position: relative; }
+
+body.catalog-product-view .box-up-sell .products-grid,
+body.catalog-product-view .block-related .products-grid {
+  /* Set two-column config */ }
+  body.catalog-product-view .box-up-sell .products-grid > li,
+  body.catalog-product-view .block-related .products-grid > li {
+    width: 50%;
+    padding: 2%;
+    margin-left: 0;
+    margin-right: 0; }
+  body.catalog-product-view .box-up-sell .products-grid > li:nth-child(2n+1),
+  body.catalog-product-view .block-related .products-grid > li:nth-child(2n+1) {
+    clear: left; }
+  body.catalog-product-view .box-up-sell .products-grid > li:nth-child(2n),
+  body.catalog-product-view .block-related .products-grid > li:nth-child(2n) {
+    padding-right: 2%;
+    clear: none; }
+
+body.catalog-product-view .box-up-sell .products-grid,
+body.catalog-product-view .block-related .products-grid {
+  /* Undo two-column config */
+  /* Set four-column config */ }
+  body.catalog-product-view .box-up-sell .products-grid > li:nth-child(odd),
+  body.catalog-product-view .block-related .products-grid > li:nth-child(odd) {
+    clear: none; }
+  body.catalog-product-view .box-up-sell .products-grid > li:nth-child(even),
+  body.catalog-product-view .block-related .products-grid > li:nth-child(even) {
+    padding-right: 2%; }
+  body.catalog-product-view .box-up-sell .products-grid > li,
+  body.catalog-product-view .block-related .products-grid > li {
+    width: 25%;
+    padding: 2%;
+    margin-left: 0;
+    margin-right: 0; }
+  body.catalog-product-view .box-up-sell .products-grid > li:nth-child(4n+1),
+  body.catalog-product-view .block-related .products-grid > li:nth-child(4n+1) {
+    clear: left; }
+  body.catalog-product-view .box-up-sell .products-grid > li:nth-child(4n),
+  body.catalog-product-view .block-related .products-grid > li:nth-child(4n) {
+    padding-right: 2%; }
+
+/*-----  End of Related and Upsell Products Grid  ------*/
+/*======================================
+=            Owl Carousel 2            =
+======================================*/
+.catalog-product-view .products-grid {
+  width: 100%;
+  overflow: hidden;
+  padding: 1px; }
+
+.catalog-product-view .owl-item {
+  float: left;
+  padding: 20px; }
+  .catalog-product-view .owl-item.active:hover {
+    outline: 1px solid #000; }
+  .catalog-product-view .owl-item .item-info,
+  .catalog-product-view .owl-item .item {
+    text-align: center; }
+  .catalog-product-view .owl-item .add-to-links {
+    display: none; }
+
+.catalog-product-view .owl-nav,
+.catalog-product-view .owl-dots {
+  display: none; }
+
+/*-----  End of Owl Carousel 2  ------*/
 /* ============================================ *
  * Configurable Swatches
  * ============================================ */
