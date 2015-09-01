@@ -1942,5 +1942,5 @@ body.catalog-product-view .block-related .products-grid {
 .zoomContainer {
   display: none; }
 
-.product-image, .no-touch .product-img-box .product-image:not(.zoom-available):hover {
+.product-img-box .product-image, .no-touch .product-img-box .product-image:not(.zoom-available):hover {
   position: absolute; }
