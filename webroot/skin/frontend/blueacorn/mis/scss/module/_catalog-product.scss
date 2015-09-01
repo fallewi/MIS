@@ -1393,3 +1393,125 @@ body.catalog-product-view {
 }
 
 /*-----  End of Owl Carousel 2  ------*/
+
+/*=================================================
+=            Product Information Block            =
+=================================================*/
+
+.product-information-block {
+
+    h2 {
+        font-family: $f-stack-sans;
+        color: $brand-primary;
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    p {
+        font-family: $f-stack-sans;
+        font-size: 15px;
+        line-height: 24px;
+        margin-bottom: 10px;
+    }
+
+    .column {
+        float: left;
+        margin-right: 1.5%;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .column-container {
+        margin-bottom: 24px;
+    }
+
+    .column-left {
+        width: 26.7%;
+
+        .description {
+            position: relative;
+
+            .detail {
+                overflow: hidden;
+            }
+
+            .read-more {
+                position: absolute;
+                top: 0;
+                right: 0;
+                cursor: pointer;
+                color: $brand-primary;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .resource-badges {
+            img {
+                float: left;
+                padding-right: 10px;
+            }
+        }
+    }
+
+    .column-center {
+        width: 43.6%;
+    }
+
+    .column-right {
+        width: 26.7%;
+
+        .detail {
+            background: $brand-light;
+            padding: 15px 25px;
+
+            p {
+                display: block;
+            }
+
+            span {
+                min-width: 40px;
+                float: left;
+                text-align: center;
+            }
+        }
+
+        .resource-downloads {
+            img {
+                display: inline-block;
+                padding-right: 15px;
+            }
+        }
+    }
+
+    .data-table {
+
+        th,
+        td {
+            height: 30px;
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 24px;
+            padding: 3px 10px;
+            text-transform: none;
+            font-weight: normal;
+            width: 50%;
+        }
+
+        .label {
+            background: none;
+        }
+
+        .even {
+            background: $brand-light;
+        }
+    }
+}
+
+/*-----  End of Product Information Block  ------*/

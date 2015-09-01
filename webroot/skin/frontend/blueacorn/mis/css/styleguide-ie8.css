@@ -1525,6 +1525,86 @@ body.catalog-product-view .block-related .products-grid {
   display: none; }
 
 /*-----  End of Owl Carousel 2  ------*/
+/*=================================================
+=            Product Information Block            =
+=================================================*/
+.product-information-block h2 {
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  color: #00247B;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase; }
+
+.product-information-block p {
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  margin-bottom: 10px; }
+
+.product-information-block .column {
+  float: left;
+  margin-right: 1.5%; }
+  .product-information-block .column:last-child {
+    margin-right: 0; }
+
+.product-information-block .column-container {
+  margin-bottom: 24px; }
+
+.product-information-block .column-left {
+  width: 26.7%; }
+  .product-information-block .column-left .description {
+    position: relative; }
+    .product-information-block .column-left .description .detail {
+      overflow: hidden; }
+    .product-information-block .column-left .description .read-more {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      color: #00247B; }
+      .product-information-block .column-left .description .read-more:hover {
+        text-decoration: underline; }
+  .product-information-block .column-left .resource-badges img {
+    float: left;
+    padding-right: 10px; }
+
+.product-information-block .column-center {
+  width: 43.6%; }
+
+.product-information-block .column-right {
+  width: 26.7%; }
+  .product-information-block .column-right .detail {
+    background: #F6F6F6;
+    padding: 15px 25px; }
+    .product-information-block .column-right .detail p {
+      display: block; }
+    .product-information-block .column-right .detail span {
+      min-width: 40px;
+      float: left;
+      text-align: center; }
+  .product-information-block .column-right .resource-downloads img {
+    display: inline-block;
+    padding-right: 15px; }
+
+.product-information-block .data-table th,
+.product-information-block .data-table td {
+  height: 30px;
+  font-family: "gesta", Verdana, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  padding: 3px 10px;
+  text-transform: none;
+  font-weight: normal;
+  width: 50%; }
+
+.product-information-block .data-table .label {
+  background: none; }
+
+.product-information-block .data-table .even {
+  background: #F6F6F6; }
+
+/*-----  End of Product Information Block  ------*/
 /* ============================================ *
  * Catalog - MSRP MAP Popup
  * ============================================ */
