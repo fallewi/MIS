@@ -54,70 +54,70 @@
             </div>
 
             <div class="product-shop">
-                <div class="product-name">
-                    <span class="h1"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></span>
-                </div>
 
-                <div class="price-info">
-                    <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
-                        <?php echo $this->getPriceHtml($_product); ?>
-                        <?php echo $this->getChildHtml('bundle_prices') ?>
-                        <?php echo $this->getTierPriceHtml() ?>
-                    <?php else: ?>
-                        <div>
-                            <div><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
-                                <input id="map_email" type="text" name="user_email"/>
-                                <button id="map_request">Get Price</button>
-                        </div>
-                        <?php echo $_product->getMsrp(); ?>
-                    <?php endif; ?>
-                </div>
-
-                <div class="extra-info">
-                    <?php echo $this->getReviewsSummaryHtml($_product, 'default', false)?>
-                    <?php echo $this->getChildHtml('product_type_availability'); ?>
-                </div>
+                <?php if($_product->getFreeShippingBanner()): ?>
+                    <div class="free-shipping"><?php echo $this->__("Eligible for Free Shipping") ?></div>
+                <?php endif ?>
 
                 <?php echo $this->getChildHtml('alert_urls') ?>
 
-                <?php if ($_product->getShortDescription()):?>
-                    <div class="short-description">
-                        <div class="std"><?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?></div>
-                    </div>
-                <?php endif;?>
-
-
-
-
                 <?php echo $this->getChildHtml('other');?>
+
+            </div>
+
+            <div class="add-to-cart-wrapper">
+
+                <?php // Placeholder html for Custom dev feature MAP pricing module ?>
+                <div class="map-pricing">
+                    <div class="price-info">
+                        <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                            <?php echo $this->getPriceHtml($_product); ?>
+                            <?php echo $this->getChildHtml('bundle_prices') ?>
+                            <?php echo $this->getTierPriceHtml() ?>
+                        <?php else: ?>
+                            <div>
+                                <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
+                                    <input id="map_email" type="text" name="user_email" class="input-text"/>
+                                    <button id="map_request" class="button">Get Price</button>
+                            </div>
+                            <?php echo $_product->getMsrp(); ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php echo $this->getChildHtml('product_type_data') ?>
+                <?php echo $this->getChildHtml('extrahint') ?>
+
+                <div class="price-info">
+                    <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                        <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
+                        <?php echo $this->getPriceHtml($_product); ?>
+                    <?php endif; ?>
+                    <?php echo $this->getChildHtml('bundle_prices') ?>
+                    <?php echo $this->getTierPriceHtml() ?>
+                </div>
+
+                <?php if(!$_product->isGrouped() && $_product->isSaleable()): ?>
+                    <div class="qty-wrapper">
+                        <label for="qty"><?php echo $this->__('Qty:') ?></label>
+                        <span>X</span>
+                        <input type="text" pattern="\d*" name="qty" id="qty" maxlength="12" value="<?php echo max($this->getProductDefaultQty() * 1, 1) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" />
+                    </div>
+                <?php endif; ?>
 
                 <?php if ($_product->isSaleable() && $this->hasOptions()):?>
                     <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
                 <?php endif;?>
 
-            </div>
-
-            <div class="add-to-cart-wrapper">
-                <?php echo $this->getChildHtml('product_type_data') ?>
-                <?php echo $this->getChildHtml('extrahint') ?>
-
-                <?php if (!$this->hasOptions()):?>
+                <?php if ($_product->isSaleable()):?>
                     <div class="add-to-box">
-                        <?php if($_product->isSaleable()): ?>
-                            <?php echo $this->getChildHtml('addtocart') ?>
-                            <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
-                                <span class="or"><?php echo $this->__('OR') ?></span>
-                            <?php endif; ?>
+                        <?php echo $this->getChildHtml('addtocart') ?>
+                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                            <span class="or"><?php echo $this->__('OR') ?></span>
                         <?php endif; ?>
                         <?php echo $this->getChildHtml('addto') ?>
-                        <?php echo $this->getChildHtml('sharing') ?>
                     </div>
                     <?php echo $this->getChildHtml('extra_buttons') ?>
-                <?php elseif (!$_product->isSaleable()): ?>
-                    <div class="add-to-box">
-                        <?php echo $this->getChildHtml('addto') ?>
-                        <?php echo $this->getChildHtml('sharing') ?>
-                    </div>
                 <?php endif; ?>
             </div>
 
@@ -131,16 +131,16 @@
         <script type="text/javascript">
         //<![CDATA[
 
-        (function($) {
-            $(document).ready(function() {
-                $('#map_request').on('click', function(e) {
-                    e.preventDefault();
-                    var email = $('#map_email').val(),
-                        base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
-                    window.location.replace(base_url + '&email=' + email);
+            (function($) {
+                $(document).ready(function() {
+                    $('#map_request').on('click', function(e) {
+                        e.preventDefault();
+                        var email = $('#map_email').val(),
+                            base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
+                        window.location.replace(base_url + '&email=' + email);
+                    });
                 });
-            });
-        }(jQuery));
+            }(jQuery));
 
             var productAddToCartForm = new VarienForm('product_addtocart_form');
             productAddToCartForm.submit = function(button, url) {

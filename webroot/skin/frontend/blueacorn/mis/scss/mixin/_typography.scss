@@ -1,0 +1,109 @@
+//
+// Magento Enterprise Edition
+//
+// NOTICE OF LICENSE
+//
+// This source file is subject to the Magento Enterprise Edition End User License Agreement
+// that is bundled with this package in the file LICENSE_EE.txt.
+// It is also available through the world-wide-web at this URL:
+// http://www.magento.com/license/enterprise-edition
+// If you did not receive a copy of the license and are unable to
+// obtain it through the world-wide-web, please send an email
+// to license@magento.com so we can send you a copy immediately.
+//
+// DISCLAIMER
+//
+// Do not edit or add to this file if you wish to upgrade Magento to newer
+// versions in the future. If you wish to customize Magento for your
+// needs please refer to http://www.magento.com for more information.
+//
+// @category    design
+// @package     rwd_default
+// @copyright Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
+// @license http://www.magento.com/license/enterprise-edition
+//
+
+// =============================================
+// Mixin - Typography
+// =============================================
+
+@mixin h1 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: $c-h1;
+    font-family: $f-stack-special;
+    font-size: 47px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 55px;
+    text-rendering: optimizeLegibility;
+}
+
+@mixin h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: $c-h2;
+    font-family: $f-stack-special;
+    font-size: 38px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 37px;
+    text-rendering: optimizeLegibility;
+}
+
+@mixin h3 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: $c-h3;
+    font-family: $f-stack-special;
+    font-size: 24px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 26px;
+    text-rendering: optimizeSpeed;
+}
+
+@mixin h4 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: $c-h4;
+    font-family: $f-stack-special;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    line-height: 18px;
+    text-rendering: optimizeSpeed;
+}
+
+@mixin h5 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: $c-h5;
+    font-family: $f-stack-sans;
+    font-size: 17px;
+    font-weight: bold;
+    font-style: normal;
+    line-height: 20px;
+    text-rendering: optimizeSpeed;
+}
+
+@mixin h6 {
+    margin: 0;
+    margin-bottom: 5px;
+    color: $c-h6;
+    font-family: $f-stack-sans;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    line-height: 19px;
+    text-rendering: optimizeSpeed;
+}
+
+@mixin pageTitle() {
+    font-size: 24px;
+    font-weight: 600;
+    color: $c-text;
+    border-bottom: 1px solid $c-module-border-light;
+    padding-bottom: 3px;
+    margin-bottom: 15px;
+}

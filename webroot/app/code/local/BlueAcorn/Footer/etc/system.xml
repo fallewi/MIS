@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--
+    /**
+     * @copyright: Copyright (c) 2013 Blue Acorn (http://www.blueacorn.com)
+     * @author: Tyler Craft <tyler@blueacorn.com>
+     * @namespace: BlueAcorn
+     * @module: GlobalConfiguration
+     * Date: 02/16/15
+     */
+-->
+<config>
+    <tabs>
+        <blueacorn>
+            <label>Blue Acorn</label>
+            <sort_order>100</sort_order>
+        </blueacorn>
+    </tabs>
+    <sections>
+        <ba_footer translate="label">
+            <label>Footer</label>
+            <tab>blueacorn</tab>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <sort_order>20</sort_order>
+            <groups>
+                <about translate="label">
+                    <label>About Us Block</label>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <about_us_title translate="label">
+                            <label>About Us Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </about_us_title>
+                        <about_us_text translate="label">
+                            <label>About Us Text</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </about_us_text>
+                    </fields>
+                </about>
+                <newsletter translate="label">
+                    <label>Newsletter Block</label>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <newsletter_title>
+                            <label>Newsletter Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter_title>
+                        <newsletter_text>
+                            <label>Newsletter Text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletter_text>
+                    </fields>
+                </newsletter>
+                <social translate="label">
+                    <label>Social Media Connections</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <twitter_url>
+                            <label>Twitter URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </twitter_url>
+                        <instagram_url>
+                            <label>Instagram URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </instagram_url>
+                        <facebook_url>
+                            <label>Facebook URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </facebook_url>
+                        <youtube_url>
+                            <label>Google+ URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </youtube_url>
+                        
+                    </fields>
+                </social>
+            </groups>
+        </ba_footer>
+    </sections>
+</config>

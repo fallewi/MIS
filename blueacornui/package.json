@@ -1,0 +1,43 @@
+{
+  "name": "blueacorn_green_pistachio",
+  "version": "3.0.0",
+  "description": "Rapid Development Boilerplate for Responsive Magento Enterprise Websites",
+  "private": "true",
+  "namespace": "BlueAcorn",
+  "module": "Green Pistachio",
+  "homepage": "http://www.blueacorn.com",
+  "bugs": "code@blueacorn.com",
+  "author": {
+    "name": "Blue Acorn, Inc.",
+    "email": "code@blueacorn.com",
+    "twitter": "blueacorn",
+    "url": "http://www.blueacorn.com",
+    "copyright": "Copyright © 2015 Blue Acorn, Inc."
+  },
+  "keywords": [
+    "grunt",
+    "sass",
+    "jquery",
+    "compass"
+  ],
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-autoprefixer": "*",
+    "grunt-banner": "*",
+    "grunt-concurrent": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-imagemin": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-devtools": "*",
+    "grunt-githooks": "*",
+    "grunt-newer": "*",
+    "grunt-sass": "*",
+    "grunt-shell": "*",
+    "grunt-usebanner": "*",
+    "time-grunt": "*",
+    "jit-grunt": "*"
+  }
+}

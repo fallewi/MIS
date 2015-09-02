@@ -1,0 +1,127 @@
+<config>
+    <sections>
+        <homepage translate="label" module="blueacorn_homepage">
+            <label>Homepage</label>
+            <tab>blueacorn</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <homepage_hero>
+                    <label>Homepage Hero Block</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <homepage_hero_enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </homepage_hero_enabled>
+                        <homepage_hero_cms_block translate="label">
+                            <label>Cms Block</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>cms/resource_block_collection</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </homepage_hero_cms_block>
+                    </fields>
+                </homepage_hero>
+                <featured_products>
+                    <label>Featured Products Block</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <featured_products_enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_products_enabled>
+                        <featured_category translate="label">
+                            <label>Featured Products Category</label>
+                            <comment>Featured products block will display the first three or four products assigned to the selected category</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>blueacorn_homepage/system_config_source_category</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_category>
+                        <featured_promo translate="label">
+                            <label>Display Featured Promo</label>
+                            <comment>Enabling this feature will default the number of featured products to three products and display the featured category promo in the fourth block</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_promo>
+                        <featured_promo_title translate="label">
+                            <label>Featured Promo Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_promo_title>
+                        <featured_promo_short_desc translate="label">
+                            <label>Featured Promo Short Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_promo_short_desc>
+                        <featured_promo_btn_text translate="label">
+                            <label>Featured Promo Button Text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_promo_btn_text>
+                        <featured_promo_btn_link translate="label">
+                            <label>Featured Promo Button Link</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>blueacorn_homepage/system_config_source_category</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </featured_promo_btn_link>
+                        <featured_promo_img translate="label">
+                            <label>Featured Promo Image</label>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">default</upload_dir>
+                            <base_url type="media" scope_info="1">default</base_url>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </featured_promo_img>
+                    </fields>
+                </featured_products>
+            </groups>
+        </homepage>
+    </sections>
+</config>
