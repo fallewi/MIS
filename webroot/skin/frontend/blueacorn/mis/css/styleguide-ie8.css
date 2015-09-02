@@ -1549,7 +1549,8 @@ body.catalog-product-view .block-related .products-grid {
     margin-right: 0; }
 
 .product-information-block .column-container {
-  margin-bottom: 24px; }
+  margin-bottom: 24px;
+  min-height: 75px; }
 
 .product-information-block .column-left {
   width: 26.7%; }

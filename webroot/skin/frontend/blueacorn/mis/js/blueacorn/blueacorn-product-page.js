@@ -30,6 +30,8 @@ jQuery(document).ready(function ($) {
             this.imageSlider();
             this.setDescriptionContainerMaxHeight();
             this.expandDescription();
+            this.setupAccordion();
+            this.moveAddToCartButton();
         },
 
         imageSlider: function() {
@@ -94,6 +96,30 @@ jQuery(document).ready(function ($) {
             readMore.on('click', function(){
                 container.css({ 'max-height': newHeight });
                 readMore.detach();
+            });
+        },
+
+        setupAccordion: function(){
+            var self = this,
+                title = $('.column-right .column-container h2');
+
+            title.on('click', function(){
+                $(this).toggleClass('open-links');
+            });
+        },
+
+        moveAddToCartButton: function() {
+            var self = this,
+                button = $('.add-to-cart-buttons'),
+                links = $('.add-to-links');
+
+            enquire.register('screen and (max-width:' + (bp.medium) + 'px)', {
+                match: function() {
+                    // button.detach().insertAfter(links);
+                },
+                unmatch: function() {
+                    //else
+                }
             });
         }
     };

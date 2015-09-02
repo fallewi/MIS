@@ -1807,7 +1807,8 @@ body.catalog-product-view .block-related .products-grid .actions {
     margin-right: 0; }
 
 .product-information-block .column-container {
-  margin-bottom: 24px; }
+  margin-bottom: 24px;
+  min-height: 75px; }
 
 .product-information-block .column-left {
   width: 26.7%; }
@@ -1861,6 +1862,111 @@ body.catalog-product-view .block-related .products-grid .actions {
 
 .product-information-block .data-table .even {
   background: #F6F6F6; }
+
+@media only screen and (max-width: 770px) {
+  .breadcrumbs {
+    display: block;
+    text-align: center; }
+    .breadcrumbs li {
+      display: inline-block;
+      float: none;
+      line-height: 8px; }
+  .top-product-details,
+  .catalog-product-view .product-view .product-img-box .more-views {
+    display: none !important; }
+  .product-view .product-img-box .product-name h1 {
+    font-size: 18px;
+    color: #D0021B;
+    text-align: center; }
+  .main {
+    padding-left: 0;
+    padding-right: 0; }
+  .breadcrumbs,
+  .top-product-details,
+  .product-img-box,
+  .price-info,
+  .add-to-box,
+  .specifications,
+  .block-title,
+  .owl-carousel-1,
+  .owl-carousel-2 {
+    padding-left: 20px !important;
+    padding-right: 20px !important; }
+  .map-pricing {
+    margin-left: 20px; }
+  .qty-wrapper {
+    margin-right: 20px; }
+  .column-right {
+    background: #F5F5F5;
+    padding: 20px 20px 10px; }
+  .product-information-block .column-left {
+    display: none; }
+  .product-information-block .specifications h2 {
+    display: none; }
+  .product-information-block .column-left,
+  .product-information-block .column-center,
+  .product-information-block .column-right {
+    width: 100%; }
+  .product-information-block .column-right .column-container {
+    position: relative;
+    float: none;
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+    margin-bottom: 0;
+    min-height: 0; }
+    .product-information-block .column-right .column-container h2 {
+      font-size: 15px;
+      letter-spacing: 1.35px;
+      padding: 13px 20px 13px;
+      background: #fff;
+      cursor: pointer;
+      margin: 0 0 10px; }
+      .product-information-block .column-right .column-container h2:after {
+        background-image: url("../images/sprite.png");
+        background-position: -78px -30px;
+        display: block;
+        content: "";
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 16px;
+        right: 20px; } }
+      @media only screen and (max-width: 770px) and (-webkit-min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min--moz-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-resolution: 192dpi), only screen and (max-width: 770px) and (min-resolution: 2dppx) {
+        .product-information-block .column-right .column-container h2:after {
+          background-image: url("../images/sprite@2x.png");
+          background-size: 600px 300px; } }
+
+@media only screen and (max-width: 770px) {
+      .product-information-block .column-right .column-container h2:hover {
+        opacity: 0.6;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; }
+    .product-information-block .column-right .column-container .detail {
+      margin-bottom: 0;
+      max-height: 0;
+      overflow: hidden;
+      background: #fff;
+      padding: 0; }
+    .product-information-block .column-right .column-container h2.open-links {
+      color: #EC3837;
+      margin-bottom: 0; }
+      .product-information-block .column-right .column-container h2.open-links + .detail {
+        max-height: 55em;
+        padding: 3px 20px 20px;
+        margin-bottom: 10px; }
+      .product-information-block .column-right .column-container h2.open-links:after {
+        background-position: -103px -30px; }
+  .product-information-block #product-attribute-specs-table {
+    max-width: none; }
+  .box-collateral .block-title h2 {
+    text-align: center;
+    font-size: 30px;
+    padding-top: 35px; }
+  .block-related .block-title,
+  .box-up-sell .block-title {
+    margin-bottom: 25px; }
+  .box-up-sell {
+    margin-bottom: 0; } }
 
 /*-----  End of Product Information Block  ------*/
 /* ============================================ *
