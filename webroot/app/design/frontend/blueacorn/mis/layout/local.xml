@@ -88,9 +88,9 @@
             <action method="removeLinkByName">
                 <name>billing_agreements</name>
             </action>
-            <!-- <action method="removeLinkByName">
+            <action method="removeLinkByName">
                 <name>enterprise_giftcardaccount</name>
-            </action> -->
+            </action>
             <action method="removeLinkByName">
                 <name>recurring_profiles</name>
             </action>
