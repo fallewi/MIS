@@ -11,7 +11,7 @@
  *
  * @category   Mage
  * @package    BlueAcorn_MiniGrid
- * @author     Chris Rasys <chris.rasys@blueacorn.com>
+ * @author     Chris Rasys <chris.rasys@BlueAcorn.com>
  */
 abstract class BlueAcorn_MiniGrid_Model_Entity_Attribute_Source_Minigrid extends Mage_Eav_Model_Entity_Attribute_Source_Abstract {
     protected $_configNodePath;

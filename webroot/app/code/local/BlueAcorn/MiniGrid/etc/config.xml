@@ -6,8 +6,8 @@
  * page. This module makes this grid a system config frontend
  * type that can be used for a wide variety of things that require
  * a bit more love than a multiselect.
- * 
- * @package Blueacorn
+ *
+ * @package BlueAcorn
  * @subpackage MiniGrid
  * @version 1.0.0
  * @author Brys Sepulveda
@@ -15,29 +15,29 @@
 -->
 <config>
     <modules>
-        <Blueacorn_MiniGrid>
+        <BlueAcorn_MiniGrid>
             <version>1.0.0</version>
-        </Blueacorn_MiniGrid>
+        </BlueAcorn_MiniGrid>
     </modules>
     <global>
         <blocks>
             <baminigrid>
-                <class>Blueacorn_MiniGrid_Block</class>
+                <class>BlueAcorn_MiniGrid_Block</class>
             </baminigrid>
             <adminhtml>
                 <rewrite>
-                    <system_config_form>Blueacorn_MiniGrid_Block_System_Config_Form</system_config_form>
+                    <system_config_form>BlueAcorn_MiniGrid_Block_System_Config_Form</system_config_form>
                 </rewrite>
             </adminhtml>
         </blocks>
         <helpers>
             <baminigrid>
-                <class>Blueacorn_MiniGrid_Helper</class>
+                <class>BlueAcorn_MiniGrid_Helper</class>
             </baminigrid>
         </helpers>
         <models>
             <baminigrid>
-                <class>Blueacorn_MiniGrid_Model</class>
+                <class>BlueAcorn_MiniGrid_Model</class>
             </baminigrid>
         </models>
     </global>

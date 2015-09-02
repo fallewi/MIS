@@ -4,12 +4,12 @@
  * Serializes and unserializes the grid data to
  * the config data
  * 
- * @package Blueacorn
+ * @package BlueAcorn
  * @subpackage MiniGrid
  * @version 1.0.0
  * @author Brys Sepulveda
  */
-class Blueacorn_MiniGrid_Model_System_Config_Backend_Minigrid extends Mage_Core_Model_Config_Data {
+class BlueAcorn_MiniGrid_Model_System_Config_Backend_Minigrid extends Mage_Core_Model_Config_Data {
 
     /**
      * In the event of a minigrid with file, get the local tmp location of the 

@@ -30,7 +30,7 @@
                             <label>Ship From</label>
                             <frontend_type>minigrid</frontend_type>
                             <source_model>blueacorn_productpage/system_config_source_shipfrom</source_model>
-                            <backend_model>baminigrid/System_Config_Backend_Minigrid</backend_model>
+                            <backend_model>baminigrid/system_config_backend_minigrid</backend_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>

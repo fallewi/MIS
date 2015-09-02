@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2015 Blue Acorn, Inc.
  */
 
-class BlueAcorn_Productpage_Model_System_Config_Source_ShipFrom extends BlueAcorn_MiniGrid_Model_System_Config_Source_Minigrid_Abstract {
+class BlueAcorn_Productpage_Model_System_Config_Source_Shipfrom extends BlueAcorn_MiniGrid_Model_System_Config_Source_Minigrid_Abstract {
 
     /**
      * @return array

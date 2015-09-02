@@ -4,12 +4,12 @@
  * Displays the minigid in a usable backend fashion. Requires a source
  * model to properly display;
  * 
- * @package Blueacorn
+ * @package BlueAcorn
  * @subpackage MiniGrid
  * @version 1.0.0
  * @author Brys Sepulveda
  */
-class Blueacorn_MiniGrid_Block_System_Config_Form_Field_Minigrid extends Varien_Data_Form_Element_Abstract {
+class BlueAcorn_MiniGrid_Block_System_Config_Form_Field_Minigrid extends Varien_Data_Form_Element_Abstract {
     
     /**
      * Add the js block which contains the js that makes 

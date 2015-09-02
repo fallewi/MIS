@@ -3,12 +3,12 @@
  * Form that utilizes a minigrid. Good as an alternative
  * to a grid
  * 
- * @package Blueacorn
+ * @package BlueAcorn
  * @subpackage CodeStatus
  * @version 1.0.0
  * @author Brys Sepulveda
  */
-class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block_Abstract {
+class BlueAcorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block_Abstract {
     
     protected $_formId = "ba-minigrid-form";
     protected $_formClass = "";
@@ -25,7 +25,7 @@ class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block
     protected function _toHtml() {
         $html = parent::_toHtml();
         $html .= "<form id='{$this->getFormId()}' action='{$this->getFormAction()}' method='post' class='{$this->getFormClass()}' enctype='multipart/form-data'>";
-        $minigrid = new Blueacorn_MiniGrid_Block_System_Config_Form_Field_Minigrid();
+        $minigrid = new BlueAcorn_MiniGrid_Block_System_Config_Form_Field_Minigrid();
         $html .= $minigrid->getElementHtml("ba-minigrid-form-grid", $this->getFieldName(), $this->getGridFields(), $this->getGridRowData());
         $html .= "
             </form>
@@ -53,7 +53,7 @@ class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block
      * Public set for form id
      *
      * @param string $formId
-     * @return Blueacorn_Minigrid_Block_Widget_Minigrid_Form
+     * @return BlueAcorn_Minigrid_Block_Widget_Minigrid_Form
      */
     public function setFormId($formId) {
         $this->_formId = $formId;
@@ -73,7 +73,7 @@ class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block
      * Public set for form class
      *
      * @param string $formClass
-     * @return Blueacorn_Minigrid_Block_Widget_Minigrid_Form
+     * @return BlueAcorn_Minigrid_Block_Widget_Minigrid_Form
      */
     public function setFormClass($formClass) {
         $this->_formClass = $formClass;
@@ -92,7 +92,7 @@ class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block
      * Public set for form class
      *
      * @param string $url
-     * @return Blueacorn_Minigrid_Block_Widget_Minigrid_Form
+     * @return BlueAcorn_Minigrid_Block_Widget_Minigrid_Form
      */
     public function setFormAction($url) {
         $this->_formAction = $url;
@@ -112,7 +112,7 @@ class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block
      * Public set for grid fields
      *
      * @param array $gridFields
-     * @return Blueacorn_Minigrid_Block_Widget_Minigrid_Form
+     * @return BlueAcorn_Minigrid_Block_Widget_Minigrid_Form
      */
     public function setGridFields(array $gridFields) {
         $this->_gridFields = $gridFields;
@@ -132,7 +132,7 @@ class Blueacorn_Minigrid_Block_Widget_Minigrid_Form extends Mage_Adminhtml_Block
      * Public set for grid row data
      *
      * @param array $gridRowData
-     * @return Blueacorn_Minigrid_Block_Widget_Minigrid_Form
+     * @return BlueAcorn_Minigrid_Block_Widget_Minigrid_Form
      */
     public function setGridRowData(array $gridRowData) {
         $this->_gridRowData = $gridRowData;

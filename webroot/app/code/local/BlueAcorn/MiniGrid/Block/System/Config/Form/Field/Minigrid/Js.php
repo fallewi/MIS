@@ -3,12 +3,12 @@
  * Minigrid form field js
  * Javascript that controls the forms
  *
- * @package Blueacorn
+ * @package BlueAcorn
  * @subpackage MiniGrid
  * @version 1.0.0
  * @author Brys Sepulveda
  */
-class Blueacorn_MiniGrid_Block_System_Config_Form_Field_Minigrid_Js extends Mage_Core_Block_Text {
+class BlueAcorn_MiniGrid_Block_System_Config_Form_Field_Minigrid_Js extends Mage_Core_Block_Text {
 
 
     /**
