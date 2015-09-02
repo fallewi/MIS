@@ -1,1 +1,9 @@
-../../../.modman/ba-mini-grid/BlueAcorn_MiniGrid.xml
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Blueacorn_MiniGrid>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Blueacorn_MiniGrid>
+    </modules>
+</config>

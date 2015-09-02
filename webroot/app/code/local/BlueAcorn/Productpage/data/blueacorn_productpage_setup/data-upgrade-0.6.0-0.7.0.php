@@ -99,7 +99,12 @@ $setup->addAttribute(Mage_Catalog_Model_Product::ENTITY, 'ships_from', array(
     'used_in_product_listing' => true,
     'unique' => false,
     'visible_on_front' => false,
-    'is_html_allowed_on_front' => true
+    'is_html_allowed_on_front' => true,
+    'option' => array (
+        'values' => array (
+              0 => 'Missionrs.com'
+        )
+    )
 ));
 
 $installer->endSetup();
