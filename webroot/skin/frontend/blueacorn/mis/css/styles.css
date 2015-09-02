@@ -1698,7 +1698,6 @@ span.weee {
     margin: 0 15px 0 0; }
   .pager .limiter {
     float: left;
-    height: 30px;
     line-height: 30px; }
     .pager .limiter > label {
       padding-right: 5px; }
@@ -2017,6 +2016,8 @@ form .legend {
     position: absolute;
     top: 36px;
     left: -22px; }
+  .input-box.select-container.validation-passed:before {
+    top: 14px; }
 
 .block-subscribe .input-box.validation-passed:before {
   content: "\f00c";
