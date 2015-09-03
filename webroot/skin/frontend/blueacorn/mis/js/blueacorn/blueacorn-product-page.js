@@ -15,6 +15,14 @@ function productPage(options) {
 
 jQuery(document).ready(function ($) {
 
+    $.fn.isAfter = function(sel){
+        return this.prevAll().filter(sel).length !== 0;
+    };
+
+    $.fn.isBefore= function(sel){
+        return this.nextAll().filter(sel).length !== 0;
+    };
+
     productPage.prototype = {
         init: function (options) {
             this.settings = {
@@ -47,7 +55,6 @@ jQuery(document).ready(function ($) {
                                 loop: true,
                                 dots: false,
                                 center: true,
-                                stagePadding: 10,
                                 responsiveClass: true,
                                 items: 1
                             });
@@ -57,7 +64,6 @@ jQuery(document).ready(function ($) {
                                 loop: true,
                                 dots: false,
                                 center: true,
-                                stagePadding: 10,
                                 responsiveClass: true,
                                 items: 1
                             });
@@ -83,7 +89,7 @@ jQuery(document).ready(function ($) {
 
             if (container[0].scrollHeight > container.innerHeight()) {
                 wrapper.append('<div class="read-more">Read More</div>');
-                $('.read-more').css({ top: (divHeight.height() - 60) });
+                $('.read-more').css({ top: (wrapper.height()) });
             }
         },
 
@@ -115,10 +121,16 @@ jQuery(document).ready(function ($) {
 
             enquire.register('screen and (max-width:' + (bp.medium) + 'px)', {
                 match: function() {
-                    // button.detach().insertAfter(links);
+                    if($('.add-to-box .add-to-cart-buttons').isAfter('.add-to-box .add-to-links') === false) {
+                        var button = $('.add-to-box .add-to-cart-buttons').detach();
+                        $('.add-to-box .add-to-links').after(button);
+                    }
                 },
                 unmatch: function() {
-                    //else
+                    if($('.add-to-box .add-to-cart-buttons').isAfter('.add-to-links')) {
+                        var button = $('.add-to-box .add-to-cart-buttons').detach();
+                        $('.add-to-box .add-to-cart').append(button);
+                    }
                 }
             });
         }

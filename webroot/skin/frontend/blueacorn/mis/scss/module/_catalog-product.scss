@@ -1285,6 +1285,10 @@ body.catalog-product-view {
             &:hover {
                 outline: 1px solid $black;
             }
+
+            .product-details {
+                min-height: 95px;
+            }
         }
 
         .products-grid .actions {
@@ -1399,6 +1403,7 @@ body.catalog-product-view {
 =================================================*/
 
 .product-information-block {
+    margin-top: 26px;
 
     h2 {
         font-family: $f-stack-sans;
@@ -1412,7 +1417,7 @@ body.catalog-product-view {
     p {
         font-family: $f-stack-sans;
         font-size: 15px;
-        line-height: 24px;
+        line-height: 25px;
         margin-bottom: 10px;
     }
 
@@ -1558,7 +1563,7 @@ body.catalog-product-view {
     }
 
     .map-pricing {
-        margin-left: 20px;
+        margin: 0 20px;
     }
 
     .qty-wrapper {
