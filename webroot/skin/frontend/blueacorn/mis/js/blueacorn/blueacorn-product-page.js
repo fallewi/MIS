@@ -85,11 +85,11 @@ jQuery(document).ready(function ($) {
                 container = $('.description .detail'),
                 divHeight = $('.specifications');
 
-            container.css({ 'max-height': (divHeight.height() - 93) });
+            container.css({ 'max-height': (divHeight.height()) });
 
             if (container[0].scrollHeight > container.innerHeight()) {
                 wrapper.append('<div class="read-more">Read More</div>');
-                $('.read-more').css({ top: (wrapper.height()) });
+                $('.read-more').css({ top: (wrapper.height() + 4) });
             }
         },
 
