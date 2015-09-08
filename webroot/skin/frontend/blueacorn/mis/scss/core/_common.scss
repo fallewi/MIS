@@ -1654,10 +1654,14 @@ $toolbar-icon-padding-offset: 8px;
     left: 0;
 
     label {
+        display: block;
+        float: left;
         font-family: $f-stack-sans;
         font-size: 15px;
         color: $brand-primary;
         top: -15px;
+        left: 15px;
+        margin-top: 25px;
 
         &:after {
             content: ':';

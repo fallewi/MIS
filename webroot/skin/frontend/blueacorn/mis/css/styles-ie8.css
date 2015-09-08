@@ -1425,10 +1425,14 @@ span.weee {
   position: absolute;
   left: 0; }
   .sorter label {
+    display: block;
+    float: left;
     font-family: "gesta", Verdana, Arial, sans-serif;
     font-size: 15px;
     color: #00247B;
-    top: -15px; }
+    top: -15px;
+    left: 15px;
+    margin-top: 25px; }
     .sorter label:after {
       content: ':';
       padding-left: 5px; }
