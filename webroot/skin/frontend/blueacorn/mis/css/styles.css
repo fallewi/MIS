@@ -4603,9 +4603,9 @@ p.product-name {
       border-left: 8px solid transparent;
       border-top: 8px solid #00247B;
       border-bottom: none;
-      right: 75px;
-      top: 50%;
-      margin-top: -5px; }
+      position: static;
+      margin-top: 7px;
+      float: right; }
     .block-layered-nav .block-subtitle--filter.active {
       background-color: #00247B;
       color: #fff; }
@@ -4619,9 +4619,9 @@ p.product-name {
         border-left: 8px solid transparent;
         border-bottom: 8px solid #fff;
         border-top: none;
-        right: 75px;
-        top: 50%;
-        margin-top: -3px; }
+        position: static;
+        margin-top: 7px;
+        float: right; }
     .block-layered-nav .block-subtitle--filter:after,
     .block-layered-nav .block-subtitle--filter.active:after {
       right: -9999px;

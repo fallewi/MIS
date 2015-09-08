@@ -638,9 +638,9 @@ $productsGridActionHeight: 85px;
 
         &:before {
             @include triangle(down, 8px, $brand-primary);
-            right: 75px;
-            top: 50%;
-            margin-top: -5px;
+            position: static;
+            margin-top: 7px;
+            float: right;
         }
 
         &.active {
@@ -649,9 +649,9 @@ $productsGridActionHeight: 85px;
 
             &:before {
                 @include triangle(up, 8px, $white);
-                right: 75px;
-                top: 50%;
-                margin-top: -3px;
+                position: static;
+                margin-top: 7px;
+                float: right;
             }
         }
 
