@@ -2289,6 +2289,10 @@ p.required,
     .product-options ul.options-list .no-display + label:hover {
       background-color: transparent; }
 
+@media only screen and (max-width: 599px) {
+  #billing-new-address-form li.control {
+    margin-left: 0; } }
+
 .product-options ul.options-list label,
 .col2-set .form-list .control label {
   min-width: inherit;
@@ -2841,7 +2845,7 @@ body {
     max-height: 40px;
     text-align: left;
     float: left;
-    width: 193px; }
+    width: 197px; }
   .logo .small {
     display: block; }
   .logo .large {

@@ -386,6 +386,10 @@ p.required,
     }
 }
 
+@include bp(max-width, $bp-small) {
+    #billing-new-address-form li.control { margin-left: 0; }
+}
+
 .product-options ul.options-list label,
 .col2-set .form-list .control label {
     min-width: inherit;

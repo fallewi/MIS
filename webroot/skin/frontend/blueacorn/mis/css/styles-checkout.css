@@ -153,6 +153,8 @@
     line-height: 20px;
     display: inline-block;
     padding: 5px 5px 5px 0; }
+  .opc .buttons-set#billing-buttons-container button:not(.continue) {
+    display: none; }
 
 @media only screen and (max-width: 479px) {
   .opc .buttons-set .button + .buttons-set .button,
@@ -228,7 +230,8 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     float: right;
     margin-left: 10px; }
   .sp-methods .price {
-    font-weight: bold; }
+    font-weight: bold;
+    float: right; }
   .sp-methods .form-list {
     padding-left: 20px; }
     .sp-methods .form-list li {
@@ -499,6 +502,12 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 @media only screen and (max-width: 770px) {
   .opc .select-container {
     width: auto; } }
+
+@media only screen and (max-width: 479px) {
+  .checkout-review-table th.a-right {
+    float: left;
+    width: 60%;
+    white-space: normal; } }
 
 /* ============================================ *
  * Checkout - Success
