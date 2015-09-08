@@ -175,3 +175,9 @@
     font: italic 18px/28px Georgia, "Times New Roman", Times, serif;
     color: #656565;
 }
+
+@include bp(max-width, $bp-large) {
+    .catalog-category-view .page {
+        overflow: hidden;
+    }
+}

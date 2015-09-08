@@ -409,4 +409,8 @@ body .promos > li {
 .catalog-category-view div.categoryland-caption p.desc {
   font: italic 18px/28px Georgia, "Times New Roman", Times, serif;
   color: #656565; }
+
+@media only screen and (max-width: 979px) {
+  .catalog-category-view .page {
+    overflow: hidden; } }
 /*# sourceMappingURL=madisonisland.css.map */

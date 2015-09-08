@@ -1581,13 +1581,7 @@ span.weee {
   top: 7px;
   width: 8px;
   height: 16px;
-  background-image: url("../images/sprite.png");
-  background-position: -263px -108px; }
-  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-    .pages .next:before {
-      background: url("../images/sprite@2x.png");
-      background-size: 600px 300px;
-      background-position: "" ""; } }
+  background: url("../images/sprite.png") no-repeat -263px -108px; }
 
 .pages .previous:before {
   content: '';
@@ -1597,13 +1591,7 @@ span.weee {
   top: 7px;
   width: 8px;
   height: 16px;
-  background-image: url("../images/sprite.png");
-  background-position: -241px -108px; }
-  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-    .pages .previous:before {
-      background: url("../images/sprite@2x.png");
-      background-size: 600px 300px;
-      background-position: "" ""; } }
+  background: url("../images/sprite.png") no-repeat -241px -108px; }
 
 .toolbar .view-mode > label {
   display: none; }

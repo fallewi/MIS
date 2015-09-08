@@ -1861,8 +1861,7 @@ $toolbar-icon-padding-offset: 8px;
         top: 7px;
         width: 8px;
         height: 16px;
-        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH);
-        background-position: -263px -108px;
+        background: url("../images/sprite.png") no-repeat -263px -108px;
     }
 }
 
@@ -1875,8 +1874,7 @@ $toolbar-icon-padding-offset: 8px;
         top: 7px;
         width: 8px;
         height: 16px;
-        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH);
-        background-position: -241px -108px;
+        background: url("../images/sprite.png") no-repeat -241px -108px;
     }
 }
 
