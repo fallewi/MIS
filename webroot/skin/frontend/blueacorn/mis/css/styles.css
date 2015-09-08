@@ -877,7 +877,6 @@ a.button:hover {
     margin-top: 20px;
     color: #00247B; }
     .breadcrumbs ul {
-      position: absolute;
       width: 100%;
       text-align: center; }
       .breadcrumbs ul li:not(.home) {
@@ -889,7 +888,7 @@ a.button:hover {
       float: none;
       display: inline-block; }
   .category-title {
-    margin-top: 30px;
+    margin-top: 10px;
     text-align: center; } }
 
 /* -------------------------------------------- *
@@ -3993,7 +3992,9 @@ body.catalogsearch-result-index .page-title h1 {
   @media only screen and (max-width: 770px) {
     .category-title h1,
     body.catalogsearch-result-index .page-title h1 {
-      text-align: center; } }
+      text-align: center;
+      font-size: 28px;
+      line-height: 40px; } }
 
 .category-description {
   font-size: 15px;

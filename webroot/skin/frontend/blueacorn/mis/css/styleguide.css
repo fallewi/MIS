@@ -63,7 +63,9 @@ body.catalogsearch-result-index .page-title h1 {
   @media only screen and (max-width: 770px) {
     .category-title h1,
     body.catalogsearch-result-index .page-title h1 {
-      text-align: center; } }
+      text-align: center;
+      font-size: 28px;
+      line-height: 40px; } }
 
 .category-description {
   font-size: 15px;
