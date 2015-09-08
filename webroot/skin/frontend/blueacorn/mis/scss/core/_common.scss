@@ -1143,8 +1143,10 @@ a.button:hover {
 }
 
 .messages .success-msg li {
+    height: auto;
     color: $white;
     background-color: $c-success;
+    padding-bottom: 10px;
 }
 
 // ---------------------------------------------
