@@ -909,8 +909,10 @@ $j(document).ready(function () {
             var index = group.index(clickedItem);
             var i;
             for (i = 0; i < groups.length; i++) {
-                groups[i].removeClass('current');
-                groups[i].eq(index).addClass('current');
+                if($(clickedItem).parent('#narrow-by-list').length === 0){
+                    groups[i].removeClass('current');
+                    groups[i].eq(index).addClass('current');
+                }
             }
         }
 
@@ -918,7 +920,7 @@ $j(document).ready(function () {
         dts.on('click', function (e) {
             //They clicked the current dt to close it. Restore the wrapper to unclicked state.
             if (jQuery(this).hasClass('current') && wrapper.hasClass('accordion-open')) {
-                wrapper.removeClass('accordion-open');
+                // wrapper.removeClass('accordion-open');
             } else {
                 //They're clicking something new. Reflect the explicit user interaction.
                 wrapper.addClass('accordion-open');

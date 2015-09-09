@@ -468,8 +468,9 @@
       display: block;
       background-image: url("../images/sprite.png");
       background-position: -78px -30px;
-      width: 15px;
-      height: 15px;
+      background-position: -78px -30px;
+      width: 16px;
+      height: 16px;
       top: 12px;
       right: 12px; } }
     @media only screen and (max-width: 770px) and (-webkit-min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min--moz-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-resolution: 192dpi), only screen and (max-width: 770px) and (min-resolution: 2dppx) {
@@ -514,6 +515,9 @@
     background: #fff;
     margin-bottom: 20px;
     padding-top: 0; } }
+  @media only screen and (max-width: 770px) and (max-width: 770px) {
+    .product-collateral.accordion-open > dl > dd.current {
+      margin-top: -5px; } }
 
 @media only screen and (max-width: 770px) {
   .product-view .product-shop,
