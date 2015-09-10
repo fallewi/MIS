@@ -67,35 +67,33 @@
 
             <div class="add-to-cart-wrapper">
 
-                <?php // Placeholder html for Custom dev feature MAP pricing module ?>
-                <div class="map-pricing">
-                    <div class="price-info">
-                        <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
-                            <?php echo $this->getPriceHtml($_product); ?>
-                            <?php echo $this->getChildHtml('bundle_prices') ?>
-                            <?php echo $this->getTierPriceHtml() ?>
-                        <?php else: ?>
+                <?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                    <?php // Placeholder html for Custom dev feature MAP pricing module ?>
+                    <div class="map-pricing">
+                        <div class="price-info">
                             <div>
                                 <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
                                     <input id="map_email" type="text" name="user_email" class="input-text"/>
                                     <button id="map_request" class="button">Get Price</button>
                             </div>
                             <?php echo $_product->getMsrp(); ?>
-                        <?php endif; ?>
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
 
                 <?php echo $this->getChildHtml('product_type_data') ?>
                 <?php echo $this->getChildHtml('extrahint') ?>
-
-                <div class="price-info">
-                    <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
-                        <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
-                        <?php echo $this->getPriceHtml($_product); ?>
-                    <?php endif; ?>
-                    <?php echo $this->getChildHtml('bundle_prices') ?>
-                    <?php echo $this->getTierPriceHtml() ?>
-                </div>
+                
+                <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                    <div class="price-info">
+                        <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                            <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
+                            <?php echo $this->getPriceHtml($_product); ?>
+                        <?php endif; ?>
+                        <?php echo $this->getChildHtml('bundle_prices') ?>
+                        <?php echo $this->getTierPriceHtml() ?>
+                    </div>
+                <?php endif; ?>
 
                 <?php if(!$_product->isGrouped() && $_product->isSaleable()): ?>
                     <div class="qty-wrapper">

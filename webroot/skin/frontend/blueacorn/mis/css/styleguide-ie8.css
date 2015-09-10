@@ -905,7 +905,10 @@ p.product-name {
     padding: 0 11px; }
   .product-view .add-to-cart-buttons {
     clear: both;
-    max-width: 100%; }
+    max-width: 100%;
+    margin-top: 100px; }
+    .product-view .add-to-cart-buttons.map-add-to {
+      margin-top: 124px; }
     .product-view .add-to-cart-buttons .paypal-logo {
       clear: left;
       text-align: center; }
