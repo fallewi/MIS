@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_Homepage>
+            <version>0.2.0</version>
+        </BlueAcorn_Homepage>
+    </modules>
+    <global>
+        <resources>
+            <blueacorn_homepage_setup>
+                <setup>
+                    <module>BlueAcorn_Homepage</module>
+                </setup>
+            </blueacorn_homepage_setup>
+        </resources>
+        <helpers>
+            <blueacorn_homepage>
+                <class>BlueAcorn_Homepage_Helper</class>
+            </blueacorn_homepage>
+        </helpers>
+        <blocks>
+            <blueacorn_homepage>
+                <class>BlueAcorn_Homepage_Block</class>
+            </blueacorn_homepage>
+        </blocks>
+        <models>
+            <blueacorn_homepage>
+                <class>BlueAcorn_Homepage_Model</class>
+                <resourceModel>blueacorn_homepage_resource</resourceModel>
+            </blueacorn_homepage>
+            <blueacorn_homepage_resource>
+                <class>BlueAcorn_Homepage_Model_Resource</class>
+            </blueacorn_homepage_resource>
+        </models>
+    </global>
+</config>

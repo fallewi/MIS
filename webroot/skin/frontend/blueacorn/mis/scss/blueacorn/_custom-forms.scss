@@ -1,0 +1,208 @@
+.fields {
+    clear: both;
+    margin-left: 0;
+    .field label {
+        float: left;
+        width: 100%;
+    }
+}
+
+.input-custom {
+    position: absolute;
+    left: -999em;
+    //z-index: 999; //Debugging Only
+}
+
+.select-custom {
+    float: left;
+    clear: both;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    display: block;
+    float: left;
+    cursor: pointer;
+    @if $mq-support == true {
+        -webkit-appearance: menulist-button;
+    }
+    width: 100%;
+    height: 46px;
+    @include opacity(0);
+}
+
+.custom-shiv {
+    float: left;
+    clear: both;
+    width: 100%;
+    height: 46px;
+    overflow: hidden;
+    border: 1px solid #8091BD;
+    padding: 0 30px 0 15px;
+    font: 700 16px/42px $f-stack-default;
+    color: $brand-primary;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+
+    span:after {
+        position: static;
+        width: 32px;
+        height: 32px;
+        content: '\f107';
+        font-family: $f-stack-icon-alt;
+        font-size: 14px;
+        line-height: 36px;
+        display: inline-block;
+        margin-left: 4px;
+    }
+}
+
+.select-container {
+    padding-top: 0;
+    position: relative;
+    display: inline-block;
+    &.validation-error {
+        .custom-shiv {
+            border-color: $black;
+            border-width: 3px;
+            color: $black;
+            line-height: 39px;
+        }
+    }
+    &:hover {
+        .custom-shiv {
+            color: $c-blue;
+        }
+    }
+    &.validation-error:hover {
+        .custom-shiv { color: $black-80; }
+    }
+    &.disabled {
+        @include opacity(.5);
+    }
+    &.small {
+        top: 4px;
+        .select-custom {
+            height: 18px;
+        }
+        .custom-shiv {
+            display: inline-block;
+            height: 40px;
+            line-height: 36px;
+            font-size: pem(12);
+            text-transform: none;
+            padding-right: 26px;
+            padding-left: 5px;
+            span:after {
+                width: 26px;
+                height: 18px;
+                font-size: 12px;
+                line-height: 22px;
+            }
+        }
+    }
+}
+
+label.radio-label, label.checkbox-label, span.label.radio-label, span.label.checkbox-label {
+    position: relative;
+    line-height: 20px;
+    cursor: pointer;
+    padding: 0 0 0 30px !important;
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH);
+    }
+    &.disabled {
+        pointer-events: none;
+    }
+}
+
+label.radio-label, span.label.radio-label {
+    &:before {
+
+    }
+    &.checked:before {
+        background-position: 0 -20px;
+    }
+    &.disabled{
+        color: #999999;
+
+        &:before {
+            background-position: 0 -40px;
+        }
+    }
+}
+
+label.checkbox-label, span.label.checkbox-label {
+    &:before {
+        background-position: -20px 0;
+    }
+    &.checked:before {
+        background-position: -20px -20px;
+    }
+    &.disabled{
+        color: #999999;
+
+        &:before {
+            background-position: -20px -40px;
+        }
+    }
+}
+
+span.label.radio-label, span.label.checkbox-label {
+    label { padding: 0; }
+}
+
+.form-list .select-container {
+    display: block;
+    width: 100%;
+    clear: both;
+}
+
+.form-list select {
+    margin-top: 0;
+    width: 100%;
+}
+
+.box-related .checkbox-label {
+    float: left;
+    margin-top: 36px;
+    margin-right: 10px;
+}
+
+.shipping #co-shipping-method-form .sp-methods dd label.radio-label {
+    border: 0;
+    font-style: normal;
+}
+
+.opc {
+    .select-container {
+        width: 365px;
+        &.v-fix {
+            width: auto;
+            clear: none;
+        }
+        select {
+            margin-top: 0;
+            width: 100%;
+        }
+    }
+}
+
+.customer-address-form {
+    .form-list .select-container {
+        width: 365px;
+    }
+}
+
+.reset {
+    clear: none;
+}

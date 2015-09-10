@@ -1,0 +1,27 @@
+{
+  "name": "blueacorn_green_pistachio",
+  "version": "0.2.0",
+  "authors": [
+    "Blue Acorn",
+    "Inc. <code@blueacorn.com>"
+  ],
+  "description": "Rapid Prototyping and Development Framework for Responsive Magento Enterprise Websites",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.blueacorn.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "compass-mixins": "*",
+    "sass-list-maps": "*"
+  }
+}

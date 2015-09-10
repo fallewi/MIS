@@ -1,0 +1,654 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn\CheckoutCartBestPractice
+* @version     0.1.0
+* @author      Bret Thomas - Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2015 Blue Acorn, Inc.
+*/
+-->
+<config>
+    <sections>
+        <bestpractices>
+            <label>Best Practices</label>
+            <tab>blueacorn</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>3000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <cart translate="label">
+                    <label>Cart</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_class>blueacorn</frontend_class>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <disable_discount translate="label">
+                            <label>Disable Discount Code</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </disable_discount>
+                        <disable_giftcard translate="label">
+                            <label>Disable Gift Card Input</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </disable_giftcard>
+                        <disable_shipping_estimate translate="label">
+                            <label>Disable Shipping Estimate</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </disable_shipping_estimate>
+                    </fields>
+                </cart>
+                <checkout translate="label">
+                    <label>Checkout</label>
+                    <frontend_class>complex blueacorn</frontend_class>
+                    <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <checkoutheader translate="label">
+                            <label>Checkout Header</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkoutheader>
+                        <enable_better_progress translate="label">
+                            <label>Enable Better Progress</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_better_progress>
+                        <stepone type="group" translate="label">
+                            <label>Step 1: Checkout Method</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>30</sort_order>
+                            <fields>
+                                <continuesection type="group" translate="label">
+                                    <label>Continue</label>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <fields>
+                                        <headertext label="translate">
+                                            <label>Header Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/headertextcontinue</config_path>
+                                            <sort_order>10</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </headertext>
+                                        <descriptiontext translate="label">
+                                            <label>Description Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/descriptiontextcontinue</config_path>
+                                            <sort_order>20</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </descriptiontext>
+                                        <buttontext translate="label">
+                                            <label>Button Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/buttontextcontinue</config_path>
+                                            <sort_order>30</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </buttontext>
+                                    </fields>
+                                </continuesection>
+                                <login type="group" translate="label">
+                                    <label>Login</label>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <fields>
+                                        <headertext label="translate">
+                                            <label>Header Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/headertextlogin</config_path>
+                                            <sort_order>10</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </headertext>
+                                        <descriptiontext label="translate">
+                                            <label>Description Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/descriptiontextlogin</config_path>
+                                            <sort_order>20</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </descriptiontext>
+                                        <buttontext label="translate">
+                                            <label>Button Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/buttontextlogin</config_path>
+                                            <sort_order>30</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </buttontext>
+                                    </fields>
+                                </login>
+                                <registerblock type="group" translate-="label">
+                                    <label>Register</label>
+                                    <sort_order>30</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <fields>
+                                        <enable translate="label">
+                                            <label>Enable Register Link</label>
+                                            <frontend_type>select</frontend_type>
+                                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                                            <config_path>bestpractices/checkout/stepone/enableregisterblock</config_path>
+                                            <sort_order>10</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </enable>
+                                        <headertext label="translate">
+                                            <label>Header Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/headertextregister</config_path>
+                                            <sort_order>20</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </headertext>
+                                        <linktext>
+                                            <label>Link Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/linktext</config_path>
+                                            <sort_order>30</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </linktext>
+                                        <descriptiontext>
+                                            <label>Description Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/stepone/descriptiontextregister</config_path>
+                                            <sort_order>40</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </descriptiontext>
+                                    </fields>
+                                </registerblock>
+                                <forgotpasswordajax type="group" translate="label">
+                                    <label>Forgot Password Form</label>
+                                    <sort_order>40</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <fields>
+                                        <enableajaxform translate="label">
+                                            <label>Enable Ajax Form</label>
+                                            <frontend_type>select</frontend_type>
+                                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                                            <config_path>bestpractices/stepone/ajaxform/enable</config_path>
+                                            <sort_order>10</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </enableajaxform>
+                                        <form_header translate="label">
+                                            <label>Form Header</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/stepone/ajaxform/header</config_path>
+                                            <sort_order>20</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </form_header>
+                                        <form_description translate="label">
+                                            <label>Form Description</label>
+                                            <frontend_type>textarea</frontend_type>
+                                            <config_path>bestpractices/stepone/ajaxform/description</config_path>
+                                            <sort_order>30</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </form_description>
+                                        <form_placeholder translate="label">
+                                            <label>Input Placeholder Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/stepone/ajaxform/placeholder</config_path>
+                                            <sort_order>40</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </form_placeholder>
+                                        <button_text translate="label">
+                                            <label>Form Button Text</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/stepone/ajaxform/buttontext</config_path>
+                                            <sort_order>50</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </button_text>
+                                    </fields>
+                                </forgotpasswordajax>
+                            </fields>
+                        </stepone>
+                        <steptwo type="group" translate="label">
+                            <label>Step 2: Billing Information</label>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                                <button_text translate="label">
+                                    <label>Continue Button Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/steptwo/button_text</config_path>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </button_text>
+                                <disable_fax translate="label">
+                                    <label>Disable Fax</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <config_path>bestpractices/checkout/steptwo/disable_fax</config_path>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </disable_fax>
+                                <placeholders type="group" translate="label">
+                                    <label>Form Placeholders</label>
+                                    <frontend_type>text</frontend_type>
+                                    <sort_order>50</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <fields>
+                                        <firstname label="translate">
+                                            <label>First Name</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/firstname</config_path>
+                                            <sort_order>10</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </firstname>
+                                        <lastname translate="label">
+                                            <label>Last Name</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/lastname</config_path>
+                                            <sort_order>20</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </lastname>
+                                        <email translate="label">
+                                            <label>Email</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/email</config_path>
+                                            <sort_order>30</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </email>
+                                        <company translate="label">
+                                            <label>Company</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/company</config_path>
+                                            <sort_order>40</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </company>
+                                        <vat translate="label">
+                                            <label>VAT</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/vat</config_path>
+                                            <sort_order>60</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </vat>
+                                        <address translate="label">
+                                            <label>Address</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/address</config_path>
+                                            <sort_order>70</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </address>
+                                        <addresstwo translate="label">
+                                            <label>Address Two</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/addresstwo</config_path>
+                                            <sort_order>80</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </addresstwo>
+                                        <city translate="label">
+                                            <label>City</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/city</config_path>
+                                            <sort_order>90</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </city>
+                                        <state translate="label">
+                                            <label>State</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/state</config_path>
+                                            <sort_order>100</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </state>
+                                        <zip translate="label">
+                                            <label>Zip</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/zip</config_path>
+                                            <sort_order>110</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </zip>
+                                        <telephone translate="label">
+                                            <label>Telephone</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/telephone</config_path>
+                                            <sort_order>120</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </telephone>
+                                        <fax translate="label">
+                                            <label>Fax</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/fax</config_path>
+                                            <sort_order>130</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </fax>
+                                    </fields>
+                                </placeholders>
+                            </fields>
+                        </steptwo>
+                        <stepthree type="group" translate="label">
+                            <label>Step 3: Shipping Information</label>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                                <button_text translate="label">
+                                    <label>Continue Button Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/stepthree/button_text</config_path>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </button_text>
+                                <disable_fax translate="label">
+                                    <label>Disable Fax</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <config_path>bestpractices/checkout/stepthree/disable_fax</config_path>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </disable_fax>
+                                <placeholders_shipping type="group" translate="label">
+                                    <label>Form Placeholders</label>
+                                    <sort_order>30</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <fields>
+                                        <company translate="label">
+                                            <label>Company</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipcompany</config_path>
+                                            <sort_order>30</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </company>
+                                        <company translate="label">
+                                            <label>VAT</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipvat</config_path>
+                                            <sort_order>35</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </company>
+                                        <address translate="label">
+                                            <label>Address</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipaddress</config_path>
+                                            <sort_order>40</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </address>
+                                        <addresstwo translate="label">
+                                            <label>Address Two</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipaddresstwo</config_path>
+                                            <sort_order>50</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </addresstwo>
+                                        <city translate="label">
+                                            <label>City</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipcity</config_path>
+                                            <sort_order>60</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </city>
+                                        <state translate="label">
+                                            <label>State</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipstate</config_path>
+                                            <sort_order>65</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </state>
+                                        <zip translate="label">
+                                            <label>Zip</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipzip</config_path>
+                                            <sort_order>70</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </zip>
+                                        <telephone translate="label">
+                                            <label>Telephone</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shiptelephone</config_path>
+                                            <sort_order>80</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </telephone>
+                                        <fax translate="label">
+                                            <label>Fax</label>
+                                            <frontend_type>text</frontend_type>
+                                            <config_path>bestpractices/checkout/placeholders/shipfax</config_path>
+                                            <sort_order>90</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>1</show_in_store>
+                                        </fax>
+                                    </fields>
+                                </placeholders_shipping>
+                            </fields>
+                        </stepthree>
+                        <stepfour type="group" translale="label">
+                            <label>Step 4: Shipping Method</label>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                                <button_text translate="label">
+                                    <label>Continue Button Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/stepfour/button_text</config_path>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </button_text>
+                            </fields>
+                        </stepfour>
+                        <stepfive type="group" translate="label">
+                            <label>Step 5: Payment Method</label>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                                <payment_description translate="label">
+                                    <label>Payment Description</label>
+                                    <frontend_type>textarea</frontend_type>
+                                    <config_path>bestpractices/checkout/stepfive/description</config_path>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </payment_description>
+                                <button_text translate="label">
+                                    <label>Continue Button Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/stepfive/button_text</config_path>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </button_text>
+                            </fields>
+                        </stepfive>
+                        <stepsix type="group" translate="label">
+                            <label>Step 6: Order Review</label>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                                <enable_forgot_text translate="label">
+                                    <label>Enable Forgot An Item Link</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <config_path>bestpractices/checkout/stepsix/enable_forgot_text</config_path>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </enable_forgot_text>
+                                <forgot_text translate="label">
+                                    <label>Forgot An Item Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/stepsix/forgot_item_text</config_path>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </forgot_text>
+                                <forgot_link_text translate="label">
+                                    <label>Forgot An Item Link Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/stepsix/forgot_link_text</config_path>
+                                    <sort_order>30</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </forgot_link_text>
+                                <button_text translate="label">
+                                    <label>Continue Button Text</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/stepsix/button_text</config_path>
+                                    <sort_order>40</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </button_text>
+                            </fields>
+                        </stepsix>
+                        <ordersuccess type="group" translate="label">
+                            <label>Order Success</label>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                                <header translate="label">
+                                    <label>Order Success Header</label>
+                                    <frontend_type>text</frontend_type>
+                                    <config_path>bestpractices/checkout/order_success/header</config_path>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </header>
+                                <enable_order_details translate="label">
+                                    <label>Enable Order Details</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <config_path>bestpractices/checkout/order_success/enable_order_details</config_path>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </enable_order_details>
+                            </fields>
+                        </ordersuccess>
+                    </fields>
+                </checkout>
+            </groups>
+        </bestpractices>
+    </sections>
+</config>

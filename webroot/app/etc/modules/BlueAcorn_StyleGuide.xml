@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_StyleGuide>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <BlueAcorn_JavascriptPlugins />
+                <BlueAcorn_FooterAssets />
+            </depends>
+        </BlueAcorn_StyleGuide>
+    </modules>
+</config>

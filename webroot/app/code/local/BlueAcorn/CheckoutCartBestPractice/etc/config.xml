@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn\CheckoutCartBestPractice
+* @version     0.1.0
+* @author      Bret Thomas - Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2015 Blue Acorn, Inc.
+*/
+-->
+<config>
+    <modules>
+        <BlueAcorn_CheckoutCartBestPractice>
+            <version>1.0.1</version>
+        </BlueAcorn_CheckoutCartBestPractice>
+    </modules>
+    <global>
+        <blocks>
+            <customer>
+                <rewrite>
+                    <widget_name>BlueAcorn_CheckoutCartBestPractice_Block_Widget_Name</widget_name>
+                </rewrite>
+            </customer>
+            <checkout>
+                <rewrite>
+                    <onepage_success>BlueAcorn_CheckoutCartBestPractice_Block_Checkout_Onepage_Success</onepage_success>
+                </rewrite>
+            </checkout>
+        </blocks>
+        <helpers>
+            <blueacorn_checkoutcartbestpractice>
+                <class>BlueAcorn_CheckoutCartBestPractice_Helper</class>
+            </blueacorn_checkoutcartbestpractice>
+        </helpers>
+    </global>
+    <frontend>
+        <layout>
+            <updates>
+                <blueacorn_checkoutcartbestpractice>
+                    <file>blueacorn/blueacorn_checkoutcartbestpractice.xml</file>
+                </blueacorn_checkoutcartbestpractice>
+            </updates>
+        </layout>
+        <jsconfig>
+            <bestpractices>
+                <stepone>
+                    <ajaxform/>
+                </stepone>
+            </bestpractices>
+        </jsconfig>
+        <routers>
+            <customer>
+                <args>
+                    <modules>
+                        <blueacorn_checkoutcartbestpractice before="Mage_Customer">BlueAcorn_CheckoutCartBestPractice</blueacorn_checkoutcartbestpractice>
+                    </modules>
+                </args>
+            </customer>
+        </routers>
+    </frontend>
+    <default>
+        <bestpractices>
+            <checkout>
+                <stepone>
+                    <headertextregister>Register</headertextregister>
+                    <linktext>Register with us</linktext>
+                    <descriptiontextregister>for future convenience</descriptiontextregister>
+                </stepone>
+                <stepsix>
+                    <forgot_item_text>Forgot an Item?</forgot_item_text>
+                    <forgot_link_text>Edit Your Cart</forgot_link_text>
+                </stepsix>
+            </checkout>
+            <stepone>
+                <ajaxform>
+                    <header>Retrieve Your Password Here</header>
+                    <description>Please enter your email address below. You will receive a link to reset your password.</description>
+                    <placeholder>email@example.com</placeholder>
+                    <buttontext>Submit</buttontext>
+                </ajaxform>
+            </stepone>
+        </bestpractices>
+    </default>
+    <adminhtml>
+        <layout>
+            <updates>
+                <blueacorn_checkoutcartbestpractice>
+                    <file>blueacorn/bestpractice.xml</file>
+                </blueacorn_checkoutcartbestpractice>
+            </updates>
+        </layout>
+    </adminhtml>
+    <jsconfig>
+        <media_url>
+            <class>BlueAcorn_CheckoutCartBestPractice_Helper_Data</class>
+            <method>getAjaxSpinnerUrl</method>
+        </media_url>
+    </jsconfig>
+</config>
