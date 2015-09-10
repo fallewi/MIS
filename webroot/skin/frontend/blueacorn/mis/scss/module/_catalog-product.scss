@@ -229,53 +229,6 @@
         padding: 30px 20px 0;
         margin-bottom: 20px;
 
-        .map-pricing {
-            border: 1px solid $c-blue;
-            padding: 12px 20px 20px 20px;
-            font-size: $f-size-l;
-            margin-bottom: 23px;
-            @include clearfix();
-
-            .message {
-                line-height: 24px;
-                margin-bottom: 13px;
-            }
-
-            input {
-                border: 1px solid $c-blue;
-                float: left;
-                width: 60%;
-                box-sizing: border-box;
-                height: 41px;
-            }
-
-            button.button {
-                width: 40%;
-                box-sizing: border-box;
-                float: left;
-                padding: 8px 0;
-                background: $white;
-                border: 1px solid $c-blue;
-                border-left: none;
-
-                span {
-                    color: $c-blue;
-                    font-weight: normal;
-                    font-size: 15px;
-                    letter-spacing: 1px;
-                    line-height: 23px;
-                }
-            }
-
-            .phone-number {
-                color: $c-blue;
-            }
-
-            .price {
-                color: #EC3838;
-            }
-        }
-
         .price-info {
             float: left;
 
@@ -316,6 +269,52 @@
             font-size: $f-size-l;
             color: $c-blue;
             letter-spacing: 1px;
+        }
+
+        .map-pricing {
+            border: 1px solid $c-blue;
+            padding: 12px 20px 20px 20px;
+            font-size: $f-size-l;
+            margin-bottom: 23px;
+            @include clearfix();
+
+            .message {
+                line-height: 24px;
+                margin-bottom: 13px;
+                font-size: 13px;
+            }
+
+            input {
+                border: 1px solid $c-blue;
+                float: left;
+                width: 60%;
+                box-sizing: border-box;
+                height: 41px;
+            }
+
+            button.button {
+                width: 40%;
+                box-sizing: border-box;
+                float: left;
+                padding: 8px 0;
+                background: $white;
+                border: 1px solid $c-blue;
+                border-left: none;
+                color: $c-blue;
+                font-weight: normal;
+                font-size: 15px;
+                letter-spacing: 1px;
+                line-height: 23px;
+            }
+
+            .phone-number {
+                color: $c-blue;
+            }
+
+            .price {
+                color: #EC3838;
+                font-size: 13px;
+            }
         }
     }
 
@@ -538,6 +537,11 @@
     .add-to-cart-buttons {
         clear: both;
         max-width: 100%; // Constrain width in Firefox
+        margin-top: 100px;
+
+        &.map-add-to {
+            margin-top: 124px;
+        }
 
         .paypal-logo {
             clear: left;

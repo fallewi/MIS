@@ -724,41 +724,6 @@ p.product-name {
   clear: right;
   padding: 30px 20px 0;
   margin-bottom: 20px; }
-  .product-view .add-to-cart-wrapper .map-pricing {
-    border: 1px solid #00247B;
-    padding: 12px 20px 20px 20px;
-    font-size: 15px;
-    margin-bottom: 23px;
-    content: '';
-    display: table;
-    clear: both; }
-    .product-view .add-to-cart-wrapper .map-pricing .message {
-      line-height: 24px;
-      margin-bottom: 13px; }
-    .product-view .add-to-cart-wrapper .map-pricing input {
-      border: 1px solid #00247B;
-      float: left;
-      width: 60%;
-      box-sizing: border-box;
-      height: 41px; }
-    .product-view .add-to-cart-wrapper .map-pricing button.button {
-      width: 40%;
-      box-sizing: border-box;
-      float: left;
-      padding: 8px 0;
-      background: #fff;
-      border: 1px solid #00247B;
-      border-left: none; }
-      .product-view .add-to-cart-wrapper .map-pricing button.button span {
-        color: #00247B;
-        font-weight: normal;
-        font-size: 15px;
-        letter-spacing: 1px;
-        line-height: 23px; }
-    .product-view .add-to-cart-wrapper .map-pricing .phone-number {
-      color: #00247B; }
-    .product-view .add-to-cart-wrapper .map-pricing .price {
-      color: #EC3838; }
   .product-view .add-to-cart-wrapper .price-info {
     float: left; }
     .product-view .add-to-cart-wrapper .price-info .price-box .price, .product-view .add-to-cart-wrapper .price-info .price {
@@ -785,6 +750,42 @@ p.product-name {
     font-size: 15px;
     color: #00247B;
     letter-spacing: 1px; }
+  .product-view .add-to-cart-wrapper .map-pricing {
+    border: 1px solid #00247B;
+    padding: 12px 20px 20px 20px;
+    font-size: 15px;
+    margin-bottom: 23px;
+    content: '';
+    display: table;
+    clear: both; }
+    .product-view .add-to-cart-wrapper .map-pricing .message {
+      line-height: 24px;
+      margin-bottom: 13px;
+      font-size: 13px; }
+    .product-view .add-to-cart-wrapper .map-pricing input {
+      border: 1px solid #00247B;
+      float: left;
+      width: 60%;
+      box-sizing: border-box;
+      height: 41px; }
+    .product-view .add-to-cart-wrapper .map-pricing button.button {
+      width: 40%;
+      box-sizing: border-box;
+      float: left;
+      padding: 8px 0;
+      background: #fff;
+      border: 1px solid #00247B;
+      border-left: none;
+      color: #00247B;
+      font-weight: normal;
+      font-size: 15px;
+      letter-spacing: 1px;
+      line-height: 23px; }
+    .product-view .add-to-cart-wrapper .map-pricing .phone-number {
+      color: #00247B; }
+    .product-view .add-to-cart-wrapper .map-pricing .price {
+      color: #EC3838;
+      font-size: 13px; }
 
 .product-view .block-related {
   width: 100%; }
@@ -907,7 +908,10 @@ p.product-name {
     padding: 0 11px; }
   .product-view .add-to-cart-buttons {
     clear: both;
-    max-width: 100%; }
+    max-width: 100%;
+    margin-top: 100px; }
+    .product-view .add-to-cart-buttons.map-add-to {
+      margin-top: 124px; }
     .product-view .add-to-cart-buttons .paypal-logo {
       clear: left;
       text-align: center; }

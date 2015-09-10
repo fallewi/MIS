@@ -67,26 +67,33 @@
 
             <div class="add-to-cart-wrapper">
 
-                <?php // Placeholder html for Custom dev feature MAP pricing module ?>
-                <div class="map-pricing">
-                    <form action="#">
-                        <div class="message">Call <span class="phone-number">1-800-319-0690</span> or enter your email to receive and activate <span class="price">your price</span></div>
-                        <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="email" class="input-text">
-                        <button type="submit" title="Get Price" class="button"><span><span>Get Price</span></span></button>
-                    </form>
-                </div>
+                <?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                    <?php // Placeholder html for Custom dev feature MAP pricing module ?>
+                    <div class="map-pricing">
+                        <div class="price-info">
+                            <div>
+                                <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
+                                    <input id="map_email" type="text" name="user_email" class="input-text"/>
+                                    <button id="map_request" class="button">Get Price</button>
+                            </div>
+                            <?php echo $_product->getMsrp(); ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <?php echo $this->getChildHtml('product_type_data') ?>
                 <?php echo $this->getChildHtml('extrahint') ?>
-
-                <div class="price-info">
-                    <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
-                        <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
-                        <?php echo $this->getPriceHtml($_product); ?>
-                    <?php endif; ?>
-                    <?php echo $this->getChildHtml('bundle_prices') ?>
-                    <?php echo $this->getTierPriceHtml() ?>
-                </div>
+                
+                <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                    <div class="price-info">
+                        <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                            <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
+                            <?php echo $this->getPriceHtml($_product); ?>
+                        <?php endif; ?>
+                        <?php echo $this->getChildHtml('bundle_prices') ?>
+                        <?php echo $this->getTierPriceHtml() ?>
+                    </div>
+                <?php endif; ?>
 
                 <?php if(!$_product->isGrouped() && $_product->isSaleable()): ?>
                     <div class="qty-wrapper">
@@ -119,6 +126,18 @@
         </form>
         <script type="text/javascript">
         //<![CDATA[
+
+            (function($) {
+                $(document).ready(function() {
+                    $('#map_request').on('click', function(e) {
+                        e.preventDefault();
+                        var email = $('#map_email').val(),
+                            base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
+                        window.location.replace(base_url + '&email=' + email);
+                    });
+                });
+            }(jQuery));
+
             var productAddToCartForm = new VarienForm('product_addtocart_form');
             productAddToCartForm.submit = function(button, url) {
                 if (this.validator.validate()) {

@@ -1,0 +1,48 @@
+<config>
+    <tabs>
+        <blueacorn translate="label">
+            <label>Blue Acorn</label>
+            <sort_order>99999</sort_order>
+        </blueacorn>
+    </tabs>
+    <sections>
+        <blueacorn_specialpricing translate="label" module="blueacorn_specialpricing">
+            <label>MAP Pricing</label>
+            <tab>blueacorn</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general>
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <token_duration translate="label">
+                            <label>Time Until Token Expiration</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>The amount of time in hours that a new token will be valid.</comment>
+                        </token_duration>
+                        <call_to_action translate="label">
+                            <label>MAP Pricing Request Call to Action</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </call_to_action>
+                    </fields>
+                </general>
+            </groups>
+        </blueacorn_specialpricing>
+    </sections>
+</config>

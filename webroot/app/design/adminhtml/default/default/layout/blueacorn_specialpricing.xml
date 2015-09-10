@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_SpecialPricing extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       BlueAcorn
+ * @package        BlueAcorn_SpecialPricing
+ * @copyright      Copyright (c) 2015
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+--> 
+<layout>
+    <adminhtml_specialpricing_token_index>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>blueacorn_specialpricing/token</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="blueacorn_specialpricing/adminhtml_token" name="token" />
+        </reference>
+    </adminhtml_specialpricing_token_index>
+    <adminhtml_specialpricing_token_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="blueacorn_specialpricing/adminhtml_token_grid" name="token_grid"/>
+        </block>
+    </adminhtml_specialpricing_token_grid>
+    <!-- Token add/edit action -->
+    <adminhtml_specialpricing_token_edit>
+        <update handle="editor"/>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>blueacorn_specialpricing/token</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="blueacorn_specialpricing/adminhtml_token_edit" name="token_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="blueacorn_specialpricing/adminhtml_token_edit_tabs" name="token_tabs"></block>
+        </reference>
+    </adminhtml_specialpricing_token_edit>
+</layout>
