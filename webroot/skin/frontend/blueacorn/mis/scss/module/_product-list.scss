@@ -549,6 +549,13 @@ $productsGridActionHeight: 85px;
  * Layered Navigation
  * ============================================ */
 
+// hides category title as it is redundant on the top level category pages
+#narrow-by-list2 {
+    dt {
+        display: none;
+    }
+}
+
 #narrow-by-list {
     padding: 11px 20px;
 }
