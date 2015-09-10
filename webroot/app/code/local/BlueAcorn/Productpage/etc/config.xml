@@ -2,7 +2,7 @@
 <config>
     <modules>
         <BlueAcorn_Productpage>
-            <version>0.7.0</version>
+            <version>0.6.0</version>
         </BlueAcorn_Productpage>
     </modules>
     <global>
@@ -18,5 +18,10 @@
                 <class>BlueAcorn_Productpage_Helper</class>
             </blueacorn_productpage>
         </helpers>
+        <models>
+            <blueacorn_productpage>
+                <class>BlueAcorn_Productpage_Model</class>
+            </blueacorn_productpage>
+        </models>
     </global>
 </config>

@@ -33,6 +33,7 @@
 ?>
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
+<?php $productPageHelper = Mage::helper('blueacorn_productpage'); ?>
 <script type="text/javascript">
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
 </script>
@@ -211,7 +212,9 @@
     <div class="column column-right">
         <div class="column-container ships-from">
             <h2><?php echo $this->__("Shipping") ?></h2>
-            <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getShipsFrom(), 'ships_from') ?></div>
+            <div class="detail"><?php echo $this->__("Ships from: ") .$_product->getAttributeText('ships_from') ?>
+                    <p><?php echo $productPageHelper->getShipFrom($_product->getData('ships_from')) ?></p>
+            </div>
         </div>
         <div class="column-container features-benefits">
             <h2><?php echo $this->__("Features & Benefits") ?></h2>

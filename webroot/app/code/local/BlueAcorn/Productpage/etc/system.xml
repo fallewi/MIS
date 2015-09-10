@@ -26,6 +26,16 @@
                             <show_in_store>0</show_in_store>
                             <comment>Finance link which will redirect the user to once the button is clicked from the product details block</comment>
                         </finance_link>
+                        <ship_from translate="label">
+                            <label>Ship From</label>
+                            <frontend_type>minigrid</frontend_type>
+                            <source_model>blueacorn_productpage/system_config_source_shipfrom</source_model>
+                            <backend_model>baminigrid/system_config_backend_minigrid</backend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ship_from>
                     </fields>
                 </general>
             </groups>
