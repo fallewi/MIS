@@ -2062,6 +2062,9 @@ form .legend {
     position: absolute;
     top: 36px;
     left: -22px; }
+    @media only screen and (max-width: 770px) {
+      .input-box.validation-passed:before {
+        left: -20px; } }
   .input-box.select-container.validation-passed:before {
     top: 14px; }
 
@@ -2249,7 +2252,8 @@ p.required,
   font-style: italic;
   font-size: 14px;
   font-weight: 500;
-  text-align: right; }
+  text-align: right;
+  clear: both; }
 
 /* ============================================ *
  * Form List
