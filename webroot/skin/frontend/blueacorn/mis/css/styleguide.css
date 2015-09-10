@@ -497,6 +497,9 @@ p.product-name {
 /* ============================================ *
  * Layered Navigation
  * ============================================ */
+#narrow-by-list2 dt {
+  display: none; }
+
 #narrow-by-list {
   padding: 11px 20px; }
 
