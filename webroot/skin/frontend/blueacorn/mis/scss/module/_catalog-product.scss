@@ -278,6 +278,10 @@
             margin-bottom: 23px;
             @include clearfix();
 
+            @include bp(max-width, $bp-medium) {
+                margin: 0 auto;
+            }
+
             .message {
                 line-height: 24px;
                 margin-bottom: 13px;
@@ -541,6 +545,10 @@
 
         &.map-add-to {
             margin-top: 124px;
+            
+            @include bp(max-width, $bp-medium) {
+                margin-top: 0;
+            }
         }
 
         .paypal-logo {
@@ -1381,7 +1389,7 @@ body.catalog-product-view {
         padding: 20px;
 
         &.active:hover {
-            outline: 1px solid #000;
+            border: 1px solid #000;
         }
 
         .item-info,
@@ -1680,3 +1688,36 @@ body.catalog-product-view {
 }
 
 /*-----  End of Product Information Block  ------*/
+
+/*================================================
+=            Mobile Map Pricing Block            =
+================================================*/
+
+@media only screen and (min-width: $bp-medium +1 ) and (max-width: $bp-xlarge) {
+    .catalog-product-view {
+
+        .product-essential {
+
+            .product-img-box {
+                width: 63%;
+            }
+
+            .add-to-cart-wrapper {
+                width: 36.7%;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: $bp-medium +1 ) and (max-width: 850px) {
+    .catalog-product-view {
+
+        .map-pricing {
+
+            button.button {
+                font-size: 13px !important;
+            }
+        }
+    }
+}
+/*-----  End of Mobile Map Pricing Block  ------*/

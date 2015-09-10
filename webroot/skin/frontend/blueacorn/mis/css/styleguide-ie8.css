@@ -1520,7 +1520,7 @@ body.catalog-product-view .block-related .products-grid {
   float: left;
   padding: 20px; }
   .catalog-product-view .owl-item.active:hover {
-    outline: 1px solid #000; }
+    border: 1px solid #000; }
   .catalog-product-view .owl-item .item-info,
   .catalog-product-view .owl-item .item {
     text-align: center; }
@@ -1606,6 +1606,20 @@ body.catalog-product-view .block-related .products-grid {
     background: #F6F6F6; }
 
 /*-----  End of Product Information Block  ------*/
+/*================================================
+=            Mobile Map Pricing Block            =
+================================================*/
+@media only screen and (min-width: 771px) and (max-width: 1199px) {
+  .catalog-product-view .product-essential .product-img-box {
+    width: 63%; }
+  .catalog-product-view .product-essential .add-to-cart-wrapper {
+    width: 36.7%; } }
+
+@media only screen and (min-width: 771px) and (max-width: 850px) {
+  .catalog-product-view .map-pricing button.button {
+    font-size: 13px !important; } }
+
+/*-----  End of Mobile Map Pricing Block  ------*/
 /* ============================================ *
  * Catalog - MSRP MAP Popup
  * ============================================ */

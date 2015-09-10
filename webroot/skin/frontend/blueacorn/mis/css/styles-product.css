@@ -191,6 +191,9 @@
     content: '';
     display: table;
     clear: both; }
+    @media only screen and (max-width: 770px) {
+      .product-view .add-to-cart-wrapper .map-pricing {
+        margin: 0 auto; } }
     .product-view .add-to-cart-wrapper .map-pricing .message {
       line-height: 24px;
       margin-bottom: 13px;
@@ -377,6 +380,9 @@
     margin-top: 100px; }
     .product-view .add-to-cart-buttons.map-add-to {
       margin-top: 124px; }
+      @media only screen and (max-width: 770px) {
+        .product-view .add-to-cart-buttons.map-add-to {
+          margin-top: 0; } }
     .product-view .add-to-cart-buttons .paypal-logo {
       clear: left;
       text-align: center; }
@@ -1150,7 +1156,7 @@ body.catalog-product-view .block-related .products-grid .actions {
   float: left;
   padding: 20px; }
   .catalog-product-view .owl-item.active:hover {
-    outline: 1px solid #000; }
+    border: 1px solid #000; }
   .catalog-product-view .owl-item .item-info,
   .catalog-product-view .owl-item .item {
     text-align: center; }
@@ -1341,6 +1347,20 @@ body.catalog-product-view .block-related .products-grid .actions {
     margin-bottom: 0; } }
 
 /*-----  End of Product Information Block  ------*/
+/*================================================
+=            Mobile Map Pricing Block            =
+================================================*/
+@media only screen and (min-width: 771px) and (max-width: 1199px) {
+  .catalog-product-view .product-essential .product-img-box {
+    width: 63%; }
+  .catalog-product-view .product-essential .add-to-cart-wrapper {
+    width: 36.7%; } }
+
+@media only screen and (min-width: 771px) and (max-width: 850px) {
+  .catalog-product-view .map-pricing button.button {
+    font-size: 13px !important; } }
+
+/*-----  End of Mobile Map Pricing Block  ------*/
 /* ============================================ *
  * Configurable Swatches
  * ============================================ */

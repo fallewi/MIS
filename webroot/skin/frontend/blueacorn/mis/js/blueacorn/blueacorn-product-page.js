@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
                                 loop: true,
                                 dots: false,
                                 center: true,
-                                responsiveClass: true,
+                                stagePadding: 1,
                                 items: 1
                             });
                         }
@@ -64,7 +64,7 @@ jQuery(document).ready(function ($) {
                                 loop: true,
                                 dots: false,
                                 center: true,
-                                responsiveClass: true,
+                                stagePadding: 1,
                                 items: 1
                             });
                         }
