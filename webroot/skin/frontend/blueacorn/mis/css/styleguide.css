@@ -821,7 +821,10 @@ p.product-name {
     clear: both; }
     @media only screen and (max-width: 770px) {
       .product-view .add-to-cart-wrapper .map-pricing {
-        margin: 0 auto; } }
+        margin: 0 auto 20px; } }
+    @media only screen and (max-width: 570px) {
+      .product-view .add-to-cart-wrapper .map-pricing {
+        margin: 0 20px 20px; } }
     .product-view .add-to-cart-wrapper .map-pricing .message {
       line-height: 24px;
       margin-bottom: 13px;

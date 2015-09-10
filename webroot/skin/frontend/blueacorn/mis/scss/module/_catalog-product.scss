@@ -279,7 +279,11 @@
             @include clearfix();
 
             @include bp(max-width, $bp-medium) {
-                margin: 0 auto;
+                margin: 0 auto 20px;
+            }
+
+            @include bp(max-width, 570px) {
+                margin: 0 20px 20px;
             }
 
             .message {
