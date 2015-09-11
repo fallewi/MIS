@@ -764,8 +764,8 @@ a.button:hover {
   color: #FFFFFF;
   text-decoration: none; }
 
-.checkout-cart-index .cart-totals .btn-remove:after,
-.checkout-onepage-index .checkout-review-table .btn-remove:after {
+.checkout-cart-index .cart-totals .btn-remove,
+.checkout-onepage-index .checkout-review-table .btn-remove {
   top: -15px; }
 
 .btn-remove2 {
@@ -1770,6 +1770,9 @@ form .legend {
     left: -22px; }
   .input-box.select-container.validation-passed:before {
     top: 14px; }
+
+.checkout-onepage-index #dd_method_purchaseorder .input-box.validation-passed:before {
+  top: 15px; }
 
 .block-subscribe .input-box.validation-passed:before {
   content: "\f00c";
