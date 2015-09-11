@@ -743,6 +743,15 @@ a.button:hover {
     }
 }
 
+// Fix Gift Card Remove Icon on Cart & Checkout
+
+.checkout-cart-index .cart-totals,
+.checkout-onepage-index .checkout-review-table{
+    .btn-remove:after{
+        top: -15px;
+    }
+}
+
 .btn-remove2 {
     @extend .icon-sprite;
     $icon-padding: 3px;
