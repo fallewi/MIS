@@ -933,6 +933,10 @@ a.button:hover {
   color: #FFFFFF;
   text-decoration: none; }
 
+.checkout-cart-index .cart-totals .btn-remove:after,
+.checkout-onepage-index .checkout-review-table .btn-remove:after {
+  top: -15px; }
+
 .btn-remove2 {
   background-position: 4px -648px;
   border: none;
