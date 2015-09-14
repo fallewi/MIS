@@ -190,6 +190,12 @@
         display: inline-block;
         padding: 5px 5px 5px 0;
     }
+
+    &#billing-buttons-container {
+        button:not(.continue) {
+            display: none;
+        }
+    }
 }
 
 @include bp(max-width, $bp-xsmall) {
@@ -291,6 +297,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     }
     .price {
         font-weight: bold;
+        float: right;
     }
     .form-list {
         padding-left: 20px;
@@ -693,4 +700,10 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     }
 }
 
-
+@include bp(max-width, $bp-xsmall) {
+    .checkout-review-table th.a-right {
+        float: left;
+        width: 60%;
+        white-space: normal;
+    }
+}

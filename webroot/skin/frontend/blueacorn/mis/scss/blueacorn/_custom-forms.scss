@@ -50,7 +50,7 @@
         position: static;
         width: 32px;
         height: 32px;
-        content: '';
+        content: '\f107';
         font-family: $f-stack-icon-alt;
         font-size: 14px;
         line-height: 36px;
@@ -126,8 +126,8 @@ label.radio-label, label.checkbox-label, span.label.radio-label, span.label.chec
 }
 
 label.radio-label, span.label.radio-label {
-    &:before { 
-        
+    &:before {
+
     }
     &.checked:before {
         background-position: 0 -20px;
@@ -142,7 +142,7 @@ label.radio-label, span.label.radio-label {
 }
 
 label.checkbox-label, span.label.checkbox-label {
-    &:before { 
+    &:before {
         background-position: -20px 0;
     }
     &.checked:before {

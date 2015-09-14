@@ -636,7 +636,7 @@ a.button:hover {
 
 .breadcrumbs {
     overflow: hidden;
-    margin: -15px 0 15px;
+    margin: -15px 0 2px;
 }
 
 .breadcrumbs li {
@@ -649,6 +649,7 @@ a.button:hover {
 .breadcrumbs a {
     float: left;
     font-size: 13px;
+    color: #002178;
 }
 
 .breadcrumbs a:hover {
@@ -669,7 +670,31 @@ a.button:hover {
 @include bp(max-width, $bp-medium) {
 
     .breadcrumbs {
-        display: none;
+        margin-top: 20px;
+        color: $brand-primary;
+
+        ul {
+            // position: absolute;
+            width: 100%;
+            text-align: center;
+
+            li:not(.home) {
+                text-transform: none;
+            }
+        }
+
+        a,
+        ul li,
+        ul li span,
+        ul li span a {
+            float: none;
+            display: inline-block;
+        }
+    }
+
+    .category-title {
+        margin-top: 10px;
+        text-align: center;
     }
 
 }
@@ -683,7 +708,6 @@ a.button:hover {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 1px solid $c-module-border-light;
     text-align: center;
     /* Hide text */
     font: 0/0 a;
@@ -699,18 +723,32 @@ a.button:hover {
 
 .btn-remove {
     &:after {
-        content: 'X';
-        color: $c-action;
+        position: absolute;
+        content: "";
+        display: block;
+        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -48px, -30px);
+        background-position: -48px -30px;
+        width: 20px;
         height: 20px;
-        line-height: 20px;
-        width: 100%;
-        font-size: 10px;
-        font-family: Arial, $f-stack-sans;
-        font-weight: bold;
+
+        @include bp(max-width, $bp-medium) {
+            background-position: -48px -30px;
+            width: 20px;
+            height: 20px;
+        }
     }
     &:hover:after {
         color: #FFFFFF;
         text-decoration: none;
+    }
+}
+
+// Fix Gift Card Remove Icon on Cart & Checkout
+
+.checkout-cart-index .cart-totals,
+.checkout-onepage-index .checkout-review-table{
+    .btn-remove{
+        top: -15px;
     }
 }
 
@@ -1115,8 +1153,20 @@ a.button:hover {
 }
 
 .messages .success-msg li {
+    height: auto;
     color: $white;
     background-color: $c-success;
+    padding-bottom: 10px;
+}
+
+.catalog-category-view {
+    .messages .success-msg li {
+        width: 100%;
+        float: left;
+        clear: left;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
 }
 
 // ---------------------------------------------
@@ -1474,7 +1524,6 @@ span.weee {
 .no-touch .product-img-box .product-image:not(.zoom-available):hover {
     position: relative;
     display: block;
-    border: 1px solid $c-module-border-light;
 }
 
 @include bp (max-width, $bp-medium) {
@@ -1570,15 +1619,19 @@ span.weee {
  */
 
 .toolbar {
-    margin-top: $box-spacing;
     margin-bottom: 15px;
-    border-bottom: 1px solid $c-module-border;
-    border-top: 1px solid $c-module-border;
-    background: $c-module-background;
-    padding: 5px 10px 0 10px;
-
+    padding: 5px 0 0 0;
+    position: relative;
+    height: 55px;
+    text-align: center;
     &:after {
         @include clearfix;
+    }
+}
+
+@include bp(max-width, $bp-medium) {
+    .category-products > .toolbar {
+        display: none;
     }
 }
 
@@ -1593,44 +1646,53 @@ span.weee {
 
 .toolbar,
 .pager {
-    font-family: $f-stack-special;
-    color: $c-text;
-    line-height: 30px;
-    font-size: $f-size-xs;
+    font-family: $f-stack-sans;
+    color: $brand-primary;
+    line-height: 21px;
+    font-size: 15px;
 }
 
 .toolbar label,
 .pager-no-toolbar label {
     font-weight: normal;
-    text-transform: uppercase;
 }
 
 $toolbar-icon-padding-offset: 8px;
 
 .sorter {
-    float: left;
-    margin-bottom: 5px;
+    position: absolute;
+    left: 0;
 
     label {
+        display: block;
         float: left;
-        margin-right: 5px;
+        font-family: $f-stack-sans;
+        font-size: 15px;
+        color: $brand-primary;
+        top: -15px;
+        left: 15px;
+        margin-top: 25px;
 
         &:after {
             content: ':';
+            padding-left: 5px;
         }
     }
 }
 
 .sorter > .sort-by {
-    float: left;
     margin-right: 5px;
-    height: 30px;
+    height: 40px;
+    width: 184px;
+    border: 1px solid $brand-primary;
+    text-align: center;
 
     .sort-by-switcher {
         width: 30px;
         height: 30px;
         display: inline-block;
         @extend .icon-sprite;
+        display: none;
     }
     .sort-by-switcher--asc {
         background-position: 0+4px (-550px+$toolbar-icon-padding-offset);
@@ -1644,10 +1706,27 @@ $toolbar-icon-padding-offset: 8px;
             background-position: -50px+4px (-575px+$toolbar-icon-padding-offset);
         }
     }
+
+    .select-container.small {
+        top: 10px;
+        left: 3px;
+
+        .custom-shiv {
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 21px;
+            color: $brand-primary;
+            font-weight: normal;
+            border: none;
+            padding: 0;
+            float: none;
+        }
+    }
 }
 
 .sorter > .view-mode {
     float: right;
+    display: none;
 
     .grid,
     .list {
@@ -1675,11 +1754,15 @@ $toolbar-icon-padding-offset: 8px;
 }
 
 .pager {
-    float: right;
     overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 5px;
 
     & > .count-container {
-        float: left;
+        height: 40px;
+        width: 143px;
+        border: 1px solid $brand-primary;
     }
 
     .amount {
@@ -1691,14 +1774,19 @@ $toolbar-icon-padding-offset: 8px;
 
     .limiter {
         float: left;
-//        height: 30px;
         line-height: 30px;
+        text-align: center;
 
         & > label {
-            padding-right: 5px;
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 21px;
+            color: $brand-primary;
+            padding-left: 15px;
 
             &:after {
                 content: ':';
+                padding-left: 5px;
             }
         }
     }
@@ -1709,12 +1797,27 @@ $toolbar-icon-padding-offset: 8px;
         margin-bottom: 5px;
     }
 
+    .select-container.small {
+        top: 10px;
+
+        .custom-shiv {
+            font-family: $f-stack-sans;
+            font-size: 15px;
+            line-height: 21px;
+            color: $brand-primary;
+            font-weight: normal;
+            border: none;
+            height: 25px;
+            padding: 0;
+        }
+    }
 }
 
 .pages {
-    float: right;
     overflow: hidden;
-    margin-left: 15px;
+    text-align: center;
+    display: inline-block;
+    padding-top: 5px;
 
     strong {
         display: none;
@@ -1729,7 +1832,7 @@ $toolbar-icon-padding-offset: 8px;
 .pages .current {
     display: inline-block;
     border: 0;
-    font-size: $f-size-s;
+    font-size: $f-size-l;
     text-align: center;
     text-transform: uppercase;
     vertical-align: middle;
@@ -1744,10 +1847,8 @@ $toolbar-icon-padding-offset: 8px;
 
 .pages .current,
 .pages .current:hover {
-    color: $c-text;
-    border: 1px solid $c-module-border;
+    color: $brand-action;
     width: 30px;
-    background-color: #FFFFFF;
     cursor: default;
 }
 
@@ -1759,35 +1860,31 @@ $toolbar-icon-padding-offset: 8px;
     color: transparent;
     background-color: transparent;
     position: relative;
-
-    &:hover {
-        border: 1px solid $c-action;
-    }
 }
 
 .pages .next {
     &:before {
-        @include triangle(right, 4px, $c-action);
-        top: 50%;
-        margin-top: -3px;
-        left: 50%;
-        margin-left: -2px;
-    }
-    &:hover:before {
-        @include triangle(right, 4px, $c-stimulus);
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 7px;
+        width: 8px;
+        height: 16px;
+        background: url("../images/sprite.png") no-repeat -263px -108px;
     }
 }
 
 .pages .previous {
     &:before {
-        @include triangle(left, 4px, $c-action);
-        top: 50%;
-        margin-top: -3px;
-        left: 50%;
-        margin-left: -2px;
-    }
-    &:hover:before {
-        @include triangle(left, 4px, $c-stimulus);
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 7px;
+        width: 8px;
+        height: 16px;
+        background: url("../images/sprite.png") no-repeat -241px -108px;
     }
 }
 
@@ -1862,6 +1959,14 @@ $toolbar-icon-padding-offset: 8px;
 
     .toolbar .view-mode > label {
         display: none;
+    }
+}
+
+.toolbar-bottom {
+
+    .toolbar {
+        .sorter,
+        .pager { display: none; }
     }
 }
 

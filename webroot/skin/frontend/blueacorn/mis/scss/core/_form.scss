@@ -77,11 +77,21 @@ form .legend {
         position: absolute;
         top: 36px;
         left: -22px;
+        @include bp(max-width, $bp-medium){
+            left: -20px;
+        }
     }
 
 //    Selects are off position
     &.select-container.validation-passed:before{
         top:14px;
+    }
+}
+
+// Purchase Order override
+.checkout-onepage-index{
+    #dd_method_purchaseorder .input-box.validation-passed:before{
+        top:15px;
     }
 }
 
@@ -311,6 +321,7 @@ p.required,
     font-size: $f-size;
     font-weight: 500;
     text-align: right;
+    clear:both;
 }
 
 /* ============================================ *
@@ -384,6 +395,10 @@ p.required,
             background-color: transparent;
         }
     }
+}
+
+@include bp(max-width, $bp-small) {
+    #billing-new-address-form li.control { margin-left: 0; }
 }
 
 .product-options ul.options-list label,
