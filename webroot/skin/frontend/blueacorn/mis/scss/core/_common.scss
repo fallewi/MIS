@@ -1218,6 +1218,60 @@ a.button:hover {
     height: auto;
 }
 
+.page-popup.catalog-product-compare-index {
+  h1 {
+    border: none;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-size: 47px;
+    color: #D0021B;
+    font-weight: normal;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .product-name {
+    text-transform: uppercase;
+  }
+  .add-to-links a {
+    font-family: "gesta", Verdana, Arial, sans-serif;
+  }
+  .price-box .minimal-price-link {
+    padding-left: 0px;
+  }
+  .buttons-set {
+    border: none;
+    .button {
+      float: left;
+      margin-left: 0px;
+    }
+  }
+  tbody tr {
+    th span {
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      color: #00247B;
+      font-weight: 100;
+      font-size: 17px;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+    }
+    td div {
+      color: #00247B;
+      font-size: 15px;
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+    }
+  }
+  tbody {
+    .price {
+      letter-spacing: 0px;
+    }
+    .add-to-row td {
+      border-bottom: none;
+    }
+  }
+}
+
 .page-popup h1 {
     margin: 0 0 0.5em;
     font-size: 36px;
