@@ -26,6 +26,67 @@
 /* ============================================ *
  * Catalog - Compare
  * ============================================ */
+.block-compare {
+  background-color: #F6F6F6;
+  border: none !important;
+
+  .block-title {
+      padding: 10px 20px 0 !important;
+      strong span {
+        font-family: "gesta", Verdana, Arial, sans-serif;
+        color: #00247B;
+        font-weight: 100;
+        font-size: 17px;
+        text-transform: capitalize;
+      }
+  }
+
+  .block-content {
+    border: none !important;
+    li.item {
+      margin: 0px;
+    }
+    #compare-items {
+      padding: 11px 20px;
+      li {
+        padding: 9px 13px 9px 19px;
+        margin-bottom: 10px;
+        background: #fff;
+        @include bp(max-width, $bp-medium) {
+          padding-left: 18px;
+        }
+      }
+    }
+    .product-name {
+      margin-bottom: 1px;
+      overflow: hidden;
+      white-space: nowrap;
+      a {
+      color: #00247B;
+      cursor: pointer;
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+      }
+    }
+  }
+  .actions {
+    text-align: center;
+    .button {
+      display: inline-block;
+      float: none;
+      @media (max-width: 1087px) and (min-width: 771px) {
+        padding: 17px 22px 16px;
+      }
+    }
+    a {
+      font-size: 17px;
+      margin-top: 10px;
+      display: block;
+      float: none;
+    }
+  }
+}
 
 .block-compare .product-name:after {
     @include clearfix;
