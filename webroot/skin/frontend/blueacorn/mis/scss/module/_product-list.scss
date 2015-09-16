@@ -551,6 +551,13 @@ $productsGridActionHeight: 85px;
 
 // hides category title as it is redundant on the top level category pages
 #narrow-by-list2 {
+    padding: 11px 11px;
+    dd {
+       margin-bottom: 0px;
+    }
+    dd.current {
+        padding-top: 10px;
+    }
     dt {
         display: none;
     }
