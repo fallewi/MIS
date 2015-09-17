@@ -3161,7 +3161,7 @@ a.skip-link {
         background-size: 600px 300px; } }
 
 @media only screen and (max-width: 770px) {
-  .nav-primary li.parent > a:after {
+  .nav-primary li.parent.level0 > a:after {
     position: absolute;
     display: block;
     content: "";
@@ -3172,7 +3172,7 @@ a.skip-link {
     top: 18px;
     right: 20px; } }
   @media only screen and (max-width: 770px) and (-webkit-min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min--moz-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-device-pixel-ratio: 2), only screen and (max-width: 770px) and (min-resolution: 192dpi), only screen and (max-width: 770px) and (min-resolution: 2dppx) {
-    .nav-primary li.parent > a:after {
+    .nav-primary li.parent.level0 > a:after {
       background-image: url("../images/sprite@2x.png");
       background-size: 600px 300px; } }
 
@@ -3182,7 +3182,11 @@ a.skip-link {
     background-position: -103px -30px; }
   .nav-primary li.menu-active > a,
   .nav-primary li.sub-menu-active > a {
-    color: #EC3837; } }
+    color: #EC3837; }
+  .nav-primary .menu-active ul.level0 {
+    display: block; }
+  .nav-primary .block-one, .nav-primary .block-two, .nav-primary .category-name {
+    display: none; } }
 
 /* ============================================ *
  * Large Viewports - Dropdown Menu
@@ -3241,19 +3245,6 @@ a.skip-link {
         top: 20px; }
     .nav-primary li.level0 li.parent > a {
       position: relative; }
-      .nav-primary li.level0 li.parent > a:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 0;
-        display: block;
-        border-top: 4px solid transparent;
-        border-bottom: 4px solid transparent;
-        border-left: 4px solid #ccc;
-        border-right: none;
-        right: 5px;
-        top: 50%;
-        margin-top: -3px; }
     .nav-primary h4 {
       font-family: "gesta", Verdana, Arial, sans-serif;
       font-size: 15px;
@@ -3281,6 +3272,12 @@ a.skip-link {
         content: '';
         display: table;
         clear: both; }
+        .nav-primary .block-one .article a {
+          display: inline;
+          color: #EC3837;
+          padding: 0;
+          font-size: 12px;
+          line-height: 20px; }
       .nav-primary .block-one h5, .nav-primary .block-one p {
         font-family: "gesta", Verdana, Arial, sans-serif;
         font-weight: normal;
@@ -3291,16 +3288,30 @@ a.skip-link {
         line-height: 12px; }
       .nav-primary .block-one p {
         font-size: 12px;
-        width: 60%;
-        display: inline-block;
         line-height: 20px; }
     .nav-primary .block-two img {
       width: 100%;
       margin-top: 44px; }
-    .nav-primary li.level1:not(.view-all) {
+    .nav-primary li.level1:not(.category-name) {
       display: inline-block;
       width: 49%;
       vertical-align: top; } }
+
+@media only screen and (max-width: 1105px) {
+  .block-one {
+    display: none; }
+  .nav-primary .block-two {
+    width: 35%; }
+    .nav-primary .block-two img {
+      margin-top: 3px; }
+  .nav-primary ul.level0 {
+    width: 65%;
+    max-width: 500px; } }
+
+@media only screen and (max-width: 770px) {
+  .nav-primary ul.level0 {
+    width: 100%;
+    max-width: 100%; } }
 
 .nav-primary li.menu-active > .mm-wrapper {
   display: block; }

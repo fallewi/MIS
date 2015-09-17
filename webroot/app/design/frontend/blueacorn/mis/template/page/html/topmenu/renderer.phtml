@@ -47,9 +47,8 @@ foreach ($children as $child) {
     $child->setPositionClass($itemPositionClassPrefix . $counter);
 
     $category = Mage::getModel('catalog/category')->loadByAttribute('name', $child->getName($child));
-    $categoryId = $category->getId();
-    $blockOne = Mage::getModel('catalog/category')->load($categoryId)->getData('cms_block_1');
-    $blockTwo = Mage::getModel('catalog/category')->load($categoryId)->getData('cms_block_2');
+    $blockOne = $category->getData('cms_block_1');
+    $blockTwo = $category->getData('cms_block_2');
 
     $outermostClassCode = 'level'. $childLevel;
     $_hasChildren = ($child->hasChildren()) ? 'has-children' : '';
@@ -64,12 +63,12 @@ foreach ($children as $child) {
 
     $nextChildLevel = $childLevel + 1;
 
-    if (!empty($_hasChildren)) {
+    if (!empty($_hasChildren) && $nextChildLevel <= 1) {
         $html .= '<div class="mm-wrapper">';
         $html .= '<div class="mm-inner-wrapper">';
         $html .= '<ul class="level'. $childLevel .'">';
-        $html .=     '<li class="level'. $nextChildLevel .' view-all">';
-        $html .=        '<h4 class="category_name">';
+        $html .=     '<li class="level'. $nextChildLevel .' category-name">';
+        $html .=        '<h4>';
         $html .=             $this->escapeHtml($this->__($child->getName()));
         $html .=        '</h4>';
         $html .=     '</li>';
