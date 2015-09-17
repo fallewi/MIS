@@ -51,7 +51,8 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
         $addToCartLink = Mage::getBaseUrl() . "map/email/addToCart" . "?product_id=" . $productId . "&token=" .$token;
 
         $email_variables = array(
-            'product'   => $product->getName(),
+            'productName'   => $product->getName(),
+            'manufacturer'  => $product->getManufacturer(),
             'price'     => $product->getPrice(),
             'link'      => $addToCartLink,
             'token'     => $token,
