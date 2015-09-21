@@ -1394,29 +1394,20 @@ p.product-name {
   clear: both;
   position: relative; }
   .product-options .select-container.validation-error .custom-shiv {
-    line-height: 35px; }
+    line-height: 35px;
+    color: #fff; }
   .product-options .custom-shiv {
     border-color: #00247B;
     height: 40px;
-    background: #fff;
+    background: #00247B;
     font-size: 15px;
-    color: #00247B;
+    color: #fff;
     letter-spacing: 1px;
     line-height: 38px;
     font-weight: 300;
     padding: 0 15px; }
-    .product-options .custom-shiv span:after {
-      content: '';
-      background-image: url("../images/sprite.png");
-      background-position: -288px -74px;
-      width: 16px;
-      height: 9px;
-      background-repeat: repeat-x;
-      background-position: -288px -74px; }
-      @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-        .product-options .custom-shiv span:after {
-          background-image: url("../images/sprite@2x.png");
-          background-size: 600px 300px; } }
+    .product-options .custom-shiv.hover {
+      color: #fff; }
   .product-options dt label {
     display: none; }
 
@@ -1465,7 +1456,8 @@ p.product-name {
   padding-top: 0; }
   .product-options dd .input-box.validation-passed:before {
     background: none;
-    top: 7px; }
+    top: 7px;
+    left: -18px; }
 
 .product-options dd input.datetime-picker {
   width: 150px; }

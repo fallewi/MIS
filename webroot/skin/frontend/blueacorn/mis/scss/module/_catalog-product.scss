@@ -549,7 +549,7 @@
 
         &.map-add-to {
             margin-top: 124px;
-            
+
             @include bp(max-width, $bp-medium) {
                 margin-top: 0;
             }
@@ -900,26 +900,22 @@
 
     .select-container.validation-error .custom-shiv {
         line-height: 35px;
+        color: $white;
     }
 
     .custom-shiv {
         border-color: $c-blue;
         height: 40px;
-        background: $white;
+        background: $brand-primary;
         font-size: $f-size-l;
-        color: $c-blue;
+        color: $white;
         letter-spacing: 1px;
         line-height: 38px;
         font-weight: 300;
         padding: 0 15px;
 
-        span:after {
-            content: '';
-            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -288px, -74px);
-            width: 16px;
-            height: 9px;
-            background-repeat: repeat-x;
-            background-position: -288px -74px;
+        &.hover {
+            color: $white;
         }
     }
 
@@ -989,6 +985,7 @@
     &.validation-passed:before {
         background: none;
         top: 7px;
+        left: -18px;
     }
 }
 
