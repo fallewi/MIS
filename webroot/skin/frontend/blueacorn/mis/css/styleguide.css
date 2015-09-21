@@ -1872,7 +1872,7 @@ body.catalog-product-view .block-related .products-grid .actions {
     .breadcrumbs li {
       display: inline-block;
       float: none;
-      line-height: 8px; }
+      line-height: 18px; }
   .top-product-details,
   .catalog-product-view .product-view .product-img-box .more-views {
     display: none !important; }
