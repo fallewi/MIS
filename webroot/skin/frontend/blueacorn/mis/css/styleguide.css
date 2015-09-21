@@ -853,6 +853,8 @@ p.product-name {
     .product-view .add-to-cart-wrapper .map-pricing .price {
       color: #EC3838;
       font-size: 13px; }
+  .product-view .add-to-cart-wrapper .link-finance .price {
+    color: #Ec3838; }
 
 .product-view .block-related {
   width: 100%; }
