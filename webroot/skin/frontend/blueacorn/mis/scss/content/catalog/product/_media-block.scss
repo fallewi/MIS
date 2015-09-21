@@ -18,6 +18,16 @@
             h2{
                 display:none;
             }
+            .product-image-thumbs {
+                a:hover {border-color: transparent;}
+                img {
+                    opacity: 0.2;
+                    &.active {
+                        opacity: 1;
+                        border: 1px solid $brand-primary;
+                    }
+                }
+            }
         }
     }
 }

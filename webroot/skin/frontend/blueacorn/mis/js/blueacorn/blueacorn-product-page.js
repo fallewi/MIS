@@ -40,6 +40,7 @@ jQuery(document).ready(function ($) {
             this.expandDescription();
             this.setupAccordion();
             this.moveAddToCartButton();
+            this.thumb();
         },
 
         imageSlider: function() {
@@ -132,6 +133,16 @@ jQuery(document).ready(function ($) {
                         $('.add-to-box .add-to-cart').append(button);
                     }
                 }
+            });
+        },
+
+        thumb: function() {
+            var self = this,
+                thumb = $('.thumb-link img');
+
+            thumb.on('click', function(){
+                thumb.removeClass('active');
+                $(this).addClass('active');
             });
         }
     };

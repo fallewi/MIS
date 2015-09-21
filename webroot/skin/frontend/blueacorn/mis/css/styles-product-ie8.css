@@ -1944,6 +1944,13 @@ body.catalog-product-view .block-related .products-grid {
     float: left; }
     .catalog-product-view .product-view .product-img-box .more-views h2 {
       display: none; }
+    .catalog-product-view .product-view .product-img-box .more-views .product-image-thumbs a:hover {
+      border-color: transparent; }
+    .catalog-product-view .product-view .product-img-box .more-views .product-image-thumbs img {
+      opacity: 0.2; }
+      .catalog-product-view .product-view .product-img-box .more-views .product-image-thumbs img.active {
+        opacity: 1;
+        border: 1px solid #00247B; }
 
 .zoomContainer {
   display: none; }
