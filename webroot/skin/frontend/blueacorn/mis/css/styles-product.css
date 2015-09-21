@@ -379,8 +379,7 @@
     padding: 0 11px; }
   .product-view .add-to-cart-buttons {
     clear: both;
-    max-width: 100%;
-    margin-top: 100px; }
+    max-width: 100%; }
     .product-view .add-to-cart-buttons.map-add-to {
       margin-top: 124px; }
       @media only screen and (max-width: 770px) {
