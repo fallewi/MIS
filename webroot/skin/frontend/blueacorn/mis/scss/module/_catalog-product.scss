@@ -1725,3 +1725,18 @@ body.catalog-product-view {
     }
 }
 /*-----  End of Mobile Map Pricing Block  ------*/
+
+@include bp(max-width, $bp-xsmall) {
+
+    .box-up-sell,
+    .block-related {
+
+        .block-title {
+            margin-bottom: 20px;
+
+            h2 {
+                font-size: 24px
+            }
+        }
+    }
+}

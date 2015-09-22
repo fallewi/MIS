@@ -1357,6 +1357,14 @@ body.catalog-product-view .block-related .products-grid .actions {
     font-size: 13px !important; } }
 
 /*-----  End of Mobile Map Pricing Block  ------*/
+@media only screen and (max-width: 479px) {
+  .box-up-sell .block-title,
+  .block-related .block-title {
+    margin-bottom: 20px; }
+    .box-up-sell .block-title h2,
+    .block-related .block-title h2 {
+      font-size: 24px; } }
+
 /* ============================================ *
  * Configurable Swatches
  * ============================================ */
