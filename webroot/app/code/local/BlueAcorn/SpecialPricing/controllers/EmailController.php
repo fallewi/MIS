@@ -46,7 +46,7 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
         $map_item->setTokenExpirationDate(time() + $duration * 60 * 60);
         $map_item->save();
 
-        $email_template = Mage::getModel('core/email_template')->loadDefault('map_request');
+        $email_template = Mage::getModel('core/email_template')->loadByCode('map_request');
         $product = Mage::getModel('catalog/product')->load($productId);
         $addToCartLink = Mage::getBaseUrl() . "map/email/addToCart" . "?product_id=" . $productId . "&token=" .$token;
 
@@ -58,12 +58,13 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
             'token'     => $token,
         );
 
-        $sender_name = Mage::getStoreConfig(Mage_Core_Model_Store::XML_PATH_STORE_STORE_NAME);
+        $sender_name = Mage::getStoreConfig('trans_email/ident_general/name');
         $sender_email = Mage::getStoreConfig('trans_email/ident_general/email');
-        $email_template->setTemplateSenderName($sender_name);
-        $email_template->setTemplateSenderEmail($sender_email);
+        $email_template->setSenderName($sender_name);
+        $email_template->setSenderEmail($sender_email);
+        $email_template->setTemplateSubject("Mission Restaurant Supply - Exclusive Price Request");
 
-        $email_template->send($customerEmail, null, $email_variables);
+        $email_template->send($customerEmail, $sender_name, $email_variables);
         $productUrl = Mage::getModel('catalog/product')->load($productId)->getProductUrl();
         $this->_redirectUrl($productUrl);
     }
