@@ -1726,6 +1726,17 @@ body.catalog-product-view {
 }
 /*-----  End of Mobile Map Pricing Block  ------*/
 
+@include bp(max-width, $bp-medium) {
+    .product-options {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        dd select {
+            width: 100%;
+        }
+    }
+}
+
 @include bp(max-width, $bp-xsmall) {
 
     .box-up-sell,

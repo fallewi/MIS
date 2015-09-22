@@ -1985,6 +1985,13 @@ body.catalog-product-view .block-related .products-grid .actions {
     font-size: 13px !important; } }
 
 /*-----  End of Mobile Map Pricing Block  ------*/
+@media only screen and (max-width: 770px) {
+  .product-options {
+    padding-left: 20px;
+    padding-right: 20px; }
+    .product-options dd select {
+      width: 100%; } }
+
 @media only screen and (max-width: 479px) {
   .box-up-sell .block-title,
   .block-related .block-title {
