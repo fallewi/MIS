@@ -40,7 +40,7 @@
                 echo $itemBlock->toHtml();
             ?>
             <div class="actions">
-                <button type="button" title="<?php echo $this->quoteEscape($this->__('Configure & Add to Cart')) ?>" class="button btn-small"><span><span><?php echo $this->__('Configure & Add to Cart') ?></span></span></button>
+                <button type="button" title="<?php echo $this->quoteEscape($this->__('Configure & Add to Cart')) ?>" class="button btn-small" onclick="setLocation('<?php echo $this->getAddToCartUrl($_item) ?>')"><span><span><?php echo $this->__('Configure & Add to Cart') ?></span></span></button>
                 <ul class="add-to-links">
                     <li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Compare') ?></a></li>
                 </ul>
