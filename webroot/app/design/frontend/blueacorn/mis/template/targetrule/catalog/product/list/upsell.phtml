@@ -33,6 +33,7 @@
     </div>
     <ul class="products-grid owl-carousel-2 products-grid--max-<?php echo $_columnCount; ?>-col" id="upsell-product-table">
     <?php $i=0; foreach ($this->getItemCollection() as $_item): ?>
+        <?php $_compareUrl = $this->helper('catalog/product_compare')->getAddUrl($_item) ?>
         <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0):?> last<?php endif;?>">
             <?php
                 $itemBlock = $this->getChild('catalog.product.upsell.item')->setItem($_item)->setPosition($i);
@@ -41,7 +42,7 @@
             <div class="actions">
                 <button type="button" title="<?php echo $this->quoteEscape($this->__('Configure & Add to Cart')) ?>" class="button btn-small"><span><span><?php echo $this->__('Configure & Add to Cart') ?></span></span></button>
                 <ul class="add-to-links">
-                    <li><a href="#" class="link-compare"><?php echo $this->__('Compare') ?></a></li>
+                    <li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Compare') ?></a></li>
                 </ul>
             </div>
         </li>
