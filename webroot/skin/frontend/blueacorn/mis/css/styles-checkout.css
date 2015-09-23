@@ -153,6 +153,8 @@
     line-height: 20px;
     display: inline-block;
     padding: 5px 5px 5px 0; }
+  .opc .buttons-set#billing-buttons-container button:not(.continue) {
+    display: none; }
 
 @media only screen and (max-width: 479px) {
   .opc .buttons-set .button + .buttons-set .button,
@@ -228,7 +230,8 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     float: right;
     margin-left: 10px; }
   .sp-methods .price {
-    font-weight: bold; }
+    font-weight: bold;
+    float: right; }
   .sp-methods .form-list {
     padding-left: 20px; }
     .sp-methods .form-list li {
@@ -499,6 +502,12 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 @media only screen and (max-width: 770px) {
   .opc .select-container {
     width: auto; } }
+
+@media only screen and (max-width: 479px) {
+  .checkout-review-table th.a-right {
+    float: left;
+    width: 60%;
+    white-space: normal; } }
 
 /* ============================================ *
  * Checkout - Success
@@ -991,6 +1000,13 @@ ol#cart-sidebar-reorder p.product-name {
     padding-left: 0; } }
 
 @media only screen and (max-width: 479px) {
+  .account-login .fieldset,
+  .account-create .fieldset {
+    padding: 0 15px; }
+  body.customer-account .col-main {
+    padding: 0 15px; }
+  body.customer-account .form-list .select-container {
+    width: auto; }
   body.customer-account .my-account .page-title h1 {
     text-align: center; }
   body.customer-account .my-account .title-buttons {
@@ -1014,6 +1030,8 @@ ol#cart-sidebar-reorder p.product-name {
     width: auto; }
   body.customer-account .my-account .addresses-list h2 {
     margin-bottom: 15px; }
+  body.customer-account .my-account .giftcardaccount .buttons-set .button {
+    white-space: normal; }
   .order-info {
     margin-top: 15px; }
   .data-table.orders .link-reorder,

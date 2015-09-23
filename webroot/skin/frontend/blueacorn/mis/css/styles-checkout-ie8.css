@@ -148,6 +148,8 @@
     line-height: 20px;
     display: inline-block;
     padding: 5px 5px 5px 0; }
+  .opc .buttons-set#billing-buttons-container button:not(.continue) {
+    display: none; }
 
 .opc #opc-login .step {
   padding: 0px; }
@@ -210,7 +212,8 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     float: right;
     margin-left: 10px; }
   .sp-methods .price {
-    font-weight: bold; }
+    font-weight: bold;
+    float: right; }
   .sp-methods .form-list {
     padding-left: 20px; }
     .sp-methods .form-list li {
