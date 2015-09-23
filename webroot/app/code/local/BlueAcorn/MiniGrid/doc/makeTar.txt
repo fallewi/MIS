@@ -1,0 +1,4 @@
+tar \
+-czvf baminigrid.tar.gz \
+app/code/local/BlueAcorn/MiniGrid/ \
+app/etc/modules/BlueAcorn_MiniGrid.xml

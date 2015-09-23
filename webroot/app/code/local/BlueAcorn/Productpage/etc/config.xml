@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_Productpage>
+            <version>0.7.0</version>
+        </BlueAcorn_Productpage>
+    </modules>
+    <global>
+        <resources>
+            <blueacorn_productpage_setup>
+                <setup>
+                    <module>BlueAcorn_Productpage</module>
+                </setup>
+            </blueacorn_productpage_setup>
+        </resources>
+        <helpers>
+            <blueacorn_productpage>
+                <class>BlueAcorn_Productpage_Helper</class>
+            </blueacorn_productpage>
+        </helpers>
+        <models>
+            <blueacorn_productpage>
+                <class>BlueAcorn_Productpage_Model</class>
+            </blueacorn_productpage>
+        </models>
+    </global>
+</config>

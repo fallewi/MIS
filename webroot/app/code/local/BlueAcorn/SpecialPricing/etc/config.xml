@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_SpecialPricing extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       BlueAcorn
+ * @package        BlueAcorn_SpecialPricing
+ * @copyright      Copyright (c) 2015
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <modules>
+        <BlueAcorn_SpecialPricing>
+            <version>1.0.2</version>
+        </BlueAcorn_SpecialPricing>
+    </modules>
+    <global>
+        <resources>
+            <blueacorn_specialpricing_setup>
+                <setup>
+                    <module>BlueAcorn_SpecialPricing</module>
+                    <class>BlueAcorn_SpecialPricing_Model_Resource_Setup</class>
+                </setup>
+            </blueacorn_specialpricing_setup>
+        </resources>
+        <blocks>
+            <blueacorn_specialpricing>
+                <class>BlueAcorn_SpecialPricing_Block</class>
+            </blueacorn_specialpricing>
+        </blocks>
+        <helpers>
+            <blueacorn_specialpricing>
+                <class>BlueAcorn_SpecialPricing_Helper</class>
+            </blueacorn_specialpricing>
+        </helpers>
+        <models>
+            <blueacorn_specialpricing>
+                <class>BlueAcorn_SpecialPricing_Model</class>
+                <resourceModel>blueacorn_specialpricing_resource</resourceModel>
+            </blueacorn_specialpricing>
+            <blueacorn_specialpricing_resource>
+                <class>BlueAcorn_SpecialPricing_Model_Resource</class>
+                <entities>
+                    <token>
+                        <table>blueacorn_specialpricing_token</table>
+                    </token>
+                    <token_store>
+                        <table>blueacorn_specialpricing_token_store</table>
+                    </token_store>
+                </entities>
+            </blueacorn_specialpricing_resource>
+        </models>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <blueacorn_specialpricing>
+                    <file>blueacorn_specialpricing.xml</file>
+                </blueacorn_specialpricing>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <BlueAcorn_SpecialPricing>
+                    <files>
+                        <default>BlueAcorn_SpecialPricing.csv</default>
+                    </files>
+                </BlueAcorn_SpecialPricing>
+            </modules>
+        </translate>
+        <global_search>
+            <token>
+                <class>blueacorn_specialpricing/adminhtml_search_token</class>
+                <acl>blueacorn_specialpricing</acl>
+            </token>
+        </global_search>
+    </adminhtml>
+    <frontend>
+        <routers>
+            <map>
+                <use>standard</use>
+                <args>
+                    <module>BlueAcorn_SpecialPricing</module>
+                    <frontName>map</frontName>
+                </args>
+            </map>
+        </routers>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <BlueAcorn_SpecialPricing before="Mage_Adminhtml">BlueAcorn_SpecialPricing_Adminhtml
+                        </BlueAcorn_SpecialPricing>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>
