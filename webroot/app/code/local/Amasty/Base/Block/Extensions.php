@@ -1,6 +1,8 @@
 <?php
 /**
- * @copyright   Copyright (c) 2010 Amasty
+ * @author Amasty Team
+ * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @package Amasty_Base
  */ 
 class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
@@ -18,12 +20,16 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
             if (strstr($moduleName, 'Amasty_') === false) {
                 if(strstr($moduleName, 'Belitsoft_') === false){
                     if(strstr($moduleName, 'Mageplace_') === false){
-                        continue;
+                        if(strstr($moduleName, 'Magpleasure_') === false) {
+                            continue;
+                        }
                     }
                 }
             }
 
-            if ($moduleName == 'Amasty_Base'){
+            if (in_array($moduleName, array(
+                'Amasty_Base', 'Magpleasure_Common', 'Magpleasure_Searchcore'
+            ))) {
                 continue;
             }
 
@@ -50,7 +56,7 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
 
         $moduleName = substr($moduleCode, strpos($moduleCode, '_') + 1); // in case we have no data in the RSS
 
-        $allExtensions = unserialize(Mage::app()->loadCache('ambase_extensions'));
+        $allExtensions = Amasty_Base_Helper_Module::getAllExtensions();
             
         $status = '<a  target="_blank"><img src="'.$this->getSkinUrl('images/ambase/ok.gif').'" title="'.$this->__("Installed").'"/></a>';
 
@@ -62,8 +68,8 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
             $lastVer = $ext['version'];
 
             $moduleName = '<a href="'.$url.'" target="_blank" title="'.$name.'">'.$name."</a>";
-
-            if ($this->_convertVersion($currentVer) < $this->_convertVersion($lastVer)){
+            
+            if (version_compare($currentVer, $lastVer, '<')) {
                 $status = '<a href="'.$url.'" target="_blank"><img src="'.$this->getSkinUrl('images/ambase/update.gif').'" alt="'.$this->__("Update available").'" title="'.$this->__("Update available").'"/></a>';
             }
         }
@@ -79,18 +85,5 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
         ))->setRenderer($this->_getFieldRenderer());
 
         return $field->toHtml();
-    }
-    
-    protected function _convertVersion($v)
-    {
-        $digits = @explode(".", $v);
-        $version = 0;
-        if (is_array($digits)){
-            foreach ($digits as $k=>$v){
-                $version += ($v * pow(10, max(0, (3-$k))));
-            }
-
-        }
-        return $version;
     }
 }
