@@ -237,6 +237,10 @@
                 color: #EC3838;
                 line-height: 32px;
                 font-weight: normal;
+
+                &.map-msrp {
+                    line-height: 100px;
+                }
             }
 
             .price-box {

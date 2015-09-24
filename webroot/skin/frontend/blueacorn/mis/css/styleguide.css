@@ -789,6 +789,8 @@ p.product-name {
       color: #EC3838;
       line-height: 32px;
       font-weight: normal; }
+      .product-view .add-to-cart-wrapper .price-info .price-box .price.map-msrp, .product-view .add-to-cart-wrapper .price-info .price.map-msrp {
+        line-height: 100px; }
     .product-view .add-to-cart-wrapper .price-info .price-box {
       margin-top: 12px; }
       .product-view .add-to-cart-wrapper .price-info .price-box.bundle {
