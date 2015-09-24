@@ -1038,6 +1038,7 @@ body.catalog-product-view .block-related .products-grid {
 @media only screen and (min-width: 771px) and (max-width: 1199px) {
   .catalog-product-view .product-essential .product-img-box {
     width: 63%; }
+  .catalog-product-view .product-essential .product-shop,
   .catalog-product-view .product-essential .add-to-cart-wrapper {
     width: 36.7%; } }
 
