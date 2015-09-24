@@ -49,11 +49,12 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
         $email_template = Mage::getModel('core/email_template')->loadByCode('map_request');
         $product = Mage::getModel('catalog/product')->load($productId);
         $addToCartLink = Mage::getBaseUrl() . "map/email/addToCart" . "?product_id=" . $productId . "&token=" .$token;
+        $formattedPrice = Mage::helper('core')->formatPrice($product->getPrice(),false);
 
         $email_variables = array(
             'productName'   => $product->getName(),
             'manufacturer'  => $product->getManufacturer(),
-            'price'     => $product->getPrice(),
+            'price'     => $formattedPrice,
             'link'      => $addToCartLink,
             'token'     => $token,
         );
