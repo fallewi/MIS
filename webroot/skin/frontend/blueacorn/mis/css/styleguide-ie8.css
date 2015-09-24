@@ -759,14 +759,14 @@ p.product-name {
     clear: both; }
     .product-view .add-to-cart-wrapper .map-pricing .message {
       line-height: 24px;
-      margin-bottom: 13px;
       font-size: 13px; }
     .product-view .add-to-cart-wrapper .map-pricing input {
       border: 1px solid #00247B;
       float: left;
       width: 60%;
       box-sizing: border-box;
-      height: 41px; }
+      height: 41px;
+      margin-top: 13px; }
     .product-view .add-to-cart-wrapper .map-pricing button.button {
       width: 40%;
       box-sizing: border-box;
@@ -779,7 +779,8 @@ p.product-name {
       font-weight: normal;
       font-size: 15px;
       letter-spacing: 1px;
-      line-height: 23px; }
+      line-height: 23px;
+      margin-top: 13px; }
     .product-view .add-to-cart-wrapper .map-pricing .phone-number {
       color: #00247B; }
     .product-view .add-to-cart-wrapper .map-pricing .price {
