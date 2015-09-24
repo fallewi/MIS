@@ -20,12 +20,16 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
             if (strstr($moduleName, 'Amasty_') === false) {
                 if(strstr($moduleName, 'Belitsoft_') === false){
                     if(strstr($moduleName, 'Mageplace_') === false){
-                        continue;
+                        if(strstr($moduleName, 'Magpleasure_') === false) {
+                            continue;
+                        }
                     }
                 }
             }
 
-            if ($moduleName == 'Amasty_Base'){
+            if (in_array($moduleName, array(
+                'Amasty_Base', 'Magpleasure_Common', 'Magpleasure_Searchcore'
+            ))) {
                 continue;
             }
 
