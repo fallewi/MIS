@@ -720,7 +720,8 @@ p.product-name {
   float: right;
   clear: right;
   padding: 30px 20px 0;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  padding: 10px; }
   .product-view .add-to-cart-wrapper .price-info {
     float: left;
     position: relative; }
@@ -757,7 +758,8 @@ p.product-name {
     margin-bottom: 23px;
     content: '';
     display: table;
-    clear: both; }
+    clear: both;
+    padding: 10px; }
     .product-view .add-to-cart-wrapper .map-pricing .message {
       line-height: 24px;
       font-size: 13px; }
@@ -768,12 +770,7 @@ p.product-name {
       box-sizing: border-box;
       height: 41px;
       margin-top: 13px; }
-      .product-view .add-to-cart-wrapper .map-pricing input.validation-failed {
-        margin-top: 55px; }
-        .product-view .add-to-cart-wrapper .map-pricing input.validation-failed + .validation-advice + button.button {
-          margin-top: 55px; }
     .product-view .add-to-cart-wrapper .map-pricing #advice-validate-email-map_email {
-      position: absolute;
       width: 100%;
       color: #EC3837;
       font-size: 12px;
@@ -781,7 +778,7 @@ p.product-name {
     .product-view .add-to-cart-wrapper .map-pricing button.button {
       width: 40%;
       box-sizing: border-box;
-      float: left;
+      float: right;
       padding: 8px 0;
       background: #fff;
       border: 1px solid #00247B;

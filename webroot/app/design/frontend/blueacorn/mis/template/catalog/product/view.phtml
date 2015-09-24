@@ -79,8 +79,8 @@
                         <?php elseif($product->getAttributeText('map_required') == "Requires MAP Email"): ?>
                             <div>
                                 <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
-                                <input id="map_email" type="text" name="user_email" class="input-text validate-email"/>
                                 <button id="map_request" class="button">Get Price</button>
+                                <input id="map_email" type="text" name="user_email" class="input-text validate-email"/>
                             </div>
                         <?php endif; ?>    
                         </div>
