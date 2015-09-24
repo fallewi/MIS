@@ -231,6 +231,7 @@
 
         .price-info {
             float: left;
+            position: relative;
 
             .price-box .price, .price {
                 font-size: 24px;
@@ -294,6 +295,22 @@
                 box-sizing: border-box;
                 height: 41px;
                 margin-top: 13px;
+
+                &.validation-failed {
+                    margin-top: 55px;
+
+                    & + .validation-advice + button.button {
+                        margin-top: 55px;
+                    }
+                }
+            }
+
+            #advice-validate-email-map_email {
+                position: absolute;
+                width: 100%;
+                color: $brand-action;
+                font-size: 12px;
+                line-height: 18px;
             }
 
             button.button {
