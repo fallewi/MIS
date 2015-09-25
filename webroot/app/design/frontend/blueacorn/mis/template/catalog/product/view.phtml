@@ -80,7 +80,7 @@
                             <div>
                                 <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
                                 <button id="map_request" class="button">Get Price</button>
-                                <input id="map_email" type="text" name="user_email" class="input-text validate-email"/>
+                                <input id="map_email" type="text" name="user_email" class="input-text"/>
                             </div>
                         <?php endif; ?>    
                         </div>
@@ -144,18 +144,9 @@
         //<![CDATA[
 
             (function($) {
-                $(document).ready(function() {
-                    $('#map_request').on('click', function(e) {
-                        if (e.preventDefault()) {
-                            e.preventDefault()
-                        } else {
-                            e.returnValue = false;
-                        }
-                        var email = $('#map_email').val(),
-                            base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
-                        window.location.replace(base_url + '&email=' + email);
-                    });
-                });
+                window.onload = function() {
+                    ba.productPage.mapPricingObserver("<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>");
+                };
             }(jQuery));
 
             var productAddToCartForm = new VarienForm('product_addtocart_form');

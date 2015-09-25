@@ -67,6 +67,33 @@ jQuery(document).ready(function ($) {
                     }
                 });
             }
+        },
+
+        mapPricingObserver: function(baseUrl){
+            var self = this;
+
+            $('#map_email').on('change', function(){
+                var emailString = $(this).val();
+                $('.validation-advice').remove();
+                if(!self.mapPricingValidate(emailString)) {
+                    $(this).after('<div class="validation-advice" id="advice-validate-email-map_email">Please enter a valid email address. For example johndoe@domain.com.</div>');
+                }
+            });
+
+            $('#map_request').on('click', function(ev){
+                ev.preventDefault();
+                var emailString = $('#map_email').val();
+                if(self.mapPricingValidate(emailString)) {
+                    $('.validation-advice').remove();
+                    window.location.replace(baseUrl + '&email=' + emailString);
+                }
+            });
+        },
+
+        mapPricingValidate: function(emailField){
+            var regexMatch = /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i.test(emailField);
+
+            return regexMatch;
         }
     };
 
