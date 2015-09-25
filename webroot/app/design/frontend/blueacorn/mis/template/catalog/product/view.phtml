@@ -146,7 +146,11 @@
             (function($) {
                 $(document).ready(function() {
                     $('#map_request').on('click', function(e) {
-                        e.preventDefault();
+                        if (e.preventDefault()) {
+                            e.preventDefault()
+                        } else {
+                            e.returnValue = false;
+                        }
                         var email = $('#map_email').val(),
                             base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
                         window.location.replace(base_url + '&email=' + email);
