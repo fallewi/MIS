@@ -150,6 +150,7 @@
                             e.preventDefault()
                         } else {
                             e.returnValue = false;
+                            e.stopPropagation();
                         }
                         var email = $('#map_email').val(),
                             base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
