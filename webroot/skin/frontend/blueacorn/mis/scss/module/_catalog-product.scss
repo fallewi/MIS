@@ -233,6 +233,14 @@
             padding: 10px; 
         }
 
+        @include bp(max-width, 1050px) {
+            width: 31%;
+        }
+
+        @include bp(max-width, 850px) {
+            width: 36%;
+        }
+
         .price-info {
             float: left;
             position: relative;
@@ -308,6 +316,7 @@
                 box-sizing: border-box;
                 height: 41px;
                 margin-top: 13px;
+                border-radius: 0;
             }
 
             #advice-validate-email-map_email {
@@ -414,6 +423,14 @@
 .product-img-box {
     width: 73%;
     float: left;
+
+    @include bp(max-width, 1050px) {
+        width: 68%;
+    }
+
+    @include bp(max-width, 850px) {
+        width: 62%;
+    }
 
     .product-name {
         h1 {
