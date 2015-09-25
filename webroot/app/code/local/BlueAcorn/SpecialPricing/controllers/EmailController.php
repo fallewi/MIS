@@ -12,6 +12,14 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
     {
         $params = $this->getRequest()->getParams();
 
+        $token = Mage::getModel('blueacorn_specialpricing/token')->load($params['token'], 'token')->getData();
+        if(empty($token))
+        {
+            Mage::getSingleton('core/session')->addError('Token has expired. Please request a new one.');
+            $this->_redirect('checkout/cart');
+            return;
+        }
+
         $product = Mage::getModel('catalog/product')->load($params['product_id']);
         $cart = Mage::getModel('checkout/cart');
         $cart->init();
