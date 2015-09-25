@@ -229,6 +229,18 @@
         padding: 30px 20px 0;
         margin-bottom: 20px;
 
+        @include bp(max-width, 1250px) {
+            padding: 10px; 
+        }
+
+        @include bp(max-width, 1050px) {
+            width: 31%;
+        }
+
+        @include bp(max-width, 850px) {
+            width: 36%;
+        }
+
         .price-info {
             float: left;
             position: relative;
@@ -283,6 +295,15 @@
             margin-bottom: 23px;
             @include clearfix();
 
+            @include bp(max-width, 1250px) {
+                padding: 10px;   
+            }
+
+            @include bp(max-width, $bp-medium) {
+                max-width: 370px;
+                margin: 10px auto 20px;
+            }
+
             .message {
                 line-height: 24px;
                 font-size: 13px;
@@ -295,18 +316,10 @@
                 box-sizing: border-box;
                 height: 41px;
                 margin-top: 13px;
-
-                &.validation-failed {
-                    margin-top: 55px;
-
-                    & + .validation-advice + button.button {
-                        margin-top: 55px;
-                    }
-                }
+                border-radius: 0;
             }
 
             #advice-validate-email-map_email {
-                position: absolute;
                 width: 100%;
                 color: $brand-action;
                 font-size: 12px;
@@ -316,7 +329,7 @@
             button.button {
                 width: 40%;
                 box-sizing: border-box;
-                float: left;
+                float: right;
                 padding: 8px 0;
                 background: $white;
                 border: 1px solid $c-blue;
@@ -410,6 +423,14 @@
 .product-img-box {
     width: 73%;
     float: left;
+
+    @include bp(max-width, 1050px) {
+        width: 68%;
+    }
+
+    @include bp(max-width, 850px) {
+        width: 62%;
+    }
 
     .product-name {
         h1 {
