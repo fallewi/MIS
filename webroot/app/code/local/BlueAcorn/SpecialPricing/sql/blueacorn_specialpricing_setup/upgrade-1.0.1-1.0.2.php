@@ -26,7 +26,7 @@ $templateText = '<!--@subject Welcome, {{var customer.name}}! @-->
             <p>Thank you for your interest in the <strong style="font-weight: 700;">{{var productName}}</strong></p>
             <p>This item is currently available for you at MissionRS.com for <strong style="font-weight: 700;">an exclusive, discounted price of ${{var price}}.</strong></p>
             <div class="product-container" style="margin-bottom: 20px;">
-                <img src="http://placekitten.com/g/188/188" style="float:left; margin-right: 5px; width: 190px; border: 1px solid #e0e0e0;">
+                <img src="${{var productImage}}" style="float:left; margin-right: 5px; width: 190px; border: 1px solid #e0e0e0;">
                 <div class="product-info" style="float:left; width: 310px; word-wrap: break-word; background: #f9f9f9; border: 1px solid #e0e0e0; padding: 10px 20px;">
                     <p style="margin: 0;"><strong style="font-weight: 700;">{{var manufacturer}}</strong></p>
                     <p style="margin: 0;"><strong style="font-weight: 700;">{{var productName}}</strong></p>
