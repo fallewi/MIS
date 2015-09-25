@@ -58,6 +58,7 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
                 'price' => $formattedPrice,
                 'link' => $addToCartLink,
                 'token' => $token,
+                'productImage' => $product->getImageUrl(),
             );
 
             $sender_name = Mage::getStoreConfig('trans_email/ident_general/name');
