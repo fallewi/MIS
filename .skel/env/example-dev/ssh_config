@@ -1,0 +1,14 @@
+#
+# @CLIENT_CODE:@ENV
+#
+# stick to web*, db*, cache* conventions for ansible host pattern matching
+# 
+
+Host web-1
+  HostName 255.255.255.255
+  User blueacorn
+
+Host db-1
+  HostName 255.255.255.255
+  Port 2222
+  User mysql

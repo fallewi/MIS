@@ -1,0 +1,33 @@
+---
+
+- name: "install newrelic sysmond"
+  hosts: all
+  tags:
+    - newrelic
+    
+  roles:
+    - { role: Rackspace_Automation.newrelic, 
+        newrelic_license_key: "{{ NEWRELIC_LICENSE }}", 
+        sudo: True }
+        
+        
+- name: "install newrelic PHP agent"
+  hosts: web*
+  tags: 
+    - web-server
+    - newrelic
+    
+  roles:
+    - { role: newrelic-php, 
+        newrelic_license_key: "{{ NEWRELIC_LICENSE }}", 
+        newrelic_agent_appname: "utility.{{ inventory_hostname }}",
+        tags: ["newrelic"], 
+        sudo: True }
+        
+  tasks:
+    - name: restart php5-fpm
+      service:
+        name: php5-fpm
+        state: restarted
+      sudo: True
+       

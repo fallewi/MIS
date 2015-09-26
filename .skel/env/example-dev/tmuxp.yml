@@ -1,0 +1,13 @@
+---
+
+session_name: @CLIENT_CODE-@ENV
+start_directory: ./
+windows:
+  - window_name: site
+    layout: main-horizontal
+    shell_command_before:
+      - source ../envars && source envars
+    panes:
+      - ssh -t -F ssh_config web-1 "cd $REPO_ROOT ; exec bash"
+      - ssh -F ssh_config db-1 
+     
