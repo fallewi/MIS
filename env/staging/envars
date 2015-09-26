@@ -1,14 +1,14 @@
 #
-# MIS:@ENV
+# MIS:staging
 #  site variables
 #
 # see /env/README.md for definitions
 #
 
-SUBDOMAIN="www"
+SUBDOMAIN="dev"
 BLUEACORN_DIR="/home/remote-user/blueacorn"
 
-REPO_REF="master"
+REPO_REF="develop"
 REPO_ROOT="${BLUEACORN_DIR}/sites/${SUBDOMAIN}.${DOMAIN}"
 
 MAGE_ROOT="${REPO_ROOT}/webroot"
@@ -20,5 +20,3 @@ MAGE_DB_USER="@MAGE_DB_USER"
 MAGE_DB_PASS="@MAGE_DB_PASS"
 
 NEWRELIC_APPID=""
-
-REDIS_HOST="255.255.255.255"

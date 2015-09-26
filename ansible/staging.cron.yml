@@ -1,0 +1,12 @@
+---
+
+- name: "MIS:staging scheduled tasks"
+  hosts: web-admin
+  gather_facts: False
+  tags: 
+    - cron
+
+  tasks:
+    - include: tasks/cron-magento.yml
+    - include: tasks/cron-redis.yml
+    
