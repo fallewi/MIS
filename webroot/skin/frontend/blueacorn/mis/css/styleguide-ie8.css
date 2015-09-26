@@ -772,6 +772,18 @@ p.product-name {
       height: 41px;
       margin-top: 13px;
       border-radius: 0; }
+      .product-view .add-to-cart-wrapper .map-pricing input::-webkit-input-placeholder {
+        font-size: 12px;
+        line-heigt: 32px; }
+      .product-view .add-to-cart-wrapper .map-pricing input:-moz-placeholder {
+        font-size: 12px;
+        line-heigt: 32px; }
+      .product-view .add-to-cart-wrapper .map-pricing input::-moz-placeholder {
+        font-size: 12px;
+        line-heigt: 32px; }
+      .product-view .add-to-cart-wrapper .map-pricing input:-ms-input-placeholder {
+        font-size: 12px;
+        line-heigt: 32px; }
     .product-view .add-to-cart-wrapper .map-pricing #advice-validate-email-map_email {
       width: 100%;
       color: #EC3837;
