@@ -8,7 +8,7 @@
   pre_tasks:
     
     # compile assets
-    - include: tasks/grunt.yml
+    #- include: tasks/grunt.yml
     
     
   tasks:
@@ -27,13 +27,13 @@
         mode: push
         recursive: yes
       with_items: 
-        - webroot/skin/frontend/blueacorn/site/css/
-        - webroot/skin/frontend/blueacorn/site/jsmin/
+        - webroot/skin/frontend/blueacorn/mis/css/
+        - webroot/skin/frontend/blueacorn/mis/jsmin/
         
   post_tasks:
   
     # notify services
-    - include: tasks/notify-newrelic.yml
+    #- include: tasks/notify-newrelic.yml
     # - include: tasks/notify-hipchat.yml
         
 

@@ -8,5 +8,5 @@
 
   tasks:
     - include: tasks/cron-magento.yml
-    - include: tasks/cron-redis.yml
+#    - include: tasks/cron-redis.yml
     

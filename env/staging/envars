@@ -5,8 +5,8 @@
 # see /env/README.md for definitions
 #
 
-SUBDOMAIN="dev"
-BLUEACORN_DIR="/home/remote-user/blueacorn"
+SUBDOMAIN="staging"
+BLUEACORN_DIR="/home/blueacorn/blueacorn"
 
 REPO_REF="develop"
 REPO_ROOT="${BLUEACORN_DIR}/sites/${SUBDOMAIN}.${DOMAIN}"
