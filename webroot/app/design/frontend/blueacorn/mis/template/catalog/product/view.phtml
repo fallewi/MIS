@@ -72,29 +72,43 @@
                     <?php // Placeholder html for Custom dev feature MAP pricing module ?>
                     <div class="map-pricing">
                         <div class="price-info">
+                            <?php $product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
+                            <?php if($product->getAttributeText('map_required') == "Requires MAP Call"): ?>
                             <div>
                                 <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
-                                    <input id="map_email" type="text" name="user_email" class="input-text"/>
-                                    <button id="map_request" class="button">Get Price</button>
                             </div>
-                            <?php echo $_product->getMsrp(); ?>
+                        <?php elseif($product->getAttributeText('map_required') == "Requires MAP Email"): ?>
+                            <div>
+                                <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
+                                <button id="map_request" class="button">Get Price</button>
+                                <input id="map_email" type="text" name="user_email" class="input-text" placeholder="Enter Email Address"/>
+                            </div>
+                        <?php endif; ?>    
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <?php echo $this->getChildHtml('product_type_data') ?>
                 <?php echo $this->getChildHtml('extrahint') ?>
-
-                <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
-                    <div class="price-info">
-                        <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
-                            <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
-                            <?php echo $this->getPriceHtml($_product); ?>
-                        <?php endif; ?>
-                        <?php echo $this->getChildHtml('bundle_prices') ?>
-                        <?php echo $this->getTierPriceHtml() ?>
-                    </div>
-                <?php endif; ?>
+                
+                <div class="price-info">
+                    <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                            <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                                <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
+                                <?php echo $this->getPriceHtml($_product); ?>
+                            <?php endif; ?>
+                            <?php echo $this->getChildHtml('bundle_prices') ?>
+                            <?php echo $this->getTierPriceHtml() ?>
+                    
+                    <?php else: ?>
+                        
+                        <span class="price map-msrp">
+                            <?php $curr_code = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
+                            <?php echo $curr_code . number_format($_product->getMsrp(), 2); ?>
+                        </span>
+        
+                    <?php endif; ?>
+                </div>
 
                 <?php if(!$_product->isGrouped() && $_product->isSaleable()): ?>
                     <div class="qty-wrapper">
@@ -129,14 +143,9 @@
         //<![CDATA[
 
             (function($) {
-                $(document).ready(function() {
-                    $('#map_request').on('click', function(e) {
-                        e.preventDefault();
-                        var email = $('#map_email').val(),
-                            base_url = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
-                        window.location.replace(base_url + '&email=' + email);
-                    });
-                });
+                window.onload = function() {
+                    ba.productPage.mapPricingObserver("<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>");
+                };
             }(jQuery));
 
             var productAddToCartForm = new VarienForm('product_addtocart_form');
