@@ -19,3 +19,7 @@ var
 /data/*.csv
 /downloader/pearlib/cache/
 /downloader/*.cfg
+
+# compiled files
+skin/frontend/blueacorn/mis/css/
+skin/frontend/blueacorn/mis/jsmin/
