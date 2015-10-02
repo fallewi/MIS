@@ -155,6 +155,7 @@
     @include bp(max-width, $bp-large) {
         padding: $box-spacing;
     }
+
 }
 
 .opc select {
@@ -189,6 +190,12 @@
         display: inline-block;
         padding: 5px 5px 5px 0;
     }
+
+    &#billing-buttons-container {
+        button:not(.continue) {
+            display: none;
+        }
+    }
 }
 
 @include bp(max-width, $bp-xsmall) {
@@ -203,6 +210,9 @@
 .opc #opc-login {
     .step {
         padding: 0px;
+        .input-box.validation-passed:before{
+            top:14px;
+        }
     }
 
     .buttons-set {
@@ -287,6 +297,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     }
     .price {
         font-weight: bold;
+        float: right;
     }
     .form-list {
         padding-left: 20px;
@@ -647,7 +658,6 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         }
         .step-title {
             .number {
-                display: none;
             }
         }
     }
@@ -673,3 +683,27 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     background: yellow;
 }
 
+
+// Form Overrides
+.opc #opc-login .input-box,
+.opc .wide .input-box,
+.opc .input-box.select-container,
+.company .input-box,
+.credit-card .input-box{
+    &.validation-passed:before{
+        top:14px;
+    }
+}
+@include bp(max-width, $bp-medium){
+    .opc .select-container{
+        width:auto;
+    }
+}
+
+@include bp(max-width, $bp-xsmall) {
+    .checkout-review-table th.a-right {
+        float: left;
+        width: 60%;
+        white-space: normal;
+    }
+}

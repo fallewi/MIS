@@ -48,12 +48,13 @@
     .block-title {
         border-bottom: 0;
         padding: 3px 0;
-        margin-bottom: 17px;
+        margin-bottom: 15px;
         font-family: $f-stack-sans;
         text-transform: uppercase;
         color: $brand-primary;
         font-size: 15px;
         font-weight: 400;
+        letter-spacing: -1px;
         border: 0;
     }
 
@@ -85,12 +86,12 @@
         li {
             word-break: break-all;
             line-height: 1.4;
-            padding: 4px 0 5px;
+            padding: 5px 0 6px;
         }
 
         a {
             color: #4D4D4D;
-            font-size: 15px;
+            font-size: 14px;
 
             &:hover {
                 color: $c-action;
@@ -99,7 +100,6 @@
     }
 
     .block-subscribe {
-        float: right;
         width: 290px;
         margin-bottom: 30px;
         margin-top: 7px;
@@ -310,10 +310,10 @@
             }
 
             .block-title.open-links {
-    
+
                 color: $brand-action;
                 margin-bottom: 0;
-    
+
                 & + ul {
                     max-height: 55em;
                     padding: 3px 20px 20px;
@@ -325,7 +325,7 @@
                 }
             }
         }
-    }    
+    }
 
     @include bp(max-width, $bp-medium) {
         .form-language,
@@ -378,7 +378,7 @@
     }
 }
 
-.connect-container { 
+.connect-container {
     float: right;
 
     @include bp(max-width, 870px) {
@@ -426,4 +426,16 @@
     }
 }
 
+@media all and (max-width: 1185px) and (min-width: 951px) {
+    .footer {
+        .links-container .links {
+            float: none;
+            margin-left: 0;
+        }
 
+        .tablet-links {
+            float: left;
+            width: 18%;
+        }
+    }
+}

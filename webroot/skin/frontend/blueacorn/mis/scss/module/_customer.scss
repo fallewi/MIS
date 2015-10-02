@@ -830,7 +830,19 @@ ol#cart-sidebar-reorder {
 }
 
 @include bp(max-width, $bp-xsmall) {
+    .account-login,
+    .account-create{
+        .fieldset{
+            padding:0 15px;
+        }
+    }
     body.customer-account {
+        .col-main{
+            padding:0 15px;
+        }
+        .form-list .select-container{
+            width:auto;
+        }
         .my-account {
             .page-title {
                 h1 {
@@ -876,6 +888,13 @@ ol#cart-sidebar-reorder {
 
                 h2 {
                     margin-bottom: $trim-small;
+                }
+            }
+            .giftcardaccount{
+                .buttons-set{
+                    .button{
+                        white-space:normal;
+                    }
                 }
             }
         }

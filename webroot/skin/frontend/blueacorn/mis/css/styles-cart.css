@@ -299,7 +299,9 @@
       border-radius: 0;
       margin-bottom: 10px;
       text-align: center;
-      width: 3.2em; }
+      width: 3.2em;
+      padding-left: 0;
+      padding-right: 0; }
     .cart-table .product-cart-actions .button {
       margin-bottom: 5px; }
   .cart-table .item-options {
@@ -649,6 +651,15 @@
     padding: 0 0px 40px; }
   .crosssell ul .product-details .crosssell-actions {
     padding: 0 5px; } }
+
+.checkout-cart-index .shipping-form .form-list label:before,
+.checkout-cart-index .input-box.validation-passed:before {
+  display: none; }
+
+.checkout-cart-index .select-container .custom-shiv span {
+  position: absolute;
+  top: 0;
+  right: 0; }
 
 /* ============================================ *
  * Configurable Swatches

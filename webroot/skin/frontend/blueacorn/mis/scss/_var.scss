@@ -255,7 +255,7 @@ $c-email-highlighted-background: #FFFDD9;
 $c-email-highlighted-border: #FFF74C;
 
 // Product
-$product-column-spacing: 20px;
+$product-column-spacing: 7px;
 
 // =============================================
 // Typography
@@ -476,6 +476,7 @@ $b-margin-bottom: 1.5em;
 // Retina background-image support with non-retina fall back
 @mixin retina-image($file-1x, $file-2x, $width-1x, $height-1x, $posX:"", $posY:"") {
   background-image: url($file-1x);
+  background-position: $posX $posY;
 
   @media
   only screen and (-webkit-min-device-pixel-ratio: 2),
@@ -484,8 +485,8 @@ $b-margin-bottom: 1.5em;
   only screen and (        min-device-pixel-ratio: 2),
   only screen and (                min-resolution: 192dpi),
   only screen and (                min-resolution: 2dppx) {
-    background: url($file-2x);
+    background-image: url($file-2x);
     background-size: $width-1x $height-1x;
-    background-position: $posX $posY;
+
   }
 }

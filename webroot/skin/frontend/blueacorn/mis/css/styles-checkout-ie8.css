@@ -148,9 +148,13 @@
     line-height: 20px;
     display: inline-block;
     padding: 5px 5px 5px 0; }
+  .opc .buttons-set#billing-buttons-container button:not(.continue) {
+    display: none; }
 
 .opc #opc-login .step {
   padding: 0px; }
+  .opc #opc-login .step .input-box.validation-passed:before {
+    top: 14px; }
 
 .opc #opc-login .buttons-set {
   border-top: 0;
@@ -208,7 +212,8 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     float: right;
     margin-left: 10px; }
   .sp-methods .price {
-    font-weight: bold; }
+    font-weight: bold;
+    float: right; }
   .sp-methods .form-list {
     padding-left: 20px; }
     .sp-methods .form-list li {
@@ -414,9 +419,6 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   clear: both;
   width: 100%; }
 
-.opc .section.allow.active .step-title .number {
-  display: none; }
-
 .stepnumber {
   float: left;
   width: 35px;
@@ -435,6 +437,13 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 #opc-payment.allow.active .paymentinformation,
 #opc-review.allow.active .orderreview {
   background: yellow; }
+
+.opc #opc-login .input-box.validation-passed:before,
+.opc .wide .input-box.validation-passed:before,
+.opc .input-box.select-container.validation-passed:before,
+.company .input-box.validation-passed:before,
+.credit-card .input-box.validation-passed:before {
+  top: 14px; }
 
 /* ============================================ *
  * Checkout - Success

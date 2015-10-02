@@ -134,8 +134,9 @@
                 content: "";
                 display: block;
                 @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
-                width: 15px;
-                height: 15px;
+                background-position: -78px -30px;
+                width: 16px;
+                height: 16px;
                 top: 12px;
                 right: 12px;
             }
@@ -193,6 +194,10 @@
                 background: $white;
                 margin-bottom: 20px;
                 padding-top: 0;
+
+                @include bp(max-width, $bp-medium) {
+                    margin-top: -5px;
+                }
             }
         }
     }

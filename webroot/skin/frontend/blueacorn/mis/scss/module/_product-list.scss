@@ -34,16 +34,46 @@
 .category-title h1,
 body.catalogsearch-result-index .page-title h1 {
     border-bottom: none;
+    font-family: $f-stack-sans;
+    font-size: 47px;
+    color: #D0021B;
+    font-weight: normal;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+
+    @include bp(max-width, $bp-medium) {
+        text-align: center;
+        font-size: 28px;
+        line-height: 40px;
+    }
+}
+
+.category-description {
+    font-size: 15px;
+    line-height: 24px;
+    max-width: 467px;
+    max-height: 69px;
+    overflow: hidden;
+    margin-bottom: 46px;
 }
 
 .category-image {
     margin-bottom: $b-margin-bottom;
+
+    @include bp(max-width, $bp-medium) {
+        display: none;
+    }
 }
 
 // Prevent button overlapping when buttons have long text, such as non-English translations
 .products-list .action .button,
 .products-grid .actions .button {
     white-space: normal;
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: normal;
+    padding: 10px 24px 10px;
+    width: 100%;
 }
 
 /* -------------------------------------------- *
@@ -99,6 +129,8 @@ p.product-name {
     position: relative;
     margin-bottom: $product-column-spacing;
     text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
 
     &:after {
         @include clearfix;
@@ -125,6 +157,10 @@ p.product-name {
         margin-bottom: 15px;
         margin-left: 10%;
     }
+}
+
+.lsb_container {
+    display: none;
 }
 
 // If the height of the .product-info element changes, this value should be adjusted
@@ -161,6 +197,10 @@ $productsGridActionHeight: 85px;
     margin-bottom: 0;
 }
 
+.ie8 .crosssell .product-info {
+    min-height: 270px !important;
+}
+
 // ---------------------------------------------
 
 /* Config: Two columns + flexible gutter */
@@ -170,8 +210,12 @@ $productsGridActionHeight: 85px;
 
 .products-grid > li {
     float: left;
-    width: percentage(210 / 440);
-    margin-right: percentage(20 / 440);
+    width: 100%;
+    padding: 5%;
+
+    &:hover {
+        outline: 1px solid $black;
+    }
 }
 
 .products-grid > li:nth-child(odd) {
@@ -188,14 +232,87 @@ $productsGridActionHeight: 85px;
     @include loadingOverlay();
 }
 
+.category-products {
+
+    .link-wishlist {
+        display: none;
+    }
+
+    .link-compare {
+        position: relative;
+
+        &:before {
+            content: "";
+            border-style: solid;
+            border-width: 5px 0 5px 7px;
+            border-color: transparent transparent transparent #00257b;
+            position: absolute;
+            right: -13px;
+            top: 6px;
+
+        }
+    }
+}
+
 // ---------------------------------------------
 
 @include bp(min-width, $bp-xsmall + 1) {
+    $column-count: 2;
+    $column-gutters: 2;
+    $container: 600 - (3 * 20px);
+
+    $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+    .products-grid {
+
+        /* Set column config */
+        > li {
+            width: 48.6%;
+            padding: 2%;
+            margin-left: 1%;
+        }
+        > li:nth-child(#{$column-count}n+1) {
+            clear: left;
+        }
+        > li:nth-child(#{$column-count}n) {
+            padding-right: 2%;
+        }
+    }
+}
+
+// ---------------------------------------------
+
+@include bp(min-width, $bp-medium + 1) {
+    $column-count: 2;
+    $column-gutters: 2;
+    $container: 600 - (3 * 20px);
+
+    $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
+
+    .products-grid {
+        /* Set column config */
+        > li {
+            width: 48.6%;
+            padding: 2%;
+            margin-left: 1%;
+        }
+        > li:nth-child(#{$column-count}n+1) {
+            clear: left;
+        }
+        > li:nth-child(#{$column-count}n) {
+            padding-right: 2%;
+        }
+    }
+}
+
+// ---------------------------------------------
+
+@include bp(min-width, $bp-large + 1) {
     /* Config: Three columns + flexible gutter */
     // Container: 600 - (2 * 30 trim wide) = 540
     $column-count: 3;
-    $column-gutters: 2;
-    $container: 600 - (2 * $trim);
+    $column-gutters: 3;
+    $container: 600 - (4 * 20px);
 
     // Math: (540 - (2 * 30 gutter)) / 3 items = 160
     $column-width: ($container - ($column-gutters * $product-column-spacing)) / $column-count;
@@ -206,19 +323,20 @@ $productsGridActionHeight: 85px;
             clear: none;
         }
         > li:nth-child(even) {
-            margin-right: percentage($product-column-spacing / $container);
+            padding-right: 2%;
         }
 
         /* Set three-column config */
         > li {
-            width: percentage($column-width / $container);
-            margin-right: percentage($product-column-spacing / $container);
+            width: 32%;
+            padding: 2%;
+            margin-left: 1%;
         }
         > li:nth-child(#{$column-count}n+1) {
             clear: left;
         }
         > li:nth-child(#{$column-count}n) {
-            margin-right: 0;
+            padding-right: 2%;
         }
     }
 }
@@ -415,12 +533,11 @@ $productsGridActionHeight: 85px;
  * ============================================ */
 
 .category-image {
-    border: 1px solid $c-module-border;
-    padding: 10px;
 
     img {
-        width: 100%;
-        max-width: 100%;
+        max-width: 312px;
+        float: right;
+        padding: 25px 0 0 30px;
 
         &:hidden {
             display: none;
@@ -432,8 +549,15 @@ $productsGridActionHeight: 85px;
  * Layered Navigation
  * ============================================ */
 
+// hides category title as it is redundant on the top level category pages
+#narrow-by-list2 {
+    dt {
+        display: none;
+    }
+}
+
 #narrow-by-list {
-    padding: 20px;
+    padding: 11px 20px;
 }
 
 .block-layered-nav .block-subtitle--filter {
@@ -448,6 +572,10 @@ $productsGridActionHeight: 85px;
     @include accordion;
     @include accordionCollapse;
     background: $brand-light;
+
+    @include bp(max-width, $bp-medium) {
+        background: $white;
+    }
 }
 
 .block-layered-nav dl dd {
@@ -457,8 +585,16 @@ $productsGridActionHeight: 85px;
     ol > li > span, ol > li > a {
         padding: 4px 9px 5px;
         display: block;
-        color: $c-text;
+        color: #1E1E1E;
         font-size: 15px;
+    }
+}
+
+.block-layered-nav .block-content > dl > dt {
+    color: #022579;
+
+    &.current {
+        color: #CA123E;
     }
 }
 
@@ -473,6 +609,10 @@ $productsGridActionHeight: 85px;
 }
 
 @include bp(max-width, $bp-medium) {
+    .category-description {
+        display: none;
+    }
+
     .sidebar .block.block-layered-nav {
         border-bottom: none;
     }
@@ -486,46 +626,65 @@ $productsGridActionHeight: 85px;
     .block-layered-nav .block-content {
         padding-top: 0;
         margin-top: 15px;
+
+        & > dl > dt {
+            margin-bottom: 20px;
+
+            &:after {
+                right: -9999px;
+                top: -9999px;
+            }
+        }
     }
 
     .block-layered-nav .block-subtitle--filter {
-        background-color: $c-action;
+        background-color: $white;
         border: 0;
         margin-bottom: 0;
         display: block;
-        color: #FFFFFF;
+        color: $brand-primary;
+        border: 1px solid $brand-primary;
+        text-align: center;
+        text-transform: uppercase;
 
-        &:after {
-            @include triangle(right, 4px, #FFFFFF);
-            right: 10px;
-            top: 50%;
-            margin-top: -5px;
+        &:before {
+            @include triangle(down, 8px, $brand-primary);
+            position: static;
+            margin-top: 7px;
+            float: right;
         }
 
-        &:hover {
-            background-color: $c-button-hover;
-            color: #FFFFFF;
+        &.active {
+            background-color: $brand-primary;
+            color: $white;
+
+            &:before {
+                @include triangle(up, 8px, $white);
+                position: static;
+                margin-top: 7px;
+                float: right;
+            }
         }
 
+        &:after,
         &.active:after {
-            @include triangle(down, 4px, #FFFFFF);
-            right: 10px;
-            top: 50%;
-            margin-top: -3px;
+            right: -9999px;
+            top: -9999px;
         }
     }
 
     #narrow-by-list,
     #narrow-by-list2 {
-        padding: $box-spacing;
-        border: 1px solid $c-module-border;
-        border-top: 0;
+        padding: 22px 22px 2px 23px;
+        margin-top: 10px;
+        background: $brand-light;
     }
 
     .block-layered-nav dl ol > li > a,
     .block-layered-nav dl ol > li > span {
         padding: 7px;
         margin: 5px;
+        background: $white !important;
     }
 
     .block-layered-nav dl ol > li > a {
@@ -564,4 +723,49 @@ $productsGridActionHeight: 85px;
 .block-layered-nav .actions {
     text-align: right;
     margin-bottom: $element-spacing;
+}
+
+.block-layered-nav {
+
+    .block-title {
+        font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+        font-size: 18px;
+        padding: 10px 20px 0 !important;
+    }
+
+    .currently,
+    .actions {
+        padding: 10px 20px 0;
+    }
+
+    .currently .block-subtitle {
+        font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
+        font-weight: normal;
+        line-height: 27px;
+    }
+
+    @include bp(max-width, $bp-medium) {
+        .currently {
+            padding: 22px 22px 12px 12px;
+            margin: 10px 0;
+            background: #F6F6F6;
+
+            ol li {
+                background: $white;
+                padding: 10px 10px 10px 23px;
+            }
+        }
+
+        .block-title,
+        .currently .block-subtitle,
+        .actions {
+            display: none;
+        }
+    }
+
+    @include bp(max-width, $bp-xsmall) {
+        .currently .value{
+            display: none;
+        }
+    }
 }

@@ -26,7 +26,7 @@
 /* ============================================ *
  * Homepage
  * ============================================ */
- 
+
     .hero-container {
         @include clearfix;
         background: #F5F5F5;
@@ -128,7 +128,7 @@
  */
 
 .feature-wrap {
-    
+
     margin-top: 30px;
 
     .feature-item {
@@ -139,6 +139,7 @@
         float: left;
         border: 1px solid #E1E1E1;
         text-align: center;
+        height: 100%;
 
         @include bp(max-width, 950px) {
             width: 49.15%;
@@ -193,6 +194,10 @@
 
         &.feature-promo h3 {
             color: $brand-action;
+        }
+
+        a {
+            text-decoration: none;
         }
     }
 }

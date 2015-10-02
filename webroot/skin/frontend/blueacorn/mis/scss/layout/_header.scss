@@ -117,7 +117,7 @@
     top: 8px;
     margin-right: 30px;
 
-    
+
     @include bp(min-width, $bp-medium + 1) {
         display: none;
 
@@ -171,7 +171,7 @@
         max-height: 40px;
         text-align: left;
         float: left;
-        width: 193px;
+        width: 197px;
     }
 
     .small {
@@ -341,7 +341,6 @@ a.skip-link {
 
 .skip-content.skip-active {
     display: block;
-    background: #EDEDED;
 }
 
 /* ============================================ *

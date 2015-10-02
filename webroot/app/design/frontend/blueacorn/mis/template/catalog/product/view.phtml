@@ -33,6 +33,7 @@
 ?>
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
+<?php $productPageHelper = Mage::helper('blueacorn_productpage'); ?>
 <script type="text/javascript">
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
 </script>
@@ -133,8 +134,6 @@
                 <?php endif; ?>
             </div>
 
-            <?php echo $this->getChildHtml('related_products') ?>
-
             <div class="clearer"></div>
             <?php if ($_product->isSaleable() && $this->hasOptions()):?>
                 <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
@@ -200,20 +199,50 @@
         </script>
     </div>
 
-    <div class="product-collateral toggle-content tabs">
-        <?php if ($detailedInfoGroup = $this->getChildGroup('detailed_info', 'getChildHtml')):?>
-            <dl id="collateral-tabs" class="collateral-tabs">
-                <?php foreach ($detailedInfoGroup as $alias => $html):?>
-                    <dt class="tab"><span><?php echo $this->escapeHtml($this->getChildData($alias, 'title')) ?></span></dt>
-                    <dd class="tab-container">
-                        <div class="tab-content"><?php echo $html ?></div>
-                    </dd>
-                <?php endforeach;?>
-            </dl>
-        <?php endif; ?>
+    <div class="product-information-block">
+
+    <div class="column column-left">
+        <div class="column-container description">
+            <h2><?php echo $this->__("Product Description") ?></h2>
+            <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?></div>
+        </div>
+        <?php if($_product->getResourceBadges()): ?>
+            <div class="column-container resource-badges">
+                <h2><?php echo $this->__("CR2B-FS Resources") ?></h2>
+                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getResourceBadges(), 'resource_badges') ?></div>
+            </div>
+        <?php endif;?>
     </div>
 
+    <div class="column column-center">
+        <div class="column-container specifications">
+            <div class="detail"><?php echo $this->getLayout()->createBlock('catalog/product_view_attributes', '', array('template'=> 'catalog/product/view/attributes.phtml'))->toHtml(); ?></div>
+        </div>
+    </div>
+
+    <div class="column column-right">
+        <div class="column-container ships-from">
+            <h2><?php echo $this->__("Shipping") ?></h2>
+            <div class="detail"><?php echo $this->__("Ships from: ") .$_product->getAttributeText('ships_from') ?>
+                    <p><?php echo $productPageHelper->getShipFrom($_product->getData('ships_from')) ?></p>
+            </div>
+        </div>
+        <?php if($_product->getFeaturesBenefits()): ?>
+            <div class="column-container features-benefits">
+                <h2><?php echo $this->__("Features & Benefits") ?></h2>
+                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getFeaturesBenefits(), 'features_benefits') ?></div>
+            </div>
+        <?php endif;?>
+        <?php if($_product->getResourceDownloads()): ?>
+            <div class="column-container resource-downloads">
+                <h2><?php echo $this->__("CR2B-FS Resources") ?></h2>
+                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getResourceDownloads(), 'resourses_downloads') ?></div>
+            </div>
+        <?php endif;?>
+    </div>
+    </div>
+
+    <?php echo $this->getChildHtml('related_products') ?>
     <?php echo $this->getChildHtml('upsell_products') ?>
-    <?php echo $this->getChildHtml('product_additional_data') ?>
 
 </div>

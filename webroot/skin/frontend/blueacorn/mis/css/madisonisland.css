@@ -106,7 +106,8 @@
     padding: 20px 20px 82px;
     float: left;
     border: 1px solid #E1E1E1;
-    text-align: center; }
+    text-align: center;
+    height: 100%; }
     @media only screen and (max-width: 950px) {
       .feature-wrap .feature-item {
         width: 49.15%;
@@ -144,6 +145,8 @@
       padding: 10px 5px 10px; }
     .feature-wrap .feature-item.feature-promo h3 {
       color: #EC3837; }
+    .feature-wrap .feature-item a {
+      text-decoration: none; }
 
 /* -------------------------------------------- *
  * Primary Banner
@@ -409,4 +412,8 @@ body .promos > li {
 .catalog-category-view div.categoryland-caption p.desc {
   font: italic 18px/28px Georgia, "Times New Roman", Times, serif;
   color: #656565; }
+
+@media only screen and (max-width: 979px) {
+  .catalog-category-view .page {
+    overflow: hidden; } }
 /*# sourceMappingURL=madisonisland.css.map */

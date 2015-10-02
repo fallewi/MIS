@@ -153,6 +153,8 @@
     line-height: 20px;
     display: inline-block;
     padding: 5px 5px 5px 0; }
+  .opc .buttons-set#billing-buttons-container button:not(.continue) {
+    display: none; }
 
 @media only screen and (max-width: 479px) {
   .opc .buttons-set .button + .buttons-set .button,
@@ -161,6 +163,8 @@
 
 .opc #opc-login .step {
   padding: 0px; }
+  .opc #opc-login .step .input-box.validation-passed:before {
+    top: 14px; }
 
 .opc #opc-login .buttons-set {
   border-top: 0;
@@ -226,7 +230,8 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     float: right;
     margin-left: 10px; }
   .sp-methods .price {
-    font-weight: bold; }
+    font-weight: bold;
+    float: right; }
   .sp-methods .form-list {
     padding-left: 20px; }
     .sp-methods .form-list li {
@@ -468,9 +473,6 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   clear: both;
   width: 100%; }
 
-.opc .section.allow.active .step-title .number {
-  display: none; }
-
 .stepnumber {
   float: left;
   width: 35px;
@@ -489,6 +491,23 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 #opc-payment.allow.active .paymentinformation,
 #opc-review.allow.active .orderreview {
   background: yellow; }
+
+.opc #opc-login .input-box.validation-passed:before,
+.opc .wide .input-box.validation-passed:before,
+.opc .input-box.select-container.validation-passed:before,
+.company .input-box.validation-passed:before,
+.credit-card .input-box.validation-passed:before {
+  top: 14px; }
+
+@media only screen and (max-width: 770px) {
+  .opc .select-container {
+    width: auto; } }
+
+@media only screen and (max-width: 479px) {
+  .checkout-review-table th.a-right {
+    float: left;
+    width: 60%;
+    white-space: normal; } }
 
 /* ============================================ *
  * Checkout - Success
@@ -981,6 +1000,13 @@ ol#cart-sidebar-reorder p.product-name {
     padding-left: 0; } }
 
 @media only screen and (max-width: 479px) {
+  .account-login .fieldset,
+  .account-create .fieldset {
+    padding: 0 15px; }
+  body.customer-account .col-main {
+    padding: 0 15px; }
+  body.customer-account .form-list .select-container {
+    width: auto; }
   body.customer-account .my-account .page-title h1 {
     text-align: center; }
   body.customer-account .my-account .title-buttons {
@@ -1004,6 +1030,8 @@ ol#cart-sidebar-reorder p.product-name {
     width: auto; }
   body.customer-account .my-account .addresses-list h2 {
     margin-bottom: 15px; }
+  body.customer-account .my-account .giftcardaccount .buttons-set .button {
+    white-space: normal; }
   .order-info {
     margin-top: 15px; }
   .data-table.orders .link-reorder,
