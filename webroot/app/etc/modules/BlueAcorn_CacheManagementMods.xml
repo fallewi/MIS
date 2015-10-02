@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_CacheManagementMods>
+            <active>true</active>
+            <codePool>local</codePool>
+        </BlueAcorn_CacheManagementMods>
+    </modules>
+</config>
