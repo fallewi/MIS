@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_cache_index>
+        <reference name="content">
+            <block type="blueacorn_cachemanagementmods/controls"
+                name="blueacorn_cachemangement_controls"
+                after="cache.additional"
+                template="blueacorn/cachemanagementmods/controls.phtml" />
+        </reference>
+    </adminhtml_cache_index>
+</layout>
