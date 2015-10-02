@@ -22,19 +22,19 @@ $templateText = '<!--@subject Welcome, {{var customer.name}}! @-->
 <table cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td class="action-content">
-            <h1>Hello!</h1>
-            <p>Thank you for your interest in the <strong style="font-weight: 700;">Product Name</strong></p>
-            <p>This item is currently available for you at MissionRS.com for <strong style="font-weight: 700;">an exclusive, discounted price of $2,814.55.</strong></p>
+            <h1 style="font-size: 18px; margin-bottom: 15px; line-height: 18px;">Hello,</h1>
+            <p>Thank you for your interest in the <strong style="font-weight: 700;">{{var productName}}</strong></p>
+            <p>This item is currently available for you at MissionRS.com for <strong style="font-weight: 700;">an exclusive, discounted price of {{var price}}.</strong></p>
             <div class="product-container" style="margin-bottom: 20px;">
-                <img src="http://placekitten.com/g/188/188" style="float:left; margin-right: 5px; width: 190px; border: 1px solid #e0e0e0;">
+                <img src="${{var productImage}}" style="float:left; margin-right: 5px; width: 190px; border: 1px solid #e0e0e0;">
                 <div class="product-info" style="float:left; width: 310px; word-wrap: break-word; background: #f9f9f9; border: 1px solid #e0e0e0; padding: 10px 20px;">
-                    <p style="margin: 0;"><strong style="font-weight: 700;">Manufacturing Company Name</strong></p>
-                    <p style="margin: 0;"><strong style="font-weight: 700;">Product Name</strong></p>
-                    <p style="margin: 0;"><strong style="font-weight: 700;">Product Token: </strong>065D82F6-FBF2-E23F-0C3E-4A51B4E92C6D</p>
+                    <p style="margin: 0;"><strong style="font-weight: 700;">{{var manufacturer}}</strong></p>
+                    <p style="margin: 0;"><strong style="font-weight: 700;">{{var productName}}</strong></p>
+                    <p style="margin: 0;"><strong style="font-weight: 700;">Product Token: </strong>{{var token}}</p>
                     </br>
-                    <p><strong style="font-weight: 700;">Your Price: </strong>$2,814.55</p>
+                    <p><strong style="font-weight: 700;">Your Price: </strong>{{var price}}</p>
                     <p style="margin: 0;"><strong style="font-weight: 700;">Add to Cart (copy the URL and paste it into your browser):</strong></p>
-                    <a href="#">http://www.missionrs.com/levementum_custommapp/index/confirm/product_id/4633/token_id/065D82F6-FBF2-E23F-0C3E-4A51B4E92C6D/email/sarah.steen@blueacorn.com/options/N;/type/simple/</a>
+                    <a href="#">{{var link}}</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
