@@ -32,10 +32,18 @@
                             <show_in_store>0</show_in_store>
                             <comment>The amount of time in hours that a new token will be valid.</comment>
                         </token_duration>
-                        <call_to_action translate="label">
-                            <label>MAP Pricing Request Call to Action</label>
+                        <call_to_action_email translate="label">
+                            <label>MAP Pricing Request Call or Email Label</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </call_to_action_email>
+                        <call_to_action translate="label">
+                            <label>MAP Pricing Request Call Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>

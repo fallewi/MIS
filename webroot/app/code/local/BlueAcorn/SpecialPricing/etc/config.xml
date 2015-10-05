@@ -59,6 +59,18 @@
             </blueacorn_specialpricing_resource>
         </models>
     </global>
+    <crontab>
+        <jobs>
+            <check_for_expired_tokens>
+                <schedule>
+                    <cron_expr>0 22 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>blueacorn_specialpricing/cron::checkExpiredTokens</model>
+                </run>
+            </check_for_expired_tokens>
+        </jobs>
+    </crontab>
     <adminhtml>
         <layout>
             <updates>
