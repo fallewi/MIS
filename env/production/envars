@@ -1,0 +1,23 @@
+#
+# MIS:production
+#  site variables
+#
+# see /env/README.md for definitions
+#
+
+SUBDOMAIN="www"
+BLUEACORN_DIR="/home/blueacorn/blueacorn"
+
+REPO_REF="master"
+REPO_ROOT="${BLUEACORN_DIR}/sites/${SUBDOMAIN}.${DOMAIN}"
+
+MAGE_ROOT="${REPO_ROOT}/webroot"
+MAGE_URL="http://${SUBDOMAIN}.${DOMAIN}/"
+
+MAGE_DB_HOST="@MAGE_DB_HOST"
+MAGE_DB_NAME="@MAGE_DB_NAME"
+MAGE_DB_USER="@MAGE_DB_USER"
+MAGE_DB_PASS="@MAGE_DB_PASS"
+
+NEWRELIC_APPID=""
+
