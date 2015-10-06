@@ -1,10 +1,11 @@
-Draft MIS README
+MIS README
 =========================
 
 # Quickstart
 
 ### requirements
 * [blueacorn bootstrap](https://github.com/BlueAcornInc/bootstrap)
+  * This is only needed for the initial environment creation and deployment scripts, both of which are handled internally by Blue Acorn Systems Architects. If you are only developing code on the site, you do not need this file. 
 
 ```sh
 # clone repository to your preferred working directory
@@ -14,13 +15,18 @@ git clone @GIT_REMOTE $BLUEACORN_PROJ_DIR/MIS
 cd $BLUEACORN_PROJ_DIR/MIS 
 
 # set the current environment to 'local'
-./manage.sh env local
+./env.sh set local
 
 # configure .htaccess, app/etc/local.xml as per usual
 #   NOTE: read more about environments in the env/ folder README
 $EDITOR env/local/webroot/app/etc/local.xml
 $EDITOR env/local/webroot/.htaccess
 ```
+
+### Setup
+* [Grunt and Git Hooks](https://docs.google.com/document/d/1jVSJvUvYxNvKu2Mcs5wtN00lVAeV53iG3sPBkJ9hCs8/)
+  * This setup process is mandatory in order for the site to function correctly. Do not skip this step.
+
 
 
 # Development Process
@@ -30,7 +36,8 @@ $EDITOR env/local/webroot/.htaccess
 * Use [Pull Requests](https://help.github.com/articles/creating-a-pull-request/) to merge your branch back into __develop__. Do not `git merge`. 
   * THINK: you can't create a pull request if you work directly on __develop__!
 
-* Don't approve your own pull requests. Four eyes on all code. 
+* Your Pull Requests MUST be approved before they are merged into develop. Approvals are done internally by Blue Acorn.
+* Do not make any changes to the Magento directly on the servers. The deployment scripts are designed to fail if there are any unstaged changes in order to prevent removing code.
 
 
 ##### Stale Branches
