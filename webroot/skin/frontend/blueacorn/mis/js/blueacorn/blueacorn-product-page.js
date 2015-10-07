@@ -136,7 +136,7 @@ jQuery(document).ready(function ($) {
             });
         },
 
-        mapPricingObserver: function(baseUrl){
+        mapPricingObserver: function(){
             var self = this;
 
             $('#map_email').on('change', function(){
@@ -151,8 +151,7 @@ jQuery(document).ready(function ($) {
                 ev.preventDefault();
                 var emailString = $('#map_email').val();
                 if(self.mapPricingValidate(emailString)) {
-                    $('.validation-advice').remove();
-                    window.location.replace(baseUrl + '&email=' + emailString);
+                    $('#advice-validate-email-map_email').remove();
                 }
             });
         },
