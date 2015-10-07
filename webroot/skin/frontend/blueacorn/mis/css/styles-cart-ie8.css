@@ -127,11 +127,9 @@
       display: block; }
   .checkout-types.top .paypal-logo .paypal-or {
     margin-top: 5px; }
-  .checkout-types.bottom .paypal-logo a,
-  .checkout-types.minicart .paypal-logo a {
+  .checkout-types.bottom .paypal-logo a, .checkout-types.minicart .paypal-logo a {
     display: block; }
-  .checkout-types.bottom .paypal-or,
-  .checkout-types.minicart .paypal-or {
+  .checkout-types.bottom .paypal-or, .checkout-types.minicart .paypal-or {
     margin: 0px;
     display: block;
     text-align: center; }

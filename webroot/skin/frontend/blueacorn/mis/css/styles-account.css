@@ -1160,7 +1160,7 @@ body.newsletter-manage-index .my-account .form-list {
   .review-product-view .product-review .product-img-box .product-image {
     width: 100%; }
 
-@media only screen and ("max-width": 770px) {
+@media only screen and (max-width: 770px) {
   .review-product-view .product-review .product-img-box {
     max-width: 100%; } }
 
@@ -1338,11 +1338,7 @@ body.newsletter-manage-index .my-account .form-list {
     position: relative; }
   #wishlist-table th.customer-wishlist-item-image {
     display: block; }
-  #wishlist-table td.customer-wishlist-item-image,
-  #wishlist-table td.customer-wishlist-item-info,
-  #wishlist-table td.customer-wishlist-item-quantity,
-  #wishlist-table td.customer-wishlist-item-price,
-  #wishlist-table td.customer-wishlist-item-cart {
+  #wishlist-table td.customer-wishlist-item-image, #wishlist-table td.customer-wishlist-item-info, #wishlist-table td.customer-wishlist-item-quantity, #wishlist-table td.customer-wishlist-item-price, #wishlist-table td.customer-wishlist-item-cart {
     width: 100%;
     padding-left: 0;
     padding-right: 0;
@@ -1355,18 +1351,14 @@ body.newsletter-manage-index .my-account .form-list {
       #wishlist-table td.customer-wishlist-item-image a img {
         width: 113px;
         height: 113px; }
-  #wishlist-table td.customer-wishlist-item-quantity,
-  #wishlist-table td.customer-wishlist-item-price {
+  #wishlist-table td.customer-wishlist-item-quantity, #wishlist-table td.customer-wishlist-item-price {
     text-align: left; }
-    #wishlist-table td.customer-wishlist-item-quantity:before,
-    #wishlist-table td.customer-wishlist-item-price:before {
+    #wishlist-table td.customer-wishlist-item-quantity:before, #wishlist-table td.customer-wishlist-item-price:before {
       float: left;
       margin-right: 15px; }
-    #wishlist-table td.customer-wishlist-item-quantity .cart-cell,
-    #wishlist-table td.customer-wishlist-item-price .cart-cell {
+    #wishlist-table td.customer-wishlist-item-quantity .cart-cell, #wishlist-table td.customer-wishlist-item-price .cart-cell {
       text-align: left; }
-    #wishlist-table td.customer-wishlist-item-quantity .price-box,
-    #wishlist-table td.customer-wishlist-item-price .price-box {
+    #wishlist-table td.customer-wishlist-item-quantity .price-box, #wishlist-table td.customer-wishlist-item-price .price-box {
       margin-top: 0; }
   #wishlist-table td.customer-wishlist-item-cart .cart-cell {
     float: left;
@@ -1701,8 +1693,7 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
 
 .account-login #giftcard-form .input-box.validation-passed:before,
 .account-login .registered-users .input-box.validation-passed:before,
-.account-login .widget-addbysku .input-box.validation-passed:before,
-.my-account #giftcard-form .input-box.validation-passed:before,
+.account-login .widget-addbysku .input-box.validation-passed:before, .my-account #giftcard-form .input-box.validation-passed:before,
 .my-account .registered-users .input-box.validation-passed:before,
 .my-account .widget-addbysku .input-box.validation-passed:before {
   top: 14px; }
@@ -1786,12 +1777,10 @@ body.enterprise-rma-return-view .box-content {
 @media only screen and (max-width: 480px) {
   .rma-view.col-2 {
     text-align: left; }
-  .rma-view.col-1,
-  .rma-view.col-2 {
+  .rma-view.col-1, .rma-view.col-2 {
     border-bottom: 1px solid #CCCCCC;
     margin-bottom: 20px; }
-    .rma-view.col-1 h3,
-    .rma-view.col-2 h3 {
+    .rma-view.col-1 h3, .rma-view.col-2 h3 {
       margin-bottom: 0; } }
 
 /* ============================================ *

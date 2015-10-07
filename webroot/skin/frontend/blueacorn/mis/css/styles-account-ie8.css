@@ -1283,8 +1283,7 @@ body.customer-account .my-account .title-buttons.recurring-profiles-title-button
 
 .account-login #giftcard-form .input-box.validation-passed:before,
 .account-login .registered-users .input-box.validation-passed:before,
-.account-login .widget-addbysku .input-box.validation-passed:before,
-.my-account #giftcard-form .input-box.validation-passed:before,
+.account-login .widget-addbysku .input-box.validation-passed:before, .my-account #giftcard-form .input-box.validation-passed:before,
 .my-account .registered-users .input-box.validation-passed:before,
 .my-account .widget-addbysku .input-box.validation-passed:before {
   top: 14px; }

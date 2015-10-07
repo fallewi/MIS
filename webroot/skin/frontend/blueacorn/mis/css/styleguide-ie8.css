@@ -211,8 +211,7 @@ p.product-name {
 
 .products-grid .product-image {
   margin-bottom: 5px; }
-  .products-grid .product-image:before,
-  .products-grid .product-image:after {
+  .products-grid .product-image:before, .products-grid .product-image:after {
     content: '';
     position: absolute;
     top: 0;
@@ -231,8 +230,7 @@ p.product-name {
     z-index: 3; }
   .products-grid .product-image.loading {
     position: relative; }
-    .products-grid .product-image.loading:before,
-    .products-grid .product-image.loading:after {
+    .products-grid .product-image.loading:before, .products-grid .product-image.loading:after {
       display: block; }
 
 .category-products .link-wishlist {
@@ -791,8 +789,7 @@ p.product-name {
       display: block; }
       .product-image-gallery .gallery-image.visible.hidden {
         visibility: hidden; }
-  .product-image-gallery:before,
-  .product-image-gallery:after {
+  .product-image-gallery:before, .product-image-gallery:after {
     content: '';
     position: absolute;
     top: 0;
@@ -811,8 +808,7 @@ p.product-name {
     z-index: 3; }
   .product-image-gallery.loading {
     position: relative; }
-    .product-image-gallery.loading:before,
-    .product-image-gallery.loading:after {
+    .product-image-gallery.loading:before, .product-image-gallery.loading:after {
       display: block; }
 
 .product-image-thumbs li {
@@ -1509,11 +1505,9 @@ p.product-name {
       display: block; }
   .checkout-types.top .paypal-logo .paypal-or {
     margin-top: 5px; }
-  .checkout-types.bottom .paypal-logo a,
-  .checkout-types.minicart .paypal-logo a {
+  .checkout-types.bottom .paypal-logo a, .checkout-types.minicart .paypal-logo a {
     display: block; }
-  .checkout-types.bottom .paypal-or,
-  .checkout-types.minicart .paypal-or {
+  .checkout-types.bottom .paypal-or, .checkout-types.minicart .paypal-or {
     margin: 0px;
     display: block;
     text-align: center; }

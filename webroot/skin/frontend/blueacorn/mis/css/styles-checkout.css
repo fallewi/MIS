@@ -453,7 +453,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
   .gift-message-form .gift-item .fieldset {
     margin-left: 200px; }
 
-@media only screen and ("max-width": 770px) {
+@media only screen and (max-width: 770px) {
   .gift-message-form .giftmessage-area {
     max-width: 100%; }
   .gift-message-form .gift-item .product-img-box {
@@ -1639,12 +1639,10 @@ body.enterprise-rma-return-view .box-content {
 @media only screen and (max-width: 480px) {
   .rma-view.col-2 {
     text-align: left; }
-  .rma-view.col-1,
-  .rma-view.col-2 {
+  .rma-view.col-1, .rma-view.col-2 {
     border-bottom: 1px solid #CCCCCC;
     margin-bottom: 20px; }
-    .rma-view.col-1 h3,
-    .rma-view.col-2 h3 {
+    .rma-view.col-1 h3, .rma-view.col-2 h3 {
       margin-bottom: 0; } }
 
 /* ============================================ *
