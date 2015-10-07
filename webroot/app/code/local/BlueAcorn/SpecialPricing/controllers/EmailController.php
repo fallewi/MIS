@@ -82,7 +82,8 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
             Mage::getSingleton('core/session')->addError('Please enter a valid email address');
         }
 
-        $productUrl = Mage::getModel('catalog/product')->load($productId)->getProductUrl();
-        $this->_redirectUrl($productUrl);
+        $parentId = Mage::getResourceSingleton('catalog/product_type_configurable')->getParentIdsByChild($productId);
+        $productParentUrl = Mage::getModel('catalog/product')->load($parentId)->getProductUrl();
+        $this->_redirectUrl($productParentUrl);
     }
 }
