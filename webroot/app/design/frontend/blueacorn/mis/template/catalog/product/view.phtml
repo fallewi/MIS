@@ -80,7 +80,7 @@
                         <?php elseif($product->getAttributeText('map_required') == "Requires MAP Email"): ?>
                             <div>
                                 <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
-                                <button onclick="productAddToEmailForm.addToEmail(this)" id="map_request" class="button">Get Price</button>
+                                <button onclick="mapPricingEmail.addToEmail(this)" id="map_request" class="button">Get Price</button>
                                 <input id="map_email" type="text" name="user_email" class="input-text" placeholder="Enter Email Address"/>
                             </div>
                         <?php endif; ?>    
@@ -140,13 +140,30 @@
             <?php endif;?>
         </form>
         <script type="text/javascript">
-        //<![CDATA[
 
-            (function($) {
-                window.onload = function() {
-                    ba.productPage.mapPricingObserver();
-                };
-            }(jQuery));
+        (function($) {
+            window.onload = function() {
+                ba.productPage.mapPricingObserver();
+            };
+        }(jQuery));
+
+        var mapPricingEmail = new VarienForm('product_addtocart_form');
+        mapPricingEmail.addToEmail = function() {
+            var baseUrl;
+            var emailString = $j('#map_email').val();
+
+            <?php if($_product->isConfigurable()): ?>
+                // sets the url for a configurable. Passing the simple product's id
+                baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='?>" + spConfig.getIdOfSelectedProduct();
+            <?php else: ?>
+                // set url for simple product.
+                baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
+            <?php endif ?>
+
+            if (this.validator.validate()) {
+                window.location.replace(baseUrl + '&email=' + emailString);
+            }
+        }.bind(productAddToEmailForm);
 
         spConfig.getIdOfSelectedProduct = function () {
             var existingProducts = new Object();
