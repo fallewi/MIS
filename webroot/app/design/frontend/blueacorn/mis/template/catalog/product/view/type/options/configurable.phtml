@@ -94,7 +94,7 @@ $_renderers = $this->getChild('attr_renderers')->getSortedChildren();
                 if (selected.config) {
                     for (var iproducts = 0; iproducts < selected.config.products.length; iproducts++) {
                         var usedAsKey = selected.config.products[iproducts] + "";
-                        if (existingProducts[usedAsKey] == undefined) {
+                        if (undefined == existingProducts[usedAsKey]) {
                             existingProducts[usedAsKey] = 1;
                         } else {
                             existingProducts[usedAsKey] = existingProducts[usedAsKey] + 1;
