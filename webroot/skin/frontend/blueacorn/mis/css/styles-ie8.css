@@ -2514,6 +2514,9 @@ a.skip-link {
 .skip-nav .label {
   display: none; }
 
+.skip-link.skip-search {
+  display: none; }
+
 .skip-link.skip-nav .icon {
   background-image: url("../images/sprite.png");
   background-position: -139px -3px;

@@ -47,6 +47,31 @@
     display: none;
 }
 
+.skip-link.skip-search {
+  display: none;
+}
+
+.skip-content.skip-active ~ #header-search {
+  @include bp(max-width, $bp-xsmall) {
+    position: fixed;
+    bottom: 0;
+    z-index: 8888;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background: #eeeeee;
+    padding-left: 70%;
+  }
+  @include bp(max-width, $bp-small) {
+    position: fixed;
+    bottom: 0;
+    z-index: 8888;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background: #eeeeee;
+    padding-left: 70%;
+  }
+}
+
 .skip-link.skip-nav {
     .icon {
         @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -139px, -3px);
@@ -66,6 +91,20 @@
 
     &.skip-active {
 
+        @include bp(max-width, $bp-xsmall) {
+          position: fixed;
+          bottom: 0;
+          z-index: 9999;
+          margin-bottom: 10px;
+        }
+
+        @include bp(max-width, $bp-small) {
+          position: fixed;
+          bottom: 0;
+          z-index: 9999;
+          margin-bottom: 10px;
+        }
+
         background-color: $white;
 
         .icon {
@@ -80,7 +119,6 @@
         }
     }
 }
-
 
 // ---------------------------------------------
 
