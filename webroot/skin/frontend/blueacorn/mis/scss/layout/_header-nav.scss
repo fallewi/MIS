@@ -59,7 +59,7 @@
     padding-bottom: 10px;
     padding-top: 10px;
     background: #eeeeee;
-    padding-left: 70%;
+    width: 100%;
   }
   @include bp(max-width, $bp-small) {
     position: fixed;
@@ -68,7 +68,7 @@
     padding-bottom: 10px;
     padding-top: 10px;
     background: #eeeeee;
-    padding-left: 70%;
+    width: 100%;
   }
 }
 
