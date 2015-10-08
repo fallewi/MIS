@@ -140,7 +140,6 @@
             <?php endif;?>
         </form>
         <script type="text/javascript">
-        //<![CDATA[
 
         (function($) {
             window.onload = function() {
@@ -149,22 +148,68 @@
         }(jQuery));
 
         var mapPricingEmail = new VarienForm('product_addtocart_form');
-            mapPricingEmail.addToEmail = function() {
-                var baseUrl;
-                var emailString = $j('#map_email').val();
+        mapPricingEmail.addToEmail = function() {
+            var baseUrl;
+            var emailString = $j('#map_email').val();
 
-                <?php if($_product->isConfigurable()): ?>
-                    // sets the url for a configurable. Passing the simple product's id
-                    baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='?>" + spConfig.getIdOfSelectedProduct();
-                <?php else: ?>
-                    // set url for simple product.
-                    baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
-                <?php endif ?>
+            <?php if($_product->isConfigurable()): ?>
+                // sets the url for a configurable. Passing the simple product's id
+                baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='?>" + spConfig.getIdOfSelectedProduct();
+            <?php else: ?>
+                // set url for simple product.
+                baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='.$_product->getId(); ?>";
+            <?php endif ?>
+
+            if (this.validator.validate()) {
+                window.location.replace(baseUrl + '&email=' + emailString);
+            }
+        }.bind(productAddToEmailForm);
+
+        spConfig.getIdOfSelectedProduct = function () {
+            var existingProducts = new Object();
+            for (var i = this.settings.length - 1; i >= 0; i--) {
+                var selected = this.settings[i].options[this.settings[i].selectedIndex];
+                if (selected.config) {
+                    for (var iproducts = 0; iproducts < selected.config.products.length; iproducts++) {
+                        var usedAsKey = selected.config.products[iproducts] + "";
+                        if (existingProducts[usedAsKey] == undefined) {
+                            existingProducts[usedAsKey] = 1;
+                        } else {
+                            existingProducts[usedAsKey] = existingProducts[usedAsKey] + 1;
+                        }
+                    }
+                }
+            }
+            for (var keyValue in existingProducts) {
+                for (var keyValueInner in existingProducts) {
+                    if (Number(existingProducts[keyValueInner]) < Number(existingProducts[keyValue])) {
+                        delete existingProducts[keyValueInner];
+                    }
+                }
+            }
+            var sizeOfExistingProducts = 0;
+            var currentSimpleProductId = "";
+            for (var keyValue in existingProducts) {
+                currentSimpleProductId = keyValue;
+                sizeOfExistingProducts = sizeOfExistingProducts + 1
+            }
+            if (sizeOfExistingProducts == 1) {
+                return currentSimpleProductId;
+            }
+        }
+
+        var productAddToEmailForm = new VarienForm('product_addtocart_form');
+            productAddToEmailForm.addToEmail = function(button) {
+
+                var baseUrl = "<?php echo Mage::getBaseUrl() . 'map/email/requestToken?product_id='?>" + spConfig.getIdOfSelectedProduct();
+                var emailString = $j('#map_email').val();
 
                 if (this.validator.validate()) {
                     window.location.replace(baseUrl + '&email=' + emailString);
                 }
             }.bind(productAddToEmailForm);
+
+
 
             var productAddToCartForm = new VarienForm('product_addtocart_form');
             productAddToCartForm.submit = function(button, url) {
