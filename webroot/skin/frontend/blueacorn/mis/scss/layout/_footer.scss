@@ -31,9 +31,22 @@
  * Footer
  */
 
+.copyright, .block-subscribe, .connect-container, .about-us-container, .main-container {
+  @include bp(max-width, $bp-small) {
+    display: none;
+  }
+}
+
 .footer-container {
     background: #F5F5F5;
     padding-top: 20px;
+    @include bp(max-width, $bp-small) {
+      padding-top: 0px;
+      background: #EEEEEE;
+    }
+    @include bp(max-width, $bp-xsmall) {
+      background: #EEEEEE;
+    }
 }
 
 .footer {
@@ -42,7 +55,10 @@
     padding-top: $trim;
 
     @include bp(max-width, $bp-xsmall) {
-        padding-top: $trim-small;
+        padding-top: 0px;
+    }
+    @include bp(max-width, $bp-small) {
+      padding-top: 0px;
     }
 
     .block-title {
@@ -63,6 +79,12 @@
     }
 
     .links-container {
+      @include bp(max-width, $bp-xsmall) {
+        margin-bottom: 30px;
+      }
+      @include bp(max-width, $bp-small) {
+        margin-bottom: 30px;
+      }
         .links {
             margin-left: 27px;
 
