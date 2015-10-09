@@ -1,0 +1,265 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php $productPageHelper = Mage::helper('blueacorn_productpage'); ?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->toHtml() ?></div>
+<div class="product-view">
+    <div class="product-essential">
+        <form action="<?php echo $this->getSubmitUrl($_product, array('_secure' => $this->_isSecure())) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+            <?php echo $this->getBlockHtml('formkey') ?>
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+            </div>
+
+            <div class="product-img-box">
+                <div class="product-name">
+                    <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+                </div>
+                <?php echo $this->getChildHtml('media') ?>
+            </div>
+
+            <div class="product-shop">
+
+                <?php if($_product->getFreeShippingBanner()): ?>
+                    <div class="free-shipping"><?php echo $this->__("Eligible for Free Shipping") ?></div>
+                <?php endif ?>
+
+                <?php echo $this->getChildHtml('alert_urls') ?>
+
+                <?php echo $this->getChildHtml('other');?>
+
+            </div>
+
+            <div class="add-to-cart-wrapper">
+
+                <?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                    <?php // Placeholder html for Custom dev feature MAP pricing module ?>
+                    <div class="map-pricing">
+                        <div class="price-info">
+                            <?php $product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
+                            <?php if($product->getAttributeText('map_required') == "Requires MAP Call"): ?>
+                            <div>
+                                <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
+                            </div>
+                        <?php elseif($product->getAttributeText('map_required') == "Requires MAP Email"): ?>
+                            <div>
+                                <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
+                                <button onclick="mapPricingEmail.addToEmail(this)" id="map_request" class="button">Get Price</button>
+                                <input id="map_email" type="text" name="user_email" class="input-text" placeholder="Enter Email Address"/>
+                            </div>
+                        <?php endif; ?>    
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php echo $this->getChildHtml('product_type_data') ?>
+                <?php echo $this->getChildHtml('extrahint') ?>
+                
+                <div class="price-info">
+                    <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                            <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                                <span class="price-text"><?php echo $this->__("PRICE / by Each") ?></span>
+                                <?php echo $this->getPriceHtml($_product); ?>
+                            <?php endif; ?>
+                            <?php echo $this->getChildHtml('bundle_prices') ?>
+                            <?php echo $this->getTierPriceHtml() ?>
+                    
+                    <?php else: ?>
+                        
+                        <span class="price map-msrp">
+                            <?php $curr_code = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
+                            <?php echo $curr_code . number_format($_product->getMsrp(), 2); ?>
+                        </span>
+        
+                    <?php endif; ?>
+                </div>
+
+                <?php if(!$_product->isGrouped() && $_product->isSaleable()): ?>
+                    <div class="qty-wrapper">
+                        <label for="qty"><?php echo $this->__('Qty:') ?></label>
+                        <span>X</span>
+                        <input type="text" pattern="\d*" name="qty" id="qty" maxlength="12" value="<?php echo max($this->getProductDefaultQty() * 1, 1) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" />
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                    <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+                <?php endif;?>
+
+                <?php if ($_product->isSaleable()):?>
+                    <div class="add-to-box">
+                        <?php echo $this->getChildHtml('addtocart') ?>
+                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                            <span class="or"><?php echo $this->__('OR') ?></span>
+                        <?php endif; ?>
+                        <?php echo $this->getChildHtml('addto') ?>
+                    </div>
+                    <?php echo $this->getChildHtml('extra_buttons') ?>
+                <?php endif; ?>
+            </div>
+
+            <div class="clearer"></div>
+            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+            <?php endif;?>
+        </form>
+        <script type="text/javascript">
+
+        (function($) {
+            window.onload = function() {
+                ba.productPage.mapPricingObserver();
+            };
+        }(jQuery));
+
+        var mapPricingEmail = new VarienForm('product_addtocart_form');
+        mapPricingEmail.addToEmail = function() {
+            var baseUrl;
+            var emailString = $j('#map_email').val();
+
+            <?php if($_product->isConfigurable()): ?>
+                // sets the url for a configurable. Passing the simple product's id
+                baseUrl = "<?php echo Mage::getUrl('map/email')?>" + "requestToken?product_id=" + spConfig.getIdOfSelectedProduct();
+            <?php else: ?>
+                // set url for simple product.
+                baseUrl = "<?php echo Mage::getUrl('map/email') . 'requestToken?product_id='.$_product->getId(); ?>";
+            <?php endif ?>
+
+            if (this.validator.validate()) {
+                window.location.replace(baseUrl + '&email=' + emailString);
+            }
+        }.bind(mapPricingEmail);
+
+            var productAddToCartForm = new VarienForm('product_addtocart_form');
+            productAddToCartForm.submit = function(button, url) {
+                if (this.validator.validate()) {
+                    var form = this.form;
+                    var oldUrl = form.action;
+
+                    if (url) {
+                       form.action = url;
+                    }
+                    var e = null;
+                    try {
+                        this.form.submit();
+                    } catch (e) {
+                    }
+                    this.form.action = oldUrl;
+                    if (e) {
+                        throw e;
+                    }
+
+                    if (button && button != 'undefined') {
+                        button.disabled = true;
+                    }
+                }
+            }.bind(productAddToCartForm);
+
+            productAddToCartForm.submitLight = function(button, url){
+                if(this.validator) {
+                    var nv = Validation.methods;
+                    delete Validation.methods['required-entry'];
+                    delete Validation.methods['validate-one-required'];
+                    delete Validation.methods['validate-one-required-by-name'];
+                    // Remove custom datetime validators
+                    for (var methodName in Validation.methods) {
+                        if (methodName.match(/^validate-datetime-.*/i)) {
+                            delete Validation.methods[methodName];
+                        }
+                    }
+
+                    if (this.validator.validate()) {
+                        if (url) {
+                            this.form.action = url;
+                        }
+                        this.form.submit();
+                    }
+                    Object.extend(Validation.methods, nv);
+                }
+            }.bind(productAddToCartForm);
+        //]]>
+        </script>
+    </div>
+
+    <div class="product-information-block">
+
+    <div class="column column-left">
+        <div class="column-container description">
+            <h2><?php echo $this->__("Product Description") ?></h2>
+            <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?></div>
+        </div>
+        <?php if($_product->getResourceBadges()): ?>
+            <div class="column-container resource-badges">
+                <h2><?php echo $this->__("CR2B-FS Resources") ?></h2>
+                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getResourceBadges(), 'resource_badges') ?></div>
+            </div>
+        <?php endif;?>
+    </div>
+
+    <div class="column column-center">
+        <div class="column-container specifications">
+            <div class="detail"><?php echo $this->getLayout()->createBlock('catalog/product_view_attributes', '', array('template'=> 'catalog/product/view/attributes.phtml'))->toHtml(); ?></div>
+        </div>
+    </div>
+
+    <div class="column column-right">
+        <div class="column-container ships-from">
+            <h2><?php echo $this->__("Shipping") ?></h2>
+            <div class="detail"><?php echo $this->__("Ships from: ") .$_product->getAttributeText('ships_from') ?>
+                    <p><?php echo $productPageHelper->getShipFrom($_product->getData('ships_from')) ?></p>
+            </div>
+        </div>
+        <?php if($_product->getFeaturesBenefits()): ?>
+            <div class="column-container features-benefits">
+                <h2><?php echo $this->__("Features & Benefits") ?></h2>
+                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getFeaturesBenefits(), 'features_benefits') ?></div>
+            </div>
+        <?php endif;?>
+        <?php if($_product->getResourceDownloads()): ?>
+            <div class="column-container resource-downloads">
+                <h2><?php echo $this->__("CR2B-FS Resources") ?></h2>
+                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getResourceDownloads(), 'resourses_downloads') ?></div>
+            </div>
+        <?php endif;?>
+    </div>
+    </div>
+
+    <?php echo $this->getChildHtml('related_products') ?>
+    <?php echo $this->getChildHtml('upsell_products') ?>
+
+</div>

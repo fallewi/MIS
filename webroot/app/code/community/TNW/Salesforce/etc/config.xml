@@ -1,0 +1,621 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <TNW_Salesforce>
+            <version>0.01.53.10.0004</version>
+        </TNW_Salesforce>
+    </modules>
+    <global>
+        <cache>
+            <types>
+                <tnw_salesforce module="tnw_salesforce" translate="label description">
+                    <label>Salesforce Cache</label>
+                    <description>Cached data from Salesforce</description>
+                    <tags>TNW_SALESFORCE</tags>
+                </tnw_salesforce>
+            </types>
+        </cache>
+        <models>
+            <customer>
+                <rewrite>
+                    <entity_setup>TNW_Salesforce_Model_Customer_Entity_Setup</entity_setup>
+                </rewrite>
+            </customer>
+            <sales>
+                <rewrite>
+                    <service_order>TNW_Salesforce_Model_Service_Order</service_order>
+                    <order_status_history>TNW_Salesforce_Model_Order_Status_History</order_status_history>
+                    <order_shipment_comment>TNW_Salesforce_Model_Order_Shipment_Comment</order_shipment_comment>
+                    <order_invoice_comment>TNW_Salesforce_Model_Order_Invoice_Comment</order_invoice_comment>
+                    <order_creditmemo_comment>TNW_Salesforce_Model_Order_Creditmemo_Comment</order_creditmemo_comment>
+                </rewrite>
+            </sales>
+            <tnw_salesforce>
+                <class>TNW_Salesforce_Model</class>
+                <resourceModel>tnw_salesforce_mysql4</resourceModel>
+            </tnw_salesforce>
+            <tnw_salesforce_mysql4>
+                <class>TNW_Salesforce_Model_Mysql4</class>
+                <entities>
+                    <queue_storage>
+                        <table>tnw_salesforce_queue_storage</table>
+                    </queue_storage>
+                    <queue>
+                        <table>tnw_salesforce_queue</table>
+                    </queue>
+                    <mapping>
+                        <table>tnw_salesforce_mapping</table>
+                    </mapping>
+                    <import>
+                        <table>tnw_salesforce_imports</table>
+                    </import>
+                    <order_status>
+                        <table>tnw_salesforce_order_status</table>
+                    </order_status>
+                    <assignmentrule>
+                        <table>tnw_salesforce_assignmentrule</table>
+                    </assignmentrule>
+                    <check>
+                        <!-- no DB -->
+                    </check>
+                </entities>
+            </tnw_salesforce_mysql4>
+            <tnw_salesforce_api_entity>
+                <class>TNW_Salesforce_Model_Api_Entity</class>
+                <resourceModel>tnw_salesforce_api_entity_resource</resourceModel>
+            </tnw_salesforce_api_entity>
+            <tnw_salesforce_api_entity_resource>
+                <class>TNW_Salesforce_Model_Api_Entity_Resource</class>
+                <entities>
+                    <lead>
+                        <table>Lead</table>
+                    </lead>
+                    <account>
+                        <table>Account</table>
+                    </account>
+                    <contact>
+                        <table>Contact</table>
+                    </contact>
+                    <opportunity>
+                        <table>Opportunity</table>
+                    </opportunity>
+                    <campaign>
+                        <table>Campaign</table>
+                    </campaign>
+                    <campaign_member>
+                        <table>CampaignMember</table>
+                    </campaign_member>
+                </entities>
+            </tnw_salesforce_api_entity_resource>
+        </models>
+        <resources>
+            <tnw_salesforce_setup>
+                <setup>
+                    <module>TNW_Salesforce</module>
+                    <class>TNW_Salesforce_Model_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tnw_salesforce_setup>
+            <tnw_salesforce_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </tnw_salesforce_write>
+            <tnw_salesforce_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </tnw_salesforce_read>
+            <tnw_salesforce_delete>
+                <connection>
+                    <use>core_delete</use>
+                </connection>
+            </tnw_salesforce_delete>
+        </resources>
+        <blocks>
+            <tnw_salesforce>
+                <class>TNW_Salesforce_Block</class>
+            </tnw_salesforce>
+            <adminhtml>
+                <rewrite>
+                    <system_store_store>TNW_Salesforce_Block_Adminhtml_System_Store</system_store_store>
+                    <sales_order_status_grid>TNW_Salesforce_Block_Sales_Order_Status_Grid</sales_order_status_grid>
+                    <sales_order_status_new_form>TNW_Salesforce_Block_Sales_Order_Status_New_Form</sales_order_status_new_form>
+                    <sales_order_status_edit_form>TNW_Salesforce_Block_Sales_Order_Status_Edit_Form</sales_order_status_edit_form>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <tnw_salesforce>
+                <class>TNW_Salesforce_Helper</class>
+            </tnw_salesforce>
+        </helpers>
+        <events>
+            <!-- Contact Us form event -->
+            <controller_action_postdispatch_contacts>
+                <observers>
+                    <tnw_salesforce_customer_observer>
+                        <class>tnw_salesforce/customer_observer</class>
+                        <method>triggerWebToLead</method>
+                    </tnw_salesforce_customer_observer>
+                </observers>
+            </controller_action_postdispatch_contacts>
+
+            <!-- Product duplication -->
+            <catalog_model_product_duplicate>
+                <observers>
+                    <tnw_salesforce_catalog_model_product_duplicate>
+                        <class>tnw_salesforce/product_observer</class>
+                        <method>duplicateBefore</method>
+                    </tnw_salesforce_catalog_model_product_duplicate>
+                </observers>
+            </catalog_model_product_duplicate>
+            <!-- Newsletter Subscription: Create -->
+            <newsletter_subscriber_save_after>
+                <observers>
+                    <tnw_salesforce_newsletter_observer>
+                        <class>tnw_salesforce/newsletter_observer</class>
+                        <method>triggerCreateEvent</method>
+                    </tnw_salesforce_newsletter_observer>
+                </observers>
+            </newsletter_subscriber_save_after>
+
+            <!-- Newsletter Subscription: Delete -->
+            <newsletter_subscriber_delete_after>
+                <observers>
+                    <tnw_salesforce_newsletter_observer>
+                        <class>tnw_salesforce/newsletter_observer</class>
+                        <method>triggerDeleteEvent</method>
+                    </tnw_salesforce_newsletter_observer>
+                </observers>
+            </newsletter_subscriber_delete_after>
+
+            <!-- -->
+            <sales_order_invoice_save_after>
+                <observers>
+                    <tnw_salesforce_order_invoice_save_after>
+                        <class>tnw_salesforce/order_invoice_observer</class>
+                        <method>saveAfter</method>
+                    </tnw_salesforce_order_invoice_save_after>
+                </observers>
+            </sales_order_invoice_save_after>
+
+            <!-- Order Save Event: Checkout -->
+            <checkout_submit_all_after>
+                <observers>
+                    <tnw_salesforce_sale_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>triggerSalesforceEvent</method>
+                    </tnw_salesforce_sale_observer>
+                </observers>
+            </checkout_submit_all_after>
+
+            <!-- Order Save Event: Status update -->
+            <order_save_after>
+                <observers>
+                    <tnw_salesforce_sale_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>orderStatusUpdateTrigger</method>
+                    </tnw_salesforce_sale_observer>
+                </observers>
+            </order_save_after>
+
+            <tnw_salesforce_order_save_form>
+                <observers>
+                    <tnw_salesforce_order_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>triggerSalesforceEvent</method>
+                    </tnw_salesforce_order_observer>
+                </observers>
+
+            </tnw_salesforce_order_save_form>
+
+            <aitcfm_order_save_after>
+                <observers>
+                    <tnw_salesforce_sale_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>triggerAitocSalesforceEvent</method>
+                    </tnw_salesforce_sale_observer>
+                </observers>
+            </aitcfm_order_save_after>
+
+            <adminhtml_controller_action_predispatch_start>
+                <observers>
+                    <tnw_salesforce_controller_action_predispatch_start>
+                        <type>singleton</type>
+                        <class>tnw_salesforce/observer</class>
+                        <method>adjustMenu</method>
+                    </tnw_salesforce_controller_action_predispatch_start>
+                </observers>
+            </adminhtml_controller_action_predispatch_start>
+
+            <!-- admin login success -->
+            <admin_session_user_login_success>
+                <observers>
+                    <tnw_salesforce_admin_login_observer>
+                        <type>singleton</type>
+                        <class>tnw_salesforce/observer</class>
+                        <method>mageLoginEventCall</method>
+                    </tnw_salesforce_admin_login_observer>
+                    <tnw_salesforce_fix_acl>
+                        <type>singleton</type>
+                        <class>tnw_salesforce/observer</class>
+                        <method>fixAcl</method>
+                    </tnw_salesforce_fix_acl>
+                </observers>
+            </admin_session_user_login_success>
+
+            <tnw_sales_order_save>
+                <observers>
+                    <tnw_salesforce_sale_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>salesforcePush</method>
+                    </tnw_salesforce_sale_observer>
+                </observers>
+            </tnw_sales_order_save>
+
+            <!-- Order Cancel Event -->
+            <order_cancel_after>
+                <observers>
+                    <tnw_salesforce_sale_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>orderCancelled</method>
+                    </tnw_salesforce_sale_observer>
+                </observers>
+            </order_cancel_after>
+
+            <!-- Order Status Change Event -->
+            <tnw_sales_order_status_after>
+                <observers>
+                    <tnw_salesforce_sale_observer>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>orderStatusUpdateTrigger</method>
+                    </tnw_salesforce_sale_observer>
+                </observers>
+            </tnw_sales_order_status_after>
+
+            <!-- Notes Save Event -->
+            <tnw_sales_order_comments_save_before>
+                <observers>
+                    <tnw_salesforce_notes_observer>
+                        <class>tnw_salesforce/sale_notes_observer</class>
+                        <method>notesPush</method>
+                    </tnw_salesforce_notes_observer>
+                </observers>
+            </tnw_sales_order_comments_save_before>
+
+            <!-- Product Save Event -->
+            <catalog_product_save_after>
+                <observers>
+                    <tnw_salesforce_product_observer>
+                        <class>tnw_salesforce/product_observer</class>
+                        <method>salesforceTriggerEvent</method>
+                    </tnw_salesforce_product_observer>
+                </observers>
+            </catalog_product_save_after>
+
+            <tnw_catalog_product_save>
+                <observers>
+                    <tnw_salesforce_product_observer>
+                        <class>tnw_salesforce/product_observer</class>
+                        <method>salesforcePush</method>
+                    </tnw_salesforce_product_observer>
+                </observers>
+            </tnw_catalog_product_save>
+
+            <!-- Customer Save Event -->
+            <customer_save_after>
+                <observers>
+                    <tnw_salesforce_customer_observer>
+                        <class>tnw_salesforce/customer_observer</class>
+                        <method>salesforceTriggerEvent</method>
+                    </tnw_salesforce_customer_observer>
+                </observers>
+            </customer_save_after>
+            <aitcfm_customer_save_after>
+                <observers>
+                    <tnw_salesforce_customer_observer>
+                        <class>tnw_salesforce/customer_observer</class>
+                        <method>salesforceAitocTriggerEvent</method>
+                    </tnw_salesforce_customer_observer>
+                </observers>
+            </aitcfm_customer_save_after>
+            <tnw_customer_save>
+                <observers>
+                    <tnw_salesforce_customer_observer>
+                        <class>tnw_salesforce/customer_observer</class>
+                        <method>salesforcePush</method>
+                    </tnw_salesforce_customer_observer>
+                </observers>
+            </tnw_customer_save>
+            <!-- Website Save Event -->
+            <website_save_after>
+                <observers>
+                    <tnw_salesforce_website_observer>
+                        <class>tnw_salesforce/website_observer</class>
+                        <method>salesforcePush</method>
+                    </tnw_salesforce_website_observer>
+                </observers>
+            </website_save_after>
+            <adminhtml_store_edit_form_prepare_form>
+                <observers>
+                    <tnw_salesforce_website_edit_observer>
+                        <class>tnw_salesforce/website_observer</class>
+                        <method>updateForm</method>
+                    </tnw_salesforce_website_edit_observer>
+                </observers>
+            </adminhtml_store_edit_form_prepare_form>
+
+            <!-- Pushing order object into Salesforce post all validation -->
+            <tnw_sales_process_order>
+                <observers>
+                    <tnw_salesforce_push_order>
+                        <class>tnw_salesforce/observer</class>
+                        <method>pushOrder</method>
+                    </tnw_salesforce_push_order>
+                </observers>
+            </tnw_sales_process_order>
+            <!-- Pushing opportunity object into Salesforce post all validation -->
+            <tnw_sales_process_opportunity>
+                <observers>
+                    <tnw_salesforce_push_opportunity>
+                        <class>tnw_salesforce/observer</class>
+                        <method>pushOpportunity</method>
+                    </tnw_salesforce_push_opportunity>
+                </observers>
+            </tnw_sales_process_opportunity>
+            <!-- Update order status - Opportunity -->
+            <tnw_sales_status_update_opportunity>
+                <observers>
+                    <tnw_salesforce_update_opportunity>
+                        <class>tnw_salesforce/observer</class>
+                        <method>updateOpportunity</method>
+                    </tnw_salesforce_update_opportunity>
+                </observers>
+            </tnw_sales_status_update_opportunity>
+            <!-- Update order status - Order -->
+            <tnw_sales_status_update_order>
+                <observers>
+                    <tnw_salesforce_update_order>
+                        <class>tnw_salesforce/observer</class>
+                        <method>updateOrder</method>
+                    </tnw_salesforce_update_order>
+                </observers>
+            </tnw_sales_status_update_order>
+
+            <tnw_salesforce_sales_order_status_new_status_prepare_form>
+                <observers>
+                    <tnw_salesforce_order_status_update>
+                        <class>tnw_salesforce/observer</class>
+                        <method>updateOrderStatusForm</method>
+                    </tnw_salesforce_order_status_update>
+                </observers>
+            </tnw_salesforce_sales_order_status_new_status_prepare_form>
+            <tnw_salesforce_order_salesforce_status_save>
+                <observers>
+                    <tnw_salesforce_order_status_save>
+                        <class>tnw_salesforce/observer</class>
+                        <method>saveSfStatus</method>
+                    </tnw_salesforce_order_status_save>
+                </observers>
+            </tnw_salesforce_order_salesforce_status_save>
+
+            <sales_quote_save_before>
+                <observers>
+                    <persistent>
+                        <class>tnw_salesforce/observer</class>
+                        <method>prepareQuotesForSync</method>
+                    </persistent>
+                </observers>
+            </sales_quote_save_before>
+            <tnw_salesforce_order_send_after>
+                <observers>
+                    <tnw_salesforce_update_abandoned_status>
+                        <class>tnw_salesforce/observer</class>
+                        <method>updateAbandonedStatus</method>
+                    </tnw_salesforce_update_abandoned_status>
+                </observers>
+            </tnw_salesforce_order_send_after>
+
+            <tnw_salesforce_order_products_send_after>
+                <observers>
+                    <tnw_send_order_item_campaing>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>sendOrderItemCampaing</method>
+                    </tnw_send_order_item_campaing>
+                </observers>
+            </tnw_salesforce_order_products_send_after>
+
+        </events>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <tnw_salesforce>
+                    <file>salesforce.xml</file>
+                </tnw_salesforce>
+            </updates>
+        </layout>
+        <events>
+            <!--
+                show sf status info
+                this event because it should be executed only once and if no redirect
+            -->
+            <controller_action_layout_generate_xml_before>
+                <observers>
+                    <tnw_salesforce_block_load_observer>
+                        <type>singleton</type>
+                        <class>tnw_salesforce/observer</class>
+                        <method>showSfStatus</method>
+                    </tnw_salesforce_block_load_observer>
+                </observers>
+            </controller_action_layout_generate_xml_before>
+
+            <!-- Blocks for admin panel: update adminhtml/sales_order_view_info html if module enabled -->
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <tnw_salesforce_block_observer>
+                        <type>model</type>
+                        <class>tnw_salesforce/blocks_observer</class>
+                        <method>updateBlocks</method>
+                    </tnw_salesforce_block_observer>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
+    </adminhtml>
+    <frontend>
+        <events>
+            <!-- paypal express payment finished event -->
+            <!-- This event is dispatched after the order payment is placed from the function Mage_Sales_Model_Order::place() -->
+            <!-- http://www.solvingmagento.com/events-and-observers-a-magento-tutorial/ -->
+            <sales_order_place_after>
+                <observers>
+                    <tnw_salesforce_sale_observer_paypal>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>triggerSalesforceEvent</method>
+                    </tnw_salesforce_sale_observer_paypal>
+
+                    <tnw_salesforce_sale_observer_add_opportunity>
+                        <class>tnw_salesforce/sale_observer</class>
+                        <method>addOpportunity</method>
+                    </tnw_salesforce_sale_observer_add_opportunity>
+
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <tnw_salesforce before="Mage_Adminhtml">TNW_Salesforce_Adminhtml</tnw_salesforce>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <crontab>
+        <jobs>
+            <tnw_salesforce_queue>
+                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
+                <run><model>tnw_salesforce/cron::processQueue</model></run>
+            </tnw_salesforce_queue>
+            <tnw_salesforce_m2sf>
+                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
+                <run><model>tnw_salesforce/cron::backgroundProcess</model></run>
+            </tnw_salesforce_m2sf>
+
+            <tnw_salesforce_abandoned>
+                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
+                <run><model>tnw_salesforce/cron::addAbandonedToQueue</model></run>
+            </tnw_salesforce_abandoned>
+        </jobs>
+    </crontab>
+    <default>
+        <salesforce>
+            <api_config>
+                <api_enable>0</api_enable>
+            </api_config>
+            <developer>
+                <log_enable>1</log_enable>
+                <email_prefix>LIVE</email_prefix>
+                <remote_log>1</remote_log>
+            </developer>
+            <syncronization>
+                <sync_type_realtime>sync_type_realtime</sync_type_realtime>
+            </syncronization>
+            <development_and_debugging>
+                <log_enable>1</log_enable>
+                <remote_log>1</remote_log>
+                <bulk>
+                    <max_execution_time>0</max_execution_time>
+                    <set_time_limit>0</set_time_limit>
+                    <mysql.connect_timeout>180</mysql.connect_timeout>
+                    <zend.enable_gc>1</zend.enable_gc>
+                </bulk>
+                <product_batch_size>500</product_batch_size>
+                <customer_batch_size>1000</customer_batch_size>
+                <website_batch_size>500</website_batch_size>
+                <order_batch_size>500</order_batch_size>
+                <abandoned_batch_size>400</abandoned_batch_size>
+                <invoice_batch_size>400</invoice_batch_size>
+            </development_and_debugging>
+
+        </salesforce>
+        <salesforce_customer>
+            <sync>
+                <customer_sync_enable>0</customer_sync_enable>
+                <new_customer>1</new_customer>
+                <customer_groups_all>1</customer_groups_all>
+                <account_rename>1</account_rename>
+                <contact_asignee>0</contact_asignee>
+            </sync>
+            <lead_config>
+                <customer_integration>0</customer_integration>
+                <lead_source>Web</lead_source>
+                <use_lead_source_filter>0</use_lead_source_filter>
+            </lead_config>
+            <contactus>
+                <customer_form_enable>0</customer_form_enable>
+            </contactus>
+            <contact>
+                <customer_person>0</customer_person>
+            </contact>
+            <newsletter_config>
+                <customer_newsletter_enable_sync>0</customer_newsletter_enable_sync>
+            </newsletter_config>
+        </salesforce_customer>
+        <salesforce_product>
+            <general>
+                <product_enable>0</product_enable>
+                <price_accuracy>2</price_accuracy>
+            </general>
+        </salesforce_product>
+        <salesforce_order>
+            <general>
+                <order_sync_enable>0</order_sync_enable>
+                <zero_order_sync_enable>1</zero_order_sync_enable>
+                <order_product_enable>1</order_product_enable>
+                <order_multi_currency>0</order_multi_currency>
+                <order_currency_sync>customer</order_currency_sync>
+                <order_status_all>1</order_status_all>
+                <customer_address>0</customer_address>
+            </general>
+            <customer_opportunity>
+                <order_or_opportunity>Order</order_or_opportunity>
+                <customer_opportunity_role_enable>0</customer_opportunity_role_enable>
+                <abandoned_cart_enabled>0</abandoned_cart_enabled>
+                <abandoned_close_time_after>14</abandoned_close_time_after>
+                <abandoned_cart_state>Committed</abandoned_cart_state>
+                <order_opportunity_status>Closed Won</order_opportunity_status>
+                <opportunity_to_order_status>Closed Won</opportunity_to_order_status>
+            </customer_opportunity>
+            <opportunity_cart>
+                <use_tax_product>0</use_tax_product>
+                <use_shipping_product>0</use_shipping_product>
+                <use_discount_product>0</use_discount_product>
+            </opportunity_cart>
+            <shopping_cart>
+                <use_product_campaign_assignment>0</use_product_campaign_assignment>
+            </shopping_cart>
+            <invoice_configuration>
+                <invoice_sync_enable>0</invoice_sync_enable>
+            </invoice_configuration>
+        </salesforce_order>
+    </default>
+    <phpunit>
+        <suite>
+            <modules>
+                <TNW_Salesforce />
+            </modules>
+            <fixture>
+                <processors>
+                    <salesforce>tnw_salesforce/fixture_processor_salesforce</salesforce>
+                </processors>
+            </fixture>
+        </suite>
+    </phpunit>
+</config>

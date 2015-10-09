@@ -1,0 +1,25 @@
+In the system.xml of your module, you can define the minigrid as a frontend_type.
+Please note, the backend model is required. There is also a source model abstract
+which will get you started in defining your own sources. The source model for the
+minigrid is specialized and does not work like normal source models (such as select)
+so take note of the format specified in the abstract before writing your own.
+
+The source model abstract can be found at: 
+BlueAcorn_MiniGrid_Model_System_Config_Source_Minigrid_Abstract
+
+
+Example use of minigrid in system.xml:
+
+<field translate="label">
+    <label>Field</label>
+    <frontend_type>minigrid</frontend_type>
+    <backend_model>baminigrid/System_Config_Backend_Minigrid</backend_model>
+    <sort_order>0</sort_order>
+    <show_in_default>1</show_in_default>
+    <show_in_website>0</show_in_website>
+    <show_in_store>0</show_in_store>
+</field>
+
+The use of label has been specialized in the minigrid. Label is not only the label
+that appears to the left of the minigrid as normal but is also used to populate
+the minigrid's Add Row button and the default field that the minigrid starts with.

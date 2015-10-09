@@ -1,0 +1,77 @@
+---
+
+- name: "MIS:staging common provisioning"
+  hosts: all
+  tags:
+    - common
+        
+  tasks:
+    - name: ensure blueacorn directories
+      file: 
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ BLUEACORN_DIR }}/conf"
+        - "{{ BLUEACORN_DIR }}/sites"
+        - "{{ BLUEACORN_DIR }}/tmp"
+        - "{{ BLUEACORN_DIR }}/util"
+
+- name: "MIS:staging webserver provisioning"
+  hosts: web*
+  tags: 
+    - web-server
+
+  tasks:
+    - name: ensure deployment key
+      copy:
+        src: "files/github-deploy.key"
+        dest: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+        mode: 0600
+      tags: predeploy
+      
+    - name: install git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+      tags: predeploy
+      
+    - name: set git authorship
+      shell: >
+        git config --global user.name "{{ inventory_hostname }}" && 
+        git config --global user.email "{{ ansible_ssh_user  }}@{{ inventory_hostname }}.missionrs.com"
+      tags: predeploy
+
+    - name: ensure proper permissions
+      file:
+        path: "{{ item }}"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ HTTPD_USER }}"
+        state: directory
+        mode: 0770
+      sudo: True
+      with_items:
+        - "{{ MAGE_ROOT }}/var"
+      #  - "{{ MAGE_ROOT }}/media"
+        - "{{ MAGE_ROOT }}/includes"
+      ignore_errors: yes
+      tags:
+        - perms
+        - links
+        - predeploy
+
+# schedule tasks
+- include: staging.cron.yml
+
+# install newrelic agents
+# - include: newrelic.yml
+
+#---
+#  deprectated yas3fs
+#  yas3fs: fuse python-pip
+#  mounting: yas3fs s3://mageus/yas3fs /s3fs --topic arn:aws:sns:us-west-1:747399827750:mageus-yas3fs --new-queue --region us-west-1
+# sudo sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf # uncomment user_allow_other
+  
+        

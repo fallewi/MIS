@@ -1,0 +1,25 @@
+---
+
+- name: ensure clean working copy [1/2]
+  stat: path="{{ REPO_ROOT }}"
+  register: repo_root 
+    
+- name: ensure clean working copy [2/2]
+  command: git status -uno --porcelain
+  args: 
+    chdir: "{{ REPO_ROOT }}"   
+  register: command_result
+  changed_when: False
+  failed_when: "command_result.stdout"
+  when: repo_root.stat.exists
+  
+- name: git checkout
+  git:
+    repo: "{{ REPO_REMOTE }}"
+    version: "{{ REPO_REF }}"
+    dest: "{{ REPO_ROOT }}"
+    key_file: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+    force: no
+    depth: 1
+    accept_hostkey: yes
+    

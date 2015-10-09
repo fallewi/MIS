@@ -1,0 +1,17 @@
+---
+
+# @TODO better way to handle deps quickly?
+- name: ensure deps [ npm install ; bower install ] if node_module !exists
+  local_action: shell npm install ; bower install
+  args:
+    creates: "../blueacornui/node_modules"
+    chdir: "../blueacornui"
+  run_once: True
+   
+  
+- name: prepare / compile static assets
+  local_action: shell grunt {{ GRUNT_COMMAND | default('production') }}
+  args:
+    chdir: "../blueacornui"
+  run_once: True
+    
