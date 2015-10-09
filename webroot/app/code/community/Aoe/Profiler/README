@@ -1,0 +1,1 @@
+In order for the profiler to be active, you must move the aoe_profiler.xml from the var/ directory in this module into the var/ directory in the Magento root. 
