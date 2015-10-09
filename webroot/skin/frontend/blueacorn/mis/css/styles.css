@@ -3053,6 +3053,11 @@ a.skip-link {
     background: #eeeeee;
     width: 100%; } }
 
+@media only screen and (max-width: 599px) {
+  .skip-content.skip-active ~ #header-search input[type="search"]:focus {
+    font-size: initial;
+    float: left; } }
+
 .skip-link.skip-nav .icon {
   background-image: url("../images/sprite.png");
   background-position: -139px -3px;

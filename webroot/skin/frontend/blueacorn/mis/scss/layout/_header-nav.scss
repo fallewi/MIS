@@ -70,6 +70,12 @@
     background: #eeeeee;
     width: 100%;
   }
+  input[type="search"]:focus {
+      @include bp(max-width, $bp-small) {
+        font-size: initial;
+        float: left;
+      }
+  }
 }
 
 .skip-link.skip-nav {
