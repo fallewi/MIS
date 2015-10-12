@@ -32,12 +32,12 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
     "grunt-devtools": "*",
-    "grunt-githooks": "*",
+    "grunt-githooks": "^0.3.1",
     "grunt-newer": "*",
     "grunt-sass": "*",
     "grunt-shell": "*",
     "grunt-usebanner": "*",
-    "time-grunt": "*",
-    "jit-grunt": "*"
+    "jit-grunt": "*",
+    "time-grunt": "*"
   }
 }
