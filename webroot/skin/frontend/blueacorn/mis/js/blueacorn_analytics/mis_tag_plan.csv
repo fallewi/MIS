@@ -1,0 +1,7 @@
+trackType,el,page,type,label,eventType,bodyClass
+pageViewOnLoad,null,/Category,null,null,null,catalog-category-view
+pageViewOnLoad,null,/Product,null,null,null,catalog-product-view
+pageViewOnLoad,null,/Category,null,null,null,catalog-search-result-index
+pageViewOnLoad,null,/Cart,null,null,null,checkout-cart-index
+event,[YOUR ELEMENT CSS SELECTOR HERE],,,null,click,null
+pageView,#checkout-step-billing #billing-buttons-container button.btn-cart [SAMPLE],/Shipping Information,null,null,mousedown,null
