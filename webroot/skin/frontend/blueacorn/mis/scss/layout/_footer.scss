@@ -31,22 +31,9 @@
  * Footer
  */
 
-.copyright, .block-subscribe, .connect-container, .about-us-container, .main-container {
-  @include bp(max-width, $bp-small) {
-    display: none;
-  }
-}
-
 .footer-container {
     background: #F5F5F5;
     padding-top: 20px;
-    @include bp(max-width, $bp-small) {
-      padding-top: 0px;
-      background: #EEEEEE;
-    }
-    @include bp(max-width, $bp-xsmall) {
-      background: #EEEEEE;
-    }
 }
 
 .footer {
