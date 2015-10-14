@@ -56,7 +56,7 @@ BlueAcornCore.prototype = {
      * @param string
      */
     watchConsole: function (message) {
-        if(jQuery('.ie6, .ie7, .ie8, .ie9').length === 0) {
+        if(this.settings.debug && jQuery('.ie6, .ie7, .ie8, .ie9').length === 0) {
             console.log(message);
         }
     },
