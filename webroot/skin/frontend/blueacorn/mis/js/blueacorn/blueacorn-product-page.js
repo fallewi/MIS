@@ -177,6 +177,8 @@ jQuery(document).ready(function ($) {
      * The parameter object is optional.
      * Must be an object.
      */
-    ba.productPage = new productPage({});
+    if(ba.Page.getPage('product')){
+        ba.productPage = new productPage({});
+    }
 
 });
