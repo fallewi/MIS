@@ -38,13 +38,13 @@ class BlueAcorn_CategoryLandingPage_Helper_Data extends Mage_Core_Helper_Abstrac
             foreach ($childCat as $_category) {
                 $recurse_count = 0;
 
-                $check_child_class = $this->check_child_par($_category->getId());
+                $check_child_class = $this->check_child_par($_category->getId(),$recurse_count);
                 $collaps = ($check_child_class) ? "<span class='show-cat'>+</span>" : "";
-                echo "<li class='" . $check_child_class . "'>";
+                echo "<dt class='" . $check_child_class . "'>";
                 echo "<a href='" . $_helper->getCategoryUrl($_category) . "'>" . $_category->getName();
                 echo "</a>" . $collaps;
                 echo $this->check_child($_category->getId(), $recurse_count);
-                echo "</li>";
+                echo "</dt>";
 
             }
         }
@@ -58,10 +58,10 @@ class BlueAcorn_CategoryLandingPage_Helper_Data extends Mage_Core_Helper_Abstrac
             $_subsubcategories = $_subcategory->getChildrenCategories();
 
             if (count($_subsubcategories) > 0) {
-                echo "<ul>";
+                echo "<dd>";
                 foreach ($_subsubcategories as $_subcate) {
 
-                    $check_child_class = $this->check_child_par($_subcate->getId());
+                    $check_child_class = $this->check_child_par($_subcate->getId(), $recurse_count);
                     $collaps = ($check_child_class) ? "<span class='show-cat'>+</span>" : "";
 
                     echo "<li class='" . $check_child_class . "'>";
@@ -70,19 +70,19 @@ class BlueAcorn_CategoryLandingPage_Helper_Data extends Mage_Core_Helper_Abstrac
                     echo $this->check_child($_subcate->getId(), $recurse_count);
                     echo "</li>";
                 }
-                echo "</ul>";
+                echo "</dd>";
             } else {
                 return "";
             }
         }
     }
 
-    function check_child_par($cid){
+    function check_child_par($cid, &$recurse_count){
 
         $_subcat = Mage::getModel('catalog/category')->load($cid);
         $_subsubcats = $_subcat->getChildrenCategories();
 
-        if (count($_subsubcats) > 0){
+        if (count($_subsubcats) > 0 && $recurse_count < 2){
             return "parent";
         }else{
             return "child";
