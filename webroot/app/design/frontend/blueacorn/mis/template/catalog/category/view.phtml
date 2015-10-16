@@ -32,13 +32,33 @@
  */
 ?>
 
-<?php if($this->isContentMode()): ?>
-    <?php echo $this->getCmsBlockHtml() ?>
+<?php $_current = Mage::registry('current_category'); ?>
+<?php if($_current->getCategoryLandingPage()): ?>
+    <?php $_current = Mage::registry('current_category'); ?>
+    <div class="subcategories" style="display:block">
+        <ul class="children-categories">
+            <?php foreach($this->getChildCategories() as $category): ?>
+                <li class="child-category">
+                    <a class="category-link-a" href="<?php echo $category->getURL() ?>">
+                        <img src="<?php echo $this->getThumbnailImageUrl($category) ?>" alt="<?php echo $category->getName() ?>" title="<?php echo $category->getName() ?>"/>
+                        <span class="category-name"><?php echo $category->getName() ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
 
-<?php elseif($this->isMixedMode()): ?>
-    <?php echo $this->getCmsBlockHtml() ?>
-    <?php echo $this->getProductListHtml() ?>
-
+        </ul>
+        <h3>Recommended Products</h3>
+        <div id="category1_rr"></div>
+    </div>
 <?php else: ?>
-    <?php echo $this->getProductListHtml() ?>
+    <?php if($this->isContentMode()): ?>
+        <?php echo $this->getCmsBlockHtml() ?>
+
+    <?php elseif($this->isMixedMode()): ?>
+        <?php echo $this->getCmsBlockHtml() ?>
+        <?php echo $this->getProductListHtml() ?>
+
+    <?php else: ?>
+        <?php echo $this->getProductListHtml() ?>
+    <?php endif; ?>
 <?php endif; ?>

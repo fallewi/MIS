@@ -1,0 +1,46 @@
+<config>
+    <sections>
+        <categorylandingpage translate="label" module="blueacorn_categorylandingpage">
+            <label>Category Landing Page</label>
+            <tab>blueacorn</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general>
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <layered_nav_enable traslate="label">
+                            <label>Enable Layered Nav</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </layered_nav_enable>
+                        <layered_nav_depth traslate="label">
+                            <label>Layered Nav Depth</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set the nav category tree depth</comment>
+                            <depends>
+                                <layered_nav_enable>1</layered_nav_enable>
+                            </depends>
+                        </layered_nav_depth>
+                    </fields>
+                </general>
+            </groups>
+        </categorylandingpage>
+    </sections>
+</config>
