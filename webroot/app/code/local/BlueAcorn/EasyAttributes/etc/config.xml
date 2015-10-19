@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn\EasyAttributes
+* @version
+* @author      Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2015 Blue Acorn, Inc.
+*/
+-->
+<config>
+    <modules>
+        <BlueAcorn_EasyAttributes>
+            <version>0.0.1</version>
+        </BlueAcorn_EasyAttributes>
+    </modules>
+    <global>
+        <models>
+            <blueacorn_easyattributes>
+                <class>BlueAcorn_EasyAttributes_Model</class>
+            </blueacorn_easyattributes>
+            <catalog>
+                <rewrite>
+                    <observer>BlueAcorn_EasyAttributes_Model_Observer</observer>
+                </rewrite>
+            </catalog>
+            <catalog_resource>
+                <rewrite>
+                    <config>BlueAcorn_EasyAttributes_Model_Resource_Catalog_Config</config>
+                </rewrite>
+            </catalog_resource>
+        </models>
+        <!-- Handle Flat Category -->
+        <events>
+            <catalog_category_flat_loadnodes_before>
+                <observers>
+                    <category_add_attribute>
+                        <type>model</type>
+                        <class>BlueAcorn_EasyAttributes_Model_Observer</class>
+                        <method>addMenuAttributes</method>
+                    </category_add_attribute>
+                </observers>
+            </catalog_category_flat_loadnodes_before>
+        </events>
+
+        <!-- Add Attribute to products in cart -->
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <!-- Add Attribute Codes Below -->
+                        <!--<apparel_type/>-->
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
+
+    </global>
+    <frontend>
+
+        <!-- Load category attributes for use in menu -->
+        <category>
+            <collection>
+                <attributes>
+                    <!-- Add Attribute Codes Below -->
+                    <!--<custom_layout_update />-->
+                    <!--<description />-->
+                </attributes>
+            </collection>
+        </category>
+
+        <!-- Add Attributes to product listing. Overrides 'Used in Product Listing' -->
+        <product>
+            <collection>
+                <attributes><!-- Add Attribute Codes Below to Add Attribute to Flat Table -->
+                </attributes>
+                <custom_attributes><!-- Add Attribute Codes Below to Load Attribute in Product -->
+                </custom_attributes>
+            </collection>
+        </product>
+    </frontend>
+</config>
