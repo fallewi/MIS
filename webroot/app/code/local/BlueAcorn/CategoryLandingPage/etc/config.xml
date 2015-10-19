@@ -26,4 +26,13 @@
             </catalog>
         </blocks>
     </global>
+    <frontend>
+        <category>
+            <collection>
+                <attributes>
+                    <thumbnail />
+                </attributes>
+            </collection>
+        </category>
+    </frontend>
 </config>

@@ -34,7 +34,6 @@
 
 <?php $_current = Mage::registry('current_category'); ?>
 <?php if($_current->getCategoryLandingPage()): ?>
-    <?php $_current = Mage::registry('current_category'); ?>
     <div class="subcategories" style="display:block">
         <ul class="children-categories">
             <?php foreach($this->getChildCategories() as $category): ?>
@@ -47,8 +46,6 @@
             <?php endforeach; ?>
 
         </ul>
-        <h3>Recommended Products</h3>
-        <div id="category1_rr"></div>
     </div>
 <?php else: ?>
     <?php if($this->isContentMode()): ?>

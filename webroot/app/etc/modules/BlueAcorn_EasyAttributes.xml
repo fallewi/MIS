@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package     BlueAcorn\EasyAttributes
+ * @version
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2015 Blue Acorn, Inc.
+ */
+-->
+<config>
+    <modules>
+        <BlueAcorn_EasyAttributes>
+            <active>true</active>
+            <codePool>local</codePool>
+        </BlueAcorn_EasyAttributes>
+    </modules>
+</config>

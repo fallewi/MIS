@@ -41,7 +41,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_View extends Mage_Catalog_Blo
      * @return string
      */
     public function getThumbnailImageUrl($category) {
-        $helper = Mage::helper(' blueacorn_categorylandingpage');
+        $helper = Mage::helper('blueacorn_categorylandingpage');
         if($image = $category->getThumbnail()) {
             $url = Mage::getBaseUrl('media') . 'catalog/category/' . $image;
         }else{
@@ -50,3 +50,4 @@ class BlueAcorn_CategoryLandingPage_Block_Category_View extends Mage_Catalog_Blo
         return $url;
     }
 }
+
