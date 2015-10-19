@@ -47,41 +47,76 @@
         $('div.footer a').each(function() {
             var $this = $(this),
                 title = $this.closest('ul').prev('h5.block-title').text().trim(),
-                text = $this.text().trim();
+                elText = $this.text().trim();
 
-            if (text.toLowerCase().indexOf("http://") >= 0) {
-                text = text.replace("http://", "").replace(".com", "");
-                text = text.charAt(0).toUpperCase() + text.slice(1);
+            if (elText.toLowerCase().indexOf("http://") >= 0) {
+                elText = elText.replace("http://", "").replace(".com", "");
+                elText = elText.charAt(0).toUpperCase() + elText.slice(1);
 
-                if(text.indexOf("plus") != -1) {
-                    text = text.replace('plus', '+');
+                if(elText.indexOf("plus") != -1) {
+                    elText = elText.replace('plus', '+');
                 }
             } else {
-                text = title + ' - ' + text;
+                elText = title + ' - ' + elText;
             }
 
-            BA_GAQ.manualTracker('event', $this, 'Footer', text, window.location.href, 'mousedown');
+            BA_GAQ.manualTracker('event', $this, 'Footer', elText, window.location.href, 'mousedown');
         });
 
         //Dynamic tagging for mini cart
         $('#cart-sidebar').on('mousedown', 'a.link-wishlist, a.remove, a.product-image, p.product-name a', function() {
                 var $this = $(this),
                     elText = '',
-                    productName = '';
+                    label = '';
 
                 if ($this.hasClass('product-image')) {
                     elText += 'Product Image View';
-                    productName += $this.closest('li.item').find('.product-name a').text().trim();
+                    label += $this.closest('li.item').find('.product-name a').text().trim();
                 } else if ($this.parent('p.product-name').length !== 0) {
                     elText += 'Product Description View';
-                    productName += $this.text().trim();
+                    label += $this.text().trim();
                 } else {
                     elText += $this.text().trim();
-                    productName += $this.closest('li.item').find('.product-name a').text().trim();
+                    label += $this.closest('li.item').find('.product-name a').text().trim();
                 }
 
-                BA_GAQ.manualTracker('event', $this, 'Mini Cart', elText, productName, null);
+                label += ' || ' + window.location.href;
+
+                BA_GAQ.manualTracker('event', $this, 'Mini Cart', elText, label, null);
         });
+
+        //Tagging for featured products
+        $('.feature-wrap div.feature-item').each(function(){
+            var $this = $(this),
+                label = window.location.href + $this.children('a').attr('href') + ' || ' + window.location.href,
+                els = $this.find('a img, a p, a h3, a.button');
+
+            els.each(function(){
+                var el = $(this),
+                    elText = '';
+
+                if (el.is('a')){
+                    label = window.location.href + el.attr('href') + ' || ' + window.location.href;
+                    elText += 'Featured Product Details';
+                } else if (el.is('img')) {
+                    elText += 'Featured Product Image';
+                } else if (el.is('p')) {
+                    elText += 'Featured Product Text';
+                } else if (el.is('h3')) {
+                    elText += 'Featured Product Title';
+                }
+
+                if ($this.hasClass('feature-promo')) {
+                    elText += ' - Promo';
+                    label = window.location.href + $this.children('a').attr('href') + ' || ' + window.location.href + ' || ' + $this.find('a h3').text();
+                }
+
+                BA_GAQ.manualTracker('event', el, 'Homepage', elText, label, 'mousedown');
+            });
+
+        })
+
+
 
     }); // end doc ready
 
