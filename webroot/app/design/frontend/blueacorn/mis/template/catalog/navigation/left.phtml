@@ -33,14 +33,14 @@
 <?php $_current = Mage::registry('current_category'); ?>
 <?php if($_current->getCategoryLandingPage()): ?>
     <?php $helper = Mage::helper(' blueacorn_categorylandingpage'); ?>
-    <div class="block block-list block-categorys">
-        <div class="block-title">
-            <div class="block-content toggle-content">
-                <div class="block-title">Category Filter</div>
-                <dl class="narrow-by-list">
-                    <?php $helper->getCategoryTree($_current) ?>
-                </dl>
+    <div class="block block-list block-categories block-layered-nav">
+        <div class="block-content toggle-content">
+            <div class="block-title">
+                <div class="block-title"><?php echo $this->__('Category Filter') ?></div>
             </div>
+            <dl id="narrow-by-list">
+                <?php $helper->getCategoryTree($_current) ?>
+            </dl>
         </div>
     </div>
 <?php else: ?>
