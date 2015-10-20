@@ -24,6 +24,11 @@
                     <category_view>BlueAcorn_CategoryLandingPage_Block_Category_View</category_view>
                 </rewrite>
             </catalog>
+            <catalog>
+                <rewrite>
+                    <navigation>BlueAcorn_CategoryLandingPage_Block_Category_Navigation</navigation>
+                </rewrite>
+            </catalog>
         </blocks>
     </global>
     <frontend>
