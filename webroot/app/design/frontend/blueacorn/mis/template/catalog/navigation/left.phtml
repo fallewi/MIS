@@ -32,6 +32,7 @@
 ?>
 <?php $_current = Mage::registry('current_category'); ?>
 <?php $helper = Mage::helper('blueacorn_categorylandingpage'); ?>
+<?php $childCategories = $helper->getSubcategories($_current); ?>
 <?php if($_current->getCategoryLandingPage() && $helper->getLayeredNavEnabled()): ?>
     <div class="block block-list block-categories block-layered-nav">
         <div class="block-content toggle-content">
@@ -39,7 +40,7 @@
                 <div class="block-title"><?php echo $this->__('Category Filter') ?></div>
             </div>
             <dl id="narrow-by-list">
-                <?php $this->getCategoryTree($_current) ?>
+                <?php $this->getCategoryTree($childCategories) ?>
             </dl>
         </div>
     </div>

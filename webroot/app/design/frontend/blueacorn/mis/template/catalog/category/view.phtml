@@ -32,11 +32,12 @@
  */
 ?>
 <?php $_current = Mage::registry('current_category'); ?>
+<?php $helper = Mage::helper('blueacorn_categorylandingpage'); ?>
 <?php if($_current->getCategoryLandingPage()): ?>
     <?php echo $this->getCmsBlockHtml() ?>
     <div class="subcategories" style="display:block">
         <ul class="children-categories products-grid">
-            <?php foreach($this->getChildCategories() as $category): ?>
+            <?php foreach($helper->getSubcategories($_current) as $category): ?>
                 <li class="child-category">
                     <a class="category-link-a" href="<?php echo $category->getURL() ?>">
                         <img src="<?php echo $this->getThumbnailImageUrl($category) ?>" alt="<?php echo $category->getName() ?>" title="<?php echo $category->getName() ?>"/>
