@@ -31,7 +31,6 @@ class BlueAcorn_CategoryLandingPage_Block_Category_View extends Mage_Catalog_Blo
                 }
             }
         }
-        ksort($subCats);
         return $subCats;
     }
     /**
