@@ -31,48 +31,16 @@
  */
 ?>
 <?php $_current = Mage::registry('current_category'); ?>
-<?php if($_current->getCategoryLandingPage()): ?>
-    <?php $helper = Mage::helper(' blueacorn_categorylandingpage'); ?>
+<?php $helper = Mage::helper('blueacorn_categorylandingpage'); ?>
+<?php if($_current->getCategoryLandingPage() && $helper->getLayeredNavEnabled()): ?>
     <div class="block block-list block-categories block-layered-nav">
         <div class="block-content toggle-content">
             <div class="block-title">
                 <div class="block-title"><?php echo $this->__('Category Filter') ?></div>
             </div>
             <dl id="narrow-by-list">
-                <?php $helper->getCategoryTree($_current) ?>
+                <?php $this->getCategoryTree($_current) ?>
             </dl>
         </div>
     </div>
-<?php else: ?>
-    <?php if (!$_current) return ?>
-    <?php $_categories = $this->getCurrentChildCategories() ?>
-    <?php $_count = is_array($_categories)?count($_categories):$_categories->count(); ?>
-    <?php if($_count): ?>
-    <div class="block block-layered-nav block-layered-nav--no-filters">
-        <div class="block-title">
-            <strong><span><?php echo $this->__('Browse By') ?></span></strong>
-        </div>
-        <div class="block-content toggle-content open">
-            <p class="block-subtitle block-subtitle--filter"><?php echo $this->__('Filter') ?></p>
-            <dl id="narrow-by-list2">
-                <dt><?php echo $this->__('Category') ?></dt>
-                <dd>
-                    <ol>
-                    <?php foreach ($_categories as $_category): ?>
-                        <?php if($_category->getIsActive()): ?>
-                        <li>
-                            <a href="<?php echo $this->getCategoryUrl($_category) ?>"<?php if ($this->isCategoryActive($_category)): ?> class="current"<?php endif; ?>>
-                                <?php echo $this->escapeHtml($_category->getName()) ?>
-                                <span class="count">(<?php echo $_category->getProductCount() ?>)</span>
-                            </a>
-                        </li>
-                        <?php endif; ?>
-                    <?php endforeach ?>
-                    </ol>
-                </dd>
-            </dl>
-            <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
-        </div>
-    </div>
-    <?php endif; ?>
 <?php endif; ?>
