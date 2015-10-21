@@ -769,3 +769,73 @@ $productsGridActionHeight: 85px;
         }
     }
 }
+
+/*=============================================
+=            Category Landing Page            =
+=============================================*/
+
+#narrow-by-list {
+
+    ol.parent-child {
+        position: relative;
+        margin-left: 9px;
+
+        &:before {
+            position: absolute;
+            content: "";
+            display: block;
+            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
+            background-position: -78px -30px;
+            width: 16px;
+            height: 16px;
+            top: 5px;
+            right: 2px;
+        }
+    }
+
+    ol dd {
+
+    }
+
+    li.child {
+        margin-left: 8px;
+
+        a {
+            padding-left: 0 !important;
+        }
+    }
+
+    > dt.child {
+
+        &:before {
+            display: none;
+        }
+    }
+
+    dd {
+        display: none;
+
+        &.current {
+            display: block;
+        }
+    }
+}
+
+li.child-category {
+
+    img {
+        margin: 0 auto;
+        max-width: 100%;
+        max-height: 100px;
+    }
+}
+
+.category-promo-block {
+    img { margin: 0 auto; }
+}
+
+.category-description {
+    max-width: 100%;
+}
+
+/*-----  End of Category Landing Page  ------*/
