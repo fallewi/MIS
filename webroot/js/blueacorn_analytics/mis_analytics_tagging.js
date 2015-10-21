@@ -15,6 +15,16 @@
 
     BA_GAQ.setMode('universal');
 
+    //Simple function to drop query string
+    function getURL() {
+        return window.location.href.split('?')[0];
+    }
+
+    //Function to append URL to the end of a string. Mostly used for labels. 
+    function appendUrl(label) {
+        return label + ' || ' + getURL();
+    }
+
     // Run the tracking AFTER doc ready
     $(document).ready(function() {
 
@@ -60,7 +70,7 @@
                 elText = title + ' - ' + elText;
             }
 
-            BA_GAQ.manualTracker('event', $this, 'Footer', elText, window.location.href, 'mousedown');
+            BA_GAQ.manualTracker('event', $this, 'Footer', elText, getURL(), 'mousedown');
         });
 
         //Dynamic tagging for mini cart
@@ -77,10 +87,8 @@
                     label += $this.text().trim();
                 } else {
                     elText += $this.text().trim();
-                    label += $this.closest('li.item').find('.product-name a').text().trim();
+                    label += appendUrl($this.closest('li.item').find('.product-name a').text().trim());
                 }
-
-                label += ' || ' + window.location.href;
 
                 BA_GAQ.manualTracker('event', $this, 'Mini Cart', elText, label, null);
         });
@@ -88,7 +96,7 @@
         //Tagging for featured products
         $('.feature-wrap div.feature-item').each(function(){
             var $this = $(this),
-                label = window.location.href + $this.children('a').attr('href') + ' || ' + window.location.href,
+                label = appendUrl($this.find('a h3').text() + " || " + getURL() + $this.children('a').attr('href')),
                 els = $this.find('a img, a p, a h3, a.button');
 
             els.each(function(){
