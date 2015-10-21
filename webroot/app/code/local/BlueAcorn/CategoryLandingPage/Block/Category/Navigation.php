@@ -48,7 +48,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
             $_subsubcategories = $_category->getChildrenCategories();
 
             if (count($_subsubcategories) > 0) {
-                echo "<dd>";
+                echo '<dd><ol>';
 
                 foreach ($_subsubcategories as $_subcate) {
                     $htmlClass = $this->checkIfChild($_subcate);
@@ -61,14 +61,14 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
                         echo $this->getSubCategoryTree($_subcate, $recursiveCount, $navDepth);
                         echo "</li>";
                     } else {
-                        echo "<ul class='" . $htmlClass . "-child'>";
+                        echo "<ol class='" . $htmlClass . "-child'>";
                         echo "<a href='" . $_helper->getCategoryUrl($_subcate) . "'>" . $_subcate->getName();
                         echo "</a>";
-                        echo $this->getSubCategoryTree($_subcate, $recursiveCount, $navDepth, $_subcate->getLevel());
-                        echo "</ul>";
+                        echo $this->getSubCategories($_subcate, $recursiveCount, $navDepth, $_subcate->getLevel());
+                        echo "</ol>";
                     }
                 }
-                echo "</dd>";
+                echo "</ol></dd>";
             } else {
                 return "";
             }
