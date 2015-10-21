@@ -20,7 +20,7 @@
         return window.location.href.split('?')[0];
     }
 
-    //Function to append URL to the end of a string. Mostly used for labels. 
+    //Function to append URL to the end of a string. Mostly used for labels.
     function appendUrl(label) {
         return label + ' || ' + getURL();
     }
@@ -104,19 +104,17 @@
                     elText = '';
 
                 if (el.is('a')){
-                    label = window.location.href + el.attr('href') + ' || ' + window.location.href;
                     elText += 'Featured Product Details';
                 } else if (el.is('img')) {
                     elText += 'Featured Product Image';
-                } else if (el.is('p')) {
-                    elText += 'Featured Product Text';
                 } else if (el.is('h3')) {
                     elText += 'Featured Product Title';
+                } else if (el.is('p')) {
+                    elText += 'Featured Product Text';
                 }
 
                 if ($this.hasClass('feature-promo')) {
                     elText += ' - Promo';
-                    label = window.location.href + $this.children('a').attr('href') + ' || ' + window.location.href + ' || ' + $this.find('a h3').text();
                 }
 
                 BA_GAQ.manualTracker('event', el, 'Homepage', elText, label, 'mousedown');
