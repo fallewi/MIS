@@ -41,8 +41,10 @@ jQuery(document).ready(function ($) {
                     items = 'current',
                     itemBlock = 'dd';
 
-                self.toggleClass(filters);
-                self.next(itemBlock).toggleClass(items);
+                if(!$(this).hasClass('child')) {
+                    self.toggleClass(filters);
+                    self.next(itemBlock).toggleClass(items);
+                }
 
             });
 
