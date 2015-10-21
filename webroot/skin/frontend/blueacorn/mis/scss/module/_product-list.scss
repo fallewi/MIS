@@ -780,6 +780,16 @@ $productsGridActionHeight: 85px;
         position: relative;
         margin-left: 9px;
 
+        &.current {
+            border-bottom-width: 1px;
+            margin-bottom: 0;
+            padding-bottom: 4px;
+
+            &:before {
+                background-position: -103px -30px;
+            }
+        }
+
         &:before {
             position: absolute;
             content: "";

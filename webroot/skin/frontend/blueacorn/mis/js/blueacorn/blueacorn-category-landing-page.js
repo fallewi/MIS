@@ -36,15 +36,17 @@ jQuery(document).ready(function ($) {
 
         toggleFilter: function(){
 
-            $('ol.parent-child').on('click', function() {
+            $('ol.parent-child').on('click', function(event) {
+                console.log(this);
 
                 var self = $(this),
-                    filters = 'current',
-                    items = 'current',
+                    state = 'current',
                     itemBlock = 'dd';
 
-                self.toggleClass(filters);
-                self.children(itemBlock).toggleClass(items);
+                self.toggleClass(state);
+                self.children(itemBlock).toggleClass(state);
+
+                event.stopPropagation();
             });
         },
 
