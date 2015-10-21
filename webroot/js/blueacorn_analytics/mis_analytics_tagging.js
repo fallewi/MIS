@@ -120,7 +120,135 @@
                 BA_GAQ.manualTracker('event', el, 'Homepage', elText, label, 'mousedown');
             });
 
-        })
+        });
+
+        //Tagging for hero button.
+        $('div.hero-content > a.button').on('mousedown', function() {
+            var label = appendUrl($(this).attr('href'));
+
+            BA_GAQ.trackEvent('Homepage', 'Hero Button', label);
+        });
+
+        //Tagging for breadcrumbs
+        $('div.breadcrumbs li a').each(function() {
+            var $this = $(this),
+                label = appendUrl($this.attr('href'));
+
+            BA_GAQ.manualTracker('event', $this, 'Category Page', 'Breadcrumb Click', label, 'mousedown');
+
+        });
+
+        //Manual tracking for Category page sort.
+        $('.toolbar .sort-by select').change(function() {
+            var $this = $(this),
+                index = this.selectedIndex,
+                label = appendUrl($.trim($this.find('option').eq(index).html()));
+
+            BA_GAQ.trackEvent('Category Page', 'Sort', label);
+        });
+
+        //Manual tracking for Category page show selector.
+        $('.toolbar .limiter select').change(function() {
+            var $this = $(this),
+                index = this.selectedIndex,
+                label = appendUrl($.trim($this.find('option').eq(index).html()));
+
+            BA_GAQ.trackEvent('Category Page', 'Show Number', label);
+        });
+
+        //Manual tracking for Category page page selector upper
+        $('.category-products > .toolbar .pages li > a:not(".next, .previous")').each(function() {
+            var $this = $(this),
+                label = appendUrl($this.text().trim());
+
+            BA_GAQ.manualTracker('event', $this, 'Category Page', 'Page Selection - Upper', label, 'mousedown');
+        });
+
+        //Manual tracking for Category page page selector lower
+        $('.category-products > .toolbar-bottom .pages li > a:not(".next, .previous")').each(function() {
+            var $this = $(this),
+                label = appendUrl($this.text().trim());
+
+            BA_GAQ.manualTracker('event', $this, 'Category Page', 'Page Selection - Lower', label, 'mousedown');
+        });
+
+        //Manual tracking for Category page grid products
+        $('ul.products-grid li.item').each(function() {
+            var $this = $(this),
+                label = appendUrl($this.find('h2.product-name').text().trim()),
+                els = $this.find('a, button');
+
+            els.each(function() {
+                var el = $(this),
+                    pageEl = 'Product - ';
+
+                if (el.is('button')){
+                    pageEl += 'Config / Add';
+                } else if (el.hasClass('product-image')) {
+                    pageEl += 'Image Select';
+                } else if (el.hasClass('link-wishlist')) {
+                    pageEl += 'Wishlist';
+                } else if (el.hasClass('link-compare')) {
+                    pageEl += 'Compare';
+                } else {
+                    pageEl += 'Text Select';
+                }
+
+                BA_GAQ.manualTracker('event', el, 'Category Page', pageEl, label, 'mousedown');
+            });
+        });
+
+        //Manual tracking for layered nav selects
+        $('#narrow-by-list ol li a').each(function() {
+            var $this = $(this),
+                page = "Category Page",
+                filterName = "Filter - " + $this.closest('dd').prev('dt').text().trim(),
+                spanText = $this.find('span.count').first().text(),
+                label = appendUrl("Select || " + $this.text().replace(spanText, "").trim());
+
+            if($('body').hasClass('catalogsearch-result-index')) {
+                page = "Search Results";
+            }
+
+            BA_GAQ.manualTracker('event', $this, page, filterName, label, 'mousedown');
+        });
+
+        //Manual tracking for layered nav no selects
+        $('.block-layered-nav .currently > ol li a.btn-remove').each(function() {
+
+            var $this = $(this),
+                page = "Category Page",
+                filterName = "Filter - " + $this.nextAll('span.label').text().replace(":", "").trim(),
+                label = appendUrl("Deselect || " + $this.nextAll('span.value').text().trim());
+
+            if($('body').hasClass('catalogsearch-result-index')) {
+                page = "Search Results";
+            }
+
+            BA_GAQ.manualTracker('event', $this, page, filterName, label, 'mousedown');
+        });
+
+        //Manual tracking for layered nav filter expansion and collapse
+        $('#narrow-by-list > dt').on('mousedown', function() {
+            var $this = $(this),
+                page = "Category Page",
+                filterName = "Filter - " + $this.text().trim(),
+                label = '';
+
+            if($('body').hasClass('catalogsearch-result-index')) {
+                page = "Search Results";
+            }
+
+            if($this.hasClass('current')) {
+                label += "Close";
+            } else {
+                label += "Open";
+            }
+
+            label = appendUrl(label);
+
+            BA_GAQ.trackEvent(page, filterName, label);
+        });
 
 
 
