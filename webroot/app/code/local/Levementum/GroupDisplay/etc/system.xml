@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <groupdisplay_options>
+            <class>seperator-top</class>
+            <label>Group Display Options</label>
+            <tab>levementum</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>0</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+        </groupdisplay_options>
+    </sections>
+</config>

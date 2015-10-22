@@ -1,0 +1,41 @@
+<script type="text/javascript">
+
+    jQuery( document ).ready(function() {
+        checkSelectedCustomerGroups();
+    });
+
+    //checkSelectedCustomerGroups();
+
+    jQuery('.adam-test option').each(function( index ) {
+
+        checkSelectedCustomerGroups();
+
+        jQuery(this).bind( "click", function() {
+            checkSelectedCustomerGroups();
+        });
+    });
+
+
+    function checkSelectedCustomerGroups() {
+
+        for (var i = 0; i < 11; i++) {
+            var t = '#row_groupdisplay_options_display_groups_imagefield_' + i;
+            jQuery(t).hide();
+        }
+
+        jQuery('.adam-test option').each(function(index) {
+            var t = '#row_groupdisplay_options_display_groups_imagefield_' + jQuery(this).val();
+            jQuery(t).hide();
+        });
+
+        jQuery('.adam-test option:selected').each(function(index) {
+            var t = '#row_groupdisplay_options_display_groups_imagefield_' + jQuery(this).val();
+            var l = '#groupdisplay_options_display_groups_imagefield_' + jQuery(this).val();
+
+            jQuery("label[for='"+l+"']").text(jQuery(this).text());
+
+            jQuery(t).show();
+        });
+
+    }
+</script>
