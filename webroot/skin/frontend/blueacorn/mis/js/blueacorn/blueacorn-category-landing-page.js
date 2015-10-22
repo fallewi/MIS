@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
             // Start the debugger
             ba.setupDebugging(this.settings);
 
-            if ( $('body').hasClass('catalog-category-view') ) {
+            if ( $('body').hasClass('category-landing-page') ) {
                 this.toggleFilter();
                 this.movePromoBlock();
                 this.moveDescription();
@@ -56,7 +56,7 @@ jQuery(document).ready(function ($) {
                 block = $('.category-promo-block');
 
             block.detach();
-            block.appendTo(title);
+            block.appendTo(title).show();
         },
 
         moveDescription: function() {
@@ -65,7 +65,7 @@ jQuery(document).ready(function ($) {
                 grid = $('.subcategories');
 
             block.detach();
-            block.insertAfter(grid);
+            block.insertAfter(grid).show();
         }
     };
 

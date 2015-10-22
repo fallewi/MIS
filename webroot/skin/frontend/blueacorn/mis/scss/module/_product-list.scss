@@ -792,78 +792,91 @@ $productsGridActionHeight: 85px;
 =            Category Landing Page            =
 =============================================*/
 
-#narrow-by-list {
+.category-landing-page {
 
-    ol.parent-child {
-        position: relative;
-        margin-left: 9px;
+    #narrow-by-list {
 
-        &.current {
-            border-bottom-width: 1px;
-            margin-bottom: 0;
-            padding-bottom: 4px;
+        @include bp(max-width, $bp-medium) {
+            display: none;
+        }
+
+        ol.parent-child {
+            position: relative;
+            margin-left: 9px;
+
+            &.current {
+                border-bottom-width: 1px;
+                margin-bottom: 0;
+                padding-bottom: 4px;
+
+                &:before {
+                    background-position: -103px -30px;
+                }
+            }
 
             &:before {
-                background-position: -103px -30px;
+                position: absolute;
+                content: "";
+                display: block;
+                @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
+                background-position: -78px -30px;
+                width: 16px;
+                height: 16px;
+                top: 5px;
+                right: 2px;
             }
         }
 
-        &:before {
-            position: absolute;
-            content: "";
-            display: block;
-            @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
-            background-position: -78px -30px;
-            width: 16px;
-            height: 16px;
-            top: 5px;
-            right: 2px;
+        ol dd {
+
         }
-    }
 
-    ol dd {
+        li.child {
+            margin-left: 8px;
 
-    }
-
-    li.child {
-        margin-left: 8px;
-
-        a {
-            padding-left: 0 !important;
+            a {
+                padding-left: 0 !important;
+            }
         }
-    }
 
-    > dt.child {
+        > dt.child {
 
-        &:before {
+            &:before {
+                display: none;
+            }
+        }
+
+        dd {
             display: none;
+
+            &.current {
+                display: block;
+            }
         }
     }
 
-    dd {
+    li.child-category {
+
+        img {
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100px;
+        }
+    }
+
+    .category-promo-block {
         display: none;
 
-        &.current {
-            display: block;
+        img {
+            width: 100%;
+            margin-bottom: 15px;
         }
     }
-}
 
-li.child-category {
-
-    img {
-        margin: 0 auto;
+    .category-description {
+        display: none;
         max-width: 100%;
-        max-height: 100px;
     }
-}
-
-.category-promo-block {
-    img { margin: 0 auto; }
-}
-
-.category-description {
-    max-width: 100%;
 }
 
 /*-----  End of Category Landing Page  ------*/
