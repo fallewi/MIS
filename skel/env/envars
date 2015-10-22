@@ -7,8 +7,8 @@
 
 CLIENT_CODE="MIS"
 DOMAIN="missionrs.com"
-
 REPO_REMOTE="git@github.com:BlueAcornInc/MIS.git"
+THEME="mis"
 
 MAGE_ADMIN_USERNAME="admin"
 MAGE_ADMIN_PASSWORD="!BAchangeme"
