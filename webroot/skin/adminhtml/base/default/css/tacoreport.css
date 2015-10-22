@@ -1,0 +1,59 @@
+.missionrs-tacoreport-report-index #taco-report-daily { border: 1px solid black; margin-top:10px; width: 99%; border-collapse: collapse; border-spacing: 0;}
+.missionrs-tacoreport-report-index #taco-report-daily td,
+.missionrs-tacoreport-report-index #taco-report-daily th { border: 1px solid black;padding:10px;}
+#taco-report-daily .red { color: #c31f41;}
+.missionrs-tacoreport-report-index #taco-report-daily th {font-size:14px;}
+.missionrs-tacoreport-report-index #taco-report-header-row{ background: #333; color: white; font-weight: bold; text-align: left;}
+.missionrs-tacoreport-report-index #taco-report-daily tr.odd{background: #e3e3e3;}
+.missionrs-tacoreport-report-index .taco-report-left-column{display:block; float: left; width: 65%;}
+.missionrs-tacoreport-report-index .taco-report-right-column{display:block; float: right; width: 35%;}
+.missionrs-tacoreport-report-index form#date-input{display:block;}
+.missionrs-tacoreport-report-index #previous-year-month,
+.missionrs-tacoreport-report-index #current-year-month{border: 1px solid black; color: white; font-weight:bold;margin-bottom: 2px;}
+.missionrs-tacoreport-report-index #current-year-month.less{color:black ;}
+.missionrs-tacoreport-report-index #previous-year-color{background: #273577; padding:10px 0;}
+.missionrs-tacoreport-report-index #current-year-color{background: #c31f41; padding:10px 0;}
+.missionrs-tacoreport-report-index .blue-swatch {width:10px;height:10px;float:left;margin-right:10px;background: #273577;}
+.missionrs-tacoreport-report-index .red-swatch {width:10px;height:10px;float:left;margin-right:10px;background: #c31f41;}
+.missionrs-tacoreport-report-index #salesperson-sales{border: 1px solid black; border-collapse:collapse; border-spacing:0;}
+.missionrs-tacoreport-report-index #salesperson-sales td, .missionrs-tacoreport-report-index #salesperson-sales th{border: 1px solid black;padding:10px;font-size:14px;}
+.missionrs-tacoreport-report-index #salesperson-sales-header-row{background:#333; color: white; font-weight: bold;}
+.missionrs-tacoreport-report-index #unassisted-sales{border:1px solid black; background: #ff9; font-weight:bold; padding:10px;}
+.missionrs-tacoreport-report-index #salesperson-sales #total-assisted{ font-weight: bold; background:#ff9;}
+.missionrs-tacoreport-report-index #salesperson-sales #total-assisted-label{ font-weight: bold; color: white; text-align:right; background:#333;}
+.missionrs-tacoreport-report-index .monthly-yearly{ margin-bottom: 15px; width:200px;}
+.missionrs-tacoreport-report-index .assisted-daily{ margin-bottom: 15px; width: 200px;}
+.missionrs-tacoreport-report-index .unassisted-daily{ margin-bottom: 15px; width: 200px;}
+.missionrs-tacoreport-report-index .brands-daily{ margin-bottom: 15px; width: 200px;}
+.missionrs-tacoreport-report-index #brands-sales{border: 1px solid black; border-collapse: collapse; border-spacing: 0;}
+.missionrs-tacoreport-report-index #brands-sales td, .missionrs-tacoreport-report-index #brands-sales th{border: 1px solid black;padding:10px;font-size:14px;}
+.missionrs-tacoreport-report-index #brands-sales-header-row{ background: #333; color: white; font-weight: bold; text-align: left;}
+.missionrs-tacoreport-report-index #brands-sales #total-brands{ font-weight: bold; background:#ff9;}
+.missionrs-tacoreport-report-index #brands-sales #total-brands-label{ font-weight: bold; color: white; text-align:right; background:#333;}
+
+.missionrs-tacoreport-report-index .taco-time{ height:400px; width: 400px; background: url(../../missionrs/images/Taco_Dog_2.png) no-repeat; }
+.missionrs-tacoreport-report-index .taco-overlay{ float:right; height:400px; background: url(../../missionrs/images/white-overlay.png) repeat; }
+
+.missionrs-tacoreport-report-index .form-container {float:left;width:330px;margin-right:40px;}
+
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}

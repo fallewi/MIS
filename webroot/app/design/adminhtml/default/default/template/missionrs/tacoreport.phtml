@@ -1,0 +1,302 @@
+<?php
+/* @var $helper MissionRS_TacoReport_Helper_Data */
+date_default_timezone_set("America/Chicago");
+$helper = Mage::helper('missionrs_tacoreport');
+$salespeople = $this->getSalespersonCollection();
+$blnSingleDayOrders = true;
+if($blnSingleDayOrders)
+{
+    $date = $this->getDateToProcess();
+}
+else
+{
+    $date = $params['block_date_to'];
+}
+
+
+//$firstDate = $helper->getFirstDayOfYear();
+$params = $this->getRequest()->getParams();
+
+$orderTimeFormat =  'M d, Y h:i:s A';
+
+if(array_key_exists('block_date', $params))
+{
+    $this->setBlockDate(date('Y-m-d', strtotime($params['block_date'])));
+    $orders = $this->getOrdersCollection($this->getBlockDate());
+    $dateLabel =  date('M d, Y',strtotime($params['block_date']));
+    $dateFrom = $dateTo = date('m/d/Y',strtotime($this->getBlockDate()));
+    $firstOfMonth = date('Y-m-01',strtotime($this->getBlockDate()));
+    $todaysDate = $this->getBlockDate();
+}
+elseif(array_key_exists('block_date_to', $params) && array_key_exists('block_date_from', $params))
+{
+    $orders = $this->getOrdersCollectionByDate($params['block_date_from'],$params['block_date_to']);
+    //echo Mage::helper('core')->formatDate($customer->getCreatedAt(), 'full', false);
+    $dateLabel = date('M d, Y',strtotime( $params['block_date_from'])).' - '.date('M d, Y',strtotime($params['block_date_to']));
+    $blnSingleDayOrders = false;
+    $dateFrom = date('m/d/Y',strtotime($params['block_date_from']));
+    $dateTo =  date('m/d/Y',strtotime($params['block_date_to']));
+    $firstOfMonth = date('Y-m-01',strtotime($params['block_date_to']));
+    $todaysDate = $params['block_date_to'];
+}
+else
+{
+    $orders = $this->getOrdersCollection($this->getBlockDate());
+    $dateLabel =  date('M d, Y',strtotime($this->getBlockDate()));
+    $firstOfMonth = $dateFrom = date('Y-m-01');
+    $todaysDate = $dateTo = date('Y-m-d');
+    $dateFrom = date('m/01/Y');
+    $dateTo = date('m/d/Y');
+}
+
+
+$brandsArray = $this->getBrandsCollection($orders);
+$orderCount = count($orders);
+$monthCollection = $this->getCollectionOfCurrentMonth($todaysDate);
+$monthTotal = $helper->getGrandTotal($monthCollection);
+$previousMonthCollection = $this->getCollectionOfPreviousYear($todaysDate);
+$previousMonthTotal = $helper->getGrandTotal($previousMonthCollection);
+
+if ($previousMonthCollection->getSize() <= 0)
+{
+    $previousMonthTotal = Mage::getStoreConfig('missionrs_tacoreport/tacoreport_configuration/tacoreport_configuration_month_total');
+}
+
+$salespersonBasedSales = $this->getAssistedSalesTotals($orders);
+$greenaviseSales = $this->getGreenaviseDailyTotal($orders);
+
+$nonAssitedSalesTotal = array_key_exists(0,$salespersonBasedSales) ? $salespersonBasedSales[0]: 0;
+$grandTotal = array_sum($salespersonBasedSales);
+unset( $salespersonBasedSales[0]);
+$assitedSalesTotal = array_sum($salespersonBasedSales);
+$salespersonGrandTotal = 0;
+
+$dailyGrandTotal = $helper->getGrandTotal($orders);
+
+$tacoTime = false;
+
+$currentMonthCollection = $this->getOrdersCollectionByDate($firstOfMonth,$todaysDate);
+$completeMonthTotal = $helper->getGrandTotal($currentMonthCollection);
+
+$tacoTimeGoal = Mage::getStoreConfig('missionrs_tacoreport/tacoreport_configuration/tacoreport_configuration_daily_goal');
+$percentageDaily = $dailyGrandTotal/$tacoTimeGoal;
+$intShowTaco = round($percentageDaily * 510);
+if(($percentageDaily >= 1))
+{
+    if($dailyGrandTotal-$greenaviseSales > 20000)
+    {
+        $tacoTime = true;
+    }
+    $intShowTaco = 510;
+}
+else
+{
+    $tacoTime = false;
+    $intShowTaco = round($percentageDaily * 510);
+}
+
+$previousMonthTotal != 0 ? $percentageOfTotal = round($monthTotal / $previousMonthTotal * 100): $percentageOfTotal = 0.0;
+
+
+
+?>
+<?php if($blnSingleDayOrders): ?>
+    <?php if($tacoTime == true): ?>
+        <h1>TACO TIME!!!!!</h1>
+        <div>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/npjF032TDDQ?iv_load_policy=3&rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe>
+        </div>
+    <?php else: ?>
+    <div id="tacometer" style="background:url(/skin/adminhtml/base/default/images/missionrs/taco-meter.png) top left no-repeat;display:block;height:200px;width:510px;">
+        <img src="/skin/adminhtml/base/default/images/missionrs/clear.gif" width="<?php echo $intShowTaco;?>" height="200" style="background:url(/skin/adminhtml/base/default/images/missionrs/taco-meter.png) left -200px no-repeat;" alt="Taco Meter" />
+    </div>
+    <?php endif;?>
+<?php endif; ?>
+<div class="clearfix" style="margin-bottom:2em;">
+    <div class="form-container">
+        <h3>Daily</h3>
+        <form id="date-input" method="post" action="<?php echo $this->getDailyReportUrl() ?>">
+            <input value="<?php echo $dateTo; ?>" name="date-input-box" id="date-input-box" title="date-input-box" class="input-text validate-date" type="text" />
+            <button type="submit" class="scalable" onclick="myForm.submit()"><span><span><?php echo Mage::helper('catalog')->__('Update') ?></span></span></button>
+            <input name="form_key" type="hidden" value="<?php echo $this->getFormKey(); ?>" />
+        </form>
+    </div>
+    <div class="form-container" style="width:35em;">
+        <h3>Custom Date Range</h3>
+        <form id="date-input2" method="post" action="<?php echo  $this->getCustomDateReportUrl() ?>">
+            <input value="<?php echo $dateFrom; ?>" name="date-input-box-from" id="date-input-box-from" title="date-input-box-from" class="input-text validate-date" type="text" />
+            <input value="<?php echo $dateTo; ?>" name="date-input-box-to" id="date-input-box-to" title="date-input-box-to" class="input-text validate-date" type="text" />
+            <button type="submit" class="scalable" onclick="myForm.submit()"><span><span><?php echo Mage::helper('catalog')->__('Update') ?></span></span></button>
+            <input name="form_key" type="hidden" value="<?php echo $this->getFormKey(); ?>" />
+            <input type="hidden" name="custom_range" value="1" />
+        </form>
+    </div>
+</div>
+<h1><?php echo $dateLabel ?></h1>
+<h4><?php echo $orderCount ?> Orders, Total: <?php echo Mage::helper('core')->formatCurrency($grandTotal) ?></h4>
+
+<p>Month to date: <strong style="font-size:1.2em;"><?php echo Mage::helper('core')->formatCurrency($monthTotal) ?></strong></p>
+<?php if($greenaviseSales > 0): ?>
+<p>Non-Greenavise: <?php echo Mage::helper('core')->formatCurrency($dailyGrandTotal-$greenaviseSales) ?></p>
+<?php endif; ?>
+<div class="taco-report-left-column">
+    <?php if($orderCount){?>
+    <table id="taco-report-daily">
+        <tr id="taco-report-header-row">
+            <th id="taco-report-header" style="width:90px;" >Order</th>
+            <?php // <th id="taco-report-header" >Purchased On</th> ?>
+            <th id="taco-report-header" >Name</th>
+            <th id="taco-report-header" >Company</th>
+            <th id="taco-report-header" style="width:100px">Total</th>
+            <?php // <th id="taco-report-header" style="width:100px">Status</th> ?>
+            <th id="taco-report-header" style="width:110px">Sold By</th>
+        </tr>
+        <?php $i = 1 ?>
+        <?php foreach ($orders as $order): ?>
+            <?php ?>
+            <tr class="<?php echo($i % 2 == 0 ? 'even' : 'odd') ?>">
+                <td><?php echo $order->getIncrementId() ?></td>
+                <?php // <td><?php echo date($orderTimeFormat,Mage::getModel('core/date')->timestamp($order->getCreatedAt())) </td> ?>
+                <td><?php echo $order->getCustomerName() ?></td>
+                <td><?php echo $order->getBillingAddress()->getCompany() ?></td>
+                <td <?php echo ($order->getAdminId() ? 'class="red"' : '' ); ?> ><?php echo Mage::helper('core')->formatCurrency($order->getGrandTotal()) ?></td>
+                <?php // <td><?php echo $order->getStatus()</td>?>
+                <td><?php echo ($order->getAdminId() ? $salespeople[$order->getAdminId()]->getUsername() : '') ; ?></td>
+            </tr>
+            <?php $i++ ?>
+        <?php endforeach ?>
+    </table>
+    <?php
+    }
+    ?>
+</div>
+<div class="taco-report-right-column">
+    <div class="monthly-yearly">
+        <h2>Month YOY</h2>
+        <div class="monthly-yearly-graph">
+            <div id="previous-year-month" style="width:100px;">
+                <div id="previous-year-color">
+                    &nbsp;&nbsp;<?php echo Mage::helper('core')->formatCurrency($previousMonthTotal) ?>&nbsp;
+                </div>
+            </div>
+            <div id="current-year-month" <?php if($percentageOfTotal<75)echo " class=\"less\""; ?>style="width:<?php echo $percentageOfTotal ?>px; max-width:500px;">
+                <div id="current-year-color">
+                    &nbsp;&nbsp;<?php echo Mage::helper('core')->formatCurrency($monthTotal) ?>&nbsp;
+                </div>
+            </div>
+        </div>
+        <h2 id="monthly-percentage"><?php echo round($percentageOfTotal,2) . '%' ?><br /></h2>
+        <div><div class="blue-swatch"></div>Sales <?php echo date('F Y',strtotime($todaysDate ." -1 year")); ?></div>
+        <div><div class="red-swatch"></div>Sales <?php echo date('F Y',strtotime($todaysDate)); ?></div>
+    </div>
+    <div class="assisted-daily">
+        <h2>Assisted Sales</h2>
+        <table id="salesperson-sales">
+            <tr id="salesperson-sales-header-row">
+                <th><?php echo $this->__('Team Member') ?></th>
+                <th><?php echo $this->__('Sales') ?></th>
+            </tr>
+            <?php foreach ($salespersonBasedSales as $salesPersonId => $salesPersonTotal): ?>
+                <?php if ($salesPersonId): ?>
+                    <tr>
+                        <td>
+                            <?php echo $salespeople[$salesPersonId]->getName() ?>
+                        </td>
+                        <td>
+                            <?php echo Mage::helper('core')->formatCurrency($salesPersonTotal); ?>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <?php continue; ?>
+                <?php endif ?>
+            <?php endforeach; ?>
+            <tr>
+                <td id="total-assisted-label">Total:</td>
+                <td id="total-assisted"><?php echo Mage::helper('core')->formatCurrency($assitedSalesTotal) ?></td>
+            </tr>
+        </table>
+    </div>
+    <div class="unassisted-daily">
+        <h2>Unassisted Sales</h2>
+        <span id="unassisted-sales">
+            <?php echo Mage::helper('core')->formatCurrency($nonAssitedSalesTotal) ?>
+        </span>
+    </div>
+    <div class="brands-daily">
+        <h2>Brands Sales Total</h2>
+        <table id="brands-sales">
+            <tr id="brands-sales-header-row">
+                <th><?php echo $this->__('Brand') ?></th>
+                <th><?php echo $this->__('Sales') ?></th>
+            </tr>
+            <?php $totalSold = 0 ?>
+            <?php foreach ($brandsArray as $key => $value): ?>
+                <tr>
+                    <td>
+                        <?php echo $key ?>
+                    </td>
+                    <td>
+                        <?php
+                        $totalSold += $value;
+                        echo $value;
+                        ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            <tr>
+                <td id="total-brands-label">Total:</td>
+                <td id="total-brands"><?php echo $totalSold ?></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!--<div class="all-product-sales">-->
+<!--    <h1>All Product Sales Per Transaction</h1>-->
+<!--    --><?php //$s=0 ?>
+<!--    --><?php
+//    if($productsCollection !=null){
+//        foreach($productsCollection as $name){
+//            foreach($name as $key => $value){
+//                echo '<h4>'.date('m-d-Y', strtotime($this->getBlockDate())).' = '.$value.' '.$key."</h4>";
+//            }
+//        }
+//    }
+//    ?>
+<!--</div>-->
+<?php
+$_dateFormat = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+$_calDateFormat = Varien_Date::convertZendToStrFtime($_dateFormat, true, false);
+?>
+<script type="text/javascript">
+    var myForm = new varienForm('date-input');
+
+    //for daily report
+    Calendar.setup({
+        inputField: "date-input-box",
+        ifFormat: "<?php echo $_calDateFormat ?>",
+        showsTime: false,
+        align: "Bl",
+        singleClick : true
+    });
+
+    //for custom range report
+    Calendar.setup({
+        inputField: "date-input-box-to",
+        ifFormat: "<?php echo $_calDateFormat ?>",
+        showsTime: false,
+        align: "Bl",
+        singleClick : true
+    });
+
+    Calendar.setup({
+        inputField: "date-input-box-from",
+        ifFormat: "<?php echo $_calDateFormat ?>",
+        showsTime: false,
+        align: "Bl",
+        singleClick : true
+    });
+</script>
+
+
+
+
