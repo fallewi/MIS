@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <missionrs_tacoreport translate="title" module="missionrs_tacoreport">
+            <title>Taco Report</title>
+            <sort_order>100</sort_order>
+            <action>missionrs_tacoreport/report</action>
+        </missionrs_tacoreport>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <missionrs_tacoreport module="missionrs_tacoreport" translate="title">
+                        <title>Taco Report</title>
+                        <sort_order>300</sort_order>
+                    </missionrs_tacoreport>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <missionrs_tacoreport module="missionrs_tacoreport" translate="title">
+                                        <title>Taco Report</title>
+                                        <sort_order>100</sort_order>
+                                    </missionrs_tacoreport>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

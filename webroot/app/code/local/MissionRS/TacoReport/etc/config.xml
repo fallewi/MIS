@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_TacoReport>
+            <version>0.1.0</version>
+        </MissionRS_TacoReport>
+    </modules>
+    <global>
+        <blocks>
+            <missionrs_tacoreport>
+                <class>MissionRS_TacoReport_Block</class>
+            </missionrs_tacoreport>
+        </blocks>
+        <helpers>
+            <missionrs_tacoreport>
+                <class>MissionRS_TacoReport_Helper</class>
+            </missionrs_tacoreport>
+        </helpers>
+    </global>
+    <admin>
+        <routers>
+            <missionrs_tacoreport>
+                <use>admin</use>
+                <args>
+                    <module>MissionRS_TacoReport</module>
+                    <frontName>missionrs_tacoreport</frontName>
+                </args>
+            </missionrs_tacoreport>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <missionrs_tacoreport module="missionrs_tacoreport">
+                    <file>missionrs/tacoreport.xml</file>
+                </missionrs_tacoreport>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>
