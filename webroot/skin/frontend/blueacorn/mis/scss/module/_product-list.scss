@@ -800,21 +800,14 @@ $productsGridActionHeight: 85px;
             display: none;
         }
 
-        @include bp(max-width, $bp-xlarge) {
-            a { font-size: 15px; }
-        }
-
         ol.parent-child {
             position: relative;
-            margin-left: 8px;
-            padding-right: 22px;
+            margin-left: 9px;
 
             &.current {
                 border-bottom-width: 1px;
                 margin-bottom: 0;
                 padding-bottom: 4px;
-
-                > a { color: #CA123E; }
 
                 &:before {
                     background-position: -103px -30px;
@@ -834,6 +827,10 @@ $productsGridActionHeight: 85px;
             }
         }
 
+        ol dd {
+
+        }
+
         li.child {
             margin-left: 8px;
 
@@ -841,8 +838,6 @@ $productsGridActionHeight: 85px;
                 padding-left: 0 !important;
             }
         }
-
-        dt.parent.current a { color: #CA123E; }
 
         > dt.child {
 
