@@ -22,5 +22,14 @@ class BlueAcorn_CategoryLandingPage_Block_Category_View extends Mage_Catalog_Blo
         }
         return $url;
     }
+
+    protected function _prepareLayout() {
+        $_current = Mage::registry('current_category');
+        if($_current->getCategoryLandingPage()) {
+            if($root = $this->getLayout()->getBlock('root')) {
+                $root->addBodyClass('category-landing-page');
+            }
+        }
+    }
 }
 
