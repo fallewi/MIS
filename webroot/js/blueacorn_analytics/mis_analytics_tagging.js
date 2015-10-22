@@ -25,6 +25,26 @@
         return label + ' || ' + getURL();
     }
 
+    //
+    function getPageName() {
+        var body = $('body'),
+            page = '';
+
+        if (body.hasClass('catalog-category-view')) {
+            page = 'Category Page';
+        } else if (body.hasClass('catalog-product-view')) {
+            page = 'Product Page';
+        } else if (body.hasClass('cms-home')) {
+            page = 'Homepage';
+        } else if (body.hasClass('catalogsearch-result-index')) {
+            page = 'Search Results Page';
+        } else if (body.hasClass('customer-account')) {
+            page = 'My Account Page';
+        }
+
+        return page;
+    }
+
     // Run the tracking AFTER doc ready
     $(document).ready(function() {
 
@@ -132,9 +152,11 @@
         //Tagging for breadcrumbs
         $('div.breadcrumbs li a').each(function() {
             var $this = $(this),
+                body = $('body'),
+                page = getPageName(),
                 label = appendUrl($this.attr('href'));
 
-            BA_GAQ.manualTracker('event', $this, 'Category Page', 'Breadcrumb Click', label, 'mousedown');
+            BA_GAQ.manualTracker('event', $this, page, 'Breadcrumb Click', label, 'mousedown');
 
         });
 
@@ -250,7 +272,51 @@
             BA_GAQ.trackEvent(page, filterName, label);
         });
 
+        //Manual tracking for Yopto Write a Review button, instead of native
+        $('.col-main').on('mousedown', 'span.yotpo-display-wrapper .write-review-button', function() {
+            var page = 'Product Page',
+                label = appendUrl($('.top-product-details div.product-name').text().trim());
 
+            BA_GAQ.trackEvent(page, 'Write Review', label);
+        });
+
+        //Manual tracking for product image thumbnails
+        $('.product-img-box .thumb-link').each(function() {
+            var $this = $(this),
+                label = appendUrl($('.top-product-details div.product-name').text().trim());
+
+            BA_GAQ.manualTracker('event', $this, 'Product Page', 'Thumbnail', label, 'mousedown');
+        });
+
+        //Manual tracking for configurable option select
+        $('#product-options-wrapper select').change(function() {
+            var $this = $(this),
+                pageEl = $this.children('option:first-child').text().trim().camelCaseString(),
+                index = this.selectedIndex,
+                label = appendUrl($.trim($this.find('option').eq(index).html()));
+
+            BA_GAQ.trackEvent('Product Page', pageEl, label);
+        });
+
+        //Manual tracking for add to cart wrapper button and links
+        $('.add-to-cart-wrapper').on('mousedown', 'button, a', function() {
+            var $this   = $(this),
+                pageEl  = '',
+                label   = $('.top-product-details div.product-name').text().trim();
+
+            if ($this.hasClass('btn-cart') || $this.hasClass('link-wishlist')) {
+                pageEl  += $this.text().trim();
+                label   += " || " + $('#qty').val();
+            } else if ($this.is('#map_request')) {
+                pageEl  += $this.text().trim();
+            } else if ($this.hasClass('link-finance')) {
+                pageEl += 'Finance Info';
+            }
+
+            label = appendUrl(label);
+
+            BA_GAQ.trackEvent('Product Page', pageEl, label);
+        });
 
     }); // end doc ready
 
