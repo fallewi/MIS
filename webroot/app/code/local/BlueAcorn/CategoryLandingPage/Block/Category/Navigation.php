@@ -64,7 +64,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
                         echo "<ol class='" . $htmlClass . "-child'>";
                         echo "<a href='" . $_helper->getCategoryUrl($_subcate) . "'>" . $_subcate->getName();
                         echo "</a>";
-                        echo $this->getSubCategories($_subcate, $recursiveCount, $navDepth, $_subcate->getLevel());
+                        echo $this->getSubCategoryTree($_subcate, $recursiveCount, $navDepth, $_subcate->getLevel());
                         echo "</ol>";
                     }
                 }
