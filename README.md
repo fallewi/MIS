@@ -1,14 +1,14 @@
-Draft @CLIENT_CODE README
+Draft MIS README
 =========================
 
 # Quickstart
 
 ```sh
 # clone repository to your preferred working directory
-git clone @GIT_REMOTE $BLUEACORN_PROJ_DIR/@CLIENT_CODE
+git clone @GIT_REMOTE $BLUEACORN_PROJ_DIR/MIS
 
 # change to cloned repository directory
-cd $BLUEACORN_PROJ_DIR/@CLIENT_CODE
+cd $BLUEACORN_PROJ_DIR/MIS
 
 # set the current environment to 'local'
 ./manage.sh env local
@@ -80,7 +80,7 @@ You'll need node and [gulp](http://gulpjs.com/) installed.
 
 ## Deployment
 
-Deployment is typically performed by triggering the [@CLIENT_CODE Jenkins Deployment Job](http://jenkins.badevops.com/job/@CLIENT_CODE/) or hipchat.
+Deployment is typically performed by triggering the [MIS Jenkins Deployment Job](http://jenkins.badevops.com/job/MIS/) or hipchat.
 
 These use the `scripts/deploy.sh` command.
 
