@@ -20,11 +20,6 @@ var
 /downloader/pearlib/cache/
 /downloader/*.cfg
 
-# sass cache
-skin/frontend/blueacorn/mis/scss/.sass-cache/
-
-# phpstorm files
-.idea/
 
 # wordpress blog
 wp/

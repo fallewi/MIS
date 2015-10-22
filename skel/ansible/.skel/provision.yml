@@ -1,0 +1,91 @@
+---
+
+- name: "@CLIENT_CODE:@ENV common provisioning"
+  hosts: all
+  tags:
+    - common
+
+  tasks:
+    - name: ensure BLUEACORN_DIR directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ BLUEACORN_DIR }}/conf"
+        - "{{ BLUEACORN_DIR }}/sites"
+        - "{{ BLUEACORN_DIR }}/tmp"
+        - "{{ BLUEACORN_DIR }}/util"
+
+    - name: set hostname
+      hostname: name={{ inventory_hostname }}
+      sudo: True
+      tags: hostname
+
+    - name: ensure hostname is in /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        line: "127.0.0.1 {{ inventory_hostname }}"
+      sudo: True
+      tags: hostname
+
+
+
+- name: "@CLIENT_CODE:@ENV setup nfs server"
+  hosts: web-admin
+  roles:
+    - { role: nfs-server, tags: ["nfs-server"], sudo: True }
+
+  tasks:
+    - name: ensure NFS server shared directories exist with proper permissions
+      file:
+        path: "{{ item }}"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ HTTPD_USER }}"
+        state: directory
+        mode: 0770
+      sudo: True
+      with_items:
+        - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/media"
+        - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/stash"
+        - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/var/export"
+        - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/var/powerreviews"
+        - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/var/urapidflow"
+      ignore_errors: yes
+      tags:
+        - perms
+        - links
+        - nfs-server
+
+
+- name: "@CLIENT_CODE:@ENV webserver provisioning"
+  hosts: web*
+  tags:
+    - web-server
+
+  roles:
+    - { role: mage-phpfpm, tags: ["php"], sudo: True }
+    - { role: mage-nginx, tags: ["nginx"], sudo: True }
+    - { role: nfs-client, tags: ["nfs-client"], sudo: True }
+
+  tasks:
+    - name: install git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+
+
+
+# schedule tasks
+- include: @ENV.cron.yml
+
+# install newrelic agents
+- include: newrelic.yml
+
+#---
+#  deprectated yas3fs
+#  yas3fs: fuse python-pip
+#  mounting: yas3fs s3://mageus/yas3fs /s3fs --topic arn:aws:sns:us-west-1:747399827750:mageus-yas3fs --new-queue --region us-west-1
+# sudo sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf # uncomment user_allow_other

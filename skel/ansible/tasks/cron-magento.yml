@@ -1,0 +1,21 @@
+---
+
+- name: ensure magento cron is executable
+  file:
+    path: "{{ item }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ HTTPD_USER }}"
+    mode: 0770
+  sudo: True
+  with_items:
+    - "{{ MAGE_ROOT }}/cron.sh"
+    - "{{ MAGE_ROOT }}/cron.php"
+
+- name: schedule magento cron
+  cron:
+    job: "! test -e {{ MAGE_ROOT }}maintenance.flag && {{ MAGE_ROOT }}/cron.sh"
+    minute: "*/5"
+    name: "{{ ENV }} magento cron"
+    user: "{{ HTTPD_USER }}"
+    state: present
+  sudo: True
