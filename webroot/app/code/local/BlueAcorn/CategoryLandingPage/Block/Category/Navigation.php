@@ -13,12 +13,14 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
         $_helper = Mage::helper('catalog/category');
         $_baHelper = Mage::helper('blueacorn_categorylandingpage');
         $navDepth = $_baHelper->getLayeredNavDepth();
-
+        if($navDepth === ""){
+            $navDepth = 10;
+        }
         // Check to see if the current category has child categories
         if (count($childCat) > 0) {
             foreach ($childCat as $_category) {
                 $recursiveCount = 0;
-                $htmlClass = $this->checkIfChild($_category);
+                $htmlClass = $this->checkIfChild($_category, $recursiveCount, $navDepth);
 
                 echo "<dt class='" . $htmlClass . "'>";
                 echo "<a href='" . $_helper->getCategoryUrl($_category) . "'>" . $_category->getName();
@@ -38,7 +40,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
      * @param int $categoryLvl
      * @return string
      */
-    public function getSubCategoryTree($_category, &$recursiveCount, $navDepth = 10, $categoryLvl = 0){
+    public function getSubCategoryTree($_category, &$recursiveCount, $navDepth, $categoryLvl = 0){
         $recursiveCount += 1;
 
         // If recursive count is less than or equal the nav depth set in admin
@@ -51,7 +53,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
                 echo '<dd><ol>';
 
                 foreach ($_subsubcategories as $_subcate) {
-                    $htmlClass = $this->checkIfChild($_subcate);
+                    $htmlClass = $this->checkIfChild($_subcate, $recursiveCount, $navDepth);
 
                     // if category is has not child, else the subcategories have children
                     if($htmlClass == "child"){
@@ -81,10 +83,10 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
      * @param $_category
      * @return string
      */
-    public function checkIfChild($_category){
+    public function checkIfChild($_category, $recursiveCount, $navDepth){
         $_subsubcats = $_category->getChildrenCategories();
 
-        if (count($_subsubcats) > 0){
+        if (count($_subsubcats) > 0 && $recursiveCount < $navDepth){
             return "parent";
         }else{
             return "child";
