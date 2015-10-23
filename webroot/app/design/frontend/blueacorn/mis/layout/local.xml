@@ -12,8 +12,8 @@
                 <action method="addItem"><type>skin_js</type><name>jsmin/blueacorn.min.js</name><params/></action>
                 <action method="addItem" ifconfig="styleguide/development/enable_development"><type>skin_js</type><name>jsmin/blueacorn.development.min.js</name><params/></action>
                 <action method="addItem"><type>skin_js</type><name>js/vendor/jquery.fancybox.pack.js</name><params/></action>
-                <action method="addJs"><script>blueacorn_analytics/ga_module_library_min.js</script></action>
-                <action method="addJs"><script>blueacorn_analytics/mis_analytics_tagging.js</script></action>
+                <action method="addJs"><script>blueacorn/analytics/ga_module_library_min.js</script></action>
+                <action method="addJs"><script>blueacorn/analytics/mis_analytics_tagging.js</script></action>
             </block>
         </reference>
         <reference name="name">
