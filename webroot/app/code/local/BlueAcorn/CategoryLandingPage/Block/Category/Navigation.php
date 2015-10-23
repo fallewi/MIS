@@ -20,7 +20,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
         if (count($childCat) > 0) {
             foreach ($childCat as $_category) {
                 $recursiveCount = 0;
-                $htmlClass = $this->checkIfChild($_category, $recursiveCount, $navDepth);
+                $htmlClass = $this->checkIfChild($_category, $_category->getLevel(), $navDepth);
 
                 echo "<dt class='" . $htmlClass . "'>";
                 echo "<a href='" . $_helper->getCategoryUrl($_category) . "'>" . $_category->getName();
@@ -53,7 +53,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
                 echo '<dd><ol>';
 
                 foreach ($_subsubcategories as $_subcate) {
-                    $htmlClass = $this->checkIfChild($_subcate, $recursiveCount, $navDepth);
+                    $htmlClass = $this->checkIfChild($_subcate, $_subcate->getLevel(), $navDepth);
 
                     // if category is has not child, else the subcategories have children
                     if($htmlClass == "child"){
@@ -81,14 +81,14 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
      * Function to check if a category has children
      *
      * @param $_category
-     * @param $recursiveCount
+     * @param $categoryLvl
      * @param $navDepth
      * @return string
      */
-    public function checkIfChild($_category, $recursiveCount, $navDepth){
+    public function checkIfChild($_category, $categoryLvl, $navDepth){
         $_subsubcats = $_category->getChildrenCategories();
 
-        if (count($_subsubcats) > 0 && $recursiveCount < $navDepth){
+        if (count($_subsubcats) > 0 && $categoryLvl <= $navDepth + 1){
             return "parent";
         }else{
             return "child";
