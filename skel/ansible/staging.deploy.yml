@@ -8,7 +8,7 @@
   pre_tasks:
 
     # compile assets
-    #- include: tasks/grunt.yml
+    - include: tasks/grunt.yml
 
 
   tasks:
