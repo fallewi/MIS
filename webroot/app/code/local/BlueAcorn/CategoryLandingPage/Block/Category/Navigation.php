@@ -5,7 +5,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
     /**
      * Echos out the Category tree for the Nav on Category Landing Page
      *
-     * @param $_current
+     *
      * @param $childCat
      */
     public function getCategoryTree($childCat)
@@ -81,6 +81,8 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
      * Function to check if a category has children
      *
      * @param $_category
+     * @param $recursiveCount
+     * @param $navDepth
      * @return string
      */
     public function checkIfChild($_category, $recursiveCount, $navDepth){
