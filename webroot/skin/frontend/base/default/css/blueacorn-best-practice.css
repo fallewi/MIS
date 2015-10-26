@@ -280,7 +280,7 @@ body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] {
   margin-left: 40px; }
   /* line 278, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
   body.checkout-onepage-index #checkoutSteps div[id$="-progress-opcheckout"] dt {
-    display: none; }
+     }
 
 /* line 289, /Volumes/Sites/base.dev/skin/frontend/blueacorn/default/scss/blueacorn-best-practice.scss */
 #checkout-review-table td .inline {
