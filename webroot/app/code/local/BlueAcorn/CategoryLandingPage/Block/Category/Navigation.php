@@ -40,14 +40,15 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
      * @param int $categoryLvl
      * @return string
      */
-    public function getSubCategoryTree($_category, &$recursiveCount, $navDepth, $categoryLvl = 0){
+    public function getSubCategoryTree($_category, &$recursiveCount, $navDepth, $categoryLvl = 0)
+    {
         $recursiveCount += 1;
 
         // If recursive count is less than or equal the nav depth set in admin
         // or the category level is not equal to the nav depth. (This is for subcategories with subcategories)
         if ($recursiveCount <= $navDepth || $categoryLvl <= $navDepth + 1) {
             $_helper = Mage::helper('catalog/category');
-            $_subsubcategories = $_category->getChildrenCategories();
+            $_subsubcategories = $this->getChildCategories($_category);
 
             if (count($_subsubcategories) > 0) {
                 echo '<dd><ol>';
@@ -85,8 +86,10 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
      * @param $navDepth
      * @return string
      */
-    public function checkIfChild($_category, $categoryLvl, $navDepth){
-        $_subsubcats = $_category->getChildrenCategories();
+    public function checkIfChild($_category, $categoryLvl, $navDepth)
+    {
+
+        $_subsubcats = $this->getChildCategories($_category);
 
         if (count($_subsubcats) > 0 && $categoryLvl <= $navDepth + 1){
             return "parent";
@@ -94,4 +97,14 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
             return "child";
         }
     }
+
+    public function getChildCategories($_category)
+    {
+        $currentId = $_category->getId();
+
+        return Mage::getModel('catalog/category')->getCollection()
+            ->addAttributeToSelect(array('thumbnail', 'name', 'url_key'))
+            ->addAttributeToFilter('parent_id', $currentId);
+    }
+
 }
