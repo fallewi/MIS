@@ -596,9 +596,14 @@ $productsGridActionHeight: 85px;
     &.current {
         color: #CA123E;
     }
+}
 
-    @include bp(max-width, $bp-large) {
-        font-size: 12px;
+@include bp(max-width, $bp-large) {
+    .block-layered-nav .block-content > dl {
+        > dt,
+        > dd > ol > li > a {
+            font-size: 12px;
+        }
     }
 }
 
