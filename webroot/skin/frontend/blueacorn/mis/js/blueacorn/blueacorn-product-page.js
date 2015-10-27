@@ -98,10 +98,10 @@ jQuery(document).ready(function ($) {
             var self = this,
                 readMore = $('.read-more'),
                 container = $('.description .detail'),
-                newHeight = $('.detail')[0].scrollHeight;
+                overflow = $('.product-information-block .column-left .description .detail');
 
             readMore.on('click', function(){
-                container.css({ 'max-height': newHeight });
+                container.css({ 'overflow': 'visable', 'max-height': '100%' });
                 readMore.detach();
             });
         },
