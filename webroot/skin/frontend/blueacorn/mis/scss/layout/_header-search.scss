@@ -91,7 +91,7 @@
     }
 }
 
-@include bp(max-width, 885px) {
+@include bp(max-width, 900px) {
     #header-search {
         right: 170px;
     }
@@ -197,9 +197,4 @@
 
 #search_mini_form .search-button:hover:before {
     opacity: 0.8;
-}
-
-#search_mini_form .search-button:active:before {
-    margin-top: -15px + 2px;
-    margin-left: -15px + 2px;
 }

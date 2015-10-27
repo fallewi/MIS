@@ -90,7 +90,7 @@ jQuery(document).ready(function ($) {
 
             if (container[0].scrollHeight > container.innerHeight()) {
                 wrapper.append('<div class="read-more">Read More</div>');
-                $('.read-more').css({ top: (wrapper.height() + 4) });
+                $('.read-more').css({ 'top': 'auto' });
             }
         },
 
@@ -98,10 +98,10 @@ jQuery(document).ready(function ($) {
             var self = this,
                 readMore = $('.read-more'),
                 container = $('.description .detail'),
-                newHeight = $('.detail')[0].scrollHeight;
+                overflow = $('.product-information-block .column-left .description .detail');
 
             readMore.on('click', function(){
-                container.css({ 'max-height': newHeight });
+                container.css({ 'overflow': 'visable', 'max-height': '100%' });
                 readMore.detach();
             });
         },

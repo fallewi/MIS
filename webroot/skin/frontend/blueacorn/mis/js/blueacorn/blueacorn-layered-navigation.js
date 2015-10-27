@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
             // Start the debugger
             ba.setupDebugging(this.settings);
 
-            if ( $('body').hasClass('catalog-category-view') ) {
+            if ( $('body').hasClass('catalog-category-view') || $('body').hasClass('catalogsearch-result-index') ) {
                 this.toggleFilter();
             }
         },

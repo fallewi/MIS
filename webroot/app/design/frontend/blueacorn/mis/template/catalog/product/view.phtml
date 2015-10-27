@@ -83,14 +83,14 @@
                                 <button onclick="mapPricingEmail.addToEmail(this)" id="map_request" class="button">Get Price</button>
                                 <input id="map_email" type="text" name="user_email" class="input-text" placeholder="Enter Email Address"/>
                             </div>
-                        <?php endif; ?>    
+                        <?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <?php echo $this->getChildHtml('product_type_data') ?>
                 <?php echo $this->getChildHtml('extrahint') ?>
-                
+
                 <div class="price-info">
                     <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
                             <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
@@ -99,14 +99,14 @@
                             <?php endif; ?>
                             <?php echo $this->getChildHtml('bundle_prices') ?>
                             <?php echo $this->getTierPriceHtml() ?>
-                    
+
                     <?php else: ?>
-                        
+
                         <span class="price map-msrp">
                             <?php $curr_code = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
                             <?php echo $curr_code . number_format($_product->getMsrp(), 2); ?>
                         </span>
-        
+
                     <?php endif; ?>
                 </div>
 
@@ -238,12 +238,14 @@
     </div>
 
     <div class="column column-right">
-        <div class="column-container ships-from">
-            <h2><?php echo $this->__("Shipping") ?></h2>
-            <div class="detail"><?php echo $this->__("Ships from: ") .$_product->getAttributeText('ships_from') ?>
-                    <p><?php echo $productPageHelper->getShipFrom($_product->getData('ships_from')) ?></p>
+        <?php if($_product->getShipsFrom()): ?>
+            <div class="column-container ships-from">
+                <h2><?php echo $this->__("Shipping") ?></h2>
+                <div class="detail"><?php echo $this->__("Ships from: ") .$_product->getAttributeText('ships_from') ?>
+                        <p><?php echo $productPageHelper->getShipFrom($_product->getData('ships_from')) ?></p>
+                </div>
             </div>
-        </div>
+        <?php endif;?>
         <?php if($_product->getFeaturesBenefits()): ?>
             <div class="column-container features-benefits">
                 <h2><?php echo $this->__("Features & Benefits") ?></h2>

@@ -35,7 +35,7 @@
 
     &:not(.skip-active):hover {
         .icon {
-            
+
         }
     }
 
@@ -43,6 +43,10 @@
         @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
         width: 17px;
         height: 15px;
+
+        @include bp(min-width, 1025px) {
+            padding-bottom: 18px;
+        }
 
         @include bp(max-width, $bp-medium) {
             background-position: -77px 0;
@@ -70,6 +74,10 @@
     margin-right: 7px;
     top: 20px;
     right: 20px;
+
+    @include bp(min-width, 1025px) {
+        line-height: 1.35;
+    }
 
     &:hover,
     &.skip-active {

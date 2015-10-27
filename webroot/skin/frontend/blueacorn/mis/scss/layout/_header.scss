@@ -126,7 +126,7 @@
         }
     }
 
-    @include bp(min-width, 885px) {
+    @include bp(min-width, 901px) {
         display: inline-block;
     }
 
@@ -135,7 +135,7 @@
         margin-right: 120px;
     }
 
-    @include bp(max-width, 885px) {
+    @include bp(max-width, 900px) {
         background-color: $brand-action;
         color: $white;
         font-size: 15px;

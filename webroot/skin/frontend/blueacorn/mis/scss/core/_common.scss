@@ -1476,37 +1476,6 @@ span.weee {
     display: block;
 }
 
-@include bp(max-width, $bp-xsmall) {
-
-    .truncated {
-        cursor: inherit;
-
-        a.details {
-            display: none;
-        }
-
-        .truncated_full_value {
-            .item-options {
-                display: block;
-                position: static;
-                z-index: 1;
-                width: 100%;
-                border: none;
-                background-color: transparent;
-
-                p {
-                    float: none;
-                }
-
-                &:after {
-                    display: none;
-                }
-            }
-        }
-    }
-
-}
-
 /* -------------------------------------------- *
  * Printer Friendly Page
  */
@@ -1980,10 +1949,6 @@ $toolbar-icon-padding-offset: 8px;
     .col2-left-layout,
     .col2-right-layout,
     .col3-layout {
-        .sorter,
-        .pager {
-            width: 100%;
-        }
 
         .pager {
             float: left;

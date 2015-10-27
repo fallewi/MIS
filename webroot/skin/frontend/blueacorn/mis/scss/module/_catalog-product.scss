@@ -230,7 +230,7 @@
         margin-bottom: 20px;
 
         @include bp(max-width, 1250px) {
-            padding: 10px; 
+            padding: 20px;
         }
 
         @include bp(max-width, 1050px) {
@@ -296,7 +296,7 @@
             @include clearfix();
 
             @include bp(max-width, 1250px) {
-                padding: 10px;   
+                padding: 10px;
             }
 
             @include bp(max-width, $bp-medium) {
@@ -337,7 +337,7 @@
                    line-heigt: 32px;
                 }
 
-                &:-ms-input-placeholder {  
+                &:-ms-input-placeholder {
                    font-size: 12px;
                    line-heigt: 32px;
                 }
@@ -1518,6 +1518,7 @@ body.catalog-product-view {
 
             .detail {
                 overflow: hidden;
+                position: relative;
             }
 
             .read-more {

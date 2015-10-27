@@ -598,6 +598,15 @@ $productsGridActionHeight: 85px;
     }
 }
 
+@include bp(max-width, $bp-large) {
+    .block-layered-nav .block-content > dl {
+        > dt,
+        > dd > ol > li > a {
+            font-size: 12px;
+        }
+    }
+}
+
 @include bp(min-width, $bp-medium+1) {
     .block-layered-nav .block-content > dl > dt {
         padding-left: 18px;
