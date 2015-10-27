@@ -57,3 +57,4 @@ event,".customer-account-index .col-main .my-account .dashboard .box-account .co
 event,".customer-account-index .col-main .my-account .dashboard .box-account .box-head a","Account Page - Account Dashboard","Manage Addresses",NULL,mousedown,NULL
 event,".customer-account-index .col-main .my-account .dashboard .box-account .col2-set .col-1 .box a:last","Account Page - Account Dashboard","Edit Billing Address",NULL,mousedown,NULL
 event,".customer-account-index .col-main .my-account .dashboard .box-account .col2-set .col-2 .box a:last","Account Page - Account Dashboard","Edit Shipping Address",NULL,mousedown,NULL
+event,".catalog-product-compare-index .buttons-set .button","Comparison Page","Close Window",NULL,mousedown,NULL
