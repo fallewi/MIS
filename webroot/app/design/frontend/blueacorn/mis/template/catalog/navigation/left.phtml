@@ -33,7 +33,7 @@
 <?php $_current = Mage::registry('current_category'); ?>
 <?php $helper = Mage::helper('blueacorn_categorylandingpage'); ?>
 <?php $childCategories = $helper->getSubcategories($_current); ?>
-<?php if($_current->getCategoryLandingPage() && $helper->getLayeredNavEnabled()): ?>
+<?php if($_current->getCategoryLandingPage() && $helper->getLayeredNavEnabled() && count($childCategories) > 0): ?>
     <div class="block block-list block-categories block-layered-nav">
         <div class="block-content toggle-content">
             <div class="block-title">
