@@ -90,7 +90,7 @@ jQuery(document).ready(function ($) {
 
             if (container[0].scrollHeight > container.innerHeight()) {
                 wrapper.append('<div class="read-more">Read More</div>');
-                $('.read-more').css({ top: (wrapper.height() + 4) });
+                $('.read-more').css({ 'top': 'auto' });
             }
         },
 
