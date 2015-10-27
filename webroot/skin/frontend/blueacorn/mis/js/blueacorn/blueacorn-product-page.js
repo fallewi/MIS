@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
                 overflow = $('.product-information-block .column-left .description .detail');
 
             readMore.on('click', function(){
-                container.css({ 'overflow': 'visable', 'max-height': '100%' });
+                container.css({ 'max-height': '100%' });
                 readMore.detach();
             });
         },
