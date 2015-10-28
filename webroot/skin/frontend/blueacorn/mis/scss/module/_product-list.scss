@@ -551,6 +551,13 @@ $productsGridActionHeight: 85px;
 
 // hides category title as it is redundant on the top level category pages
 #narrow-by-list2 {
+    padding: 11px 11px;
+    dd {
+       margin-bottom: 0px;
+    }
+    dd.current {
+        padding-top: 10px;
+    }
     dt {
         display: none;
     }
@@ -737,9 +744,11 @@ $productsGridActionHeight: 85px;
 .block-layered-nav {
 
     .block-title {
-        font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
-        font-size: 18px;
         padding: 10px 20px 0 !important;
+        font-family: "gesta", Verdana, Arial, sans-serif;
+        color: #00247B;
+        font-weight: 100;
+        font-size: 17px;
     }
 
     .currently,
