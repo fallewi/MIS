@@ -31,64 +31,75 @@
  * Skip Link - Account
  */
 
-.skip-account {
+ .skip-account {
 
-    &:not(.skip-active):hover {
-        .icon {
+     &:not(.skip-active):hover {
+         .icon {
 
-        }
-    }
+         }
+     }
 
-    .icon {
-        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
-        width: 17px;
-        height: 15px;
+     .icon {
+         @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
+         width: 17px;
+         height: 15px;
 
-        @include bp(min-width, 1025px) {
-            padding-bottom: 18px;
-        }
+         @include bp(min-width, 1025px) {
+             padding-bottom: 18px;
+         }
 
-        @include bp(max-width, $bp-medium) {
-            background-position: -77px 0;
-            width: 22px;
-            height: 20px;
-        }
-    }
-}
+         @include bp(max-width, $bp-medium) {
+             background-position: -77px 0;
+             width: 22px;
+             height: 20px;
+         }
+     }
+ }
 
-// ---------------------------------------------
+ // ---------------------------------------------
 
-.skip-account {
-    float: none;
-    width: auto;
-    vertical-align: top;
-    display: inline-block;
-    padding: 10px 12px;
-    text-transform: uppercase;
-    background: $white;
-    color: $brand-primary;
-    font-size: 15px;
-    font-weight: 400;
-    font-family: $f-stack-sans;
-    letter-spacing: 1px;
-    margin-right: 7px;
-    top: 20px;
-    right: 20px;
+ .skip-account {
+     float: none;
+     width: auto;
+     vertical-align: top;
+     display: inline-block;
+     padding: 10px 12px;
+     text-transform: uppercase;
+     background: $white;
+     color: $brand-primary;
+     font-size: 15px;
+     font-weight: 400;
+     font-family: $f-stack-sans;
+     letter-spacing: 1px;
+     margin-right: 7px;
+     top: 20px;
+     right: 20px;
 
-    @include bp(min-width, 1025px) {
-        line-height: 1.35;
-    }
+     @include bp(min-width, 1025px) {
+         line-height: 1.35;
+     }
 
-    &:hover,
-    &.skip-active {
-        background: $brand-primary;
-        color: $white;
+     &:hover,
+     &.skip-active {
+         background: $brand-primary;
+         color: $white;
 
-        .icon {
-            background-position: -47px 0;
-        }
-    }
-}
+         .icon {
+             background-position: -101px -67px;
+         }
+     }
+ }
+
+ @include bp(max-width, $bp-medium) {
+     .skip-account {
+
+         &:hover {
+             .icon {
+                 background-position: -47px 0;
+             }
+         }
+     }
+ }
 
 #header-account.skip-active {
     background: $white;
