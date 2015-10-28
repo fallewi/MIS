@@ -1,7 +1,7 @@
 ---
 
 - name: "MIS:production clear caches"
-  hosts: web-admin
+  hosts: web-1
   gather_facts: False
   tags: 
     - cacheclear
