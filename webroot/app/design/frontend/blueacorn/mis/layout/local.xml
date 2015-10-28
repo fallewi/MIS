@@ -64,6 +64,8 @@
 
     <catalog_category_view>
         <update handle="catalog_theme_changes" />
+        <action method="unsetChild" block="right"><child>catalog.compare.sidebar</child></action>
+        <action method="insert" block="left"><child>catalog.compare.sidebar</child></action>
     </catalog_category_view>
 
     <catalog_category_layered>
@@ -72,6 +74,8 @@
 
     <catalogsearch_result_index>
         <update handle="catalog_theme_changes" />
+        <action method="unsetChild" block="right"><child>catalog.compare.sidebar</child></action>
+        <action method="insert" block="left"><child>catalog.compare.sidebar</child></action>
     </catalogsearch_result_index>
 
     <catalogsearch_advanced_index>
