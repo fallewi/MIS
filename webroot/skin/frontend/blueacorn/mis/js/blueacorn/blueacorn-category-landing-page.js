@@ -65,7 +65,7 @@ jQuery(document).ready(function ($) {
                 grid = $('.subcategories');
 
             block.detach();
-            block.insertAfter(grid).show();
+            block.css('max-height', '100%').insertAfter(grid).show();
         }
     };
 
