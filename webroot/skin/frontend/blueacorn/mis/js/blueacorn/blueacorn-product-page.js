@@ -88,7 +88,7 @@ jQuery(document).ready(function ($) {
 
             container.css({ 'max-height': (divHeight.height()) });
 
-            if (container[0].scrollHeight > container.innerHeight()) {
+            if (container[0].scrollHeight >= container.innerHeight()) {
                 wrapper.append('<div class="read-more">Read More</div>');
                 $('.read-more').css({ 'top': 'auto' });
             }
