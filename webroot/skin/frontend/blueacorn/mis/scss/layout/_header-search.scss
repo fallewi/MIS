@@ -110,6 +110,7 @@
 #search_mini_form .input-box {
     position: relative;
     padding-top: 0;
+    z-index: 1000;
 }
 
 #search_mini_form label {
