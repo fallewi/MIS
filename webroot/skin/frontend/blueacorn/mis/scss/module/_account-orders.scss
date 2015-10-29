@@ -43,3 +43,42 @@
         }
     }
 }
+
+.sales-order-history {
+    .pager-no-toolbar {
+        float: left;
+        width: 100%;
+        position: static;
+        .count-container {
+            float: right;
+            padding: 0 5px;
+            width: auto;
+        }
+        .amount {
+            display: inline;
+            height: 38px;
+            line-height: 38px;
+            margin: 0 5px 0 0;
+        }
+        .limiter {
+            display: inline-block;
+            height: 38px;
+            margin: 0;
+            vertical-align: middle;
+            label, .input-box {
+                float: left;
+            }
+            label {
+                position: static;
+                line-height: 38px;
+                margin: 0 5px 0 0;
+            }
+            .custom-shiv {
+                padding: 0;
+                height: 38px;
+                line-height: 38px;
+                border: 0;
+            }
+        }
+    }
+}
