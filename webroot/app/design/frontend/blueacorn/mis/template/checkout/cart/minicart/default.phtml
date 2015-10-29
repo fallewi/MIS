@@ -161,6 +161,6 @@
         <?php endif; ?>
 
     </div>
-    <a href="<?php echo $this->helper('wishlist')->getAddUrl($this) ?>"
+    <a href="<?php echo $this->helper('wishlist')->getAddUrl($_item->getProduct()) ?>"
         class="link-wishlist"><?php echo $this->__('Wishlist') ?></a>
 </li>
