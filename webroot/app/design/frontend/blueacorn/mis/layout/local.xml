@@ -44,12 +44,6 @@
         </reference>
     </cms_index_index>
 
-    <!-- Moving Compare Products Block to under layered nav -->
-    <catalog_category_view>
-        <action method="unsetChild" block="right"><child>catalog.compare.sidebar</child></action>
-        <action method="insert" block="left"><child>catalog.compare.sidebar</child></action>
-    </catalog_category_view>
-
     <!-- Adding Page Specific Style Sheets to Category & Search Result Pages -->
     <catalog_theme_changes>
         <reference name="head">
