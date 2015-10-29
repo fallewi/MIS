@@ -93,7 +93,8 @@
  @include bp(max-width, $bp-medium) {
      .skip-account {
 
-         &:hover {
+         &:hover,
+         &.skip-active {
              .icon {
                  background-position: -47px 0;
              }
