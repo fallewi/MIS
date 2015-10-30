@@ -26,3 +26,22 @@
     #  shell: redis-cli -h {{ REDIS_HOST }} -n 1 flushdb
     #  tags: cacheclear-fpc
       
+- name: "MIS:staging clear merged JS and CSS"
+  hosts: web*
+  gather_facts: False
+  tags:
+    - cacheclear
+
+  tasks:
+
+    - name: clear merged js
+      shell: rm -rf {{ MAGE_ROOT }}//media/js/*
+      tags: cacheclear-merged
+
+    - name: clear merged css
+      shell: rm -rf {{ MAGE_ROOT }}//media/css/*
+      tags: cacheclear-merged
+
+    - name: clear merged css_secure
+      shell: rm -rf {{ MAGE_ROOT }}//media/css_secure/*
+      tags: cacheclear-merged
