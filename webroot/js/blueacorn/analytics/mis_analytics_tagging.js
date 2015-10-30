@@ -191,7 +191,6 @@
             BA_GAQ.trackEvent('Homepage', 'Hero Button', label);
         });
 
-
         /* ------------------------- *\
          *    Category/Search Page   *
         \* ------------------------- */
