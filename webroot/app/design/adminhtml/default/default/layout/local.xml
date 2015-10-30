@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>levementum/css/adminorders.css</name></action>
+        </reference>
+    </default>
+    <adminhtml_sales_order_create_index>
+        <reference name="data">
+            <block type="core/template" name="levementum.adminorders.salesperson.select" as="salesperson_form" template="levementum/adminorders/sales/order/create/salesperson.phtml" />
+        </reference>
+    </adminhtml_sales_order_create_index>
+    <adminhtml_sales_order_create_load_block_data>
+        <reference name="data">
+            <block type="core/template" name="levementum.adminorders.salesperson.select" as="salesperson_form" template="levementum/adminorders/sales/order/create/salesperson.phtml" />
+        </reference>
+    </adminhtml_sales_order_create_load_block_data>
+</layout>
