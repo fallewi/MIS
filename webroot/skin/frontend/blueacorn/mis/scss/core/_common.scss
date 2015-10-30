@@ -1435,10 +1435,12 @@ span.weee {
 .tier-prices,
 .tier-prices-grouped {
     display: inline-block;
-    padding: 4px 8px;
-    background: #FBF4DE;
-    border: 1px solid #E2D4C7;
+    padding: 8px;
+    background: rgba(253, 196, 75, 0.3);
     margin-top: $element-spacing;
+    margin-bottom: $element-spacing;
+    width: 100%;
+    text-align: center;
 
     li {
         font-size: $f-size-xs;
@@ -1449,6 +1451,12 @@ span.weee {
     .price {
         font-weight: bold;
     }
+}
+
+.product-view .add-to-cart-wrapper .price-info .tier-prices .price {
+    font-size: 12px;
+    line-height: 24px;
+    font-weight: normal;
 }
 
 /* ============================================ *
