@@ -612,6 +612,10 @@ $productsGridActionHeight: 85px;
             font-size: 12px;
         }
     }
+
+    dt a {
+        font-size: 12px;
+    }
 }
 
 @include bp(min-width, $bp-medium+1) {
