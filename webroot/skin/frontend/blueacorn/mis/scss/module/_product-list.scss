@@ -608,7 +608,7 @@ $productsGridActionHeight: 85px;
 @include bp(max-width, $bp-large) {
     .block-layered-nav .block-content > dl {
         > dt,
-        > dd > ol > li > a {
+        > dd a {
             font-size: 12px;
         }
     }
@@ -835,7 +835,8 @@ $productsGridActionHeight: 85px;
 
         }
 
-        li.child {
+        li.child,
+        ol.parent-child {
             margin-left: 8px;
 
             a {
@@ -880,6 +881,10 @@ $productsGridActionHeight: 85px;
     .category-description {
         display: none;
         max-width: 100%;
+    }
+
+    ol.parent-child {
+        padding-right: 20px;
     }
 }
 
