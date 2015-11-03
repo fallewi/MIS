@@ -11,9 +11,10 @@
 
 class Levementum_AdminOrders_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    public function getSalespersonRoleId()
+    public function getSalespersonRoleName()
     {
-        return Mage::getStoreConfig('sales/adminorders/salesperson_role');
+        $configRoleAttributeID = Mage::getStoreConfig('sales/adminorders/salesperson_role');
+        return Mage::getModel('admin/user')->load($configRoleAttributeID)->getRole()->getRoleName();
     }
 
     public function isSalesperson()
@@ -22,8 +23,8 @@ class Levementum_AdminOrders_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        return ((Mage::getModel('admin/session')->getUser()->getRole()->getRoleId() == $this->getSalespersonRoleId())
-	        || (Mage::getModel('admin/session')->getUser()->getRole()->getRoleId() == 1));
+        return ((Mage::getModel('admin/session')->getUser()->getRole()->getRoleName() == $this->getSalespersonRoleName())
+	        || (Mage::getModel('admin/session')->getUser()->getRole()->getRoleName() == "Super User"));
     }
 
     /**
@@ -38,7 +39,7 @@ class Levementum_AdminOrders_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        return (Mage::getModel('admin/session')->getUser()->getRole()->getRoleId() == 1);
+        return (Mage::getModel('admin/session')->getUser()->getRole()->getRoleName() == "Super User");
     }
 
 
@@ -90,7 +91,7 @@ class Levementum_AdminOrders_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCustomerSouthwareCustomerId($order) {
 
-        /* if order has s order id, it also has s customer id */
+        /* if order has an order id, it also has s customer id */
         if ($_customer_southware_customer_id = $order->getData('customer_southware_customer_id')) {
             return $_customer_southware_customer_id;
         }
