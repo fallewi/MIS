@@ -7,23 +7,8 @@
  * Time: 11:57 AM
  */
 
-class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid extends Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid {
-
-//rmantilla@levementum - accomplished via codepool hack
-//    protected function _prepareCollection()
-//    {
-//
-//        parent::_prepareCollection();
-///*        @var $collection Mage_Catalog_Model_Resource_Product_Collection*/
-//        $collection = $this->getCollection();
-//        $collection->addAttributeToSelect('mpn');
-//
-//
-//
-//        $this->setCollection($collection);
-//    }
-
-
+class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid extends Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid
+{
     /**
      * Prepare columns
      *
@@ -31,14 +16,6 @@ class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid exte
      */
     protected function _prepareColumns()
     {
-//        $this->addColumn('entity_id', array(
-//            'header'    => Mage::helper('sales')->__('ID'),
-//            'sortable'  => true,
-//            'width'     => '60',
-//            'index'     => 'entity_id'
-//        ));
-
-
         $this->addColumn('image', array(
             'header'    => Mage::helper('sales')->__('Product Image'),
             'renderer'  => 'adminorders/adminhtml_sales_order_create_search_grid_renderer_image',
@@ -58,9 +35,9 @@ class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid exte
             'index'     => 'sku'
         ));
 
-
+        $attributeId = Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product','manufacturer');
         $manCollection = Mage::getResourceModel('eav/entity_attribute_option_collection')
-            ->setAttributeFilter(70)
+            ->setAttributeFilter($attributeId)
             ->setStoreFilter(0)
             ->load();
         $manufacturers = array();
@@ -68,7 +45,6 @@ class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid exte
             $manufacturers[$item->getId()] = $item->getValue();
         }
 
-        //todo: need to make this column filterable
         $this->addColumn('manufacturer', array(
             'header'    => Mage::helper('sales')->__('Manufacturer'),
             'renderer'  => 'adminorders/adminhtml_sales_order_create_search_grid_renderer_manufacturer',
@@ -121,7 +97,6 @@ class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid exte
             'width'     => '1',
         ));
 
-     //   return parent::_prepareColumns();
     }
 
 }
