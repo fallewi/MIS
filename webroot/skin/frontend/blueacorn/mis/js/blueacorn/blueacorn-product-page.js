@@ -35,12 +35,17 @@ jQuery(document).ready(function ($) {
             // Start the debugger
             ba.setupDebugging(this.settings);
 
+            var self = this;
+
             this.imageSlider();
             this.setDescriptionContainerMaxHeight();
-            this.expandDescription();
             this.setupAccordion();
             this.moveAddToCartButton();
             this.thumb();
+
+            $(window).resize(function(){
+                self.setDescriptionContainerMaxHeight();
+            });
         },
 
         imageSlider: function() {
@@ -80,17 +85,32 @@ jQuery(document).ready(function ($) {
             }
         },
 
+        // setDescriptionContainerMaxHeight: function() {
+        //     var self = this,
+        //         wrapper = $('.description'),
+        //         container = $('.description .detail'),
+        //         divHeight = $('.specifications');
+
+        //     container.css({ 'max-height': (divHeight.height()) });
+
+        //     if (container[0].scrollHeight >= container.innerHeight()) {
+        //         wrapper.append('<div class="read-more">Read More</div>');
+        //         $('.read-more').css({ 'top': 'auto' });
+        //     }
+        // },
+
         setDescriptionContainerMaxHeight: function() {
             var self = this,
                 wrapper = $('.description'),
-                container = $('.description .detail'),
+                descriptionContainer = $('.description .detail'),
+                specsContainer = $('#product-attribute-specs-table'),
                 divHeight = $('.specifications');
 
-            container.css({ 'max-height': (divHeight.height()) });
-
-            if (container[0].scrollHeight >= container.innerHeight()) {
+            if (descriptionContainer.height() > specsContainer.height() && $('.read-more').length === 0) {
+                descriptionContainer.css({ 'max-height': (divHeight.height()) });
                 wrapper.append('<div class="read-more">Read More</div>');
                 $('.read-more').css({ 'top': 'auto' });
+                self.expandDescription();
             }
         },
 
