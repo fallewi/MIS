@@ -85,20 +85,6 @@ jQuery(document).ready(function ($) {
             }
         },
 
-        // setDescriptionContainerMaxHeight: function() {
-        //     var self = this,
-        //         wrapper = $('.description'),
-        //         container = $('.description .detail'),
-        //         divHeight = $('.specifications');
-
-        //     container.css({ 'max-height': (divHeight.height()) });
-
-        //     if (container[0].scrollHeight >= container.innerHeight()) {
-        //         wrapper.append('<div class="read-more">Read More</div>');
-        //         $('.read-more').css({ 'top': 'auto' });
-        //     }
-        // },
-
         setDescriptionContainerMaxHeight: function() {
             var self = this,
                 wrapper = $('.description'),
