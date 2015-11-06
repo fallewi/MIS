@@ -1,0 +1,47 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+
+/**
+ * Category left navigation
+ *
+ * @see Mage_Catalog_Block_Navigation
+ */
+?>
+<?php $_current = Mage::registry('current_category'); ?>
+<?php $helper = Mage::helper('blueacorn_categorylandingpage'); ?>
+<?php $childCategories = $helper->getSubcategories($_current); ?>
+<?php if($_current->getCategoryLandingPage() && $helper->getLayeredNavEnabled() && count($childCategories) > 0): ?>
+    <div class="block block-list block-categories block-layered-nav">
+        <div class="block-content toggle-content">
+            <div class="block-title">
+                <div class="block-title"><?php echo $this->__('Category Filter') ?></div>
+            </div>
+            <dl id="narrow-by-list">
+                <?php $this->getCategoryTree($childCategories) ?>
+            </dl>
+        </div>
+    </div>
+<?php endif; ?>

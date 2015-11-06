@@ -12,7 +12,7 @@ MIS README
 git clone @GIT_REMOTE $BLUEACORN_PROJ_DIR/MIS
 
 # change to cloned repository directory
-cd $BLUEACORN_PROJ_DIR/MIS 
+cd $BLUEACORN_PROJ_DIR/MIS
 
 # set the current environment to 'local'
 ./env.sh set local
@@ -33,7 +33,7 @@ $EDITOR env/local/webroot/.htaccess
 
 ### "Rules of the Road"
 * Branch from __develop__.
-* Use [Pull Requests](https://help.github.com/articles/creating-a-pull-request/) to merge your branch back into __develop__. Do not `git merge`. 
+* Use [Pull Requests](https://help.github.com/articles/creating-a-pull-request/) to merge your branch back into __develop__. Do not `git merge`.
   * THINK: you can't create a pull request if you work directly on __develop__!
 
 * Your Pull Requests MUST be approved before they are merged into develop. Approvals are done internally by Blue Acorn.
@@ -43,16 +43,16 @@ $EDITOR env/local/webroot/.htaccess
 ##### Stale Branches
 
 If your branch falls behind development, you may need to bring it up to date
-before it can be **merged without conflict**. 
+before it can be **merged without conflict**.
 
-You have two options to update: __merge__ the `origin/develop` branch into your own branch, or __rebase__ your branch onto the `origin/develop` branch. Refer to 
+You have two options to update: __merge__ the `origin/develop` branch into your own branch, or __rebase__ your branch onto the `origin/develop` branch. Refer to
 [merging-vs-rebasing](https://www.atlassian.com/git/tutorials/merging-vs-rebasing/) for great information.
 
 Generally:
 
-1. if you have not merged other branches into your feature branch, use 
+1. if you have not merged other branches into your feature branch, use
   * `git fetch origin && git rebase origin/develop`. it's cleanest.
-2. if you have merged other branches into your feature branch, use 
+2. if you have merged other branches into your feature branch, use
   * `git fetch origin && git merge origin/develop`
 
 Please keep in mind that rebasing a branch is a destructive process. Because of this, you should generally not rebase your branch if anyone else is using or working on it, or if you have previously merged in other branches.

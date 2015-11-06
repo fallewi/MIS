@@ -551,6 +551,13 @@ $productsGridActionHeight: 85px;
 
 // hides category title as it is redundant on the top level category pages
 #narrow-by-list2 {
+    padding: 11px 11px;
+    dd {
+       margin-bottom: 0px;
+    }
+    dd.current {
+        padding-top: 10px;
+    }
     dt {
         display: none;
     }
@@ -595,6 +602,19 @@ $productsGridActionHeight: 85px;
 
     &.current {
         color: #CA123E;
+    }
+}
+
+@include bp(max-width, $bp-large) {
+    .block-layered-nav .block-content > dl {
+        > dt,
+        > dd a {
+            font-size: 12px;
+        }
+    }
+
+    dt a {
+        font-size: 12px;
     }
 }
 
@@ -728,9 +748,11 @@ $productsGridActionHeight: 85px;
 .block-layered-nav {
 
     .block-title {
-        font-family: 'Helvetica Neue', Verdana, Arial, sans-serif;
-        font-size: 18px;
         padding: 10px 20px 0 !important;
+        font-family: "gesta", Verdana, Arial, sans-serif;
+        color: #00247B;
+        font-weight: 100;
+        font-size: 17px;
     }
 
     .currently,
@@ -769,3 +791,101 @@ $productsGridActionHeight: 85px;
         }
     }
 }
+
+/*=============================================
+=            Category Landing Page            =
+=============================================*/
+
+.category-landing-page {
+
+    #narrow-by-list {
+
+        @include bp(max-width, $bp-medium) {
+            display: none;
+        }
+
+        ol.parent-child {
+            position: relative;
+            margin-left: 9px;
+
+            &.current {
+                border-bottom-width: 1px;
+                margin-bottom: 0;
+                padding-bottom: 4px;
+
+                &:before {
+                    background-position: -103px -30px;
+                }
+            }
+
+            &:before {
+                position: absolute;
+                content: "";
+                display: block;
+                @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -78px, -30px);
+                background-position: -78px -30px;
+                width: 16px;
+                height: 16px;
+                top: 5px;
+                right: 2px;
+            }
+        }
+
+        ol dd {
+
+        }
+
+        li.child,
+        ol.parent-child {
+            margin-left: 8px;
+
+            a {
+                padding-left: 0 !important;
+            }
+        }
+
+        > dt.child {
+
+            &:before {
+                display: none;
+            }
+        }
+
+        dd {
+            display: none;
+
+            &.current {
+                display: block;
+            }
+        }
+    }
+
+    li.child-category {
+
+        img {
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100px;
+        }
+    }
+
+    .category-promo-block {
+        display: none;
+
+        img {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+    }
+
+    .category-description {
+        display: none;
+        max-width: 100%;
+    }
+
+    ol.parent-child {
+        padding-right: 20px;
+    }
+}
+
+/*-----  End of Category Landing Page  ------*/

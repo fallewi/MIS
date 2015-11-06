@@ -7,6 +7,20 @@ module.exports = function(grunt){
         pkg: grunt.file.readJSON('package.json'),
         currentYear: grunt.template.today('yyyy'),
 
+        githooks: {
+            dev: {
+                options: {
+                    dest: '../.git/hooks'
+                },
+                'post-merge': {
+                    taskNames: 'sass:dev uglify:dev'
+                },
+                'post-checkout': {
+                    taskNames: 'sass:dev uglify:dev'
+                }
+            }
+        },
+
         jshint: {
             files: {
                 src: [
@@ -288,5 +302,8 @@ module.exports = function(grunt){
 
     // Production Deployment Task, used for post-deployment compilation of Frontend Assets on Production.
     grunt.registerTask('production', ['sass:production', 'sass:ie', 'autoprefixer:production', 'autoprefixer:ie', 'jshint', 'uglify:production', 'newer:imagemin', 'shell:cache']);
+
+    // Local compilation and uglification on branch change.
+    grunt.registerTask('dev-githooks', ['githooks:dev']);
 
 }

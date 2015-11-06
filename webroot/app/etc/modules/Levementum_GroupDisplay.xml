@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Levementum_GroupDisplay>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Levementum_GroupDisplay>
+    </modules>
+</config>

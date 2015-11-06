@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_CategoryLandingPage>
+            <version>1.0.1</version>
+        </BlueAcorn_CategoryLandingPage>
+    </modules>
+    <global>
+        <resources>
+            <blueacorn_categorylandingpage_setup>
+                <setup>
+                    <module>BlueAcorn_CategoryLandingPage</module>
+                </setup>
+            </blueacorn_categorylandingpage_setup>
+        </resources>
+        <helpers>
+            <blueacorn_categorylandingpage>
+                <class>BlueAcorn_CategoryLandingPage_Helper</class>
+            </blueacorn_categorylandingpage>
+        </helpers>
+        <blocks>
+            <catalog>
+                <rewrite>
+                    <category_view>BlueAcorn_CategoryLandingPage_Block_Category_View</category_view>
+                </rewrite>
+            </catalog>
+            <catalog>
+                <rewrite>
+                    <navigation>BlueAcorn_CategoryLandingPage_Block_Category_Navigation</navigation>
+                </rewrite>
+            </catalog>
+        </blocks>
+    </global>
+    <frontend>
+        <category>
+            <collection>
+                <attributes>
+                    <thumbnail />
+                </attributes>
+            </collection>
+        </category>
+    </frontend>
+</config>

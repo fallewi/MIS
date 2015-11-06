@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<config>
+    <tabs>
+        <missionrs translate="label" module="missionrs_tacoreport">
+            <label><![CDATA[<div style="height:25px;text-indent:-9999px;background:url(/skin/adminhtml/base/default/images/missionrs/missionrs.png) no-repeat 0 0">MissionRS</div>]]></label>
+            <class>missionrs-section</class>
+            <sort_order>100</sort_order>
+        </missionrs>
+    </tabs>
+    <sections>
+        <missionrs_tacoreport module="missionrs_tacoreport" translate="label">
+            <label>Taco Report Settings</label>
+            <tab>missionrs</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1001</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <tacoreport_configuration translate="label">
+                    <label>Taco Report Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <tacoreport_configuration_daily_goal translate="label comment">
+                            <label>Daily Goal for Tacos</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Goal for Tacos</comment>
+                        </tacoreport_configuration_daily_goal>
+                        <tacoreport_configuration_month_total translate="label comment">
+                            <label>Previous Month's Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>This is the value used for the previous year's monthly total as a default, if there are no transactions available for that month. </comment>
+                        </tacoreport_configuration_month_total>
+                        <tacoreport_configuration_customer_group_filter translate="label comment">
+                            <label>Customer Groups to Filter</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>List the customer group IDs (comma delimited) to be filtered from the taco report.</comment>
+                        </tacoreport_configuration_customer_group_filter>
+                    </fields>
+                </tacoreport_configuration>
+            </groups>
+        </missionrs_tacoreport>
+    </sections>
+</config>

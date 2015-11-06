@@ -1,0 +1,40 @@
+<?php
+/**
+ * jjuleff@levementum.com 2014-04-04
+ * So I pretty much just rewrote this and the helper that went with it.
+ * Not sure what whoever started this was trying to accomplish.
+ *
+ * It displays the customer's logo (ie peter piper pizza, reddy ice etc) if available when the block is requested.
+ */
+/* @var $this Levementum_GroupDisplay_Block_Customdisplay */
+$_helper = Mage::helper('levementum_groupdisplay');
+$groupData = $_helper->getMatchedImage();
+$login = Mage::getSingleton('customer/session')->isLoggedIn(); //Check if User is Logged In
+if ($login) {
+    $groupId   = Mage::getSingleton('customer/session')->getCustomerGroupId(); //Get Customers Group ID
+    $group     = Mage::getModel('customer/group')->load($groupId);
+    $groupName = $group->getCustomerGroupCode();
+
+    $category = Mage::getModel('catalog/category')->loadByAttribute('name', $groupName);
+
+    if($category){
+        $url = $category->getUrl();
+    }
+    else{
+        $url = null;
+    }
+}
+
+if ($groupData !== false): ?>
+    <div class="group-display">
+        <a href="<?php
+        if ($url) {
+            echo $url;
+        } else {
+            echo Mage::getBaseUrl();
+        }
+        ?>">
+            <img src="<?php echo $groupData['image_url']; ?>" width="100%" />
+        </a>
+    </div>
+<?php endif; ?>

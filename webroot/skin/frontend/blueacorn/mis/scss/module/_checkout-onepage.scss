@@ -707,3 +707,12 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         white-space: normal;
     }
 }
+
+.checkout-onepage-index {
+    dd.complete p.subtitle strong {
+        font-weight: 400;
+        font-style: italic;
+        font-size: 13px;
+        font-family: Georgia, Times, "Times New Roman", serif;
+    }
+}

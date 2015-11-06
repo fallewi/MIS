@@ -246,12 +246,16 @@
         text-align: center;
         color: red;
         display: none;
+        background: #9B9B9B;
+        margin-right: 20px;
     }
 
     #minicart-success-message {
         text-align: center;
         color: green;
         display: none;
+        background: #9B9B9B;
+        margin-right: 20px;
     }
 
     //hide jcarousel controls until carousel is properly integrated with design
@@ -355,6 +359,10 @@
                     }
                 }
             }
+        }
+
+        a.cart-count {
+            background: transparent;
         }
     }
 }

@@ -19,3 +19,7 @@ var
 /data/*.csv
 /downloader/pearlib/cache/
 /downloader/*.cfg
+
+
+# wordpress blog
+wp/

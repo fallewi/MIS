@@ -1,0 +1,39 @@
+---
+
+- name: ensure magento cron is executable
+  file:
+    path: "{{ item }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ HTTPD_USER }}"
+    mode: 0770
+  sudo: True
+  with_items:
+    - "{{ MAGE_ROOT }}/schedule_cron.sh"
+    - "{{ MAGE_ROOT }}/cron.php"
+
+- name: schedule aoe cron (Aoe_Scheduler always group)
+  cron:
+    job: "! test -e {{ MAGE_ROOT }}maintenance.flag && /bin/bash {{ MAGE_ROOT }}scheduler_cron.sh --mode always"
+    minute: "*"
+    name: "{{ ENV }} magento cron always"
+    user: "{{ HTTPD_USER }}"
+    state: present
+  sudo: True
+
+- name: schedule aoe cron (Aoe_Scheduler default group)
+  cron:
+    job: "! test -e {{ MAGE_ROOT }}maintenance.flag && /bin/bash {{ MAGE_ROOT }}scheduler_cron.sh --mode defult"
+    minute: "*"
+    name: "{{ ENV }} magento cron default"
+    user: "{{ HTTPD_USER }}"
+    state: present
+  sudo: True
+
+- name: schedule aoe cron (Aoe_Scheduler watchdog)
+  cron:
+    job: "! test -e {{ MAGE_ROOT }}maintenance.flag && cd {{ MAGE_ROOT }}shell && /usr/bin/php scheduler.php --action watchdog"
+    minute: "*/10"
+    name: "{{ ENV }} magento cron watchdog"
+    user: "{{ HTTPD_USER }}"
+    state: present
+  sudo: True

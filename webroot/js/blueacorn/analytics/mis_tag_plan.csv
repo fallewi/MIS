@@ -1,0 +1,60 @@
+trackType,el,page,type,label,eventType,bodyClass
+pageViewOnLoad,null,/Category,null,null,null,catalog-category-view
+pageViewOnLoad,null,/Product,null,null,null,catalog-product-view
+pageViewOnLoad,NULL,/Search,NULL,NULL,NULL,catalogsearch-result-index
+pageViewOnLoad,NULL,/Cart,,NULL,NULL,checkout-cart-index
+event,".catalog-category-view .toolbar .pages a.next:first","Category Page","Page Right - Upper",<null>,mousedown,NULL
+event,".catalog-category-view .toolbar .pages a.previous:first","Category Page","Page Left - Upper",<null>,mousedown,NULL
+event,".catalog-category-view .toolbar .pages a.previous:last","Category Page","Page Left - Lower",NULL,mousedown,NULL
+event,".catalog-category-view .toolbar .pages a.next:last","Category Page","Page Right - Lower",NULL,mousedown,NULL
+event,".page .page-header .page-header-container .logo",Header,"Logo Home",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-search .search-button",Header,Search,NULL,mousedown,NULL
+event,".page .page-header .page-header-container .account-cart-wrapper .skip-account",Header,"My Account",NULL,mousedown,NULL
+event,".page .page-header .page-header-container .account-cart-wrapper .header-minicart .skip-cart",Header,"Mini Cart",NULL,mousedown,NULL
+event,".page .page-header .page-header-container .account-cart-wrapper .header-minicart #header-cart .minicart-wrapper .minicart-actions .cart-link","Mini Cart",Cart,NULL,mousedown,NULL
+event,".page .page-header .page-header-container .account-cart-wrapper .header-minicart #header-cart .minicart-wrapper .minicart-actions .checkout-types.minicart .checkout-button","Mini Cart",Checkout,NULL,mousedown,NULL
+event,".checkout-cart-index .cart .title-buttons .checkout-types.top .btn-proceed-checkout",Cart,"Top Proceed to Checkout",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-totals-wrapper .cart-totals .checkout-types.bottom .btn-proceed-checkout",Cart,"Lower Proceed to Checkout",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-forms .discount .discount-form .field-wrapper .button-wrapper .button2",Cart,"Promo Code Submit",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-forms .giftcard #giftcard-form .field-wrapper .button-wrapper .button2",Cart,"Gift Card Code Submit",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-forms .shipping .shipping-form #shipping-zip-form .buttons-set .button2",Cart,"Tax & Shipping Estimator Submit",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-forms .shipping .shipping-form .form-list",Cart,"Tax & Shipping Estimator",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-table .cart-footer-actions .btn-continue",Cart,"Cart Continue Shopping",NULL,mousedown,NULL
+event,".checkout-cart-index .cart .cart-table .cart-footer-actions .btn-update",Cart,"Update Cart",NULL,mousedown,NULL
+pageView,".checkout-onepage-index .opc #opc-login #checkout-step-login .col-1 .form-list .control .radio-label:first","/Checkout as Guest",NULL,NULL,mousedown,NULL
+pageView,".checkout-onepage-index .opc #opc-login #checkout-step-login .col-1 .form-list .control .radio-label:last","/Register & Checkout",NULL,NULL,mousedown,NULL
+pageView,".checkout-onepage-index .opc #opc-login #checkout-step-login .col-2 .buttons-set .button","/Checkout Log In",NULL,NULL,mousedown,NULL
+pageView,".checkout-onepage-index .opc #opc-login #checkout-step-login .col-1 .buttons-set .button","/Continue to Billing Info (From Checkout Method)",NULL,NULL,mousedown,NULL
+pageView,".opc #opc-billing #checkout-step-billing #co-billing-form .fieldset #billing-buttons-container .continue","/Continue to Shipping Info (from Billing)",NULL,NULL,mousedown,NULL
+pageView,".opc #opc-shipping #checkout-step-shipping #co-shipping-form #shipping-buttons-container .continue","/Continue to Shipping Method (from Shipping Information)",NULL,NULL,mousedown,NULL
+pageView,".opc #opc-shipping_method #checkout-step-shipping_method #co-shipping-method-form #shipping-method-buttons-container .continue","/Continue to Payment Information",NULL,NULL,mousedown,NULL
+pageView,".opc #opc-payment #checkout-step-payment #payment-buttons-container .continue","/Continue to Order Review",NULL,NULL,mousedown,NULL
+event,".page .footer-container .footer .connect-container .block-subscribe .block-content .actions .button",Footer,"Email Subscription",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-account .links li.first",Header,"My Accout - My Account",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-account .links li:nth-child(2)",Header,"My Account - My Wishlist",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-account .links li:nth-child(3)",Header,"My Account - My Cart",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-account .links li:nth-child(4)",Header,"My Account - Checkout",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-account .links li:nth-child(5)",Header,"My Account - Register",NULL,mousedown,NULL
+event,".page .page-header .page-header-container #header-account .links li:nth-child(6)",Header,"My Account - Log In",NULL,mousedown,NULL
+event,".catalog-category-view .block-layered-nav .block-content .actions","Category Page","Filter - Clear All",NULL,mousedown,NULL
+event,".catalogsearch-result-index .toolbar .pages .next:first","Search Results Page","Page Right - Upper",NULL,mousedown,NULL
+event,".catalogsearch-result-index .toolbar .pages .previous:first","Search Results Page","Page Left - Upper",NULL,mousedown,NULL
+event,".catalogsearch-result-index .block-layered-nav .block-content .actions","Search Results Page","Filter - Clear All",NULL,mousedown,NULL
+event,".catalogsearch-result-index .toolbar .pages .next:last","Search Results Page","Page Right - Lower",NULL,mousedown,NULL
+event,".catalogsearch-result-index .toolbar .pages .previous:last","Search Results Page","Page Left - Lower",NULL,mousedown,NULL
+event,".customer-account-login .account-login .col2-set .new-users .buttons-set .button","Account Login","Create Account",NULL,mousedown,NULL
+event,".customer-account-login .account-login .col2-set .registered-users .content .form-list .f-left","Account Login","Forgot Password",NULL,mousedown,NULL
+event,".customer-account-login .account-login .col2-set .registered-users .buttons-set .button","Account Login",Login,NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:first-child","Account Page","Account Dashboard",NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:nth-child(2)","Account Page","Account Information",NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:nth-child(3)","Account Page","Address Book",NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:nth-child(4)","Account Page","My Orders",NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:nth-child(5)","Account Page","My Wishlist",NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:nth-child(6)","Account Page","Newsletter Subscriptions",NULL,mousedown,NULL
+event,".customer-account .col-left-first .block-account .block-content ul li:nth-child(7)","Account Page","Store Credit",NULL,mousedown,NULL
+event,".customer-account-index .col-main .my-account .dashboard .box-account .col2-set .col-1 .box .box-title a:first","Account Page - Account Dashboard","Edit Contact Information",NULL,mousedown,NULL
+event,".customer-account-index .col-main .my-account .dashboard .box-account .col2-set .col-1 .box .box-content a","Account Page - Account Dashboard","Change Password",NULL,mousedown,NULL
+event,".customer-account-index .col-main .my-account .dashboard .box-account .box-head a","Account Page - Account Dashboard","Manage Addresses",NULL,mousedown,NULL
+event,".customer-account-index .col-main .my-account .dashboard .box-account .col2-set .col-1 .box a:last","Account Page - Account Dashboard","Edit Billing Address",NULL,mousedown,NULL
+event,".customer-account-index .col-main .my-account .dashboard .box-account .col2-set .col-2 .box a:last","Account Page - Account Dashboard","Edit Shipping Address",NULL,mousedown,NULL
+event,".catalog-product-compare-index .buttons-set .button","Comparison Page","Close Window",NULL,mousedown,NULL

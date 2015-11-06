@@ -42,7 +42,10 @@
     padding-top: $trim;
 
     @include bp(max-width, $bp-xsmall) {
-        padding-top: $trim-small;
+        padding-top: 0px;
+    }
+    @include bp(max-width, $bp-small) {
+      padding-top: 0px;
     }
 
     .block-title {
@@ -62,7 +65,19 @@
         font-weight: normal;
     }
 
+    .tablet-links {
+        .block-title {
+            padding: 3px 0 !important;
+        }
+    }
+
     .links-container {
+      @include bp(max-width, $bp-xsmall) {
+        margin-bottom: 30px;
+      }
+      @include bp(max-width, $bp-small) {
+        margin-bottom: 30px;
+      }
         .links {
             margin-left: 27px;
 
@@ -293,7 +308,7 @@
                     width: 15px;
                     height: 15px;
                     position: absolute;
-                    top: 16px;
+                    top: 6px;
                     right: 20px;
                 }
 

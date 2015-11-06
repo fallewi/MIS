@@ -153,16 +153,18 @@
                     if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
                         echo $this->getPriceHtml($_product, true);
                     else:
-                        echo $_product->getMsrp();
+                        echo '<div class="price-box"><span class="regular-price">';
+                        echo $this->helper('core')->currency($_product->getMsrp(), true, true);
+                        echo '</span></div>';
                     endif; ?>
                     <?php if($_product->getRatingSummary()): ?>
                     <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
                     <?php endif; ?>
                     <div class="actions">
                         <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>
-                            <button type="button" title="<?php echo $this->quoteEscape($this->__('Configure & Add to Cart')) ?>" class="button btn-small" onclick="setLocation('<?php echo $this->getProductUrl($_product) ?>')"><span><span><?php echo $this->__('Configure & Add to Cart') ?></span></span></button>
-                        <?php elseif($_product->getStockItem() && $_product->getStockItem()->getIsInStock()): ?>
                             <a title="<?php echo $this->quoteEscape($this->__('View Details')) ?>" class="button" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a>
+                        <?php elseif($_product->getStockItem() && $_product->getStockItem()->getIsInStock()): ?>
+                            <button type="button" title="<?php echo $this->quoteEscape($this->__('Configure & Add to Cart')) ?>" class="button btn-small" onclick="setLocation('<?php echo $this->getProductUrl($_product) ?>')"><span><span><?php echo $this->__('Configure & Add to Cart') ?></span></span></button>
                         <?php else: ?>
                             <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
                         <?php endif; ?>

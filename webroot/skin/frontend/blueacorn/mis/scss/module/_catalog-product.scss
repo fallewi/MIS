@@ -229,14 +229,31 @@
         padding: 30px 20px 0;
         margin-bottom: 20px;
 
+        @include bp(max-width, 1250px) {
+            padding: 20px;
+        }
+
+        @include bp(max-width, 1050px) {
+            width: 31%;
+        }
+
+        @include bp(max-width, 850px) {
+            width: 36%;
+        }
+
         .price-info {
-            float: left;
+            width: 100%;
+            position: relative;
 
             .price-box .price, .price {
                 font-size: 24px;
                 color: #EC3838;
                 line-height: 32px;
                 font-weight: normal;
+
+                &.map-msrp {
+                    line-height: 100px;
+                }
             }
 
             .price-box {
@@ -278,8 +295,13 @@
             margin-bottom: 23px;
             @include clearfix();
 
+            @include bp(max-width, 1250px) {
+                padding: 10px;
+            }
+
             @include bp(max-width, $bp-medium) {
-                margin: 0 auto 20px;
+                max-width: 370px;
+                margin: 10px auto 20px;
             }
 
             @include bp(max-width, 570px) {
@@ -288,7 +310,6 @@
 
             .message {
                 line-height: 24px;
-                margin-bottom: 13px;
                 font-size: 13px;
             }
 
@@ -298,12 +319,41 @@
                 width: 60%;
                 box-sizing: border-box;
                 height: 41px;
+                margin-top: 13px;
+                border-radius: 0;
+
+                &::-webkit-input-placeholder {
+                   font-size: 12px;
+                   line-heigt: 32px;
+                }
+
+                &:-moz-placeholder {
+                   font-size: 12px;
+                   line-heigt: 32px;
+                }
+
+                &::-moz-placeholder {
+                   font-size: 12px;
+                   line-heigt: 32px;
+                }
+
+                &:-ms-input-placeholder {
+                   font-size: 12px;
+                   line-heigt: 32px;
+                }
+            }
+
+            #advice-validate-email-map_email {
+                width: 100%;
+                color: $brand-action;
+                font-size: 12px;
+                line-height: 18px;
             }
 
             button.button {
                 width: 40%;
                 box-sizing: border-box;
-                float: left;
+                float: right;
                 padding: 8px 0;
                 background: $white;
                 border: 1px solid $c-blue;
@@ -313,6 +363,7 @@
                 font-size: 15px;
                 letter-spacing: 1px;
                 line-height: 23px;
+                margin-top: 13px;
             }
 
             .phone-number {
@@ -400,6 +451,14 @@
 .product-img-box {
     width: 73%;
     float: left;
+
+    @include bp(max-width, 1050px) {
+        width: 68%;
+    }
+
+    @include bp(max-width, 850px) {
+        width: 62%;
+    }
 
     .product-name {
         h1 {
@@ -606,6 +665,7 @@
     .alert-price,
     .alert-stock {
         clear: both;
+        padding: 20px 0 0 20px;
     }
 }
 
@@ -1459,6 +1519,7 @@ body.catalog-product-view {
 
             .detail {
                 overflow: hidden;
+                position: relative;
             }
 
             .read-more {

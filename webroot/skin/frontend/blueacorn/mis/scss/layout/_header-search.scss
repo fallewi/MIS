@@ -91,7 +91,7 @@
     }
 }
 
-@include bp(max-width, 885px) {
+@include bp(max-width, 900px) {
     #header-search {
         right: 170px;
     }
@@ -107,10 +107,10 @@
 /* ============================================ *
  * Search Input
  * ============================================ */
-
 #search_mini_form .input-box {
     position: relative;
     padding-top: 0;
+    z-index: 1000;
 }
 
 #search_mini_form label {
@@ -198,9 +198,4 @@
 
 #search_mini_form .search-button:hover:before {
     opacity: 0.8;
-}
-
-#search_mini_form .search-button:active:before {
-    margin-top: -15px + 2px;
-    margin-left: -15px + 2px;
 }

@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
             // Start the debugger
             ba.setupDebugging(this.settings);
 
-            if ( $('body').hasClass('catalog-category-view') ) {
+            if ( $('body').hasClass('catalog-category-view') || $('body').hasClass('catalogsearch-result-index') ) {
                 this.toggleFilter();
             }
         },
@@ -41,8 +41,10 @@ jQuery(document).ready(function ($) {
                     items = 'current',
                     itemBlock = 'dd';
 
-                self.toggleClass(filters);
-                self.next(itemBlock).toggleClass(items);
+                if(!$(this).hasClass('child')) {
+                    self.toggleClass(filters);
+                    self.next(itemBlock).toggleClass(items);
+                }
 
             });
 

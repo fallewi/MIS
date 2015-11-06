@@ -12,6 +12,8 @@
                 <action method="addItem"><type>skin_js</type><name>jsmin/blueacorn.min.js</name><params/></action>
                 <action method="addItem" ifconfig="styleguide/development/enable_development"><type>skin_js</type><name>jsmin/blueacorn.development.min.js</name><params/></action>
                 <action method="addItem"><type>skin_js</type><name>js/vendor/jquery.fancybox.pack.js</name><params/></action>
+                <action method="addJs"><script>blueacorn/analytics/ga_module_library_min.js</script></action>
+                <action method="addJs"><script>blueacorn/analytics/mis_analytics_tagging.js</script></action>
             </block>
         </reference>
         <reference name="name">
@@ -44,6 +46,12 @@
         </reference>
     </cms_index_index>
 
+    <!-- Moving Compare Products Block to under layered nav -->
+    <catalog_category_view>
+        <action method="unsetChild" block="right"><child>catalog.compare.sidebar</child></action>
+        <action method="insert" block="left"><child>catalog.compare.sidebar</child></action>
+    </catalog_category_view>
+
     <!-- Adding Page Specific Style Sheets to Category & Search Result Pages -->
     <catalog_theme_changes>
         <reference name="head">
@@ -64,6 +72,8 @@
 
     <catalog_category_view>
         <update handle="catalog_theme_changes" />
+        <action method="unsetChild" block="right"><child>catalog.compare.sidebar</child></action>
+        <action method="insert" block="left"><child>catalog.compare.sidebar</child></action>
     </catalog_category_view>
 
     <catalog_category_layered>
@@ -72,6 +82,8 @@
 
     <catalogsearch_result_index>
         <update handle="catalog_theme_changes" />
+        <action method="unsetChild" block="right"><child>catalog.compare.sidebar</child></action>
+        <action method="insert" block="left"><child>catalog.compare.sidebar</child></action>
     </catalogsearch_result_index>
 
     <catalogsearch_advanced_index>
@@ -115,11 +127,6 @@
             </action>
             <remove name="enterprise.reward.customer.account"/>
             <remove name="invitation_link_dashboard"/>
-            <block type="enterprise_checkout/customer_link" name="customer_link_sku">
-                <action method="addDashboardLink" translate="label" module="enterprise_checkout">
-                    <block>customer_account_navigation</block><name>checkout</name><path>enterprise_checkout/sku</path><label>Order by SKU</label>
-                </action>
-            </block>
         </reference>
         <reference name="left">
             <remove name="catalog.compare.sidebar" />

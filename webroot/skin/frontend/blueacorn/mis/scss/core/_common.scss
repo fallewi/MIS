@@ -1218,6 +1218,60 @@ a.button:hover {
     height: auto;
 }
 
+.page-popup.catalog-product-compare-index {
+  h1 {
+    border: none;
+    font-family: "gesta", Verdana, Arial, sans-serif;
+    font-size: 47px;
+    color: #D0021B;
+    font-weight: normal;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .product-name {
+    text-transform: uppercase;
+  }
+  .add-to-links a {
+    font-family: "gesta", Verdana, Arial, sans-serif;
+  }
+  .price-box .minimal-price-link {
+    padding-left: 0px;
+  }
+  .buttons-set {
+    border: none;
+    .button {
+      float: left;
+      margin-left: 0px;
+    }
+  }
+  tbody tr {
+    th span {
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      color: #00247B;
+      font-weight: 100;
+      font-size: 17px;
+      letter-spacing: 1px;
+      text-transform: capitalize;
+    }
+    td div {
+      color: #00247B;
+      font-size: 15px;
+      font-family: "gesta", Verdana, Arial, sans-serif;
+      letter-spacing: 0px;
+      text-transform: capitalize;
+    }
+  }
+  tbody {
+    .price {
+      letter-spacing: 0px;
+    }
+    .add-to-row td {
+      border-bottom: none;
+    }
+  }
+}
+
 .page-popup h1 {
     margin: 0 0 0.5em;
     font-size: 36px;
@@ -1381,10 +1435,12 @@ span.weee {
 .tier-prices,
 .tier-prices-grouped {
     display: inline-block;
-    padding: 4px 8px;
-    background: #FBF4DE;
-    border: 1px solid #E2D4C7;
+    padding: 8px;
+    background: rgba(253, 196, 75, 0.3);
     margin-top: $element-spacing;
+    margin-bottom: $element-spacing;
+    width: 100%;
+    text-align: center;
 
     li {
         font-size: $f-size-xs;
@@ -1395,6 +1451,12 @@ span.weee {
     .price {
         font-weight: bold;
     }
+}
+
+.product-view .add-to-cart-wrapper .price-info .tier-prices .price {
+    font-size: 12px;
+    line-height: 24px;
+    font-weight: normal;
 }
 
 /* ============================================ *
@@ -1474,37 +1536,6 @@ span.weee {
 
 .truncated .show .item-options {
     display: block;
-}
-
-@include bp(max-width, $bp-xsmall) {
-
-    .truncated {
-        cursor: inherit;
-
-        a.details {
-            display: none;
-        }
-
-        .truncated_full_value {
-            .item-options {
-                display: block;
-                position: static;
-                z-index: 1;
-                width: 100%;
-                border: none;
-                background-color: transparent;
-
-                p {
-                    float: none;
-                }
-
-                &:after {
-                    display: none;
-                }
-            }
-        }
-    }
-
 }
 
 /* -------------------------------------------- *
@@ -1980,10 +2011,6 @@ $toolbar-icon-padding-offset: 8px;
     .col2-left-layout,
     .col2-right-layout,
     .col3-layout {
-        .sorter,
-        .pager {
-            width: 100%;
-        }
 
         .pager {
             float: left;
