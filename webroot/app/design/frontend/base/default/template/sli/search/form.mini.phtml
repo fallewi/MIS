@@ -20,8 +20,8 @@
 ?>
 <form name="searchform" action="<?php echo $this->getSearchUrl() ?>" method="get" id="SliSearchProductForm" onsubmit="ajaxsearchsubmit(this);return false;">
     <div class="form-search">
-        <label for="sli_search_1">Search:</label>
-        <input type="text" name="w" id="sli_search_1" class="input-text" autocomplete="off" data-provide="rac" />
+        <!-- <label for="sli_search_1">Search:</label> -->
+        <input type="text" name="w" id="sli_search_1" placeholder="SEARCH" class="input-text" autocomplete="off" data-provide="rac" />
         <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__('Search') ?></span></span></button>
     </div>
     <script type="text/javascript">
