@@ -65,12 +65,6 @@
         font-weight: normal;
     }
 
-    .tablet-links {
-        .block-title {
-            padding: 3px 0 !important;
-        }
-    }
-
     .links-container {
       @include bp(max-width, $bp-xsmall) {
         margin-bottom: 30px;
@@ -308,7 +302,7 @@
                     width: 15px;
                     height: 15px;
                     position: absolute;
-                    top: 6px;
+                    top: 16px;
                     right: 20px;
                 }
 
