@@ -107,7 +107,8 @@
 /* ============================================ *
  * Search Input
  * ============================================ */
-#search_mini_form .input-box {
+#search_mini_form .input-box,
+#SliSearchProductForm .form-search{
     position: relative;
     padding-top: 0;
     z-index: 1000;
