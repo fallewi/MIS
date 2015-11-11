@@ -242,7 +242,8 @@
         }
 
         .price-info {
-            width: 100%;
+            width: auto;
+            float:left;
             position: relative;
 
             .price-box .price, .price {
