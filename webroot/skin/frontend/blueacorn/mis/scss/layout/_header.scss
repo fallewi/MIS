@@ -193,6 +193,10 @@
     }
 }
 
+.ie8 .logo{
+    min-height:auto;
+}
+
 // ---------------------------------------------
 
 @include bp(min-width, $bp-medium + 1) {
