@@ -42,6 +42,7 @@ jQuery(document).ready(function ($) {
             this.setupAccordion();
             this.moveAddToCartButton();
             this.thumb();
+            this.mapPricingObserver();
 
             $(window).resize(function(){
                 self.setDescriptionContainerMaxHeight();
