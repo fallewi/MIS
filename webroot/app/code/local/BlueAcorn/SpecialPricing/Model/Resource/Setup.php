@@ -21,6 +21,5 @@
  * @package     BlueAcorn_SpecialPricing
  * @author      Ultimate Module Creator
  */
-class BlueAcorn_SpecialPricing_Model_Resource_Setup extends Mage_Core_Model_Resource_Setup
-{
+class BlueAcorn_SpecialPricing_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
 }
