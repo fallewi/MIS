@@ -171,11 +171,24 @@ $productsGridActionHeight: 85px;
     padding-bottom: $productsGridActionHeight + 10px;
 }
 
+.ie8 .products-grid .product-info{
+    padding-bottom:0 !important;
+    height:auto;
+    min-height: auto;
+}
+
 .products-grid .actions {
     padding-top: $box-spacing;
     position: absolute;
     bottom: 0px;
     min-height: $productsGridActionHeight;
+    width: 100%;
+}
+
+.ie8 .products-grid .actions {
+    padding-top: $box-spacing;
+    position: relative;
+    bottom: 0px;
     width: 100%;
 }
 
@@ -200,6 +213,7 @@ $productsGridActionHeight: 85px;
 .ie8 .crosssell .product-info {
     min-height: 270px !important;
 }
+
 
 // ---------------------------------------------
 

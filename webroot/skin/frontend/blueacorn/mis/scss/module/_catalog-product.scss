@@ -1809,3 +1809,14 @@ body.catalog-product-view {
         }
     }
 }
+
+
+// IE8 Fixes
+
+.ie8{
+    .product-view{
+        .product-shop{
+            width:31%;
+        }
+    }
+}
