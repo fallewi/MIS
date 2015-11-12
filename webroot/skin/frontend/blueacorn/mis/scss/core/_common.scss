@@ -1760,7 +1760,7 @@ $toolbar-icon-padding-offset: 8px;
 .sorter > .sort-by {
     margin-right: 5px;
     height: 40px;
-    width: 184px;
+    width: 100%;
     border: 1px solid $brand-primary;
     text-align: center;
 
@@ -1787,6 +1787,7 @@ $toolbar-icon-padding-offset: 8px;
     .select-container.small {
         top: 10px;
         left: 3px;
+        margin-left:25px;
 
         .custom-shiv {
             font-family: $f-stack-sans;
