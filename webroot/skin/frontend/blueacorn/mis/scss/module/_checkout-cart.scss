@@ -37,12 +37,15 @@
 }
 
 .cart-forms,
-.cart-totals-wrapper,
-.crosssell {
+.cart-totals-wrapper{
     float: right;
     clear: right;
     width: 40%;
     padding-left: $box-spacing-large;
+}
+
+.cart .crosssell{
+    display:none;
 }
 
 .cart-totals,

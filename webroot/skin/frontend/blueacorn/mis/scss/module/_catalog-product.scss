@@ -32,6 +32,9 @@
 
     .product-name {
         margin-bottom: 15px;
+        .h1{
+            font-size:3vw;
+        }
     }
 
     .details {
@@ -91,7 +94,7 @@
     }
 
     .product-shop {
-        width: 31%;
+        width: 26.7%;
         float: right;
         background: $brand-light;
 
@@ -661,6 +664,10 @@
         background-color: $c-yellow;
         font-weight: 300;
         letter-spacing: 1px;
+
+        &:hover{
+            background-color:$c-button-hover;
+        }
     }
 
     .alert-price,
@@ -962,25 +969,13 @@
     clear: both;
     position: relative;
 
-    .select-container.validation-error .custom-shiv {
-        line-height: 35px;
-        color: $white;
-    }
-
     .custom-shiv {
-        border-color: $c-blue;
-        height: 40px;
-        background: $brand-primary;
-        font-size: $f-size-l;
-        color: $white;
+        background: $white;
+        color: $brand-primary;
         letter-spacing: 1px;
-        line-height: 38px;
+        line-height: 45px;
         font-weight: 300;
         padding: 0 15px;
-
-        &.hover {
-            color: $white;
-        }
     }
 
     dt label {
