@@ -662,6 +662,24 @@ a.button:hover {
     font-size: 13px;
     font-family: $f-stack-sans;
     text-transform: uppercase;
+
+    &:nth-last-child(2){
+        span{
+            display:none;
+        }
+    }
+
+    &.product{
+        display:none;
+    }
+}
+
+.ie8 .breadcrumbs li{
+    &:nth-last-child(2){
+        span{
+            display:inline-block;
+        }
+    }
 }
 
 .breadcrumbs a {
