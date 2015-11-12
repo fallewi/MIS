@@ -107,7 +107,7 @@
         });
 
         //Footer: links.
-        $('.footer a').each(function() {
+        $('div.footer a').each(function() {
             var $this = $(this),
                 title = $this.closest('ul').prev('h5.block-title').text().trim(),
                 elText = $this.text().trim(),
