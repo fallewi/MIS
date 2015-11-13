@@ -156,6 +156,14 @@ $nav-primary-height: 30px;
         font-size: 15px;
         font-family: $f-stack-sans;
         padding: 8px 10px 12px 0;
+
+        @include bp(max-width, 1170px) {
+            font-size:12px;
+        }
+
+        @include bp(max-width, $bp-large){
+            font-size:10px;
+        }
     }
 
     li.level1 a {
@@ -280,6 +288,14 @@ $nav-primary-height: 30px;
         a.level0 {
             padding: 9px 25px;
             letter-spacing: 1px;
+
+            @include bp(max-width, 1400px){
+                padding: 9px 3%;
+            }
+
+            @include bp(max-width, 820px){
+                padding: 9px 0;
+            }
         }
 
         li.level0,
