@@ -43,10 +43,15 @@ jQuery(document).ready(function ($) {
             this.moveAddToCartButton();
             this.thumb();
             this.mapPricingObserver();
+            this.dynamicHeaderText();
 
             $(window).resize(function(){
                 self.setDescriptionContainerMaxHeight();
             });
+        },
+
+        dynamicHeaderText: function() {
+            $('.top-product-details .product-name h1').fitText(2.7, {maxFontSize: 36});
         },
 
         imageSlider: function() {
