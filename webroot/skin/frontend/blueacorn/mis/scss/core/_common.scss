@@ -663,12 +663,6 @@ a.button:hover {
     font-family: $f-stack-sans;
     text-transform: uppercase;
 
-    &:nth-last-child(2){
-        span{
-            display:none;
-        }
-    }
-
     &.product{
         display:none;
     }
