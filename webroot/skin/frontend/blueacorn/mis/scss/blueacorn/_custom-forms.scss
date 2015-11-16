@@ -65,7 +65,7 @@
     display: inline-block;
     &.validation-error {
         .custom-shiv {
-            border-color: $black;
+            border-color: $c-red;
             border-width: 3px;
             color: $black;
             line-height: 39px;

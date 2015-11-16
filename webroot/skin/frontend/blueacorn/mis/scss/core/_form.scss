@@ -219,7 +219,7 @@ textarea {
 }
 
 .input-text.validation-failed {
-    border-color: $black;
+    border-color: $c-red;
     border-width: 3px;
 
     &:focus {
