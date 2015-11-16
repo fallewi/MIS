@@ -816,7 +816,7 @@
     .add-to-box .add-to-links {
         a {
             float: none;
-            width: auto;
+            width: 100%;
             @include image-replacement-override;
         }
     }
