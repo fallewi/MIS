@@ -125,7 +125,7 @@
 @include bp(min-width, $bp-medium + 1) {
     .nav-primary {
         position: relative;
-        text-align: justify;
+        text-align: center;
         display: block;
         margin: 0 auto;
         height: 48px;
