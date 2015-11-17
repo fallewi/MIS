@@ -10,7 +10,7 @@
  * @author       GoMage.com
  * @license      http://www.gomage.com/licensing  Single domain license
  * @terms of use http://www.gomage.com/terms-of-use
- * @version      Release: 3.5
+ * @version      Release: 3.6
  * @since        Class available since Release 3.4
  */
 class GoMage_Feed_Helper_Attribute extends Mage_Core_Helper_Abstract

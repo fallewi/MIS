@@ -10,10 +10,10 @@
  * @author       GoMage.com
  * @license      http://www.gomage.com/licensing  Single domain license
  * @terms of use http://www.gomage.com/terms-of-use
- * @version      Release: 3.5
- * @since        Class available since Release 1.0
+ * @version      Release: 3.6
+ * @since        Class available since Release 3.6
  */
-class GoMage_Feed_Adminhtml_ItemsController extends Mage_Adminhtml_Controller_Action
+class GoMage_Feed_Adminhtml_Gomage_Feed_ItemsController extends Mage_Adminhtml_Controller_Action
 {
 
     protected function _isAllowed()
@@ -83,7 +83,7 @@ class GoMage_Feed_Adminhtml_ItemsController extends Mage_Adminhtml_Controller_Ac
             $path = Mage::getBaseDir('media') . DS . 'productsfeed' . DS . 'tmp';
             if (!file_exists($path)) {
                 mkdir($path);
-                chmod($path, 0755);
+                chmod($path, 0777);
             }
             $result = $uploader->save($path, $_FILES['file']['name']);
         } catch (Exception $e) {
@@ -163,7 +163,7 @@ class GoMage_Feed_Adminhtml_ItemsController extends Mage_Adminhtml_Controller_Ac
                 $fileDir = Mage::getBaseDir('media') . DS . 'productsfeed' . DS . 'examples' . DS . $system;
                 if (!file_exists($fileDir)) {
                     mkdir($fileDir);
-                    chmod($fileDir, 0750);
+                    chmod($fileDir, 0777);
                 }
 
                 $feed = Mage::getModel('gomage_feed/item')->load($id);
