@@ -105,4 +105,14 @@ class Amasty_Orderattr_Model_Eav_Mysql4_Entity_Attribute extends Mage_Eav_Model_
 
         return $this;
     }
+
+    protected function _afterSave(Mage_Core_Model_Abstract $object)
+    {
+        if(strcmp($object->getFrontendInput(),'radios')==0){
+            $object->setFrontendInput('select');
+        }elseif(strcmp($object->getFrontendInput(),'checkboxes')==0){
+            $object->setFrontendInput('multiselect');
+        }
+        return parent::_afterSave($object);
+    }
 }

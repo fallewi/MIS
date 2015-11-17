@@ -33,6 +33,9 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
                 continue;
             }
 
+            if ((string)Mage::getConfig()->getModuleConfig($moduleName)->is_system == 'true')
+                continue;
+
             $html.= $this->_getFieldHtml($element, $moduleName);
         }
         $html .= $this->_getFooterHtml($element);
@@ -54,7 +57,15 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
         if (!$currentVer)
             return '';
 
-        $moduleName = substr($moduleCode, strpos($moduleCode, '_') + 1); // in case we have no data in the RSS
+         // in case we have no data in the RSS
+        $moduleName = (string)Mage::getConfig()->getNode('modules/' . $moduleCode . '/name');
+        if ($moduleName) {
+            $name = $moduleName;
+            $url = (string)Mage::getConfig()->getNode('modules/' . $moduleCode . '/url');
+            $moduleName = '<a href="' . $url . '" target="_blank" title="' . $name . '">' . $name . "</a>";
+        } else {
+            $moduleName = substr($moduleCode, strpos($moduleCode, '_') + 1);
+        }
 
         $allExtensions = Amasty_Base_Helper_Module::getAllExtensions();
             
@@ -73,8 +84,11 @@ class Amasty_Base_Block_Extensions extends Mage_Adminhtml_Block_System_Config_Fo
                 $status = '<a href="'.$url.'" target="_blank"><img src="'.$this->getSkinUrl('images/ambase/update.gif').'" alt="'.$this->__("Update available").'" title="'.$this->__("Update available").'"/></a>';
             }
         }
-        
-        //TODO check if module output disabled in future
+
+        // in case if module output disabled
+        if (Mage::getStoreConfig('advanced/modules_disable_output/' . $moduleCode)) {
+            $status = '<a  target="_blank"><img src="' . $this->getSkinUrl('images/ambase/bad.gif') . '" alt="' . $this->__('Output disabled') . '" title="' . $this->__('Output disabled') . '"/></a>';
+        }
 
         $moduleName = $status . ' ' . $moduleName;
 
