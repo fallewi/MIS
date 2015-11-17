@@ -10,7 +10,7 @@
  * @author       GoMage.com
  * @license      http://www.gomage.com/licensing  Single domain license
  * @terms of use http://www.gomage.com/terms-of-use
- * @version      Release: 3.5
+ * @version      Release: 3.6
  * @since        Class available since Release 1.0
  */
 class GoMage_Feed_Model_Item extends Mage_Core_Model_Abstract
@@ -324,7 +324,7 @@ class GoMage_Feed_Model_Item extends Mage_Core_Model_Abstract
 
         if (!file_exists($fileDir)) {
             mkdir($fileDir);
-            chmod($fileDir, 0750);
+            chmod($fileDir, 0777);
         }
 
         if (is_dir($fileDir)) {
@@ -1253,7 +1253,7 @@ class GoMage_Feed_Model_Item extends Mage_Core_Model_Abstract
 
         if (!file_exists($fileDir)) {
             mkdir($fileDir);
-            chmod($fileDir, 0750);
+            chmod($fileDir, 0777);
         }
 
         if (is_dir($fileDir)) {
