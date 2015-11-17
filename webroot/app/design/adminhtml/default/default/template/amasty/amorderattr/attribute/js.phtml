@@ -165,7 +165,12 @@ function switchDefaultValueField()
             defaultValueTextareaVisibility = true;
             break;
         case 'checkboxes':
+            optionDefaultInputType = 'checkbox';
+            defaultValueTextVisibility = false;
+            defaultApplyToValueVisibility = false;
+            break;
         case 'radios':
+            optionDefaultInputType = 'radio';
             defaultValueTextVisibility = false;
             defaultApplyToValueVisibility = false;
             break;

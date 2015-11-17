@@ -470,9 +470,7 @@ class Amasty_Orderattr_Model_Observer
         $blockClass = Mage::getConfig()->getBlockClassName('checkout/onepage_billing');
         //if ($block instanceof Mage_Checkout_Block_Onepage_Billing) {
         if ($blockClass == get_class($block)) {
-            if (Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
-                $html = $this->_prepareFrontendHtml($transport, 'billing', '</div>', false);
-            } else {
+            if (!Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
                 $html = $this->_prepareFrontendHtml($transport, 'billing');
             }
         }
@@ -480,9 +478,7 @@ class Amasty_Orderattr_Model_Observer
         $blockClass = Mage::getConfig()->getBlockClassName('checkout/onepage_shipping');
         //if ($block instanceof Mage_Checkout_Block_Onepage_Shipping) {
         if ($blockClass == get_class($block)) {
-            if (Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
-                $html = $this->_prepareFrontendHtml($transport, 'shipping', '</div>', false);
-            } else {
+            if (!Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
                 $html = $this->_prepareFrontendHtml($transport, 'shipping');
             }
         }
