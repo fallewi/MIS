@@ -28,26 +28,36 @@ class Amasty_Paction_Model_Command_Changeattributeset extends Amasty_Paction_Mod
         $hlp = Mage::helper('ampaction');
         
         $num = 0;
+        $configurable = 0;
         foreach ($ids as $productId) {
+            $product = Mage::getSingleton('catalog/product')
+                ->unsetData()
+                ->setStoreId($storeId)
+                ->load($productId);
             try {
-                Mage::getSingleton('catalog/product')
-                    ->unsetData()
-                    ->setStoreId($storeId)
-                    ->load($productId)
-                    ->setAttributeSetId($val)
-                    ->setIsMassupdate(true)
-                    ->save();
-                 ++$num;
-            } 
-            catch (Exception $e) {
-                $this->errors[] = $hlp->__('Can not change the attribute set for product ID %d, error is:', 
+                if ($product->isConfigurable()) {
+                    $configurable++;
+                } else {
+                    $product
+                        ->setAttributeSetId($val)
+                        ->setIsMassupdate(true)
+                        ->save();
+                    //@todo: need delete values of attributes from old attribute set, which absent in new attribute set
+                    ++$num;
+                }
+            } catch (Exception $e) {
+                $this->_errors[] = $hlp->__('Can not change the attribute set for product ID %d, error is:',
                     $e->getMessage());
             }    
         }
         Mage::dispatchEvent('catalog_product_massupdate_after', array('products' => $ids));
         
-        if ($num){
+        if ($num) {
             $success = $hlp->__('Total of %d products(s) have been successfully updated.', $num);
+        }
+
+        if ($configurable) {
+            $this->_errors[] = $hlp->__('Total of %d products(s) have not been updated, the reason: impossibility to change attribute set for configurable product', $configurable);
         }
         
         return $success; 

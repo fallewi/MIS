@@ -59,7 +59,7 @@ class Amasty_File_Model_Observer
             if (Mage::getSingleton('admin/session')->isAllowed('catalog/amfile/amfile_clear')) {
                 $block->addItem('amfile_clear', array(
                     'label'      => $hlp->__('Remove All Attachments'),
-                    'url'        => $block->getParentBlock()->getUrl('amfile/adminhtml_actions/clear/'),
+                    'url'        => $block->getParentBlock()->getUrl('adminhtml/amfile_actions/clear/'),
                 ));
             }
 
@@ -72,7 +72,7 @@ class Amasty_File_Model_Observer
                 ));
                 $block->addItem('amfile_copy', array(
                     'label'      => $hlp->__('Copy Attachments'),
-                    'url'        => $block->getParentBlock()->getUrl('amfile/adminhtml_actions/copy/'),
+                    'url'        => $block->getParentBlock()->getUrl('adminhtml/amfile_actions/copy/'),
                     'additional' => $additional,
                 ));
             }

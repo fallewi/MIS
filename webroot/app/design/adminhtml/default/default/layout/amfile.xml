@@ -42,11 +42,11 @@
         </reference>
     </adminhtml_catalog_product_new>
 
-    <amfile_adminhtml_import_index>
+    <adminhtml_amfile_import_index>
         <reference name="head">
             <action method="addJs"><script>amasty/amfile/admin_functions.js</script></action>
             <action method="addJs"><script>amasty/amfile/ftp_upload.js</script></action>
             <action method="addCss"><name>amasty/amfile/style.css</name></action>
         </reference>
-    </amfile_adminhtml_import_index>
+    </adminhtml_amfile_import_index>
 </layout>

@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
-class Amasty_File_Adminhtml_ImportController extends Mage_Adminhtml_Controller_Action
+class Amasty_File_Adminhtml_Amfile_ImportController extends Mage_Adminhtml_Controller_Action
 {
 	public function indexAction()
 	{

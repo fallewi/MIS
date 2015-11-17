@@ -9,19 +9,19 @@
 <config>
     <modules>
         <Amasty_Imgupload>
-            <version>1.0.4</version>
+            <version>1.0.5</version>
         </Amasty_Imgupload>
     </modules>
     
     <admin>
         <routers>
-            <amimgupload>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Amasty_Imgupload</module>
-                    <frontName>amimgupload</frontName>
+                    <modules>
+                        <Amasty_Imgupload after="Mage_Adminhtml">Amasty_Imgupload_Adminhtml</Amasty_Imgupload>
+                    </modules>
                 </args>
-            </amimgupload>
+            </adminhtml>
         </routers>
     </admin>
     

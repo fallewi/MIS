@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
  * @package Amasty_Imgupload
  */
-class Amasty_Imgupload_Adminhtml_ImageController extends Mage_Adminhtml_Controller_Action
+class Amasty_Imgupload_Adminhtml_Amimgupload_ImageController extends Mage_Adminhtml_Controller_Action
 {
     public function uploadAction()
     {

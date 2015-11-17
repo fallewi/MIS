@@ -5,7 +5,7 @@
  * @package Amasty_Pgrid
  */
 
-class Amasty_Pgrid_Adminhtml_AttributeController extends Mage_Adminhtml_Controller_Action
+class Amasty_Pgrid_Adminhtml_Ampgrid_AttributeController extends Mage_Adminhtml_Controller_Action
 {
     public function indexAction()
     {
@@ -13,6 +13,7 @@ class Amasty_Pgrid_Adminhtml_AttributeController extends Mage_Adminhtml_Controll
         $block = $this->getLayout()->createBlock('ampgrid/adminhtml_catalog_product_grid_attributes', '',array('attributes_key'=>$attributesKey));
         if ($block) {
             echo $block->toHtml();
+            die;
         }
     }
 

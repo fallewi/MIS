@@ -29,17 +29,17 @@
                     <children>
                         <amfile_report translate="title" module="amfile">
                             <title>Download Report</title>
-                            <action>amfile/adminhtml_report/report</action>
+                            <action>adminhtml/amfile_report/report</action>
                             <sort_order>700</sort_order>
                         </amfile_report>
                         <amfile_import translate="title" module="amfile">
                             <title>Mass File Import</title>
-                            <action>amfile/adminhtml_import</action>
+                            <action>adminhtml/amfile_import</action>
                             <sort_order>600</sort_order>
                         </amfile_import>
                         <amfile_icons translate="title" module="amfile">
                             <title>Icons</title>
-                            <action>amfile/adminhtml_icon</action>
+                            <action>adminhtml/amfile_icon</action>
                             <sort_order>500</sort_order>
                         </amfile_icons>
                     </children>
@@ -63,27 +63,27 @@
                                 <children>
                                     <amfile_report translate="title" module="amfile">
                                         <title>Download Report</title>
-                                        <action>amfile/adminhtml_report/report</action>
+                                        <action>adminhtml/amfile_report/report</action>
                                         <sort_order>700</sort_order>
                                     </amfile_report>
                                     <amfile_import translate="title" module="amfile">
                                         <title>Mass File Import</title>
-                                        <action>amfile/adminhtml_import</action>
+                                        <action>adminhtml/amfile_import</action>
                                         <sort_order>600</sort_order>
                                     </amfile_import>
                                     <amfile_icons translate="title" module="amfile">
                                         <title>Icons</title>
-                                        <action>amfile/adminhtml_icon</action>
+                                        <action>adminhtml/amfile_icon</action>
                                         <sort_order>500</sort_order>
                                     </amfile_icons>
                                     <amfile_copy>
                                         <title>Copy Attachments</title>
-                                        <action>amfile/adminhtml_actions/copy</action>
+                                        <action>adminhtml/amfile_actions/copy</action>
                                         <sort_order>500</sort_order>
                                     </amfile_copy>
                                     <amfile_clear>
                                         <title>Remove All Attachments</title>
-                                        <action>amfile/adminhtml_actions/clear</action>
+                                        <action>adminhtml/amfile_actions/clear</action>
                                         <sort_order>500</sort_order>
                                     </amfile_clear>
                                 </children>

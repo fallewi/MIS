@@ -5,7 +5,7 @@
  * @package Amasty_Base
  */
 
-class Amasty_Base_Adminhtml_BaseController extends Mage_Adminhtml_Controller_Action
+class Amasty_Base_Adminhtml_Ambase_BaseController extends Mage_Adminhtml_Controller_Action
 {
     protected $_moduleHelper;
     

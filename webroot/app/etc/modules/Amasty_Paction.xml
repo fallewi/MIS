@@ -12,6 +12,8 @@
             <active>true</active>
             <codePool>local</codePool>
             <edition>enterprise</edition>
+            <name>Mass Product Actions</name>
+            <url>https://amasty.com/mass-product-actions.html</url>
         </Amasty_Paction>
     </modules>
 </config>

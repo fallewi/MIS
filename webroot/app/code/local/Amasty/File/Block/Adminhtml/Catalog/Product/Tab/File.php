@@ -22,8 +22,9 @@ class Amasty_File_Block_Adminhtml_Catalog_Product_Tab_File extends Mage_Core_Blo
 
     public function getDownloadUrl()
     {
-        return $this->getUrl('amfile/file/download');
+        return $this->getUrl('adminhtml/amfile_file/download');
     }
+
     public function getCurrentStore()
     {
           return Mage::app()->getRequest()->getParam('store');
