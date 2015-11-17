@@ -1554,9 +1554,13 @@ body.catalog-product-view {
                 display: block;
             }
 
+            a{
+                font-size: 15px;
+                @include clearfix;
+            }
+
             span {
                 min-width: 40px;
-                float: left;
                 text-align: center;
             }
         }
