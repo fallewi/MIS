@@ -33,7 +33,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Attributes extends Mage_
             'group_id'           => $groupId,
             'groups'            => Mage::helper('ampgrid')->getGroupsByUserId(),
             'change_group_url'  => $this->getUrl(
-                'ampgrid/adminhtml_attribute/changeGroup'
+                'adminhtml/ampgrid_attribute/changeGroup'
             ),
             'standard_columns'  => $standardColumns,
             'extra_columns'     => $extraColumns,
@@ -72,7 +72,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Attributes extends Mage_
 
     public function getSaveUrl()
     {
-        $url = $this->getUrl('ampgrid/adminhtml_attribute/save');
+        $url = $this->getUrl('adminhtml/ampgrid_attribute/save');
         if (Mage::getStoreConfig('web/secure/use_in_adminhtml'))
         {
             $url = str_replace(Mage::getStoreConfig('web/unsecure/base_url'), Mage::getStoreConfig('web/secure/base_url'), $url);

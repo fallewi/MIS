@@ -5,7 +5,7 @@
  * @package Amasty_File
  */
 
-class Amasty_File_Adminhtml_ActionsController extends Mage_Adminhtml_Controller_Action
+class Amasty_File_Adminhtml_Amfile_ActionsController extends Mage_Adminhtml_Controller_Action
 {
     public function clearAction()
     {

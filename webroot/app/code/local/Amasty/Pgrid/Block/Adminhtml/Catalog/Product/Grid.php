@@ -26,7 +26,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid extends Mage_Adminhtml_B
     {
         parent::_prepareLayout();
         $this->setExportVisibility('true');
-        $url = $this->getUrl('ampgrid/adminhtml_attribute/index');
+        $url = $this->getUrl('adminhtml/ampgrid_attribute/index');
         $this->setChild('attributes_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
@@ -248,8 +248,8 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid extends Mage_Adminhtml_B
     
     protected function _prepareColumns()
     {
-        $this->addExportType('ampgrid/adminhtml_product/exportCsv', Mage::helper('customer')->__('CSV'));
-        $this->addExportType('ampgrid/adminhtml_product/exportExcel', Mage::helper('customer')->__('Excel XML'));
+        $this->addExportType('adminhtml/ampgrid_product/exportCsv', Mage::helper('customer')->__('CSV'));
+        $this->addExportType('adminhtml/ampgrid_product/exportExcel', Mage::helper('customer')->__('Excel XML'));
 
         $this->_prepareColumnsStandard();
         $this->_prepareColumnsExtra();
@@ -275,6 +275,10 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid extends Mage_Adminhtml_B
         }
 
         $this->sortColumnsByDragPosition();
+
+        if (Mage::helper('catalog')->isModuleEnabled('Mage_Rss')) {
+            $this->addRssList('rss/catalog/notifystock', Mage::helper('catalog')->__('Notify Low Stock RSS'));
+        }
     }
 
     protected function _prepareColumnsStandard()

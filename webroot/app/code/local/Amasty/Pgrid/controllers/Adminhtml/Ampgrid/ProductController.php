@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
-class Amasty_Pgrid_Adminhtml_ProductController extends Mage_Adminhtml_Controller_Action
+class Amasty_Pgrid_Adminhtml_Ampgrid_ProductController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Export order grid to CSV format
