@@ -17,14 +17,15 @@ class BlueAcorn_SpecialPricing_Model_Observer extends Mage_Core_Model_Abstract
     public function defaultMsrpPrice(Varien_Event_Observer $observer)
     {
         // Get Quote item to switch
+        /** @var Varien_Event $event */
         $event = $observer->getEvent();
-        $quote_item = $event->getQuoteItem();
+        /** @var Mage_Sales_Model_Quote_Item $quoteItem */
+        $quoteItem = $event->getQuoteItem();
 
-        // Alter price
-        $new_price = $quote_item->getProduct()->getMsrp();
-
-        // Save
-        $quote_item->setOriginalCustomPrice($new_price);
-        $quote_item->save();
+        // Alter price if msrp exists
+        $productMsrp = $quoteItem->getProduct()->getMsrp();
+        if ($productMsrp) {
+            $quoteItem->setOriginalCustomPrice($productMsrp);
+        }
     }
 }
