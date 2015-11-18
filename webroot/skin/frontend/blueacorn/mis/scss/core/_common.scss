@@ -652,7 +652,8 @@ a.button:hover {
     overflow: hidden;
     margin: -15px 0 15px;
 
-    .catalog-product-view & {
+    .catalog-product-view &,
+    .catalog-category-view & {
         margin: -5px 0 6px;
     }
 }
