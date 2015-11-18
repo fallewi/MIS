@@ -7,9 +7,10 @@
 
         .product-image{
             width:80%;
-            position: absolute;
             right:0;
             padding:0 20px;
+            float:right;
+            position:relative;
         }
         .more-views{
             width:20%;
