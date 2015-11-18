@@ -316,6 +316,7 @@
             .message {
                 line-height: 24px;
                 font-size: 13px;
+                text-align: center;
             }
 
             input {
@@ -377,7 +378,10 @@
 
             .price {
                 color: #EC3838;
-                font-size: 13px;
+                font-size: 24px;
+            }
+            .map-pricing-bigger{
+                font-size:24px;
             }
         }
 
