@@ -379,11 +379,6 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         padding-left: 15px;
         margin-bottom: 10px;
         font-family: $f-stack-serif;
-        font-style: italic;
-
-        address {
-            font-style: italic;
-        }
     }
 
     #payment-progress-opcheckout .subtitle {
