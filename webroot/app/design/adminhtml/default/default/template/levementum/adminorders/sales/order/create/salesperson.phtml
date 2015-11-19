@@ -1,0 +1,64 @@
+<?php
+/**
+ * @category    Levementum
+ * @package     Levementum_
+ * @file        salesperson.phtml
+ * @author      icoast@levementum.com
+ * @date        10/16/13 1:13 PM
+ * @brief       
+ * @details     
+ */
+$isSalesperson = Mage::helper('adminorders')->isSalesperson();
+$isAdmin = Mage::helper('adminorders')->isAdmin();
+$user = Mage::getSingleton('admin/session')->getUser();
+$salespeople = Mage::getModel('adminorders/source_salesperson');
+
+$customerId = Mage::getSingleton('adminhtml/session_quote')->getCustomerId();
+
+if($customerId) {
+    $customer = Mage::getModel('customer/customer')->load($customerId);
+}
+?>
+<?php if ($isSalesperson || $isAdmin): ?>
+    <?php $assignedSalespersonName = Mage::helper('adminorders')->getAssignedSalespersonName() ?>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head fieldset-legend"><?php echo $this->__('Salesperson') ?></h4>
+        </div>
+        <div id="salesperson_select_fields"><div class="fieldset " id="main">
+                <div class="hor-scroll">
+                    <table cellspacing="0" class="form-list">
+                        <tbody>
+                            <tr>
+                                <td class="label"><label for="group_id"><?php echo $this->__('Salesperson') ?></label></td>
+                                <td class="value">
+                                    <select id="group_id" name="order[admin_id]" class="select">
+                                        <option></option>
+                                        <?php foreach ($salespeople->toArray() as $userId => $username): ?>
+                                            <option value="<?php echo $userId ?>"<?php if ($userId == $user->getId()): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label><?php echo $this->__('Customer Assigned Salesperson') ?></label></td>
+                                <td class="label">
+                                    <?php if($assignedSalespersonName) : ?>
+                                    <label><?php echo $assignedSalespersonName ?></label>
+                                    <?php else: ?>
+                                    <select id="assigned_salesperson" name="order[account][assigned_salesperson]" class="select">
+                                        <option></option>
+                                        <?php foreach ($salespeople->toArray() as $userId => $username): ?>
+                                            <option value="<?php echo $userId ?>"<?php if ($userId == $user->getId()): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
