@@ -84,6 +84,17 @@
         </global_search>
     </adminhtml>
     <frontend>
+        <events>
+            <sales_quote_add_item>
+                <observers>
+                    <blueacorn_specialpricing>
+                        <type>singleton</type>
+                        <class>blueacorn_specialpricing/observer</class>
+                        <method>defaultMsrpPrice</method>
+                    </blueacorn_specialpricing>
+                </observers>
+            </sales_quote_add_item>
+        </events>
         <routers>
             <map>
                 <use>standard</use>
