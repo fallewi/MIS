@@ -667,6 +667,12 @@ a.button:hover {
     &.product{
         display:none;
     }
+
+    &:nth-last-child(2){
+        span{
+            display:none;
+        }
+    }
 }
 
 .ie8 .breadcrumbs li{
