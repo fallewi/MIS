@@ -162,5 +162,9 @@
 
     </div>
     <a href="<?php echo $this->helper('wishlist')->getAddUrl($_item->getProduct()) ?>"
-        class="link-wishlist"><?php echo $this->__('Wishlist') ?></a>
+       class="link-wishlist"><?php echo $this->__('Wishlist') ?></a>
+    <?php if ($_compareUrl = $this->helper('catalog/product_compare')->getAddUrl($_item->getProduct())): ?>
+        <a href="<?php echo $_compareUrl ?>"
+           class="link-compare"><?php echo $this->__('Compare') ?></a>
+    <?php endif; ?>
 </li>
