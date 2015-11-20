@@ -1,15 +1,15 @@
 (function($) {
 
     /**
-      * @package     N/A
-      * @version     1.0
-      * @author      Blue Acorn <code@blueacorn.com>, Sean Emmel <sean.emmel@blueacorn.com>
-      * @copyright   Copyright © 2015 Blue Acorn.
+     * @package     N/A
+     * @version     1.0
+     * @author      Blue Acorn <code@blueacorn.com>, Sean Emmel <sean.emmel@blueacorn.com>
+     * @copyright   Copyright © 2015 Blue Acorn.
 
 
-     * Protect window.console method calls, e.g. console is not defined on older 
+     * Protect window.console method calls, e.g. console is not defined on older
      * versions of IE unless dev tools are open, and IE doesn't define console.debug
-     * 
+     *
      * Chrome 41.0.2272.118: debug,error,info,log,warn,dir,dirxml,table,trace,assert,count,markTimeline,profile,profileEnd,time,timeEnd,timeStamp,timeline,timelineEnd,group,groupCollapsed,groupEnd,clear
      * Firefox 37.0.1: log,info,warn,error,exception,debug,table,trace,dir,group,groupCollapsed,groupEnd,time,timeEnd,profile,profileEnd,assert,count
      * Internet Explorer 11: select,log,info,warn,error,debug,assert,time,timeEnd,timeStamp,group,groupCollapsed,groupEnd,trace,clear,dir,dirxml,count,countReset,cd
@@ -17,26 +17,26 @@
      * Opera 28.0.1750.48: debug,error,info,log,warn,dir,dirxml,table,trace,assert,count,markTimeline,profile,profileEnd,time,timeEnd,timeStamp,timeline,timelineEnd,group,groupCollapsed,groupEnd,clear
      */
     (function() {
-      // Union of Chrome, Firefox, IE, Opera, and Safari console methods
-      var methods = ["assert", "assert", "cd", "clear", "count", "countReset",
-        "debug", "dir", "dirxml", "dirxml", "dirxml", "error", "error", "exception",
-        "group", "group", "groupCollapsed", "groupCollapsed", "groupEnd", "info",
-        "info", "log", "log", "markTimeline", "profile", "profileEnd", "profileEnd",
-        "select", "table", "table", "time", "time", "timeEnd", "timeEnd", "timeEnd",
-        "timeEnd", "timeEnd", "timeStamp", "timeline", "timelineEnd", "trace",
-        "trace", "trace", "trace", "trace", "warn"];
-      var length = methods.length;
-      var console = (window.console = window.console || {});
-      var method;
-      var noop = function() {};
-      while (length--) {
-        method = methods[length];
-        // define undefined methods as noops to prevent errors
-        if (!console[method])
-          console[method] = noop;
-      }
+        // Union of Chrome, Firefox, IE, Opera, and Safari console methods
+        var methods = ["assert", "assert", "cd", "clear", "count", "countReset",
+            "debug", "dir", "dirxml", "dirxml", "dirxml", "error", "error", "exception",
+            "group", "group", "groupCollapsed", "groupCollapsed", "groupEnd", "info",
+            "info", "log", "log", "markTimeline", "profile", "profileEnd", "profileEnd",
+            "select", "table", "table", "time", "time", "timeEnd", "timeEnd", "timeEnd",
+            "timeEnd", "timeEnd", "timeStamp", "timeline", "timelineEnd", "trace",
+            "trace", "trace", "trace", "trace", "warn"];
+        var length = methods.length;
+        var console = (window.console = window.console || {});
+        var method;
+        var noop = function() {};
+        while (length--) {
+            method = methods[length];
+            // define undefined methods as noops to prevent errors
+            if (!console[method])
+                console[method] = noop;
+        }
     })();
-    
+
 
     /**
      * The Constructor definition for `GaqTracker` which gets attached to the global window object.
@@ -44,7 +44,7 @@
      * When instantiating this constructor, you must pass it an array of object literals. Each object
      * literal should have the following structure (which can be built via the corresponding Node script):
 
-        var sampleobj = {
+     var sampleobj = {
             trackType: '', //=> 'event', 'pageView', or 'pageViewOnLoad'
             el: null, //=> null by default, this is the element CSS selector as a STRING (ex: 'ul.main-nav > li a') and MUST be supplied if trackType is 'event'
             page: '', //=> the string representing the page. Examples include: 'Sitewide', 'Homepage', 'Category', 'Product', 'Cart', 'Checkout', etc.
@@ -57,58 +57,58 @@
 
      * So one could instantiate this constructor with only one object, but it would still need to be in an array! For example:
 
-        // Instantiate constructor and call from instantiation
-        var BA_GAQ = new GaqTracker([sampleobj]);
+     // Instantiate constructor and call from instantiation
+     var BA_GAQ = new GaqTracker([sampleobj]);
 
-    * The main use will be to instantiate the constructor with an array of many objects. I suggest that you simply copy/paste
-    * the data returned from the Node script and save it as a variable. Then instantiate the constructor and pass in this variable.
-    * For example, here the variable `data` gets set equal to the  JSON data copied/pasted from the Node script. You can see that
-    * it is simply an array of object literals:
+     * The main use will be to instantiate the constructor with an array of many objects. I suggest that you simply copy/paste
+     * the data returned from the Node script and save it as a variable. Then instantiate the constructor and pass in this variable.
+     * For example, here the variable `data` gets set equal to the  JSON data copied/pasted from the Node script. You can see that
+     * it is simply an array of object literals:
 
-        // Set the array of objects equal to a variable
-        var data =  [ 
-                        { 
-                            trackType: 'event',
-                            el: 'ul li.some_class',
-                            page: 'Homepage',
-                            type: 'a custom description of the event/action (a GA event "Action")',
-                            label: null,
-                            eventType: 'click',
-                            bodyClass: 'cms-index-index',
-                            row: 1 
-                        },
-                        { 
-                            trackType: 'event',
-                            el: 'body #nav .some_element',
-                            page: 'Category',
-                            type: 'another custom description of the event/action (a GA event "Action")',
-                            label: null,
-                            eventType: 'click',
-                            bodyClass: 'catalog-category-view',
-                            row: 2 
-                        },
-                        { 
-                            trackType: 'pageView',
-                            el: null,
-                            page: 'Category',
-                            type: 'yet another custom description of the event/action (a GA event "Action")',
-                            label: null,
-                            eventType: '',
-                            bodyClass: 'catalog-category-view',
-                            row: 3 
-                        } 
-                    ];
+     // Set the array of objects equal to a variable
+     var data =  [
+     {
+         trackType: 'event',
+         el: 'ul li.some_class',
+         page: 'Homepage',
+         type: 'a custom description of the event/action (a GA event "Action")',
+         label: null,
+         eventType: 'click',
+         bodyClass: 'cms-index-index',
+         row: 1
+     },
+     {
+         trackType: 'event',
+         el: 'body #nav .some_element',
+         page: 'Category',
+         type: 'another custom description of the event/action (a GA event "Action")',
+         label: null,
+         eventType: 'click',
+         bodyClass: 'catalog-category-view',
+         row: 2
+     },
+     {
+         trackType: 'pageView',
+         el: null,
+         page: 'Category',
+         type: 'yet another custom description of the event/action (a GA event "Action")',
+         label: null,
+         eventType: '',
+         bodyClass: 'catalog-category-view',
+         row: 3
+     }
+     ];
 
-        // Now instantiate the constructor and pass in the array of objects
-        var BA_GAQ = new GaqTracker(data); 
+     // Now instantiate the constructor and pass in the array of objects
+     var BA_GAQ = new GaqTracker(data);
 
-        // Then run the main tracking method to engage tracking
-        BA_GAQ.trackAll();
+     // Then run the main tracking method to engage tracking
+     BA_GAQ.trackAll();
 
      *
      * @param {Array} objects - an array of object literals representing each event/pageview to track
      *
-    **/
+     **/
     window.GaqTracker = function(objects) {
         if (objects instanceof Array === false) {
             console.error('You must supply an ARRAY of objects!');
@@ -151,22 +151,22 @@
          * valid values. See more notes within method.
          *
          * @param {Object Literal} config - the main object build for any given tracking
-         * 
+         *
          */
         propertyCheck: function(config) {
             /* 
-            Properties that are checked are: 
-                * trackType --> should be 'event' or 'pageView' or 'pageViewOnLoad'
-                * el --> if trackType is set to 'event' then an element CSS selector MUST be supplied as a string!
-                * bodyClass --> defaults to null; if trackType is set to 'pageViewOnLoad' then you MUST have a bodyClass specified
-                * row --> this is set via the Node script and indicates the corresponding row in the spreadsheet for the `config` object at hand.
-                          If objects are manually added later and this param isn't supplied or is undefined, it will be set to null
-            Properties that are NOT checked are:
-                * page --> a custom string indicating page being tracked
-                * type --> a custom string that varies (usually a description of the event, i.e. GA "Event Action")
-                * label --> can be custom string; defaults to null, and if it stays this way, gets converted to current URL
-                * eventType --> not practical to check for ALL possible event types, and you could use custom ones anyway
-            */
+             Properties that are checked are:
+             * trackType --> should be 'event' or 'pageView' or 'pageViewOnLoad'
+             * el --> if trackType is set to 'event' then an element CSS selector MUST be supplied as a string!
+             * bodyClass --> defaults to null; if trackType is set to 'pageViewOnLoad' then you MUST have a bodyClass specified
+             * row --> this is set via the Node script and indicates the corresponding row in the spreadsheet for the `config` object at hand.
+             If objects are manually added later and this param isn't supplied or is undefined, it will be set to null
+             Properties that are NOT checked are:
+             * page --> a custom string indicating page being tracked
+             * type --> a custom string that varies (usually a description of the event, i.e. GA "Event Action")
+             * label --> can be custom string; defaults to null, and if it stays this way, gets converted to current URL
+             * eventType --> not practical to check for ALL possible event types, and you could use custom ones anyway
+             */
 
             // trackType
             if (config.trackType !== 'event' && config.trackType !== 'pageView' && config.trackType !== 'pageViewOnLoad') {
@@ -198,7 +198,7 @@
          * based on whether the GaqTracker mode is set to "classic" or "universal"
          *
          * @param {String} trackType - 'event', 'pageView', or 'pageViewOnLoad'
-         * @return {String} - the transformed trackType 
+         * @return {String} - the transformed trackType
          *
          */
         transformTrackType: function(trackType) {
@@ -224,7 +224,7 @@
          * this function will send tracking using the `_gaq.push()` method. See here for
          * more info: <<  https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApi_gaq#_gaq.push  >>
          *
-         * If the mode is set to "universal" then this method will send tracking using 
+         * If the mode is set to "universal" then this method will send tracking using
          * the `ga()` method. See here for more info: <<  https://developers.google.com/analytics/devguides/collection/analyticsjs/events  >>
          *
          * @param {String} trackType - the type of tracking; currently 'event', 'pageView', and 'pageViewOnLoad' are the only types supported
@@ -257,10 +257,10 @@
                 }
             }
         },
-      
+
         /**
          * The main tracking method that handles the logic for tracking events, pageviews, or
-         * virtual pageviews on load (e.g., 'event', 'pageView', and 'pageViewOnLoad' respectively) 
+         * virtual pageviews on load (e.g., 'event', 'pageView', and 'pageViewOnLoad' respectively)
          * based on the trackType for the `config` object. It utilizes the following properties from
          * the `config` object:
          *
@@ -274,7 +274,7 @@
          * config.bodyClass --  the class on the <body> element to look for when tracking Virtual Pageviews
          *
          * That being said, this method accepts two parameters; the main object literal for any
-         * given tracking, and an optional callback to run when the tracking fires for the currrent 
+         * given tracking, and an optional callback to run when the tracking fires for the currrent
          * object (supplied via the `trackAll` method)
          *
          * @param {Object Literal} config - the main object build for any given tracking
@@ -289,7 +289,7 @@
                 config.label = window.location.href;
             }
             if (config.el !== null && config.el !== 'undefined') {
-                if (config.trackType.toLowerCase() === 'event' || config.trackType.toLowerCase() === 'pageview') { 
+                if (config.trackType.toLowerCase() === 'event' || config.trackType.toLowerCase() === 'pageview') {
                     if ($(config.el).length > 0) {
                         // Element exists, bind event directly to element
                         $(config.el).on(config.eventType, function(e) {
@@ -305,7 +305,7 @@
                         callback.apply(config); //=> keep reference to `config` object in callback 
                     }
                 }
-            } 
+            }
             if (config.trackType.toLowerCase() === 'pageviewonload') {
                 self.trackPageViewOnLoad(config.bodyClass, config.page);
                 if (callback && typeof callback === 'function') {
@@ -316,12 +316,12 @@
 
         /**
          * This function first validates the properties for each object
-         * using the `propertyCheck` method to catch any errors. Then 
+         * using the `propertyCheck` method to catch any errors. Then
          * the `autoTracker` function is executed This is performed
          * for each object in the array of objects.
          *
          * @param {Function} callback - optional callback to be run after tracking fires for each object.
-         *                              If present, this callback gets passed to the `autoTracker` method as its 
+         *                              If present, this callback gets passed to the `autoTracker` method as its
          *                              second argument.
          *
          */
@@ -335,7 +335,7 @@
                     this.autoTracker(current_object, callback);
                 } else {
                     this.autoTracker(current_object);
-                } 
+                }
             }
         },
 
@@ -343,7 +343,7 @@
 
         /* ========================================================================= *\
          *             UTILITY FUNCTIONS: Extensibility for Developers               *
-        \* ========================================================================= */
+         \* ========================================================================= */
 
 
         /**
@@ -364,22 +364,22 @@
          *
          * @param {String} page - the name of the "virtual" page tracking occured on
          *
-         */        
+         */
         trackVirtualPageView: function(page) {
-            this.manualTracker('pageView', null, page, null, null, null);          
+            this.manualTracker('pageView', null, page, null, null, null);
         },
 
         /**
          * Tracks a Virtual Page View when a specified event occurs on an element and
-         * sends the name of the virtual page to GA. 
-         * 
+         * sends the name of the virtual page to GA.
+         *
          *
          * @param {String} event - the name of the event listener to bind to the element
          * @param {String}||{jQuery Object} element - the element that `event` is bound to, this
-                                                      can be either a CSS selector OR a jQuery object
+         can be either a CSS selector OR a jQuery object
          * @param {String} page - the name of the page as a string
          *
-         */  
+         */
         trackVirtualPageViewOnEvent: function(event, element, page) {
             var $element = $(element); // coerce into jQuery object in case CSS selector provided
 
@@ -393,26 +393,26 @@
 
         /**
          * Sends a GA tracking call of type 'event' with custom information.
-         * 
+         *
          * @param {String} page - the name of the page tracking fires on
          * @param {String} type - a custom string, the GA "Event Action," which describes the event
          * @param {String} label - custom/unique text, oftentimes the current URL
          *
-         */ 
+         */
         trackEvent: function(page, type, label) {
             this.trackingHelper('event', page, type, label);
         },
 
         /**
-         * This method is essentially the same as the `autoTracker` method except it allows you 
-         * to explicitly define your arguments without configuring them as an object. This can 
+         * This method is essentially the same as the `autoTracker` method except it allows you
+         * to explicitly define your arguments without configuring them as an object. This can
          * be benificial when you need to use jQuery selectors for other tracking parameters or
          * if you need to programmtically fire tracking. For example:
 
-            var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
+         var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
 
-            // Programmatically fire tracking for multiple nav elements using jQuery selectors/functions
-            $('.some_nav_elements a').each(function() {
+         // Programmatically fire tracking for multiple nav elements using jQuery selectors/functions
+         $('.some_nav_elements a').each(function() {
                 var $this = $(this); //=> set proper reference to $(this)
                 BA_GAQ.manualTracker('event', $this, 'Sitewide', $this.text(), window.location.href, 'click');
             });
@@ -424,11 +424,11 @@
          * a string version) in which case the `trackingHelper` method will be invoked immediately without
          * being bound to an event. This is helpful if you wish to use a delegated event. For example:
 
-            var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
+         var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
 
-            // Bind the 'mousedown' event to the document as a delegated event to target elements
-            // that don't currently exist on the page yet
-            $(document).on('mousedown', '.some_ajaxed_elements_that_are_not_on_page_yet', function() {
+         // Bind the 'mousedown' event to the document as a delegated event to target elements
+         // that don't currently exist on the page yet
+         $(document).on('mousedown', '.some_ajaxed_elements_that_are_not_on_page_yet', function() {
                 var $this = $(this); //=> set proper reference to $(this)
                 BA_GAQ.manualTracker('event', $this, 'Cart', $this.text(), window.location.href, null);
             });
@@ -439,8 +439,8 @@
          * function, as this would then be a mousedown event inside of a mousedown event. In other words,
          * we would NOT want to do this:
 
-            // DO NOT DO IT LIKE THIS! DO NOT PUT THE SAME EVENT LISTENER INSIDE OF ITSELF
-            $(document).on('mousedown', '.some_ajaxed_elements_that_are_not_on_page_yet' function() {
+         // DO NOT DO IT LIKE THIS! DO NOT PUT THE SAME EVENT LISTENER INSIDE OF ITSELF
+         $(document).on('mousedown', '.some_ajaxed_elements_that_are_not_on_page_yet' function() {
                 var $this = $(this);
                 BA_GAQ.manualTracker('event', $this, 'Cart', $this.text(), window.location.href, 'mousedown');
             });
@@ -449,12 +449,12 @@
          * elements TWICE, since you're binding the tracking to mousedown inside of the `manualTracker` method
          * but binding the `manualTracker` method invocation to a mousedown event bound to the document.
          *
-         * 
+         *
          * Note that given the structure of this GaqTracker object, you should cache a proper reference
          * to `this` or `$(this)` to pass into the `manualTracker` method.
          *
          * Should you wish to manually fire a pageview on load, then use the `trackPageViewOnLoad` method
-         * defined above. If you attempt to track a pageview on load with this `manualTracker` method, an 
+         * defined above. If you attempt to track a pageview on load with this `manualTracker` method, an
          * error will be thrown.
          *
          * @param {String} trackType - determines what type of tracking occurs (e.g., event or virtual pageview tracking)
@@ -497,7 +497,7 @@
             } else {
                 console.error('Error! Not a valid track type! Please specify "event" or "pageView"');
                 return;
-            }  
+            }
         },
 
         /**
@@ -506,50 +506,50 @@
          * the outline is red, but you may override this by providing an optional second argument representing
          * the color you wish to use instead.
          *
-         * Keep in mind that the dataSet is generated via the Node script and CSV, so THIS WILL ONLY WORK 
+         * Keep in mind that the dataSet is generated via the Node script and CSV, so THIS WILL ONLY WORK
          * FOR ELEMENTS IN YOUR CSV FILE!!!!
          *
-         * There are 3 different values you can pass in as the first argument: 
+         * There are 3 different values you can pass in as the first argument:
          *      1) The string "all" - which will outline all appplicable elements in the dataSet
          *      2) An integer corresponding to the `row` number of any given object
          *      3) An array of integers corresponding to the `row` number of any given object
          *
-         * Keep in mind that this will only outline *applicable objects* that actually have a defined `el` 
-         * property in the CSV and whose element is *currently on the page*. 
+         * Keep in mind that this will only outline *applicable objects* that actually have a defined `el`
+         * property in the CSV and whose element is *currently on the page*.
          *
          * Sample Usage:
          * -------------
-         
-            // Create an instance of the constructor
-            var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
-         
-            // Add an outline around all elements in the dataSet (i.e. 'data' argument above)
-            BA_GAQ.outlineElements('all');
 
-            // Add an outline around the element in the 5th row of the CSV
-            BA_GAQ.outlineElements(5);
+         // Create an instance of the constructor
+         var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
 
-            // Add an outline around the 5th, 8th, 10th, and 14th elements in the CSV (rows 5, 8, 10, and 14)
-            BA_GAQ.outlineElements([5, 8, 10, 14]);
+         // Add an outline around all elements in the dataSet (i.e. 'data' argument above)
+         BA_GAQ.outlineElements('all');
 
-            // Add a blue outline around the elements in the 3rd and 9th rows in the CSV
-            BA_GAQ.outlineElements([3, 9], 'blue');
+         // Add an outline around the element in the 5th row of the CSV
+         BA_GAQ.outlineElements(5);
+
+         // Add an outline around the 5th, 8th, 10th, and 14th elements in the CSV (rows 5, 8, 10, and 14)
+         BA_GAQ.outlineElements([5, 8, 10, 14]);
+
+         // Add a blue outline around the elements in the 3rd and 9th rows in the CSV
+         BA_GAQ.outlineElements([3, 9], 'blue');
 
          *
          *
          * @param {String}||{Integer}||{Array}  idx - a string of 'all' for all elements, a single integer
          *                                            corresponding to the row number of the element in the CSV
-                                                      file, or an array of integers corresponding to the 
-                                                      row numbers for each element in the CSV to outline. 
+         file, or an array of integers corresponding to the
+         row numbers for each element in the CSV to outline.
          * @param {String} color - an optional argument representing the color to set the outline to if
-                                   you would like to override the default 'red' color. Any valid CSS color
-                                   will work here, including hex, RGB, RGBA, and standard color name.
+         you would like to override the default 'red' color. Any valid CSS color
+         will work here, including hex, RGB, RGBA, and standard color name.
          *
          */
         outlineElements: function(idx, color) {
             color = color || 'red';
             var error_message = ('Error! Please pass in either an INTEGER corresponding to the "row" property of an object, an ARRAY containing only INTEGERS corresponding to the "row" property of the objects you would like to outline, or the STRING "all" to outline all applicable elements for every object int he dataset.');
-            
+
             // Handle "all" as the argument -- highlight all applicable elements in the dataSet
             if (typeof idx === 'string') {
                 if (idx.toLowerCase() === 'all') {
@@ -605,38 +605,38 @@
          *
          * Sample Usage:
          * -------------
-         * You can either create a function expression first and pass the reference into this 
+         * You can either create a function expression first and pass the reference into this
          * method, or you can pass in an anonymous function to be executed. See below.
          *
          * 1) Using a predefined function via function expression:
-        
-                // Your new method
-                var newMethod = function(args) {
+
+         // Your new method
+         var newMethod = function(args) {
                     console.log(args);
                 };
 
-                // Create an instance of the constructor
-                var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
+         // Create an instance of the constructor
+         var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
 
-                // Add your method to it
-                BA_GAQ.addMethod('newMethod', newMethod);
+         // Add your method to it
+         BA_GAQ.addMethod('newMethod', newMethod);
 
          * 2) Passing in an anonymous function
 
-                // Create an instance of the constructor
-                var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
+         // Create an instance of the constructor
+         var BA_GAQ = new GaqTracker(data); //=> `data` is the array of objects required for instantiation
 
-                // Add your method: give it a name, then pass in the anonymous function
-                BA_GAQ.addMethod('newMethod', function() {
+         // Add your method: give it a name, then pass in the anonymous function
+         BA_GAQ.addMethod('newMethod', function() {
                     console.log('New method added!');
                 });
 
-         * Remember, this method will get attached to the GaqTracker prototype, NOT to your instantiated 
+         * Remember, this method will get attached to the GaqTracker prototype, NOT to your instantiated
          * constructor's prototype! In other words:
 
-                console.log(BA_GAQ.prototype.newMethod);  //=> undefined  (method is NOT attached to BA_GAQ prototype)
-                console.log(GaqTracker.prototype.newMethod); //=> the method just added  (method attached to GaqTracker prototype)
-                console.log(BA_GAQ.newMethod); //=> the method just added, inherited from the GaqTracker prototype
+         console.log(BA_GAQ.prototype.newMethod);  //=> undefined  (method is NOT attached to BA_GAQ prototype)
+         console.log(GaqTracker.prototype.newMethod); //=> the method just added  (method attached to GaqTracker prototype)
+         console.log(BA_GAQ.newMethod); //=> the method just added, inherited from the GaqTracker prototype
 
          *
          * @param {String} method_name - the name of your new method
@@ -659,8 +659,8 @@
 
     /* ======================================================================= *\
      *                  UTILITY FUNCTIONS: String Formatting                   *
-    \* ======================================================================= */
-    
+     \* ======================================================================= */
+
     /**
      * Capitalize the first letter of a string. Attached to the String prototype.
      *
@@ -676,18 +676,18 @@
      *
      * Sample usage:
 
-        "this string gets camel cased".camelCaseString();
+     "this string gets camel cased".camelCaseString();
 
-        >> "thisStringGetsCamelCased"
+     >> "thisStringGetsCamelCased"
 
      *
      * @return {String} - the formatted string
      *
      */
     String.prototype.camelCaseString = function() {
-        return this.replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2, offset) {
+        return this.toLowerCase().replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2, offset) {
             if (p2) return p2.toUpperCase();
-            return p1.toLowerCase();        
+            return p1.toLowerCase();
         });
     };
 

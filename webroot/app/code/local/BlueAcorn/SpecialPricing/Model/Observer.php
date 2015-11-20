@@ -22,9 +22,14 @@ class BlueAcorn_SpecialPricing_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Quote_Item $quoteItem */
         $quoteItem = $event->getQuoteItem();
 
-        // Alter price if msrp exists
+        // Alter price if msrp exists AND no token used
         $productMsrp = $quoteItem->getProduct()->getMsrp();
-        if ($productMsrp) {
+        $token = null;
+        $paramToken = Mage::app()->getRequest()->getParam('token');
+        if($paramToken) {
+            $token = Mage::getModel('blueacorn_specialpricing/token')->load($paramToken, 'token')->getData();
+        }
+        if (empty($token) && $productMsrp) {
             $quoteItem->setOriginalCustomPrice($productMsrp);
         }
     }

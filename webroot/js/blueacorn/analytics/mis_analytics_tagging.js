@@ -11,7 +11,7 @@
     // IE8 .trim() fix
     if(typeof String.prototype.trim !== 'function') {
       String.prototype.trim = function() {
-        return this.replace(/^\s+|\s+$/g, ''); 
+        return this.replace(/^\s+|\s+$/g, '');
       }
     }
 
@@ -68,6 +68,16 @@
         /* ------------------------- *\
          *        Every Page         *
         \* ------------------------- */
+
+        //Navigation: Search bar event
+        var $searchForm = $(".page .page-header #header-search form[name='searchform']");
+        var $searchBtn = $searchForm.find("button[type='submit']");
+        $searchBtn.on('click', function(e) {
+            e.preventDefault(); //=> stop form submission
+            var search_page = window.location.href;
+            BA_GAQ.trackEvent('Navigation', 'Search', search_page);
+            $searchForm.submit();
+        });
 
         //Navigation: Mega Menu categories.
         $('#nav li.level0').each(function() {
