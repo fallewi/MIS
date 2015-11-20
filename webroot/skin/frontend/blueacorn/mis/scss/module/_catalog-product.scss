@@ -720,7 +720,6 @@
     }
 
     a {
-        display: block;
         position: relative;
         padding: 0 29px 0 16px;
         background: $white;
@@ -728,6 +727,10 @@
         letter-spacing: 1px;
         line-height: 38px;
         margin-bottom: 10px;
+
+        @include bp(max-width, $bp-medium) {
+            display:block;
+        }
 
         &:hover {
             text-decoration: none;
