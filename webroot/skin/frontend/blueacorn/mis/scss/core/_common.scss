@@ -669,10 +669,10 @@ a.button:hover {
     }
 }
 
-.breadcrumbs li{
+.ie8 .breadcrumbs li{
     &:nth-last-child(2){
         span{
-            display:none;
+            display:inline-block;
         }
     }
 }
