@@ -617,7 +617,7 @@
         max-width: 100%; // Constrain width in Firefox
 
         &.map-add-to {
-            margin-top: 25px;
+            margin-top: 5px;
 
             @include bp(max-width, $bp-medium) {
                 margin-top: 0;
@@ -721,7 +721,6 @@
     }
 
     a {
-        display: block;
         position: relative;
         padding: 0 29px 0 16px;
         background: $white;
@@ -729,6 +728,10 @@
         letter-spacing: 1px;
         line-height: 38px;
         margin-bottom: 10px;
+
+        @include bp(max-width, $bp-medium) {
+            display:block;
+        }
 
         &:hover {
             text-decoration: none;

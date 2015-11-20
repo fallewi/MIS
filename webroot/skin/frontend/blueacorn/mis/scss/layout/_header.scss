@@ -198,7 +198,7 @@
 }
 
 .ie8 .logo{
-    min-height:auto;
+    min-height:40px;
 }
 
 // ---------------------------------------------
@@ -338,6 +338,8 @@ a.skip-link {
     }
 
 }
+
+.ie8 .skip-link .label{display:inline;}
 
 /* ============================================ *
  * Skip Content

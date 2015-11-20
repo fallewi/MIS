@@ -36,16 +36,13 @@
     display:none;
 }
 
-.product-img-box .product-image, .no-touch .product-img-box .product-image:not(.zoom-available):hover{
-    position:absolute;
-}
-
 @include bp(max-width, $bp-medium){
     .catalog-product-view .product-view{
         .product-img-box{
             .product-image{
                 position:relative;
                 width:auto;
+                float:none;
             }
             .more-views{
                 width:auto;

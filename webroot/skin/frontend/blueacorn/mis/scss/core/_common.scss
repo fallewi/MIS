@@ -667,6 +667,12 @@ a.button:hover {
     &.product{
         display:none;
     }
+
+    &:nth-last-child(2){
+        span{
+            display:none;
+        }
+    }
 }
 
 .ie8 .breadcrumbs li{
@@ -1414,7 +1420,6 @@ a.button:hover {
 .price-box .old-price {
     .price {
         color: $c-text-gray;
-        text-decoration: line-through;
     }
 }
 
