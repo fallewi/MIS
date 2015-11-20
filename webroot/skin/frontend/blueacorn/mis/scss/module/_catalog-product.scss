@@ -616,7 +616,7 @@
         max-width: 100%; // Constrain width in Firefox
 
         &.map-add-to {
-            margin-top: 25px;
+            margin-top: 5px;
 
             @include bp(max-width, $bp-medium) {
                 margin-top: 0;
