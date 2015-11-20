@@ -6,6 +6,7 @@
             <action method="removeItem"><type>skin_css</type><name>css/enterprise.css</name></action>
             <action method="removeItem"><type>skin_css</type><name>css/enterprise-ie8.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/blueacorn-magento-overrides.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/vendor/jquery.fittext.js</name></action>
         </reference>
         <reference name="before_body_end">
             <block type="page/html_head" name="footerjs" as="footerjs" after="-" template="page/html/footerjs.phtml">
