@@ -477,3 +477,11 @@ $nav-primary-height: 30px;
         display: block;
     }
 }
+
+.ie8{
+    .nav-primary {
+        a.level0 {
+            padding: 9px 25px;
+        }
+    }
+}
