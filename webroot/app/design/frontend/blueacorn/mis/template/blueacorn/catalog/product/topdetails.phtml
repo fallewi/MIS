@@ -51,7 +51,7 @@
         <?php endif ?>
     </div>
 
-    <?php echo $this->getReviewsSummaryHtml($_product, 'default', true)?>
+    <?php $this->helper('yotpo')->showBottomline($this, $_product); ?>
 
 </div>
 
