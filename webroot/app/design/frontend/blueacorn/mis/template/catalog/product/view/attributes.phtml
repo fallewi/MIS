@@ -40,12 +40,31 @@
         <col width="25%" />
         <col />
         <tbody>
-        <?php foreach ($_additional as $_data): ?>
+        <?php foreach ($_additional as $_data):
+            $dataItem = $_helper->productAttribute($_product, $_data['value'], $_data['code']);
+            if ($dataItem == 'N/A' || $dataItem == 'No'|| $dataItem == 'None'|| $dataItem == '')
+            continue;
+            $_schemaprop = "";
+            switch($_data['code'])
+            {
+            case "manufacturer":
+            $_schemaprop = " itemprop=\"brand manufacturer\"";
+            break;
+            case "mpn":
+            $_schemaprop = " itemprop=\"mpn model\"";
+            break;
+            case "sku":
+            $_schemaprop = " itemprop=\"sku\"";
+            break;
+            case "color":
+            $_schemaprop = " itemprop=\"color\"";
+            break;
+            } ?>
             <?php $_attribute = $_product->getResource()->getAttribute($_data['code']);
             if (!is_null($_product->getData($_attribute->getAttributeCode())) && ((string)$_attribute->getFrontend()->getValue($_product) != '')) { ?>
             <tr>
                 <th class="label"><?php echo $this->htmlEscape($this->__($_data['label'])) ?></th>
-                <td class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
+                <td class="data"<?php echo $_schemaprop ?>><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
             </tr>
             <?php } ?>
         <?php endforeach; ?>
