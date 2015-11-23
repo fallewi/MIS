@@ -15,7 +15,7 @@
 </span></li></ul></li></ul></div>
 
 
-<fieldset id="amupload_form" action="<?php echo $this->getUrl('amimgupload/adminhtml_image/upload'); ?>">
+<fieldset id="amupload_form" action="<?php echo $this->getUrl('adminhtml/amimgupload_image/upload'); ?>">
 <input type="hidden" name="form_key" value="<?php echo $this->getFormKey(); ?>" />
 <input type="hidden" name="amimgupload_hasdata" value="1" />
 <input type="hidden" name="store" value="<?php echo $this->getStoreId(); ?>" />
@@ -83,10 +83,10 @@ var imItemTemplate = '' +
         
         <script type="text/javascript">
         <?php if ($this->isAjax()): ?>
-            amUploader  = new amUpload('amupload_form', 'grid_drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('amimgupload/adminhtml_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
+            amUploader  = new amUpload('amupload_form', 'grid_drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('adminhtml/amimgupload_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
         <?php else: ?>
             Event.observe(window, 'load', function(){
-                amUploader  = new amUpload('amupload_form', 'grid_drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('amimgupload/adminhtml_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
+                amUploader  = new amUpload('amupload_form', 'grid_drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('adminhtml/amimgupload_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
             });
         <?php endif; ?>
         </script>
@@ -112,10 +112,10 @@ var imItemTemplate = '' +
 
     <script type="text/javascript">
     <?php if ($this->isAjax()): ?>
-        amUploader  = new amUpload('amupload_form', 'drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('amimgupload/adminhtml_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
+        amUploader  = new amUpload('amupload_form', 'drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('adminhtml/amimgupload_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
     <?php else: ?>
         Event.observe(window, 'load', function(){
-            amUploader  = new amUpload('amupload_form', 'drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('amimgupload/adminhtml_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
+            amUploader  = new amUpload('amupload_form', 'drop_area', 'file_select', 'upload_tracking_area', <?php echo $this->getProductId(); ?>, '<?php echo $this->getUrl('adminhtml/amimgupload_image/reloadtab', array('product_id' => $this->getProductId())); ?>');
         });
     <?php endif; ?>
     </script>

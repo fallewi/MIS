@@ -7,9 +7,10 @@
 
         .product-image{
             width:80%;
-            position: absolute;
             right:0;
             padding:0 20px;
+            float:right;
+            position:relative;
         }
         .more-views{
             width:20%;
@@ -35,16 +36,13 @@
     display:none;
 }
 
-.product-img-box .product-image, .no-touch .product-img-box .product-image:not(.zoom-available):hover{
-    position:absolute;
-}
-
 @include bp(max-width, $bp-medium){
     .catalog-product-view .product-view{
         .product-img-box{
             .product-image{
                 position:relative;
                 width:auto;
+                float:none;
             }
             .more-views{
                 width:auto;

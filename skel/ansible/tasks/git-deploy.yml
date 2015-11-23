@@ -1,0 +1,48 @@
+---
+
+# deployment tasks
+##################
+
+- name: ensure clean working copy [1/2]
+  stat: path="{{ REPO_ROOT }}"
+  register: repo_root
+  always_run: yes
+
+- name: ensure clean working copy [2/2]
+  command: git status -uno --porcelain
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  register: command_result
+  changed_when: False
+  failed_when: "command_result.stdout"
+  when: repo_root.stat.exists
+  always_run: yes
+
+- name: test matching HEAD between environment and origin
+  shell: if [ "$(git rev-parse {{ REPO_REF }})" != "$(git rev-parse origin/{{ REPO_REF }})" ]; then exit 1; fi
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  register: rev_result
+  changed_when: False
+  when: repo_root.stat.exists
+  always_run: yes
+  failed_when: False # Bypass standard ansible failure when scripts exists with non-zero value
+
+- fail: msg="HEAD on deployment environment does not match HEAD on remote"
+  when:  repo_root.stat.exists and rev_result.rc
+  always_run: yes
+
+- name: cleanup git (prune origin)
+  shell: git remote prune origin
+  args:
+    chdir: "{{ REPO_ROOT }}"
+
+- name: git checkout
+  git:
+    repo: "{{ REPO_REMOTE }}"
+    version: "{{ REPO_REF }}"
+    dest: "{{ REPO_ROOT }}"
+    key_file: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+    force: no
+    depth: 1
+    accept_hostkey: yes

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Levementum_Customer>
+            <version>0.1.0</version>
+        </Levementum_Customer>
+    </modules>
+    <global>
+        <resources>
+            <lm_customer_setup>
+                <setup>
+                    <module>Levementum_Customer</module>
+                    <class>Levementum_Customer_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </lm_customer_setup>
+        </resources>
+
+        <models>
+            <levementum_customer>
+                <class>Levementum_Customer_Model</class>
+            </levementum_customer>
+        </models>
+
+        <helpers>
+            <levementum_customer>
+                <class>Levementum_Customer_Helper</class>
+            </levementum_customer>
+        </helpers>
+
+   </global>
+</config>

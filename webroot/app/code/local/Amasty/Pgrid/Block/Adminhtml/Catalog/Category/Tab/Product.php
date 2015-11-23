@@ -24,7 +24,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Category_Tab_Product extends Mage_Adm
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        $url = $this->getUrl('ampgrid/adminhtml_attribute/index', array('attributesKey' => $this->_attributesKey));
+        $url = $this->getUrl('adminhtml/ampgrid_attribute/index', array('attributesKey' => $this->_attributesKey));
         $this->setChild('attributes_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(

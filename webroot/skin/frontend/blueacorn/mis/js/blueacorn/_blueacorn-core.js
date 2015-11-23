@@ -23,6 +23,8 @@ BlueAcornCore.prototype = {
         if (this.settings.debug === true) {
             this.setupDebugging(this.settings);
         }
+
+        this.triggerCustomEvent();
     },
 
     /**
@@ -43,15 +45,21 @@ BlueAcornCore.prototype = {
         }
     },
 
+    triggerCustomEvent: function() {
+        jQuery(document).on('ready', function(){
+            jQuery(document).trigger('baCoreReady');
+        });
+    },
+
     /**
      * Adds console log if degubbing is true
      * @param string
      */
     watchConsole: function (message) {
-        if(this.settings.debug === true && $j('html.ie8, html.ie9, html.ie10').length === 0) {
+        if(this.settings.debug && jQuery('.ie6, .ie7, .ie8, .ie9').length === 0) {
             console.log(message);
         }
-    }
+    },
 
 };
 
@@ -62,3 +70,19 @@ BlueAcornCore.prototype = {
 var ba = new BlueAcornCore({
     "debug": mageConfig["styleguide/development/enable_development"] > 0 ? true : false
 });
+
+// Deals with issues between jQuery & Prototype Event Triggering
+// @source: http://stackoverflow.com/a/460709
+Element.prototype.triggerEvent = function(eventName)
+{
+    if (document.createEvent)
+    {
+        var evt = document.createEvent('HTMLEvents');
+        evt.initEvent(eventName, true, true);
+
+        return this.dispatchEvent(evt);
+    }
+
+    if (this.fireEvent)
+        return this.fireEvent('on' + eventName);
+};

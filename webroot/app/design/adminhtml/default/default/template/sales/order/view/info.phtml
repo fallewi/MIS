@@ -61,6 +61,22 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
                 <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
                 <td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
             </tr>
+           <?php // VHC adding in LEV MODS for admin/salesperson ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Salesperson') ?></label></td>
+                <?php
+                    $adminId = $_order->getAdminId();
+                    if($adminId != null){
+                        $adminUser = Mage::getModel('admin/user')->load($adminId);
+                        $adminName = $adminUser->getFirstname().' '.$adminUser->getLastname();
+                        echo '<td class="value"><strong><span id="assigned_salesperson">'.$adminName.'</span></strong></td>';
+                    }
+                else{
+                    echo '<td class="value"><strong><span id="assigned_salesperson">No SalesPerson Assigned</span></strong></td>';
+                }
+                ?>
+            </tr>
+            <?php // VHC End adding in LEV MODS for admin/salesperson ?>
             <tr>
                 <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
                 <td class="value"><strong><?php echo $this->getOrderStoreName() ?></strong></td>
@@ -133,6 +149,15 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
                     <td class="value"><strong><?php echo $_groupName ?></strong></td>
                 </tr>
                 <?php endif; ?>
+                <?php // VHC adding in LEV MODS for Customer Southware ID ?>
+                <?php $customerSouthwareCustomerId = Mage::helper('adminorders')->getCustomerSouthwareCustomerId($_order) ?>
+                    <?php if ($customerSouthwareCustomerId) : ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('sales')->__('Southware Customer ID') ?></label></td>
+                      <td class="value"><strong><?php echo $customerSouthwareCustomerId ?></strong></td>
+                    </tr>
+                    <?php endif; ?>
+                <?php // VHC end adding in LEV MODS for Customer Southware ID ?>
                 <?php foreach ($this->getCustomerAccountData() as $data):?>
                 <tr>
                     <td class="label"><label><?php echo $data['label'] ?></label></td>

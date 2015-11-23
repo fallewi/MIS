@@ -35,12 +35,23 @@ jQuery(document).ready(function ($) {
             // Start the debugger
             ba.setupDebugging(this.settings);
 
+            var self = this;
+
             this.imageSlider();
             this.setDescriptionContainerMaxHeight();
-            this.expandDescription();
             this.setupAccordion();
             this.moveAddToCartButton();
             this.thumb();
+            this.mapPricingObserver();
+            this.dynamicHeaderText();
+
+            $(window).resize(function(){
+                self.setDescriptionContainerMaxHeight();
+            });
+        },
+
+        dynamicHeaderText: function() {
+            $('.top-product-details .product-name h1').fitText(2.7, {maxFontSize: 36});
         },
 
         imageSlider: function() {
@@ -83,14 +94,15 @@ jQuery(document).ready(function ($) {
         setDescriptionContainerMaxHeight: function() {
             var self = this,
                 wrapper = $('.description'),
-                container = $('.description .detail'),
+                descriptionContainer = $('.description .detail'),
+                specsContainer = $('#product-attribute-specs-table'),
                 divHeight = $('.specifications');
 
-            container.css({ 'max-height': (divHeight.height()) });
-
-            if (container[0].scrollHeight > container.innerHeight()) {
+            if (descriptionContainer.height() > specsContainer.height() && $('.read-more').length === 0) {
+                descriptionContainer.css({ 'max-height': (divHeight.height()) });
                 wrapper.append('<div class="read-more">Read More</div>');
-                $('.read-more').css({ top: (wrapper.height() + 4) });
+                $('.read-more').css({ 'top': 'auto' });
+                self.expandDescription();
             }
         },
 
@@ -98,10 +110,10 @@ jQuery(document).ready(function ($) {
             var self = this,
                 readMore = $('.read-more'),
                 container = $('.description .detail'),
-                newHeight = $('.detail')[0].scrollHeight;
+                overflow = $('.product-information-block .column-left .description .detail');
 
             readMore.on('click', function(){
-                container.css({ 'max-height': newHeight });
+                container.css({ 'max-height': '100%' });
                 readMore.detach();
             });
         },
@@ -136,7 +148,7 @@ jQuery(document).ready(function ($) {
             });
         },
 
-        mapPricingObserver: function(baseUrl){
+        mapPricingObserver: function(){
             var self = this;
 
             $('#map_email').on('change', function(){
@@ -151,8 +163,7 @@ jQuery(document).ready(function ($) {
                 ev.preventDefault();
                 var emailString = $('#map_email').val();
                 if(self.mapPricingValidate(emailString)) {
-                    $('.validation-advice').remove();
-                    window.location.replace(baseUrl + '&email=' + emailString);
+                    $('#advice-validate-email-map_email').remove();
                 }
             });
         },
@@ -178,6 +189,8 @@ jQuery(document).ready(function ($) {
      * The parameter object is optional.
      * Must be an object.
      */
-    ba.productPage = new productPage({});
+    if(ba.Page.getPage('product')){
+        ba.productPage = new productPage({});
+    }
 
 });

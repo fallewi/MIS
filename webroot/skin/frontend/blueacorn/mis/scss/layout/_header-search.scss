@@ -84,6 +84,11 @@
     }
 
 }
+.ie8 #header-search{
+    left: 50%;
+    height: 50px;
+    margin-left: -190px;
+}
 
 @include bp(max-width, 1024px) {
     #header-search {
@@ -91,7 +96,7 @@
     }
 }
 
-@include bp(max-width, 885px) {
+@include bp(max-width, 900px) {
     #header-search {
         right: 170px;
     }
@@ -107,17 +112,20 @@
 /* ============================================ *
  * Search Input
  * ============================================ */
-
-#search_mini_form .input-box {
+#search_mini_form .input-box,
+#SliSearchProductForm .form-search{
     position: relative;
     padding-top: 0;
+    z-index: 1000;
 }
 
-#search_mini_form label {
+#search_mini_form label,
+#SliSearchProductForm label{
     display: none;
 }
 
-#search {
+#search,
+#sli_search_1{
     width: 100%;
     height: 40px;
     padding-right: 40px;
@@ -172,7 +180,8 @@
     }
 }
 
-#search_mini_form .search-button {
+#search_mini_form .search-button,
+#SliSearchProductForm .button{
     @include image-replacement;
     position: absolute;
     top: 0;
@@ -188,7 +197,8 @@
     }
 }
 
-#search_mini_form .search-button:before {
+#search_mini_form .search-button:before,
+#SliSearchProductForm .button:before{
     content: '';
     display: block;
     @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -59px, -161px);
@@ -196,11 +206,7 @@
     height: 21px;
 }
 
-#search_mini_form .search-button:hover:before {
+#search_mini_form .search-button:hover:before,
+#SliSearchProductForm .button:hover:before{
     opacity: 0.8;
-}
-
-#search_mini_form .search-button:active:before {
-    margin-top: -15px + 2px;
-    margin-left: -15px + 2px;
 }

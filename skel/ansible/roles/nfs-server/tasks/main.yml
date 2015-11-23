@@ -1,0 +1,30 @@
+---
+
+- name: install nfs-server deps
+  apt:
+    name: nfs-kernel-server
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+  
+- name: ensure nfs export directory
+  file:
+    path: /mnt/nfs-export
+    state: directory
+    
+- name: add nfs export
+  lineinfile:
+    dest: /etc/exports
+    regexp: ^\/mnt\/nfs-export
+    line: "/mnt/nfs-export   10.0.0.0/16(rw,sync,no_root_squash)"
+    state: present
+  notify: restart nfs
+  
+- name: ensure nfs directory [server]
+  file:
+    path: /nfs
+    src: /mnt/nfs-export
+    state: link
+
+ 

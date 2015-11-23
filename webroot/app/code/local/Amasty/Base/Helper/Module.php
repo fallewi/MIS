@@ -34,13 +34,14 @@ class Amasty_Base_Helper_Module extends Mage_Core_Helper_Abstract
         $feedXml = self::getFeedData();
         if ($feedXml && $feedXml->channel && $feedXml->channel->item) 
         {
-            foreach ($feedXml->channel->item as $item) 
-            {
-                $feedData[(string)$item->code] = array(
-                    'name'    => (string)$item->title,
-                    'url'     => (string)$item->link,
-                    'version' => (string)$item->version,
-                );
+            foreach ($feedXml->channel->item as $item) {
+                if (!array_key_exists((string)$item->code, $feedData)) {
+                    $feedData[(string)$item->code] = array(
+                        'name'    => (string)$item->title,
+                        'url'     => (string)$item->link,
+                        'version' => (string)$item->version,
+                    );
+                }
             }
             
             if ($feedData) 

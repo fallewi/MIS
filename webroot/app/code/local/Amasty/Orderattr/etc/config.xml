@@ -9,7 +9,7 @@
 <config>
     <modules>
         <Amasty_Orderattr>
-            <version>3.2.2</version>
+            <version>3.2.3</version>
         </Amasty_Orderattr>
     </modules>
     
@@ -342,6 +342,7 @@
         <amorderattr>
             <checkout>
                 <progress>1</progress>
+                <hide_empty>1</hide_empty>
             </checkout>
             
             <pdf>

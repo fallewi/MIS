@@ -1,0 +1,19 @@
+# magento-skel authoritative files
+##################################
+
+/env.sh
+/manage.sh
+
+/ansible/.skel/
+/ansible/roles/newrelic-php
+/ansible/roles/Rackspace_Automation.newrelic
+
+/env/.gitignore
+/env/.skel/
+
+/scripts/
+
+/tests/.gitignore
+/tests/gulpfile.js
+
+/webroot/.gitignore

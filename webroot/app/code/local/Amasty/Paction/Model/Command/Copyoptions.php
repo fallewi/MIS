@@ -6,6 +6,8 @@
  */
 class Amasty_Paction_Model_Command_Copyoptions extends Amasty_Paction_Model_Command_Abstract 
 {
+    protected $_availableTypes = array('field', 'area', 'file', 'drop_down', 'radio', 'checkbox', 'multiple', 'date', 'date_time', 'time');
+    
     public function __construct($type)
     {
         parent::__construct($type);
@@ -35,8 +37,10 @@ class Amasty_Paction_Model_Command_Copyoptions extends Amasty_Paction_Model_Comm
 
         $options = array();
         $countOptions = $collection->getSize();
-        foreach ($collection as $option) { 
-            $options[] = $this->_convertToArray($option);
+        foreach ($collection as $option) {
+            if (in_array($option->getType(), $this->_availableTypes)) {
+                $options[] = $this->_convertToArray($option);
+            }
         }  
         
         $num = 0;

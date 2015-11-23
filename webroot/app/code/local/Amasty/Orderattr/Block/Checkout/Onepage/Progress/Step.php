@@ -69,6 +69,7 @@ class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Bl
                             }
 	                        break;
                         case 'radios':
+                            $value = '';
                             $options = $attribute->getSource()->getAllOptions(true, true);
                             $checkboxValues = $orderAttributes[$attribute->getAttributeCode()];
                             foreach ($options as $option) {
@@ -79,6 +80,7 @@ class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Bl
                             }
                             break;
                         case 'checkboxes':
+                            $value = '';
                             $temp = array();
                             $options = $attribute->getSource()->getAllOptions(true, true);
                             $checkboxValues = $orderAttributes[$attribute->getAttributeCode()];
@@ -121,8 +123,15 @@ class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Bl
                     } else {
                         $attributeLabel = $attribute->getFrontendLabel();
                     }
-                    
-	                $list[$attributeLabel] = str_replace('$', '\$', $value);
+
+                    if (Mage::getStoreConfig('amorderattr/checkout/hide_empty')) {
+                        if ('boolean' == $attribute->getFrontendInput()
+                            || $value) {
+                            $list[$attributeLabel] = str_replace('$', '\$', $value);
+                        }
+                    } else {
+                        $list[$attributeLabel] = str_replace('$', '\$', $value);
+                    }
 	        	}
 	        }
         }

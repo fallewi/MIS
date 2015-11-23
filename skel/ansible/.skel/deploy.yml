@@ -1,0 +1,51 @@
+---
+
+- name: "@CLIENT_CODE:@ENV deployment"
+  hosts: web*
+  gather_facts: False
+  any_errors_fatal: yes
+
+  pre_tasks:
+
+    # compile assets
+    - include: tasks/grunt.yml tags=deploy,assets
+
+    # deployment requisites
+    - include: tasks/git-deps.yml tags=deps
+
+  tasks:
+
+    # deploy site
+    - include: tasks/git-deploy.yml tags=deploy
+
+    # sync compiled assets
+    - name: sync assets compiled by grunt
+      synchronize:
+        src: "../../webroot/skin/frontend/blueacorn/site/{{ item }}"
+        dest: "{{ REPO_ROOT }}/webroot/skin/frontend/blueacorn/site/{{ item }}"
+        archive: no
+        copy_links: yes
+        delete: yes
+        mode: push
+        recursive: yes
+      with_items:
+        - css/
+        - jsmin/
+      tags:
+        - deploy
+        - assets
+
+  post_tasks:
+
+    # ensures proper directories/permissions
+    - include: tasks/filestrap.yml tags=filestrap,perms,links
+
+    # notify services
+    #################
+
+    - include: tasks/notify-newrelic.yml tags=deploy,newrelic
+    # - include: tasks/notify-hipchat.yml
+
+
+# clear cache
+- include: @ENV.cacheclear.yml tags=deploy

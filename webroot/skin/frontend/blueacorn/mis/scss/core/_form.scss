@@ -88,6 +88,10 @@ form .legend {
     }
 }
 
+li > .input-box.validation-passed:before {
+    top: 14px;
+}
+
 // Purchase Order override
 .checkout-onepage-index{
     #dd_method_purchaseorder .input-box.validation-passed:before{
@@ -215,7 +219,7 @@ textarea {
 }
 
 .input-text.validation-failed {
-    border-color: $black;
+    border-color: $c-red;
     border-width: 3px;
 
     &:focus {

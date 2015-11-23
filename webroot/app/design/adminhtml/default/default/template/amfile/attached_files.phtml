@@ -16,7 +16,7 @@ $files = $this->getFiles();
         <span class="attach-name attach-name-<?php echo $this->getProductId();?> <?php echo $iterator++ > $this->_maxDisplay  ? 'no-display' : '';?>"
               data-icon="<?php echo $file->getIcon();?>">
 
-            <a href='<?php echo $this->getUrl('amfile/file/download', array('file_id' => $file->getId()));?>'>
+            <a href='<?php echo $this->getUrl('adminhtml/amfile_file/download', array('file_id' => $file->getId()));?>'>
                 <?php echo $file->getFileName() ? $file->getFileName() : $file->getFileLink();?>
             </a>
         </span>

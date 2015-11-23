@@ -1,0 +1,15 @@
+---
+
+- name: "@CLIENT_CODE:@ENV scheduled tasks"
+  hosts: web-admin
+  gather_facts: False
+  tags: 
+    - cron
+
+  tasks:
+    # use either cron-magento.yml or cron-aoe.yml
+    - include: tasks/cron-magento.yml
+    #- include: tasks/cron-aoe.yml
+
+    - include: tasks/cron-redis.yml
+    

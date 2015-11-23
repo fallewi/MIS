@@ -9,19 +9,19 @@
 <config>
     <modules>
         <Amasty_Pgrid>
-            <version>4.12.4</version>
+            <version>4.12.6</version>
         </Amasty_Pgrid>
     </modules>
 
     <admin>
         <routers>
-            <ampgrid>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Amasty_Pgrid</module>
-                    <frontName>ampgrid</frontName>
+                    <modules>
+                        <Amasty_Pgrid after="Mage_Adminhtml">Amasty_Pgrid_Adminhtml</Amasty_Pgrid>
+                    </modules>
                 </args>
-            </ampgrid>
+            </adminhtml>
         </routers>
     </admin>
 

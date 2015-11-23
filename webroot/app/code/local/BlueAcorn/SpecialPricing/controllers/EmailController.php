@@ -58,7 +58,7 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
             $email_template = Mage::getModel('core/email_template')->loadByCode('map_request');
             $product = Mage::getModel('catalog/product')->load($productId);
             $addToCartLink = Mage::getBaseUrl() . "map/email/addToCart" . "?product_id=" . $productId . "&token=" . $token;
-            $formattedPrice = Mage::helper('core')->formatPrice($product->getPrice(), false);
+            $formattedPrice = Mage::helper('core')->formatPrice($product->getFinalPrice(), false);
 
             $email_variables = array(
                 'productName' => $product->getName(),
@@ -82,7 +82,15 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
             Mage::getSingleton('core/session')->addError('Please enter a valid email address');
         }
 
-        $productUrl = Mage::getModel('catalog/product')->load($productId)->getProductUrl();
+        $parentId = Mage::getResourceSingleton('catalog/product_type_configurable')->getParentIdsByChild($productId);
+
+        if(!empty($parentId)) {
+            // if there is a parent id redirect to the parent product's url
+            $productUrl = Mage::getModel('catalog/product')->load($parentId)->getProductUrl();
+        } else {
+            // if no parent id redirect to simple product url
+            $productUrl = Mage::getModel('catalog/product')->load($productId)->getProductUrl();
+        }
         $this->_redirectUrl($productUrl);
     }
 }

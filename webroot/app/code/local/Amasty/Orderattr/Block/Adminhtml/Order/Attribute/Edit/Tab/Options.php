@@ -72,6 +72,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Options extends 
                 $inputType = 'radio';
                 break;
             case 'multiselect':
+            case 'checkboxes':
                 $inputType = 'checkbox';
                 break;
             default:

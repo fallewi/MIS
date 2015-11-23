@@ -11,7 +11,7 @@
 
     <modules>
         <Amasty_File>
-            <version>1.6.4</version>
+            <version>1.6.5</version>
         </Amasty_File>
     </modules>
     
@@ -121,15 +121,15 @@
      
     <admin>
         <routers>
-            <amfile>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Amasty_File</module>
-                    <frontName>amfile</frontName>
+                    <modules>
+                        <Amasty_File after="Mage_Adminhtml">Amasty_File_Adminhtml</Amasty_File>
+                    </modules>
                 </args>
-            </amfile>
+            </adminhtml>
         </routers>
-    </admin> 
+    </admin>
 
     <adminhtml>
         <events>

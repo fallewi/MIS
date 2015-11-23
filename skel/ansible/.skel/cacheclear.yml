@@ -1,0 +1,27 @@
+---
+
+- name: "@CLIENT_CODE:@ENV clear caches"
+  hosts: web-admin
+  gather_facts: False
+  tags:
+    - cacheclear
+
+  tasks:
+
+    - name: flush object cache
+      shell: rm -rf {{ MAGE_ROOT }}/var/cache/*
+
+    - name: flush FPC
+      shell: rm -rf {{ MAGE_ROOT }}/var/full_page_cache/*
+
+
+    # uncomment if using redis for cacheing,
+    # provide REDIS_HOST in environment envars file
+    #
+    #- name: flush object cache
+    #  shell: redis-cli -h {{ REDIS_HOST }} -n 0 flushdb
+    #  tags: cacheclear-obj
+
+    #- name: flush FPC
+    #  shell: redis-cli -h {{ REDIS_HOST }} -n 1 flushdb
+    #  tags: cacheclear-fpc

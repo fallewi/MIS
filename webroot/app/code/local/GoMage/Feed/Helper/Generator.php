@@ -9,7 +9,7 @@
  * @author       GoMage.com
  * @license      http://www.gomage.com/licensing  Single domain license
  * @terms of use http://www.gomage.com/terms-of-use
- * @version      Release: 3.5
+ * @version      Release: 3.6
  * @since        Class available since Release 3.0
  */
 
@@ -33,11 +33,11 @@ class GoMage_Feed_Helper_Generator extends Mage_Core_Helper_Abstract {
 			if (! file_exists($base_dir)) {
 				mkdir($base_dir);
 			}
-			chmod($base_dir, 0750);
+			chmod($base_dir, 0777);
 			if (! file_exists($log_dir)) {
 				mkdir($log_dir);
 			}
-			chmod($log_dir, 0750);
+			chmod($log_dir, 0777);
 		}
 		catch (Exception $e) {
 			$errors[] = Mage::helper('gomage_feed')->__('Check the Permission for the "Media" directory.

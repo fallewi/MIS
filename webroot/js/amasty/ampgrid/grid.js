@@ -219,16 +219,18 @@ amPgrid.prototype = {
                     });
                     td.innerHTML = '';
                     td.appendChild(sel);
-
                     var chosen = new Chosen(sel,{
                         search_contains: true,
                         allow_single_deselect:true,
                         width: '100%'
                     });
 
+
+                    var scrollHorizontal = $$('.hor-scroll')[0].scrollLeft;
                     Event.fire(chosen.form_field, "chosen:activate");
                     sel.observe('change', this.cellSave.bindAsEventListener(this, field, td));
                     chosen.form_field.observe('chosen:blur', this.cellSave.bindAsEventListener(this, field, td));
+                    $$('.hor-scroll')[0].scrollLeft = scrollHorizontal;
                     break;
                 case 'multiselect':
                     sel = document.createElement('select');
@@ -481,7 +483,7 @@ amPgrid.prototype = {
             }
         } else 
         {
-            td.innerText = this.values[td.identify()];
+            td.innerText = td.textContent = this.values[td.identify()];
             td.removeClassName('clicked');
         }
         

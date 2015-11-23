@@ -99,21 +99,33 @@
                 text-indent: -9999em;
             }
 
+            .link-compare,
             .link-wishlist {
-                display: block;
-                font-size: 14px;
-                line-height: 30px;
+                display: inline-block;
+                font: #{$f-size-s}/30px $f-stack-sans;
                 text-align: center;
-                font-family: $f-stack-sans;
                 letter-spacing: 1px;
                 background: $white;
-                width: 100%;
+                width: 48%;
 
                 &:after {
-                    @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -128px, -69px);
                     position: relative;
                     display: inline-block;
                     content: "";
+                }
+
+                &:hover {
+                    background: $brand-primary;
+                    color: $white;
+                    text-decoration: none;
+                }
+            }
+
+            .link-wishlist {
+                margin-right: 2%;
+
+                &:after {
+                    @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -128px, -69px);
                     width: 10px;
                     height: 14px;
                     top: 4px;
@@ -121,12 +133,25 @@
                 }
 
                 &:hover {
-                    background: $brand-primary;
-                    color: $white;
-                    text-decoration: none;
-
                     &:after {
                         background-position: -148px -69px;
+                    }
+                }
+            }
+
+            .link-compare {
+
+                &:after {
+                    @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -290px, -37px);
+                    width: 14px;
+                    height: 14px;
+                    top: 3px;
+                    margin-left: 5px;
+                }
+
+                &:hover {
+                    &:after {
+                        background-position: -304px -37px;
                     }
                 }
             }
@@ -246,12 +271,16 @@
         text-align: center;
         color: red;
         display: none;
+        background: #9B9B9B;
+        margin-right: 20px;
     }
 
     #minicart-success-message {
         text-align: center;
         color: green;
         display: none;
+        background: #9B9B9B;
+        margin-right: 20px;
     }
 
     //hide jcarousel controls until carousel is properly integrated with design
@@ -355,6 +384,10 @@
                     }
                 }
             }
+        }
+
+        a.cart-count {
+            background: transparent;
         }
     }
 }
