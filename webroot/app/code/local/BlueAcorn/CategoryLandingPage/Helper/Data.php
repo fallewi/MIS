@@ -63,7 +63,8 @@ class BlueAcorn_CategoryLandingPage_Helper_Data extends Mage_Core_Helper_Abstrac
             $currentId = $_current->getId();
             $this->childCategories = Mage::getModel('catalog/category')->getCollection()
                 ->addAttributeToSelect(array('thumbnail', 'name', 'url_key'))
-                ->addAttributeToFilter('parent_id', $currentId);
+                ->addAttributeToFilter('parent_id', $currentId)
+                ->addAttributeToSort('position');
         }
         return $this->childCategories;
     }
