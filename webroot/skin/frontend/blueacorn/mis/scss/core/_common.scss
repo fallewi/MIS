@@ -667,12 +667,6 @@ a.button:hover {
     &.product{
         display:none;
     }
-
-    &:nth-last-child(2){
-        span{
-            display:none;
-        }
-    }
 }
 
 .ie8 .breadcrumbs li{
@@ -1870,7 +1864,8 @@ $toolbar-icon-padding-offset: 8px;
         float: left;
         font-family: $f-stack-sans;
         white-space: nowrap;
-        margin: 0 15px 0 0;
+        margin: 0 15px 0 15px;
+        line-height: 40px;
     }
 
     .limiter {

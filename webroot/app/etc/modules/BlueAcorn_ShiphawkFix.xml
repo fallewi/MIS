@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_ShiphawkFix>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Shiphawk_Shipping/>
+            </depends>
+        </BlueAcorn_ShiphawkFix>
+    </modules>
+</config>

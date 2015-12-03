@@ -1032,7 +1032,7 @@ $j(document).ready(function () {
 
     if ($j('body.checkout-cart-index').length) {
         $j('input[name^="cart"]').focus(function () {
-            $j(this).siblings('button').fadeIn();
+            $j(this).siblings('button').fadeIn().css("display","block");
         });
     }
 
