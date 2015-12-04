@@ -35,7 +35,14 @@
     $_product = $this->getProduct()
 ?>
 <?php if($_additional = $this->getAdditionalData()): ?>
-    <h2><?php echo $this->__('CR2B Specifications') ?></h2>
+    <h2>
+        <?php if($_product->getMpn()): ?>
+            <?php echo $_product->getMpn(); ?><?php echo $this->__(" Specifications") ?>
+        <?php else: ?>
+            <?php echo $this->__("Specifications") ?>
+        <?php endif; ?>
+    </h2>
+
     <table class="data-table" id="product-attribute-specs-table">
         <col width="25%" />
         <col />

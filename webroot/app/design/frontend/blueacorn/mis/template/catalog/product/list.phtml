@@ -69,11 +69,11 @@
 
                         <?php $country = $_product->getAttributeText('manufacturer'); ?>
                         <?php if($country != ' '): ?>
-                            <?php echo $country; ?> -
+                            <?php echo $country; ?>
                         <?php endif; ?>
 
                         <?php if($_product->getMpn()): ?>
-                            <?php echo $_product->getMpn(); ?> -
+                            <?php echo $_product->getMpn(); ?>
                         <?php endif; ?>
 
                         <?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?>
@@ -152,11 +152,11 @@
 
                         <?php $country = $_product->getAttributeText('manufacturer'); ?>
                         <?php if($country != ' '): ?>
-                            <?php echo $country; ?> -
+                            <?php echo $country; ?>
                         <?php endif; ?>
                         
                         <?php if($_product->getMpn()): ?>
-                            <?php echo $_product->getMpn(); ?> -
+                            <?php echo $_product->getMpn(); ?>
                         <?php endif; ?>
 
                         <?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>

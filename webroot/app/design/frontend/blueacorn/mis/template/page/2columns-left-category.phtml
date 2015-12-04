@@ -80,11 +80,7 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
 
                     <?php echo $catalog_view_block->getMessagesBlock()->toHtml() ?>
 
-                    <?php if($_description=$catalog_view_block->getCurrentCategory()->getDescription()): ?>
-                        <div class="category-description std">
-                            <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
-                        </div>
-                    <?php endif; ?>
+                    
                     <!--end category title/description here-->
                 <?php endif; ?>
 
@@ -97,6 +93,11 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
                     <?php echo $this->getChildHtml('content') ?>
                 </div>
                 <div class="col-left sidebar"><?php echo $this->getChildHtml('left') ?></div>
+                <?php if($_description=$catalog_view_block->getCurrentCategory()->getDescription()): ?>
+                    <div class="category-description std">
+                        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php echo $this->getChildHtml('footer_before') ?>
