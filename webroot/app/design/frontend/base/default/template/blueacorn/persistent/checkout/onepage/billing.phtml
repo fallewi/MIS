@@ -148,6 +148,17 @@ $_placeholders = $_helper->getPlaceholders($keys);
                     </div>
                     <?php endif; ?>
                 </li>
+                <li class="fields">
+                    <div class="field">
+                        <label for="billing:shiphawk-location-type"><?php echo $this->__('Location Type') ?></label>
+                        <div class="input-box">
+                            <select id="billing:shiphawk-location-type" type="text" name="billing[shiphawk_location_type]" class="validate-select" title="<?php echo $this->__('Location Type') ?>">
+                                <option value="residential"><?php echo $this->__('Residential') ?></option>
+                                <option value="commercial"><?php echo $this->__('Commercial') ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
 
                 <?php if(!$this->isCustomerLoggedIn()): ?>
 
@@ -200,6 +211,73 @@ $_placeholders = $_helper->getPlaceholders($keys);
             <?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
         </div>
      </li>
+        <li class="fields">
+            <div class="field">
+                <label for="billing:shiphawk-location-type"><?php echo $this->__('Destination Accessorials') ?></label>
+                <div class="input-box">
+                    <ul>
+                        <li>
+                            <input type="checkbox" name="destination_accessorials[]" id="liftgate_delivery"  value="liftgate_delivery" <?php if (Mage::getSingleton('checkout/session')->getData('liftgate_delivery')) echo 'checked'; ?>>
+                            <label for="liftgate_delivery" >Liftgate Delivery</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="destination_accessorials[]" id="inside_delivery"  value="inside_delivery" <?php if (Mage::getSingleton('checkout/session')->getData('inside_delivery')) echo 'checked'; ?>>
+                            <label for="inside_delivery" >Inside Delivery</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="destination_accessorials[]" id="notify_prior_delivery"  value="notify_prior_delivery" <?php if (Mage::getSingleton('checkout/session')->getData('notify_prior_delivery')) echo 'checked'; ?>>
+                            <label for="notify_prior_delivery" >Notify Prior Delivery</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="destination_accessorials[]" id="schedule_appointment_delivery"  value="schedule_appointment_delivery" <?php if (Mage::getSingleton('checkout/session')->getData('schedule_appointment_delivery')) echo 'checked'; ?>>
+                            <label for="schedule_appointment_delivery" >Schedule Appointment Delivery</label>
+                        </li>
+                    </ul>
+                </div>
+                <script type="text/javascript">
+                    //<![CDATA[
+                    $$('input[type="checkbox"][name="destination_accessorials[]"]').each(function(el){
+                        Event.observe(el, 'click', function(){
+                            if (el.checked == true) {
+                                setDestinationAccessorials(el.value, 0);
+                            }
+
+                            if (el.checked == false) {
+                                setDestinationAccessorials(el.value, 1);
+                            }
+                        });
+                    });
+
+                    function setDestinationAccessorials(accessories, unset_id) {
+                        var url = 'shiphawk/index/prioraccessorials';
+                        var baseMagentoUrl = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>';
+
+                        url = baseMagentoUrl + url;
+
+                        var parameters = {
+                            accessories_id: accessories,
+                            unset_id: unset_id
+                        };
+
+                        new Ajax.Request(url, {
+                            method: 'post',
+                            parameters: parameters,
+                            onSuccess: function(transport) {
+
+                            },
+                            onLoading:function(transport)
+                            {
+                                $(accessories).disable();
+                            },
+                            onComplete:function(){
+                                $(accessories).enable();
+                            }
+                        });
+                    }
+                    //]]>
+                </script
+            </div>
+        </li>
     <?php if ($this->canShip()): ?>
         <li class="control">
             <input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_yes" value="1"<?php if ($this->isUseBillingAddressForShipping()) {?> checked="checked"<?php }?> title="<?php echo $this->quoteEscape($this->__('Ship to this address')) ?>" onclick="$('shipping:same_as_billing').checked = true;" class="radio" /><label for="billing:use_for_shipping_yes"><?php echo  $this->__('Ship to this address') ?></label></li>
