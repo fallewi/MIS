@@ -95,10 +95,13 @@
             text-transform: none;
             padding-right: 26px;
             padding-left: 5px;
+            position: relative;
             span:after {
+                position: absolute;
+                right: 10px;
                 width: 26px;
                 height: 18px;
-                font-size: 12px;
+                font-size: 25px;
                 line-height: 22px;
             }
         }
