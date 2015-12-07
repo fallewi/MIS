@@ -1800,7 +1800,7 @@ $toolbar-icon-padding-offset: 8px;
     .select-container.small {
         top: 10px;
         left: 3px;
-        margin-left:25px;
+        margin-left:17px;
 
         .custom-shiv {
             font-family: $f-stack-sans;
@@ -1810,6 +1810,7 @@ $toolbar-icon-padding-offset: 8px;
             font-weight: normal;
             border: none;
             padding: 0;
+            padding-right: 40px;
             float: none;
         }
     }
@@ -1852,7 +1853,7 @@ $toolbar-icon-padding-offset: 8px;
 
     & > .count-container {
         height: 40px;
-        width: 143px;
+        width: auto;
         border: 1px solid $brand-primary;
     }
 
@@ -1900,7 +1901,7 @@ $toolbar-icon-padding-offset: 8px;
             font-weight: normal;
             border: none;
             height: 25px;
-            padding: 0;
+            padding: 0 40px 0 0;
         }
     }
 }
