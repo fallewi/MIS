@@ -113,6 +113,21 @@
     }
 }
 
+.header-minicart {
+    .button.skip-link.cart-count {
+        background: #84D7A3;
+        &:hover {
+            background: #EC3837;
+            span.count {
+                color: #EC3837;
+            }
+        }
+        span.count {
+            color: #84D7A3;
+        }
+    }
+}
+
 .button.skip-cart {
     color: $white;
     text-transform: uppercase;
