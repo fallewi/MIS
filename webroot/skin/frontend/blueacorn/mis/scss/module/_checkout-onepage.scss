@@ -718,3 +718,21 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         display:none;
     }
 }
+
+body.checkout-onepage-index {
+    #checkout-step-billing .nighthawk {
+        li {
+            position: relative;
+
+            input[type=checkbox] {
+                width: 22px;
+                position: absolute;
+                right: 0;
+                top: 4px;
+            }
+        }
+        label {
+            float: none;
+        }
+    }
+}

@@ -378,7 +378,7 @@ var MenuManager = {
     wirePointerEvents: function() {
         var that = this;
         var pointerTarget = $j('#nav a.has-children');
-        var hoverTarget = $j('#nav li');
+        var hoverTarget = $j('#nav li.level0');
 
         if(PointerManager.getPointerEventsSupported()) {
             // pointer events supported, so observe those type of events

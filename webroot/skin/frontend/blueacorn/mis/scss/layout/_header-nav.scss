@@ -302,6 +302,10 @@ $nav-primary-height: 30px;
         li.level0,
         a.level0 {
             display: inline-block;
+
+            &:hover {
+                background: #fff;
+            }
         }
 
         li:last-child > a {
