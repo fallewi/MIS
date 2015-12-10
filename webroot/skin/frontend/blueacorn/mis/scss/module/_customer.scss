@@ -296,6 +296,13 @@ body.customer-account {
 
                 .actions {
                     margin-top: $trim;
+
+                    button.btn-cart {
+                        font-size: 12px;
+                        margin-bottom: 10px;
+                        padding: 3px 5px;
+                        width: 100%;
+                    }
                 }
             }
         }
