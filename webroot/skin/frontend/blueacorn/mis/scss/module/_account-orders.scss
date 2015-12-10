@@ -49,6 +49,8 @@
         float: left;
         width: 100%;
         position: static;
+        overflow: visible;
+        
         .count-container {
             float: right;
             padding: 0 5px;

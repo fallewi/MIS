@@ -260,6 +260,10 @@
             .price-box {
                 margin-top: 12px;
 
+                .old-price .price {
+                    text-decoration: line-through;
+                }
+
                 &.bundle {
                     margin-top: 2px;
                 }

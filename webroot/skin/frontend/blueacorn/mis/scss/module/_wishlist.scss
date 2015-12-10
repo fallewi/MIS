@@ -164,6 +164,16 @@
         .price {
             color: $c-text;
         }
+        
+        .old-price .price {
+            text-decoration: line-through;
+        }
+
+        .msrp-price-hide-message,
+        a {
+            font-size: 10px;
+            display: block;
+        }
     }
 
     .giftregisty-add {
