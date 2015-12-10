@@ -1,0 +1,9 @@
+<?php
+    $category = Mage::helper('blueacorn_customergroupcustomizations')->getCategoryFromCurrentCustomerGroup();
+?>
+
+<?php if($category): ?>
+<li class="customer-group-link">
+    <a href="<?php echo $category->getUrl($category); ?>"><?php echo $category->getName(); ?></a>
+</li>
+<?php endif; ?>
