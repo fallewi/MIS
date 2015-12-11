@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     BlueAcorn\CustomerGroupCustomizations
- * @version     0.1.0
+ * @version     1.0.0
  * @author      Blue Acorn, Inc. <code@blueacorn.com>
  * @copyright   Copyright © 2015 Blue Acorn, Inc.
  */
@@ -12,8 +12,7 @@ class BlueAcorn_CustomerGroupCustomizations_Helper_Data extends Mage_Core_Helper
     public function getCategoriesThatCanBeLinked() {
         $categories = Mage::getResourceModel('catalog/category_collection')
             ->addAttributeToFilter('use_in_customer_groups', '1')
-            ->addAttributeToSelect('name')
-            ->load();
+            ->addAttributeToSelect('name');
 
         $options = array();
 
@@ -21,12 +20,17 @@ class BlueAcorn_CustomerGroupCustomizations_Helper_Data extends Mage_Core_Helper
         $optionFields['value'] = 'entity_id';
         $optionFields['label'] = 'name';
 
+        //  Add an empty first option
         $options[] = array('value' => -1, 'label' => '-- None --' );
-        foreach ($categories as $category) {
-            foreach ($optionFields as $code => $field) {
-                $data[$code] = $category->getData($field);
+
+        // Build the options for dropdown from available categories
+        if($categories->getSize() > 0) {
+            foreach ($categories as $category) {
+                foreach ($optionFields as $code => $field) {
+                    $data[$code] = $category->getData($field);
+                }
+                $options[] = $data;
             }
-            $options[] = $data;
         }
         return $options;
     }

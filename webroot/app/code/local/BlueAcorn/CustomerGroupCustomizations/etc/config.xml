@@ -2,7 +2,7 @@
 <config>
     <modules>
         <BlueAcorn_CustomerGroupCustomizations>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
         </BlueAcorn_CustomerGroupCustomizations>
     </modules>
     <global>
@@ -21,11 +21,10 @@
             </blueacorn_customergroupcustomizations>
             <!--<levementum_groupdisplay>-->
                 <!--<rewrite>-->
-                    <!--<adminhtml_customer_group_edit_form>-->
-                        <!--BlueAcorn_CustomerGroupCustomizations_Block_GroupDisplay_Adminhtml_Customer_Group_Edit_Form-->
-                    <!--</adminhtml_customer_group_edit_form>-->
+                    <!--<adminhtml_customer_group_edit_form>BlueAcorn_CustomerGroupCustomizations_Block_GroupDisplay_Adminhtml_Customer_Group_Edit_Form</adminhtml_customer_group_edit_form>-->
                 <!--</rewrite>-->
             <!--</levementum_groupdisplay>-->
+
             <adminhtml>
                 <rewrite>
                     <customer_group_edit_form>BlueAcorn_CustomerGroupCustomizations_Block_GroupDisplay_Adminhtml_Customer_Group_Edit_Form</customer_group_edit_form>
@@ -61,6 +60,13 @@
     </global>
     <admin>
         <routers>
+            <!--<levementum_groupdisplay>-->
+                <!--<args>-->
+                    <!--<modules>-->
+                        <!--<blueacorn_customergroupcustomizations before="Levementum_GroupDisplay_Adminhtml">BlueAcorn_CustomerGroupCustomizations_Adminhtml</blueacorn_customergroupcustomizations>-->
+                    <!--</modules>-->
+                <!--</args>-->
+            <!--</levementum_groupdisplay>-->
             <adminhtml>
                 <args>
                     <modules>

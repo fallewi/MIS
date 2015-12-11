@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     BlueAcorn\CustomerGroupCustomizations
- * @version     0.1.0
+ * @version     1.0.0
  * @author      Blue Acorn, Inc. <code@blueacorn.com>
  * @copyright   Copyright © 2015 Blue Acorn, Inc.
  */
