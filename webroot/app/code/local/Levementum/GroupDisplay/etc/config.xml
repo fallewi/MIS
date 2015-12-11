@@ -10,11 +10,11 @@
             <levementum_groupdisplay>
                 <class>Levementum_GroupDisplay_Block</class>
             </levementum_groupdisplay>
-            <!--<adminhtml>-->
-                <!--<rewrite>-->
-                    <!--<customer_group_edit_form>Levementum_GroupDisplay_Block_Adminhtml_Customer_Group_Edit_Form</customer_group_edit_form>-->
-                <!--</rewrite>-->
-            <!--</adminhtml>-->
+            <adminhtml>
+                <rewrite>
+                    <customer_group_edit_form>Levementum_GroupDisplay_Block_Adminhtml_Customer_Group_Edit_Form</customer_group_edit_form>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
             <levementum_groupdisplay>
@@ -53,14 +53,14 @@
         </layout>
     </frontend>
     <admin>
-        <!--<routers>-->
-            <!--<adminhtml>-->
-                <!--<args>-->
-                    <!--<modules>-->
-                        <!--<levementum_groupdisplay before="Mage_Adminhtml">Levementum_GroupDisplay_Adminhtml</levementum_groupdisplay>-->
-                    <!--</modules>-->
-                <!--</args>-->
-            <!--</adminhtml>-->
-        <!--</routers>-->
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <levementum_groupdisplay before="Mage_Adminhtml">Levementum_GroupDisplay_Adminhtml</levementum_groupdisplay>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
     </admin>
 </config>
