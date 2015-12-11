@@ -663,6 +663,14 @@ a.button:hover {
     font-size: 13px;
     font-family: $f-stack-sans;
     text-transform: uppercase;
+
+    &.search_label {
+        padding-right: 4px;
+
+        span {
+            display: none;
+        }
+    }
 }
 
 .ie8 .breadcrumbs li{
