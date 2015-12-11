@@ -10,6 +10,11 @@ require_once 'Levementum/GroupDisplay/controllers/Adminhtml/Customer/GroupContro
 
 class BlueAcorn_CustomerGroupCustomizations_Adminhtml_Customer_GroupController extends Levementum_GroupDisplay_Adminhtml_Customer_GroupController {
 
+
+    /**
+     * Overrides the saveAction route for the Levenmentum controller
+     * @throws Exception
+     */
     public function saveAction() {
         $customerGroup = Mage::getModel('customer/group');
         $id = $this->getRequest()->getParam('id');

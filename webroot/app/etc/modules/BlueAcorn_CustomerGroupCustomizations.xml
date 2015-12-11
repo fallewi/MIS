@@ -6,7 +6,6 @@
             <codePool>local</codePool>
             <depends>
                 <Levementum_GroupDisplay/>
-
             </depends>
         </BlueAcorn_CustomerGroupCustomizations>
     </modules>

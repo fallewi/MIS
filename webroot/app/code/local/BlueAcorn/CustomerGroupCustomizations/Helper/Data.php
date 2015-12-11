@@ -9,6 +9,14 @@ class BlueAcorn_CustomerGroupCustomizations_Helper_Data extends Mage_Core_Helper
 
     const NO_CATEGORY_SELECTED = -1;
 
+    /**
+     * Returns any categories that have been configured to be allowed as a link in the
+     * My Account page. This returns to the admin router to build the dropdown for
+     * selecting a category to associate with the customer group
+     *
+     * @return array
+     * @throws Mage_Core_Exception
+     */
     public function getCategoriesThatCanBeLinked() {
         $categories = Mage::getResourceModel('catalog/category_collection')
             ->addAttributeToFilter('use_in_customer_groups', '1')
@@ -35,6 +43,12 @@ class BlueAcorn_CustomerGroupCustomizations_Helper_Data extends Mage_Core_Helper
         return $options;
     }
 
+    /**
+     * Retrieves the category for the customer group from the current customer group that is loaded
+     * in session
+     *
+     * @return Mage_Catalog_Model_Category|null
+     */
     public function getCategoryFromCurrentCustomerGroup() {
         $customerGroup = Mage::getModel('customer/group')->load(Mage::getSingleton('customer/session')->getCustomerGroupId());
 

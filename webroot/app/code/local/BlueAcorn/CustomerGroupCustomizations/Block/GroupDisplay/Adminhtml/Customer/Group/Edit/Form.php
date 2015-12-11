@@ -6,6 +6,12 @@
  * @copyright   Copyright © 2015 Blue Acorn, Inc.
  */
 class BlueAcorn_CustomerGroupCustomizations_Block_GroupDisplay_Adminhtml_Customer_Group_Edit_Form extends Levementum_GroupDisplay_Block_Adminhtml_Customer_Group_Edit_Form {
+    /**
+     * Adds custom fields to Customer Group edit form in admin
+     *
+     * @param
+     * @return
+     */
     protected function _prepareLayout() {
         parent::_prepareLayout();
         $form = $this->getForm();
