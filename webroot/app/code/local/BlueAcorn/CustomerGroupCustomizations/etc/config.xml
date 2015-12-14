@@ -57,7 +57,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <blueacorn_customergroupcustomizations before="Mage_Adminhtml">BlueAcorn_CustomerGroupCustomizations_Adminhtml</blueacorn_customergroupcustomizations>
+                        <blueacorn_customergroupcustomizations before="Levementum_GroupDisplay_Adminhtml">BlueAcorn_CustomerGroupCustomizations_Adminhtml</blueacorn_customergroupcustomizations>
                     </modules>
                 </args>
             </adminhtml>
