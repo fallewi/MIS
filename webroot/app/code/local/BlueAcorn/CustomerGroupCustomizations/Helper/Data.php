@@ -66,4 +66,13 @@ class BlueAcorn_CustomerGroupCustomizations_Helper_Data extends Mage_Core_Helper
             }
         }
     }
+
+    /**
+     * Return the value of no category selected constant
+     *
+     * @return int
+     */
+    public function getNoCategorySelected() {
+        return self::NO_CATEGORY_SELECTED;
+    }
 }
