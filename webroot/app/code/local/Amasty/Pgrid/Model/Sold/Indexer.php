@@ -51,17 +51,9 @@ class Amasty_Pgrid_Model_Sold_Indexer extends Mage_Index_Model_Indexer_Abstract
         if (!is_array($productIds)) {
             $productIds = array($productIds);
         }
-        $productIdsInt = array_map('intval',$productIds);
-        $productIds = implode(',', $productIdsInt);
-        $resource = Mage::getSingleton('core/resource');
-        $connection = $resource->getConnection('core_write');
-        $orderTable = $resource->getTableName('sales_flat_order_item');
-        $qtySoldTable = $resource->getTableName('am_pgrid_qty_sold');
-        $addToSelect = $this->getDateSold();
-        $connection->query("delete from $qtySoldTable where product_id in ($productIds)");
-        $connection->query("insert into $qtySoldTable (product_id,  qty_sold)
-            select o.product_id, sum(o.qty_ordered)-sum(o.qty_refunded) as qty_sold from $orderTable as o where o.product_id in ($productIds) $addToSelect group by o.product_id");
-
+        $productIds = array_map('intval',$productIds);
+        $this->_deleteQtyIndex($productIds);
+        $this->_insertQtyIndex($productIds);
         return $this;
     }
 
@@ -70,18 +62,39 @@ class Amasty_Pgrid_Model_Sold_Indexer extends Mage_Index_Model_Indexer_Abstract
         $resource = Mage::getSingleton('core/resource');
         $connection = $resource->getConnection('core_write');
         $qtySoldTable = $resource->getTableName('am_pgrid_qty_sold');
-        $orderTable = $resource->getTableName('sales_flat_order_item');
         foreach ($orderData as $productId => $data) {
             $orderItemId = $data['order_item_id'];
-            $addToSelect = $this->getDateSold();
-            $itemId = $connection->fetchOne("select item_id from $orderTable where item_id=$orderItemId $addToSelect");
+            $itemId = $this->_getItemId($orderItemId);
             if ($itemId) {
                 $qty = $data['qty'];
+                $this->_updateItemId($productId, $qty);
                 $connection->query("update $qtySoldTable set qty_sold = qty_sold - $qty where product_id=$productId");
             }
         }
 
         return $this;
+    }
+
+    protected function _getItemId($orderItemId)
+    {
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $query = sprintf("SELECT item_id FROM %s WHERE %s AND %s",
+            Mage::getConfig()->getTablePrefix().$connection->getTableName('sales_flat_order_item'),
+            $connection->quoteInto("item_id = ?", $orderItemId),
+            $this->_getDateSold()
+        );
+        return $connection->fetchOne($query);
+    }
+
+    protected function _updateItemId($productId, $qty)
+    {
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $query = sprintf("UPDATE %s set qty_sold = qty_sold - %d  WHERE %s",
+            Mage::getConfig()->getTablePrefix().$connection->getTableName('am_pgrid_qty_sold'),
+            $qty,
+            $connection->quoteInto("product_id = ?", $productId)
+        );
+        return $connection->query($query);
     }
 
     /**
@@ -98,29 +111,62 @@ class Amasty_Pgrid_Model_Sold_Indexer extends Mage_Index_Model_Indexer_Abstract
     {
         $productIds = Mage::getModel('catalog/product')->getCollection()->getAllIds();
         if (!empty($productIds)) {
-            $productIds = implode(',', $productIds);
-            $resource = Mage::getSingleton('core/resource');
-            $connection = $resource->getConnection('core_write');
-            $orderTable = $resource->getTableName('sales_flat_order_item');
-            $qtySoldTable = $resource->getTableName('am_pgrid_qty_sold');
-            $addToSelect = $this->getDateSold();
-            $connection->query("delete from $qtySoldTable");
-            $connection->query("insert into $qtySoldTable (product_id,  qty_sold)
-            select o.product_id, sum(o.qty_ordered)-sum(o.qty_refunded) as qty_sold from $orderTable as o where o.product_id in ($productIds) $addToSelect group by o.product_id");
+            $this->_deleteQtyIndex();
+            $this->_insertQtyIndex($productIds);
         }
     }
 
-    protected function getDateSold ()
+    protected function _deleteQtyIndex($productIds = array())
     {
+        $connection = Mage::getSingleton('core/resource')->getConnection(
+            'core_write'
+        );
+        $binds = array();
+        $query = sprintf('DELETE FROM %s', Mage::getConfig()->getTablePrefix().$connection->getTableName('am_pgrid_qty_sold'));
+
+        if (!empty($productIds)) {
+            $query .=  sprintf(' WHERE %s', $connection->quoteInto("product_id IN (?) ", $productIds));
+        }
+        $connection->query($query, $binds);
+    }
+
+    protected function _insertQtyIndex($productIds)
+    {
+        $connection = Mage::getSingleton('core/resource')->getConnection(
+            'core_write'
+        );
+
+        $query = sprintf(
+            'INSERT INTO %s (product_id, qty_sold)
+          SELECT o.product_id, sum(o.qty_ordered)-sum(o.qty_refunded) as qty_sold FROM %s AS o WHERE %s AND %s GROUP BY o.product_id',
+            Mage::getConfig()->getTablePrefix().$connection->getTableName('am_pgrid_qty_sold'),
+            Mage::getConfig()->getTablePrefix().$connection->getTableName('sales_flat_order_item'),
+            $connection->quoteInto("o.product_id IN (?)", $productIds),
+            $this->_getDateSold()
+
+        );
+
+        $connection->query($query);
+    }
+
+    protected function _getDateSold ()
+    {
+        $connection = Mage::getSingleton('core/resource')->getConnection(
+            'core_write'
+        );
         $dateFrom = Mage::getStoreConfig('ampgrid/additional/qty_sold_from');
         $dateTo = Mage::getStoreConfig('ampgrid/additional/qty_sold_to');
-        $addToSelect = '';
+        $addToSelect = ' 1 ';
         if ($dateFrom && $dateTo) {
-            $addToSelect = " and created_at BETWEEN '$dateFrom' AND '$dateTo'";
+            $addToSelect = sprintf(" created_at BETWEEN %s AND %s",
+                $connection->quote($dateFrom),
+                $connection->quote($dateTo));
         } elseif ($dateFrom && !$dateTo) {
-            $addToSelect = " and created_at >= '$dateFrom'";
+            $addToSelect = sprintf(" created_at >= %s",
+                $connection->quote($dateFrom));
         } elseif (!$dateFrom && $dateTo) {
-            $addToSelect = " and created_at <= '$dateTo'";
+            $addToSelect = sprintf(" created_at <= %s",
+                $connection->quote($dateTo));
         }
         return $addToSelect;
     }

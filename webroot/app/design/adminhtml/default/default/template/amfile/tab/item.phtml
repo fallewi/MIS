@@ -78,7 +78,7 @@
             <td>
                 <input type="text" class="input-text file_url" name="files[<?php echo $item->getId(); ?>][file_name]" value="<?php echo $item->getFileName() ?>" />
                 <?php if ($item->getFileUrl()): ?>
-                    <a class='file' href="<?php echo $this->getUrl('adminhtml/amfile_file/download', array('file_id' => $item->getId()))?>"><?php echo $item->title()?></a>
+                    <a class='file' href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/amfile_file/download', array('file_id' => $item->getId()))?>"><?php echo $item->title()?></a>
                 <?php endif?>
             </td>
             <td>
@@ -112,7 +112,7 @@
             <td>
                 <select id="am-attachment-show-ordered-<?php echo $item->getId();?>"
                         name="files[<?php echo $item->getId()?>][show_ordered]"
-                        <?php echo ($item->getDefaultShowOrdered()) ? 'disabled' : '';?>>
+                        <?php echo ($storeId != 0 && $item->getDefaultShowOrdered()) ? 'disabled' : '';?>>
 
                     <?php foreach ($yesNo as $k => $v):?>
                         <option value='<?php echo $v['value']?>'

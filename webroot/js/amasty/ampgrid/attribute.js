@@ -222,14 +222,21 @@ amPattribute.prototype = {
 
     disableSave: function(init)
     {
-        $('save-group').setAttribute('disabled', 'disabled');
-        $('save-group').addClassName('disabled');
-        if(!init) {
-            $('save-new-group').setAttribute('disabled', 'disabled');
-            $('save-new-group').addClassName('disabled');
+        if ($('save-group')) {
+            $('save-group').setAttribute('disabled', 'disabled');
+            $('save-group').addClassName('disabled');
         }
-        $('delete-group').setAttribute('disabled', 'disabled');
-        $('delete-group').addClassName('disabled');
+
+        if (!init) {
+            if ($('save-new-group')) {
+                $('save-new-group').setAttribute('disabled', 'disabled');
+                $('save-new-group').addClassName('disabled');
+            }
+        }
+        if ($('delete-group')) {
+            $('delete-group').setAttribute('disabled', 'disabled');
+            $('delete-group').addClassName('disabled');
+        }
     },
 
     changeTemplate: function()

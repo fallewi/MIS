@@ -33,13 +33,12 @@ class Amasty_File_Model_Mysql4_File_Collection extends Mage_Core_Model_Mysql4_Co
                         'd.show_ordered', 's.show_ordered'
                     )
                 ))
-            ->joinInner(array('cg' => $this->getTable('amfile/store_customer_group')),
-                $adapter->quoteInto("(
-                    main_table.file_id = cg.file_id
-                    AND ((s.store_id IS NULL OR s.use_default_customer_group = 1)
-                        AND (d.store_id = cg.store_id)
-                    OR (s.store_id = cg.store_id))
-                    AND (cg.customer_group_id = '-1' OR cg.customer_group_id = ?))", $customerGroupId), '')
+                ->joinLeft(array('cg' => $this->getTable('amfile/store_customer_group')),
+                    "main_table.file_id = cg.file_id", '')
+                ->where("cg.id IS NULL OR ((s.store_id IS NULL OR s.use_default_customer_group = 1)
+                            AND (d.store_id = cg.store_id)
+                        OR (s.store_id = cg.store_id))
+                        AND (cg.customer_group_id = '-1' OR cg.customer_group_id = ?)", $customerGroupId)
             ->where('main_table.product_id = ?', $productId)
             ->having('visible = 1')
             ->order("position ASC")
@@ -50,7 +49,6 @@ class Amasty_File_Model_Mysql4_File_Collection extends Mage_Core_Model_Mysql4_Co
                 $productIdRow
             );
 
-//        echo $select->__toString();die;
         return $this;
     }
 
@@ -149,6 +147,7 @@ class Amasty_File_Model_Mysql4_File_Collection extends Mage_Core_Model_Mysql4_Co
             ->join(array('oi' => 'sales/order_item'), sprintf('main_table.entity_id = oi.order_id AND product_id = %d', $productId), 'product_id')
             ->addFieldToFilter('main_table.customer_id', $customer->getId())
             ->addFieldToFilter('main_table.status', Mage_Sales_Model_Order::STATE_COMPLETE);
+        $orders->distinct(true);
         return $orders->getColumnValues('product_id');
     }
 }

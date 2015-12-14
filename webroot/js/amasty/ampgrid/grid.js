@@ -386,7 +386,8 @@ amPgrid.prototype = {
             break;
         }
 
-        if (displayValue != this.values[td.identify()])
+        var tdValue = this.values[td.identify()] == '&nbsp;' ? '' : this.values[td.identify()];
+        if (displayValue != tdValue)
         {
             productId     = this.productIds[td.identify()];
             var saveValue = element.value;
@@ -483,7 +484,7 @@ amPgrid.prototype = {
             }
         } else 
         {
-            td.innerText = td.textContent = this.values[td.identify()];
+            td.innerText = td.textContent = tdValue;
             td.removeClassName('clicked');
         }
         

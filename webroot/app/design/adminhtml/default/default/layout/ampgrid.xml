@@ -32,6 +32,11 @@
         <reference name="content">
             <block type="ampgrid/adminhtml_catalog_product_grid_jsinit" name="ampgrid_jsinit"></block>
         </reference>
+        <block type="ampgrid/adminhtml_catalog_product_grid_template_switcher" name="grid_template_switcher" />
+        <reference name="store_switcher">
+            <action method="setTemplate"><template>amasty/ampgrid/grid_store_switcher.phtml</template></action>
+            <action method="setChild"><name>grid_template_switcher</name><alial>grid_template_switcher</alial></action>
+        </reference>
     </adminhtml_catalog_product_index>
     <adminhtml_catalog_category_edit>
         <reference name="head">
