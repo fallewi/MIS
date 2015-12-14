@@ -26,7 +26,7 @@ class BlueAcorn_CustomerGroupCustomizations_Adminhtml_Customer_GroupController e
             $customerGroup->setLinkedCategory($linkedCategoryId);
         }
         else {
-            $customerGroup->setLinkedCategory(Mage::helper('blueacorn_customergroupcustomizations').NO_CATEGORY_SELECTED);
+            $customerGroup->setLinkedCategory(Mage::helper('blueacorn_customergroupcustomizations')->getNoCategorySelected());
         }
 
         $customerGroup->save();
