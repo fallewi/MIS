@@ -17,10 +17,10 @@
                     <element name="file_id" type="xsd:int" nillable="true" default="0" />
                     <element name="product_id" type="xsd:int"/>
                     <element name="file_url" type="xsd:string" nillable="true" />
-                    <element name="title" type="xsd:string"/>
+                    <element name="label" type="xsd:string"/>
                     <element name="file_name" type="xsd:string"/>
                     <element name="file_link" type="xsd:string"/>
-                    <element name="file_path" type="xsd:string"/>
+                    <element name="file_path" minOccurs="0" nillable="true" type="xsd:string"/>
                     <element name="store_id" type="xsd:int" nillable="true" default="0"/>
                     <element name="visible" type="xsd:boolean"/>
                     <element name="position" type="xsd:int"/>
@@ -30,7 +30,7 @@
             <complexType name="amastyFileAttachmentEntityArray">
                 <complexContent>
                     <restriction base="soapenc:Array">
-                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:amastyFileAttachmentEntity[]"/>
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:amastyFileAttachmentEntityArray"/>
                     </restriction>
                 </complexContent>
             </complexType>
@@ -68,7 +68,7 @@
             <output message="typens:amastyFileGetAttachmentsResponse"/>
         </operation>
         <operation name="amastyFileAddAttachments">
-            <documentation>Upload new product image</documentation>
+            <documentation>Upload new product file</documentation>
             <input message="typens:amastyFileAddAttachmentsRequest"/>
             <output message="typens:amastyFileAddAttachmentsResponse"/>
         </operation>

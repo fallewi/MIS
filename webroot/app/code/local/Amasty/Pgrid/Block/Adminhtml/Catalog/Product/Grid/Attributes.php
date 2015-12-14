@@ -17,7 +17,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Attributes extends Mage_
     {
         parent::_construct();
         $this->initVariables();
-        $this->setTemplate('ampgrid/columns.phtml');
+        $this->setTemplate('amasty/ampgrid/columns.phtml');
     }
 
     protected function initVariables()
@@ -47,8 +47,12 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Attributes extends Mage_
 
     protected function _prepareLayout()
     {
-        parent::_prepareLayout();
-        return $this;
+        $this->setChild('grid_template_switcher',
+            $this->getLayout()->createBlock(
+                'ampgrid/adminhtml_catalog_product_grid_template_switcher'
+            )
+        );
+        return parent::_prepareLayout();
     }
 
     public function getAttributes()

@@ -33,26 +33,9 @@
             <label><?php echo $this->__('Are you sure you want to delete this template?')?></label>
         </div>
     </div>
-    <form id="apmgrid-group" name="apmgrid-group" action="<?php echo $this->getChangeGroupUrl(); ?>" method="post">
-        <input type="hidden" name="attributesKey" id="attributesKey" value="<?php echo $this->getAttributesKey();?>"/>
-        <input type="hidden" name="form_key" value="<?php echo $this->getFormKey(); ?>" />
-        <p class="ampgrid-group-switcher">
-            <label for="ampgrid-group-select"><?php echo $this->__('Template');?>:</label>
-            <select id="ampgrid-group-select" name="group_id" onchange="pAttribute.changeTemplate();">
-                <?php /**
-                 * @var Amasty_Pgrid_Model_Group $group
-                 */?>
-                <option value="0"><span><?php echo $this->__('Choose a Template...');?></span></option>
-                <?php foreach($this->getGroups() as $group):?>
-                    <option
-                        value="<?php echo $group->getId()?>"
-                        <?php echo $group->getId() == $this->getGroupId() ? 'selected="selected"' : '';?>>
-                        <?php echo $this->__($this->escapeHtml($group->getTitle()))?>
-                    </option>
-                <?php endforeach;?>
-            </select>
-        </p>
-    </form>
+    <div class="ampgrid-group-switcher">
+        <?php echo $this->getChildHtml('grid_template_switcher');?>
+    </div>
 
     <ul class="tabs" id="ampgrid-columns-tab">
         <li class="first"><a href="#" class="tab-item-link" id="column_tabs_standard"><span>Standard Columns</span></a></li>

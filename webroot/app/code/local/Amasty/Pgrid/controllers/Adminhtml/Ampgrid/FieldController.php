@@ -16,14 +16,7 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
     protected function _initProduct($productId, $field)
     {
         $productId = $productId;
-        if ('name' == $field) {
-            // name field should always be saved with no store loaded
-            $product = Mage::getModel('catalog/product')->load($productId);
-        } else {
-            $product = Mage::getModel('catalog/product')->setStoreId(
-                $this->_getStore()->getId()
-            )->load($productId);
-        }
+        $product = Mage::getModel('catalog/product')->load($productId);
 
         if ($field !== 'url_key' && $this->_getStore()->getId() != 0) {
             $product->setUrlKey(false);
@@ -220,10 +213,18 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
                     if ($columnProps[$field]['col'] != 'tax_class_id')
                     $obj->setData('tax_class_id', $obj->getOrigData('tax_class_id'));
 
-                    $obj->save();
-                    if (get_class($obj) !== get_class($this->_product)) {
-                        $this->_product->setData('updated_at', Mage::getModel('core/date')->timestamp(time()));
-                        $this->_product->save();
+                    if (get_class($obj) === get_class($this->_product)) {
+                        if ('name' == $field) {
+                            // name field should always be saved with no store loaded
+                            $this->_product->save();
+                        } else {
+                            $this->_product->addAttributeUpdate(
+                                $columnProps[$field]['col'], $value,
+                                $store
+                            );
+                        }
+                    } else {
+                        $obj->save();
                     }
                     $this->_initProduct($productId, $field);
                     $obj = $this->_getObject($columnProps[$field]);

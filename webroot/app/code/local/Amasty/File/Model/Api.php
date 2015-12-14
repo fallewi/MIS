@@ -101,7 +101,12 @@ class Amasty_File_Model_Api extends Mage_Api_Model_Resource_Abstract
                 }
                 $file->setFileUrl($newFileName);
             }
-            $file->save();
+
+            try {
+                $file->save();
+            } catch (Exception $e) {
+                Mage::log($e->getMessage(), null, 'error_attach.log');
+            }
 
             $storeData = array(
                 'file_id' => +$file->getId(),

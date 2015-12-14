@@ -28,7 +28,7 @@ document.observe("dom:loaded", function()
 
 function attachLoadMore(productId){
     var showDialog = function (html){
-        var title = 'Order Detailed Information';
+        var title = 'Product Attachments';
         var dialog = Dialog.info(html, {
             draggable: true,
             resizable: true,

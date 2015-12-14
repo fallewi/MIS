@@ -9,7 +9,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Jsinit extends Mage_Admi
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('ampgrid/js.phtml');
+        $this->setTemplate('amasty/ampgrid/js.phtml');
     }
     
     protected function _prepareLayout()
