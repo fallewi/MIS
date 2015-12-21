@@ -44,6 +44,7 @@ jQuery(document).ready(function ($) {
             this.thumb();
             this.mapPricingObserver();
             this.dynamicHeaderText();
+            this.moveMsrpPriceHideMessage();
 
             $(window).resize(function(){
                 self.setDescriptionContainerMaxHeight();
@@ -146,6 +147,16 @@ jQuery(document).ready(function ($) {
                     }
                 }
             });
+        },
+
+        moveMsrpPriceHideMessage: function() {
+            var self = this;
+            var msrpMessage = $j('.msrp-price-hide-message');
+            if(msrpMessage.length > 0) {
+                msrpMessage = msrpMessage.detach();
+                var addToBox = $j('.add-to-box');
+                msrpMessage.insertBefore(addToBox);
+            }
         },
 
         mapPricingObserver: function(){

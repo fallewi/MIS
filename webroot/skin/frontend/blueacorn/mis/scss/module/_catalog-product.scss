@@ -138,6 +138,7 @@
             float: right;
             padding-left: $trim/2;
             text-align: right;
+            position:relative;
         }
 
         .extra-info,
@@ -207,12 +208,13 @@
                     font-size: 20px;
                 }
             }
-
         }
     }
 
     .price-box.map-info a {
-        display: inherit;
+        display: block;
+        width: 100%;
+        float: left;
     }
 
     .old-price {
@@ -229,6 +231,14 @@
         padding: 30px 20px 0;
         margin-bottom: 20px;
 
+        .msrp-price-hide-message {
+            margin-bottom: 10px;
+            display: block;
+            text-align: center;
+            float: left;
+            width: 100%;
+        }
+        
         @include bp(max-width, 1250px) {
             padding: 20px;
         }
