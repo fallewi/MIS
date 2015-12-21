@@ -250,24 +250,9 @@
     </div>
 
     <div class="column column-right">
-        <?php
-            $shipHawkOrigin = Mage::getModel('shiphawk_shipping/origins')->load($_product->getData('shiphawk_shipping_origins'));
-            $shipHawkOriginTitle = $shipHawkOrigin->getShiphawkOriginTitle();
-        ?>
         <div class="column-container ships-from">
             <h2><?php echo $this->__("Shipping") ?></h2>
             <div class="detail">
-                <p>Ships from
-                <?php
-                    if ($shipHawkOriginTitle == null || $shipHawkOriginTitle == "Mission Cherry Warehouse")
-                    {
-                        echo 'Mission Restaurant Supply.';
-                    }
-                    else
-                    {
-                        echo "the manufacturer.";
-                    }
-                ?></p>
                 <?php if ($this->displayProductStockStatus()): ?>
                     <?php if ($_product->isAvailable()):
                         $strLeadTime = $_product->getResource()->getAttribute('lead_time')->getFrontend()->getValue($_product);
