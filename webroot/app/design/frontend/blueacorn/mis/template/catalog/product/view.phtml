@@ -235,10 +235,15 @@
             <h2><?php echo $this->__("Product Description") ?></h2>
             <div class="detail" itemprop="description"><?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?></div>
         </div>
-        <?php if($_product->getResourceBadges()): ?>
+        <?php if($_product->getCertifications()): ?>
+            <?php $arCertifications = explode(', ',$_product->getResource()->getAttribute('certifications')->getFrontend()->getValue($_product)); ?>
             <div class="column-container resource-badges">
                 <h2><?php echo $_product->getMpn() ?> Certifications</h2>
-                <div class="detail"><?php echo $_helper->productAttribute($_product, $_product->getResourceBadges(), 'resource_badges') ?></div>
+                <div class="detail">
+                    <?php foreach($arCertifications as $certification) : ?>
+                        <img src="/skin/frontend/blueacorn/mis/images/clear.gif" class="<?php echo "cert-". strtolower(str_replace(' ','-',$certification)); ?>" alt="<?php echo $certification; ?>" />
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endif;?>
     </div>
