@@ -1542,35 +1542,136 @@ body.catalog-product-view {
 
         .resource-badges {
             img {
-                background: url("/media/certbadges/certifications.png") no-repeat top left;
+                background-image: url("/media/certbadges/certifications.png");
+                background-repeat: no-repeat;
                 float: left;
-                padding-right: 10px;
-                padding-bottom: 10px;
-                &.cert-usa { background-position: 0px 0px; width: 55px; height: 55px;  }
-                &.cert-csa-certified { background-position: -65px 0px; width: 55px; height: 55px;  }
-                &.cert-bpa-free { background-position: -130px 0px; width: 55px; height: 55px;  }
-                &.cert-energy-star-rated { background-position: -195px 0px; width: 54px; height: 55px;  }
-                &.cert-ada { background-position: -259px 0px; width: 54px; height: 55px;  }
-                &.cert-culus { background-position: -323px 0px; width: 90px; height: 55px;  }
-                &.cert-ce { background-position: -423px 0px; width: 77px; height: 55px;  }
-                &.cert-cul { background-position: -510px 0px; width: 67px; height: 55px;  }
-                &.cert-ccsaus { background-position: -587px 0px; width: 67px; height: 55px;  }
-                &.cert-classified-ul-eph { background-position: -664px 0px; width: 66px; height: 55px;  }
-                &.cert-fcc { background-position: -740px 0px; width: 66px; height: 55px;  }
-                &.cert-csa-sanitation { background-position: -816px 0px; width: 63px; height: 55px;  }
-                &.cert-marine-culus-listed { background-position: -889px 0px; width: 57px; height: 55px;  }
-                &.cert-csa { background-position: -956px 0px; width: 57px; height: 55px;  }
-                &.cert-etl { background-position: -1023px 0px; width: 55px; height: 77px;  }
-                &.cert-etl-sanitation { background-position: -1088px 0px; width: 55px; height: 77px;  }
-                &.cert-etl-marine { background-position: -1153px 0px; width: 55px; height: 77px;  }
-                &.cert-ulus-listed { background-position: -1218px 0px; width: 55px; height: 73px;  }
-                &.cert-energy-listed-culus { background-position: -1283px 0px; width: 55px; height: 69px;  }
-                &.cert-cetl { background-position: -1348px 0px; width: 55px; height: 69px;  }
-                &.cert-etlus { background-position: -1413px 0px; width: 55px; height: 63px;  }
-                &.cert-cetlus { background-position: -1478px 0px; width: 55px; height: 58px;  }
-                &.cert-csa-designed-certified { background-position: -1543px 0px; width: 55px; height: 57px;  }
-                &.cert-ul { background-position: -1608px 0px; width: 55px; height: 55px;  }
-                &.cert-nsf { background-position: -1673px 0px; width: 55px; height: 55px;  }
+                margin-right: 10px;
+                margin-bottom: 10px;
+                &.cert-usa{
+                    background-position: 0px 0px;
+                    width: 55px;
+                    height: 55px;
+                }
+                &.cert-csa-certified {
+                    background-position: -65px 0px;
+                    width: 55px;
+                    height: 55px;
+                }
+                &.cert-bpa-free {
+                    background-position: -130px 0px;
+                    width: 55px;
+                    height: 55px;
+                }
+                &.cert-energy-star-rated {
+                    background-position: -195px 0px;
+                    width: 54px;
+                    height: 55px;
+                }
+                &.cert-ada {
+                    background-position: -259px 0px;
+                    width: 54px;
+                    height: 55px;
+                }
+                &.cert-culus {
+                    background-position: -323px 0px;
+                    width: 90px;
+                    height: 55px;
+                }
+                &.cert-ce {
+                    background-position: -423px 0px;
+                    width: 77px;
+                    height: 55px;
+                }
+                &.cert-cul {
+                    background-position: -510px 0px;
+                    width: 67px;
+                    height: 55px;
+                }
+                &.cert-ccsaus {
+                    background-position: -587px 0px;
+                    width: 67px;
+                    height: 55px;
+                }
+                &.cert-classified-ul-eph {
+                    background-position: -664px 0px;
+                    width: 66px;
+                    height: 55px;
+                }
+                &.cert-fcc {
+                    background-position: -740px 0px;
+                    width: 66px;
+                    height: 55px;
+                }
+                &.cert-csa-sanitation {
+                    background-position: -816px 0px;
+                    width: 63px;
+                    height: 55px;
+                }
+                &.cert-marine-culus-listed {
+                    background-position: -889px 0px;
+                    width: 57px;
+                    height: 55px;
+                }
+                &.cert-csa {
+                    background-position: -956px 0px;
+                    width: 57px;
+                    height: 55px;
+                }
+                &.cert-etl {
+                    background-position: -1023px 0px;
+                    width: 55px;
+                    height: 77px;
+                }
+                &.cert-etl-sanitation {
+                    background-position: -1088px 0px;
+                    width: 55px;
+                    height: 77px;
+                }
+                &.cert-etl-marine {
+                    background-position: -1153px 0px;
+                    width: 55px;
+                    height: 77px;
+                }
+                &.cert-ulus-listed {
+                    background-position: -1218px 0px;
+                    width: 55px;
+                    height: 73px;
+                }
+                &.cert-energy-listed-culus {
+                    background-position: -1283px 0px;
+                    width: 55px;
+                    height: 69px;
+                }
+                &.cert-cetl {
+                    background-position: -1348px 0px;
+                    width: 55px;
+                    height: 69px;
+                }
+                &.cert-etlus {
+                    background-position: -1413px 0px;
+                    width: 55px;
+                    height: 63px;
+                }
+                &.cert-cetlus {
+                    background-position: -1478px 0px;
+                    width: 55px;
+                    height: 58px;
+                }
+                &.cert-csa-designed-certified {
+                    background-position: -1543px 0px;
+                    width: 55px;
+                    height: 57px;
+                }
+                &.cert-ul {
+                    background-position: -1608px 0px;
+                    width: 55px;
+                    height: 55px;
+                }
+                &.cert-nsf {
+                    background-position: -1673px 0px;
+                    width: 55px;
+                    height: 55px;
+                }
             }
         }
     }
