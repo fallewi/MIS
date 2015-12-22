@@ -151,10 +151,10 @@ jQuery(document).ready(function ($) {
 
         moveMsrpPriceHideMessage: function() {
             var self = this;
-            var msrpMessage = $j('.msrp-price-hide-message');
+            var msrpMessage = $j('.add-to-cart-wrapper .msrp-price-hide-message');
             if(msrpMessage.length > 0) {
                 msrpMessage = msrpMessage.detach();
-                var addToBox = $j('.add-to-box');
+                var addToBox = $j('.add-to-cart-wrapper .add-to-box');
                 msrpMessage.insertBefore(addToBox);
             }
         },
