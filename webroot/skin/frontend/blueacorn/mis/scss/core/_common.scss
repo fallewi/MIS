@@ -1430,6 +1430,10 @@ a.button:hover {
     }
 }
 
+.no-strikeout span {
+    text-decoration: none !important;
+}
+
 .msrp-price-hide-message{
     color:$c-red;
     font-size:17px;
