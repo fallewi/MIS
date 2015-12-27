@@ -251,6 +251,13 @@
             width: 36%;
         }
 
+        // Adjust width on shared piece of DOM for MAP pricing
+        .map-pricing {
+            .price-info {
+                max-width: none;
+            }
+        }
+
         .price-info {
             width: auto;
             float:left;
