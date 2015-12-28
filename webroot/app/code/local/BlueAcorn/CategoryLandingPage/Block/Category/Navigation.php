@@ -105,6 +105,7 @@ class BlueAcorn_CategoryLandingPage_Block_Category_Navigation extends Mage_Catal
         return Mage::getModel('catalog/category')->getCollection()
             ->addAttributeToSelect(array('thumbnail', 'name', 'url_key'))
             ->addAttributeToFilter('parent_id', $currentId)
+            ->addIsActiveFilter()
             ->addAttributeToSort('position');
     }
 
