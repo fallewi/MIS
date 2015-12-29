@@ -168,6 +168,9 @@
 
     <checkout_onepage_index>
         <update handle="checkout_theme_changes" />
+        <reference name="header">
+            <remove name="top.menu" />
+        </reference>
     </checkout_onepage_index>
 
     <checkout_onepage_success>
