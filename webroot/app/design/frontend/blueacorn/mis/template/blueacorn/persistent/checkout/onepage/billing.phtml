@@ -211,6 +211,7 @@ $_placeholders = $_helper->getPlaceholders($keys);
             <?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
         </div>
      </li>
+    <?php if(Mage::getStoreConfig('carriers/shiphawk_shipping/active')): ?>
         <li class="fields nighthawk">
             <div class="field">
                 <label for="billing:shiphawk-location-type"><?php echo $this->__('Destination Accessorials') ?></label>
@@ -278,6 +279,7 @@ $_placeholders = $_helper->getPlaceholders($keys);
                 </script
             </div>
         </li>
+    <?php endif; ?>
     <?php if ($this->canShip()): ?>
         <li class="control">
             <input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_yes" value="1"<?php if ($this->isUseBillingAddressForShipping()) {?> checked="checked"<?php }?> title="<?php echo $this->quoteEscape($this->__('Ship to this address')) ?>" onclick="$('shipping:same_as_billing').checked = true;" class="radio" /><label for="billing:use_for_shipping_yes"><?php echo  $this->__('Ship to this address') ?></label></li>
