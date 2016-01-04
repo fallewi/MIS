@@ -217,4 +217,10 @@
         <action block="head" method="addItem"><type>skin_js</type><script>js/lib/elevatezoom/jquery.elevateZoom-3.0.8.min.js</script></action>
     </review_product_list>
 
+    <catalog_seo_sitemap_category>
+        <reference name="seo.sitemap.container">
+            <remove name="seo.sitemap.pager.top" />
+        </reference>
+    </catalog_seo_sitemap_category>
+
 </layout>
