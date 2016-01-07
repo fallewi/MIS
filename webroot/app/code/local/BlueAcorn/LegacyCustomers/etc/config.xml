@@ -1,0 +1,21 @@
+<config>
+    <modules>
+        <BlueAcorn_LegacyCustomers>
+            <version>1.0.0</version>
+        </BlueAcorn_LegacyCustomers>
+    </modules>
+
+    <global>
+        <resources>
+            <blueacorn_legacycustomers_setup>
+                <setup>
+                    <module>BlueAcorn_LegacyCustomers</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </blueacorn_legacycustomers_setup>
+        </resources>
+    </global>
+</config>
