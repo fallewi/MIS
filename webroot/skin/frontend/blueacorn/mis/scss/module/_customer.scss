@@ -250,6 +250,14 @@ body.customer-account {
         }
     }
 
+    .col-left.sidebar {
+        .block-content {
+            li.current {
+                font-size: 17px;
+            }
+        }
+    }
+
     .data-table {
         margin-top: 5px;
 
