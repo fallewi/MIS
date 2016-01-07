@@ -54,5 +54,9 @@
         <td><strong><?php echo $_item->getQtyCanceled()*1 ?></strong></td>
     </tr>
     <?php endif; ?>
+    <tr>
+        <td>UOM</td>
+        <td><strong><?php echo $_item->getProduct()->getAttributeText('uom') ?></strong></td></td>
+    </tr>
 </table>
 <?php endif; ?>

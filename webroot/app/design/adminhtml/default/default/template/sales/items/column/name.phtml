@@ -56,5 +56,9 @@
         <?php endforeach; ?>
         </dl>
     <?php endif; ?>
+    <?php $productDisplayed = $_item->getProduct(); ?>
+    <strong>MFG:</strong> <?php echo $productDisplayed->getAttributeText('manufacturer'); ?><br />
+    <strong>Stock:</strong> <?php echo $productDisplayed->getAttributeText('stock')?><br />
+    <strong>Net:</strong> <?php if($productDisplayed->getCost() > 0): ?> <?php echo "$" . number_format((float)$productDisplayed->getCost(), 2, '.', ','); ?><?php endif; ?><br />
     <?php echo $this->escapeHtml($_item->getDescription()) ?>
 <?php endif; ?>
