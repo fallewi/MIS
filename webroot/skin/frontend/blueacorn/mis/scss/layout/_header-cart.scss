@@ -124,6 +124,9 @@
         }
         span.count {
             color: #84D7A3;
+            @include bp(max-width, 770px) {
+                color: $white;
+            }
         }
     }
 }
