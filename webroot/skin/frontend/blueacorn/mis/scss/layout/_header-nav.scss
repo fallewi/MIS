@@ -286,6 +286,40 @@ $nav-primary-height: 30px;
 
     .nav-primary {
 
+        // Create triangles before and after menu items to make desktop menu more usable
+        li.menu-active a.level0 {
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                left: -2.13em;
+                top: 0;
+                width: 6.4em;
+                height: 6.4em;
+                transform: rotate(45deg);
+                z-index: 9;
+            }
+
+            &:after {
+                left: auto;
+                right: -2.13em;
+            }
+
+            @include bp(max-width, $bp-xlarge) {
+                &:before,
+                &:after {
+                    top: 1em;
+                }
+            }
+
+            @include bp(max-width, $bp-large) {
+                &:before,
+                &:after {
+                    top: 2em;
+                }
+            }
+        }
+
         a.level0 {
             padding: 9px 25px;
             letter-spacing: 1px;
