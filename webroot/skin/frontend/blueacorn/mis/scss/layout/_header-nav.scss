@@ -364,7 +364,8 @@ $nav-primary-height: 30px;
             z-index: 10;
             width: 100%;
             padding: 0 4px;
-            display: none; /* Hide until displayed. */
+            left: -9999px; /* Hide until displayed. */
+            transition: all 0s ease;
 
             color: $c-text;
 
@@ -512,7 +513,8 @@ $nav-primary-height: 30px;
 
 .nav-primary li.menu-active {
     > .mm-wrapper {
-        display: block;
+        left: 0;
+        transition-delay: 0.15s;
     }
 }
 
