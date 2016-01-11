@@ -1786,6 +1786,7 @@ body.catalog-product-view {
     .price-info,
     .add-to-box,
     .specifications,
+    .description,
     .block-title,
     .owl-carousel-1,
     .owl-carousel-2 {
@@ -1807,10 +1808,6 @@ body.catalog-product-view {
     }
 
     .product-information-block {
-
-        .column-left {
-            display: none;
-        }
 
         .specifications h2 { display: none; }
 
