@@ -1787,6 +1787,8 @@ body.catalog-product-view {
     .add-to-box,
     .specifications,
     .description,
+    .read-more,
+    .resource-badges,
     .block-title,
     .owl-carousel-1,
     .owl-carousel-2 {
@@ -1809,12 +1811,16 @@ body.catalog-product-view {
 
     .product-information-block {
 
-        .specifications h2 { display: none; }
-
         .column-left,
         .column-center,
         .column-right {
             width: 100%;
+        }
+
+        .column-left {
+            .resource-badges {
+                display: none;
+            }
         }
 
         .column-right {
