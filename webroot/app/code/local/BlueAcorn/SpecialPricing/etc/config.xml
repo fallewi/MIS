@@ -85,15 +85,22 @@
     </adminhtml>
     <frontend>
         <events>
-            <sales_quote_add_item>
+            <checkout_cart_product_add_after>
                 <observers>
-                    <blueacorn_specialpricing>
-                        <type>singleton</type>
+                    <blueacorn_specialpricing_addtocart>
                         <class>blueacorn_specialpricing/observer</class>
-                        <method>defaultMsrpPrice</method>
-                    </blueacorn_specialpricing>
+                        <method>adjustMapPrice</method>
+                    </blueacorn_specialpricing_addtocart>
                 </observers>
-            </sales_quote_add_item>
+            </checkout_cart_product_add_after>
+            <customer_login>
+                <observers>
+                    <blueacorn_specialpricing_login>
+                        <class>blueacorn_specialpricing/observer</class>
+                        <method>unsetMapPrices</method>
+                    </blueacorn_specialpricing_login>
+                </observers>
+            </customer_login>
         </events>
         <routers>
             <map>
