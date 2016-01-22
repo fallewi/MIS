@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_PaymentDisplay>
+            <version>0.1.0</version>
+        </MissionRS_PaymentDisplay>
+    </modules>
+    <global>
+        <models>
+            <missionrs_paymentdisplay>
+                <class>MissionRS_PaymentDisplay_Model</class>
+            </missionrs_paymentdisplay>
+        </models>
+    </global>
+    <frontend>
+        <events>
+            <payment_method_is_active>
+                <observers>
+                    <missionrs_paymentdisplay>
+                        <type>singleton</type>
+                        <class>MissionRS_PaymentDisplay_Model_Observer</class>
+                        <method>checkPaymentOptions</method>
+                    </missionrs_paymentdisplay>
+                </observers>
+            </payment_method_is_active>
+        </events>
+    </frontend>
+</config>
