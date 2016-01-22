@@ -9,28 +9,99 @@
 class BlueAcorn_SpecialPricing_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
-     * Change the price to the MSRP price rather than lower MAP price
-     * when the add to cart button is used
+     * Change the quote price to the MSRP price
+     * IFF
+     * Customer is not logged in
+     * AND
+     * Map is required (email/phone)
+     * AND
+     * token is not being redeemed
      *
-     * @param Varien_Event_Observer $observer Observer object
+     * @param Varien_Event_Observer $observer
+     * @observes checkout_cart_product_add_after
      */
-    public function defaultMsrpPrice(Varien_Event_Observer $observer)
+    public function adjustMapPrice(Varien_Event_Observer $observer)
     {
-        // Get Quote item to switch
-        /** @var Varien_Event $event */
-        $event = $observer->getEvent();
         /** @var Mage_Sales_Model_Quote_Item $quoteItem */
-        $quoteItem = $event->getQuoteItem();
+        $quoteItem = $observer->getQuoteItem();
+        /** @var Mage_Catalog_Model_Product $product */
+        $product = $observer->getProduct();
+        /** @var array $pricingVisibility */
+        $pricingVisibility = $this->_getPricingVisibility();
 
-        // Alter price if msrp exists AND no token used
-        $productMsrp = $quoteItem->getProduct()->getMsrp();
-        $token = null;
-        $paramToken = Mage::app()->getRequest()->getParam('token');
-        if($paramToken) {
-            $token = Mage::getModel('blueacorn_specialpricing/token')->load($paramToken, 'token')->getData();
+        // Check if we have already unlocked pricing for this product/session
+        if (!empty($pricingVisibility[$product->getId()])) {
+            return;
         }
-        if (empty($token) && $productMsrp) {
-            $quoteItem->setOriginalCustomPrice($productMsrp);
+
+        // Gather variables to determine setting or unsetting MSRP price on quote item
+        $loggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
+        $msrp = $product->getMsrp();
+        $mapRequired = $product->getMapRequired();
+        $tokenId = Mage::app()->getRequest()->getParam('token');
+        $token = $tokenId
+            ? Mage::getModel('blueacorn_specialpricing/token')->load($tokenId, 'token')->getId()
+            : null;
+
+        if (!$loggedIn && $msrp && $mapRequired && !$token) {
+            $quoteItem->setOriginalCustomPrice($msrp);
+            $this->_savePricingVisibility($product->getId(), false);
+        } else {
+            $quoteItem->setOriginalCustomPrice(null);
+            $this->_savePricingVisibility($product->getId(), true);
         }
+    }
+
+    /**
+     * Unset all custom MAP pricing when customer logs in
+     *
+     * @observes customer_login
+     * @param Varien_Event_Observer $observer
+     */
+    public function unsetMapPrices(Varien_Event_Observer $observer)
+    {
+        $quoteModified = false;
+        foreach($this->_getPricingVisibility() as $productId => $visible) {
+            if (!$visible) {
+                $quoteItem = Mage::getSingleton('checkout/session')->getQuote()->getItemByProduct(
+                    new Varien_Object(array('id' => $productId))
+                );
+                if ($quoteItem) {
+                    $quoteItem->setOriginalCustomPrice(null);
+                    $quoteModified = true;
+                }
+                $this->_savePricingVisibility($productId, true);
+            }
+        }
+        if ($quoteModified) {
+            Mage::getSingleton('checkout/session')->getQuote()
+                ->setTotalsCollectedFlag(false)
+                ->collectTotals()
+                ->save();
+        }
+    }
+
+    /**
+     * Get pricing visibility key from checkout session
+     *
+     * @return array
+     */
+    protected function _getPricingVisibility()
+    {
+        return Mage::getSingleton('checkout/session')->getPricingVisibility() ?: array();
+    }
+
+    /**
+     * Save visibility per product on checkout session
+     *
+     * @param $productId
+     * @param $flag
+     */
+    protected function _savePricingVisibility($productId, $flag)
+    {
+        $pricingVisibility = $this->_getPricingVisibility();
+        $pricingVisibility[$productId] = $flag;
+
+        Mage::getSingleton('checkout/session')->setPricingVisibility($pricingVisibility);
     }
 }

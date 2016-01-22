@@ -1,25 +1,15 @@
 <?xml version="1.0"?>
 <!--
 /**
- * BlueAcorn_SpecialPricing extension
- * 
- * NOTICE OF LICENSE
- * 
- * This source file is subject to the MIT License
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/mit-license.php
- * 
+ * BlueAcorn_SpecialPricing
  * @category       BlueAcorn
  * @package        BlueAcorn_SpecialPricing
- * @copyright      Copyright (c) 2015
- * @license        http://opensource.org/licenses/mit-license.php MIT License
  */
 -->
 <config>
     <modules>
         <BlueAcorn_SpecialPricing>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </BlueAcorn_SpecialPricing>
     </modules>
     <global>
@@ -85,15 +75,22 @@
     </adminhtml>
     <frontend>
         <events>
-            <sales_quote_add_item>
+            <checkout_cart_product_add_after>
                 <observers>
-                    <blueacorn_specialpricing>
-                        <type>singleton</type>
+                    <blueacorn_specialpricing_addtocart>
                         <class>blueacorn_specialpricing/observer</class>
-                        <method>defaultMsrpPrice</method>
-                    </blueacorn_specialpricing>
+                        <method>adjustMapPrice</method>
+                    </blueacorn_specialpricing_addtocart>
                 </observers>
-            </sales_quote_add_item>
+            </checkout_cart_product_add_after>
+            <customer_login>
+                <observers>
+                    <blueacorn_specialpricing_login>
+                        <class>blueacorn_specialpricing/observer</class>
+                        <method>unsetMapPrices</method>
+                    </blueacorn_specialpricing_login>
+                </observers>
+            </customer_login>
         </events>
         <routers>
             <map>
