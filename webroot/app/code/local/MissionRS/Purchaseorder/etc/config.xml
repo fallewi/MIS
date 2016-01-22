@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_Purchaseorder>
+            <version>0.0.1</version>
+        </MissionRS_Purchaseorder>
+    </modules>
+    <global>
+        <page>
+            <layouts>
+                <lookbook module="page" translate="label">
+                    <label>Lookbook</label>
+                    <template>page/1column-lookbook.phtml</template>
+                    <layout_handle>lookbook</layout_handle>
+                </lookbook>
+            </layouts>
+        </page>
+        <models>
+            <missionrs_purchaseorder>
+                <class>MissionRS_Purchaseorder_Model</class>
+            </missionrs_purchaseorder>
+            <payment>
+            	<rewrite>
+            		<method_purchaseorder>MissionRS_Purchaseorder_Model_Payment_Method_Purchaseorder</method_purchaseorder>
+            	</rewrite>
+            </payment>
+        </models>
+        <helpers>
+        	<missionrs_purchaseorder>
+        		<class>MissionRS_Purchaseorder_Helper</class>
+        	</missionrs_purchaseorder>
+        </helpers>
+    </global>
+    <default>
+        <payment>
+            <purchaseorder>
+                <customer_groups>2,3,4,5</customer_groups>
+            </purchaseorder>
+        </payment>
+    </default>
+</config>
