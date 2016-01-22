@@ -60,6 +60,7 @@ class BlueAcorn_SpecialPricing_Model_Observer extends Mage_Core_Model_Abstract
      */
     public function unsetMapPrices(Varien_Event_Observer $observer)
     {
+        $quoteModified = false;
         foreach($this->_getPricingVisibility() as $productId => $visible) {
             if (!$visible) {
                 $quoteItem = Mage::getSingleton('checkout/session')->getQuote()->getItemByProduct(
@@ -67,13 +68,16 @@ class BlueAcorn_SpecialPricing_Model_Observer extends Mage_Core_Model_Abstract
                 );
                 if ($quoteItem) {
                     $quoteItem->setOriginalCustomPrice(null);
-                    Mage::getSingleton('checkout/session')->getQuote()
-                        ->setTotalsCollectedFlag(false)
-                        ->collectTotals()
-                        ->save();
+                    $quoteModified = true;
                 }
                 $this->_savePricingVisibility($productId, true);
             }
+        }
+        if ($quoteModified) {
+            Mage::getSingleton('checkout/session')->getQuote()
+                ->setTotalsCollectedFlag(false)
+                ->collectTotals()
+                ->save();
         }
     }
 
