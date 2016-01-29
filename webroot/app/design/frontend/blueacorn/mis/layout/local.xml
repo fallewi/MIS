@@ -3,6 +3,10 @@
 
     <default>
         <reference name="head">
+            <action method="removeItem">
+                <type>link_rel</type>
+                <name>fonts.googleapis.com/css?family=Raleway:300,400,500,700,600</name>
+            </action>
             <action method="removeItem"><type>skin_css</type><name>css/enterprise.css</name></action>
             <action method="removeItem"><type>skin_css</type><name>css/enterprise-ie8.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/blueacorn-magento-overrides.js</name></action>
