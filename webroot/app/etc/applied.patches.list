@@ -25,3 +25,8 @@ patching file lib/PEAR/PEAR/PEAR5.php
 patching file lib/Varien/Io/File.php
 
 
+-e -n 2016-01-29 18:14:03 UTC | SUPEE-6641 | EE_1.14.2.0 | v1 | a7b4ae5f0ad203bd6fdb6c406c060b72894aa66f | Wed Aug 12 14:25:32 2015 +0300 | v1.14.2.0..HEAD
+patching file app/code/core/Mage/Cms/Block/Block.php
+patching file app/code/core/Mage/Cms/Block/Widget/Block.php
+
+
