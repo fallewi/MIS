@@ -29,7 +29,7 @@
 
     .hero-container {
         @include clearfix;
-        background: #F5F5F5;
+        background: $brand-light;
         margin-top: 4px;
 
         @include bp(max-width, 950px) {
