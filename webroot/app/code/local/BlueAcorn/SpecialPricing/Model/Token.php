@@ -67,7 +67,7 @@ class BlueAcorn_SpecialPricing_Model_Token extends Mage_Core_Model_Abstract
     protected function _beforeSave()
     {
         parent::_beforeSave();
-        $now = Mage::getSingleton('core/date')->gmtDate();
+        $now = Mage::getSingleton('core/date')->date();
         if ($this->isObjectNew()) {
             $this->setCreatedAt($now);
         }
