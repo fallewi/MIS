@@ -94,9 +94,6 @@ class OnTap_Merchandiser_Model_Adminhtml_Observer
         $positionsArray = $productPositions;
         asort($productPositions);
         $productPositions = array_keys($productPositions);
-        if ($post['merchandiser']['ruled_only'] == 1) {
-            $productPositions = array();
-        }
 
         $insertValues = array();
         $attributeCodes = array();
