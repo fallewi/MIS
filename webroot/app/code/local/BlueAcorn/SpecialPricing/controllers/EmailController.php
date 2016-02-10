@@ -17,7 +17,7 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
         $expireDate = $token['token_expiration_date'];
         $currentTime = Mage::getSingleton('core/date')->timestamp();
         $status = $token['status'];
-        if($status == "0" || empty($token) || ($expireDate <= $currentTime))
+        if("0" == $status || empty($token) || ($expireDate <= $currentTime))
         {
             Mage::getSingleton('core/session')->addError('Token has expired. Please request a new one.');
             $this->_redirect('checkout/cart');
