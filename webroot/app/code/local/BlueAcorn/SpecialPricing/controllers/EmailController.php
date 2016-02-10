@@ -12,16 +12,18 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
     {
         $params = $this->getRequest()->getParams();
 
-        $token = Mage::getModel('blueacorn_specialpricing/token')->load($params['token'], 'token')->getData();
-        $expireDate = Mage::getModel('blueacorn_specialpricing/token')->load($params['token_expiration_date'], 'token_expiration_date')->getData();
+        $model = Mage::getModel('blueacorn_specialpricing/token')->load($params['token'], 'token');
+        $token = $model->getData();
+        $expireDate = $token['token_expiration_date'];
         $currentTime = Mage::getSingleton('core/date')->timestamp();
-        if(empty($token) || $expireDate <= $currentTime)
+        $status = $token['status'];
+        if($status == "0" || empty($token) || ($expireDate <= $currentTime))
         {
             Mage::getSingleton('core/session')->addError('Token has expired. Please request a new one.');
             $this->_redirect('checkout/cart');
             return;
         }
-
+        $model->setStatus("0")->save();
         $product = Mage::getModel('catalog/product')->load($params['product_id']);
         $cart = Mage::getModel('checkout/cart');
         $cart->init();
@@ -54,7 +56,7 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
             $token = substr(md5(rand()), 0, 10);
             $map_item->setToken($token);
             $map_item->setProductId($productId);
-            $map_item->setTokenExpirationDate(strtotime('+1 day', Mage::getSingleton('core/date')->timestamp()));
+            $map_item->setTokenExpirationDate(strtotime('+' .  $duration . 'hours', Mage::getSingleton('core/date')->timestamp()));
             $map_item->save();
 
             $email_template = Mage::getModel('core/email_template')->loadByCode('map_request');

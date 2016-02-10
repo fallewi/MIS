@@ -71,6 +71,7 @@ class BlueAcorn_SpecialPricing_Block_Adminhtml_Token_Edit_Tab_Form extends Mage_
             array(
                 'label' => Mage::helper('blueacorn_specialpricing')->__('Token Expiration Date'),
                 'name'  => 'token_expiration_date',
+                'note'  => 'See <a href="http://www.unixtimestamp.com" target="_blank">www.unixtimestamp.com</a> to convert datetime',
             'required'  => true,
             'class' => 'required-entry',
 
