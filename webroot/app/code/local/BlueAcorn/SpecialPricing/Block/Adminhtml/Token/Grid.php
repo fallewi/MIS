@@ -107,8 +107,8 @@ class BlueAcorn_SpecialPricing_Block_Adminhtml_Token_Grid extends Mage_Adminhtml
             array(
                 'header' => Mage::helper('blueacorn_specialpricing')->__('Token Expiration Date'),
                 'index'  => 'token_expiration_date',
-                'type'=> 'text',
-
+                'renderer' => 'BlueAcorn_SpecialPricing_Block_Adminhtml_Token_Render_Date',
+                'type'=> 'datetime',
             )
         );
         $this->addColumn(

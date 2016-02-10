@@ -107,8 +107,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <BlueAcorn_SpecialPricing before="Mage_Adminhtml">BlueAcorn_SpecialPricing_Adminhtml
-                        </BlueAcorn_SpecialPricing>
+                        <BlueAcorn_SpecialPricing before="Mage_Adminhtml">BlueAcorn_SpecialPricing_Adminhtml</BlueAcorn_SpecialPricing>
                     </modules>
                 </args>
             </adminhtml>

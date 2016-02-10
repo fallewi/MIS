@@ -128,6 +128,8 @@ class BlueAcorn_SpecialPricing_Adminhtml_Specialpricing_TokenController extends 
         if ($data = $this->getRequest()->getPost('token')) {
             try {
                 $token = $this->_initToken();
+                $offsetDate = $data['token_expiration_date'] + abs(Mage::getSingleton('core/date')->getGmtOffset());
+                $data['token_expiration_date'] = $offsetDate;
                 $token->addData($data);
                 $token->save();
                 Mage::getSingleton('adminhtml/session')->addSuccess(
