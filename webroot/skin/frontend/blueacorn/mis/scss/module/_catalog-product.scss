@@ -1889,6 +1889,16 @@ body.catalog-product-view {
                     }
                 }
             }
+            .features-benefits {
+                ul{
+                    list-style-position: outside;
+                    list-style-type: disc;
+                    margin-bottom: 1.5em;
+                    li{
+                        margin: 0 0 .5em 1em;
+                    }
+                }
+            }
         }
 
         #product-attribute-specs-table {
