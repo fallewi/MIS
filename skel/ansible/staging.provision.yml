@@ -1,0 +1,100 @@
+---
+
+- name: "MIS:staging common provisioning"
+  hosts: all
+  tasks:
+
+    - include: tasks/provision-blueacorn.yml
+
+    # set the hostname to the one in ssh_config -- use PREFERRED_HOSTNAME var
+    # to override as necessary. it can be set in ansible/host_vars/<host>.yml
+    #
+    # NOTE: REQUIRES SUDO - *remove* if:
+    #  - on nexess or an environment w/o sudo access
+    - include: tasks/provision-hostname.yml
+
+
+# run cronjob configuration  [playbook]
+#######################################
+#- include: staging.util-cron.yml
+
+# install newrelic agents [platbook]
+####################################
+#- include: newrelic.yml
+
+
+# Debian LAMP bootstrap
+####################################
+# - name: "MIS:staging lamp bootstrap"
+#   hosts: web*
+#   vars:
+#     ansible_ssh_user: root
+#   remote_user: root
+#   tags:
+#     - lamp
+#     - bootstrap
+#   gather_facts: False
+#   tasks:
+#     - include: debian-lamp.yml
+#
+#     - name: add passwordless sudo to siteop user
+#       lineinfile: dest=/etc/sudoers state=present regexp='^siteop ALL\=' line='siteop ALL=(ALL) NOPASSWD:ALL' validate='visudo -cf %s'
+
+
+# Provision NFS server
+######################
+# - name: "MIS:staging setup nfs server"
+#   hosts: web-admin
+#   roles:
+#     - { role: nfs-server, tags: ["nfs-server"], become: True }
+#
+#   tasks:
+#     - name: ensure NFS server shared directories exist with proper permissions
+#       file:
+#         path: "{{ item }}"
+#         owner: "{{ ansible_ssh_user }}"
+#         group: "{{ HTTPD_USER }}"
+#         state: directory
+#         mode: 0770
+#       become: True
+#       with_items:
+#         - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/media"
+#         - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/stash"
+#         - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/var/export"
+#         - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/var/powerreviews"
+#         - "/mnt/nfs-export/{{ SUBDOMAIN }}.{{ DOMAIN }}/var/urapidflow"
+#       ignore_errors: yes
+#       tags:
+#         - perms
+#         - links
+#         - nfs-server
+#
+
+
+# Provision web servers [for magento - adds php, nginx, php-fpm ]
+#######################
+# - name: "MIS:staging webserver provisioning"
+#   hosts: web*
+#   tags:
+#     - web-server
+#
+#   roles:
+#     - { role: mage-phpfpm, tags: ["php"], become: True }
+#     - { role: mage-nginx, tags: ["nginx"], become: True }
+#     - { role: nfs-client, tags: ["nfs-client"], become: True }
+#
+#   tasks:
+#     - name: install git
+#       apt:
+#         name: git
+#         state: present
+#         update_cache: yes
+#         cache_valid_time: 3600
+#       when: ansible_os_family == "Debian"
+
+
+#---
+#  deprectated yas3fs
+#  yas3fs: fuse python-pip
+#  mounting: yas3fs s3://mageus/yas3fs /s3fs --topic arn:aws:sns:us-west-1:747399827750:mageus-yas3fs --new-queue --region us-west-1
+# sudo sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf # uncomment user_allow_other

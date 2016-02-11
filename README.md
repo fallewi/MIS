@@ -1,4 +1,4 @@
-Draft @CLIENT_CODE README
+Draft MIS README
 =========================
 
 # Usage
@@ -169,7 +169,7 @@ The point is that hotfixes must be applied to _develop as well as master_.
 
 Deployments are to be scheduled for each release. Contact architect for details.
 
-Deployments are typically triggered by the [@CLIENT_CODE Jenkins Deployment Job](http://jenkins.badevops.com/job/@CLIENT_CODE/) or hipchat,
+Deployments are typically triggered by the [MIS Jenkins Deployment Job](http://jenkins.badevops.com/job/MIS/) or hipchat,
 but can also be performed via the CLI. Each uses uses `bin/deploy` Environment
 script to checkout a git reference on defined web hosts, clear cache, etc.
 
@@ -179,4 +179,4 @@ See the [docs/DEPLOYMENTS.md](docs/DEPLOYMENTS.md) to learn more.
 
 * Architect: Jane Doe
 * Deployment Window: TBD
-* WIKI: [@CLIENT_CODE wiki](https://www.blueacorn.com/)
+* WIKI: [MIS wiki](https://www.blueacorn.com/)
