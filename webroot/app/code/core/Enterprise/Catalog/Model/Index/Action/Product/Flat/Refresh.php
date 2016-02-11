@@ -81,13 +81,6 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
     protected $_storeId = 0;
 
     /**
-     * Calls amount during current session
-     *
-     * @var int
-     */
-    protected static $_calls = 0;
-
-    /**
      * Product helper, contains some useful functions for operations with attributes
      *
      * @var Enterprise_Catalog_Helper_Product
@@ -745,12 +738,11 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
      *
      * @param int $storeId
      * @param array $changedIds
-     * @param bool $resetFlag
      *
      * @return Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh
      * @throws Exception
      */
-    protected function _reindex($storeId, array $changedIds = array(), $resetFlag = false)
+    protected function _reindex($storeId, array $changedIds = array())
     {
         $this->_storeId     = $storeId;
         $entityTableName    = $this->_productHelper->getTable('catalog/product');
@@ -761,39 +753,37 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
 
         try {
             //We should prepare temp. tables only for first call of reindex all
-            if (!self::$_calls && !$resetFlag) {
-                $temporaryEavAttributes = $eavAttributes;
+            $temporaryEavAttributes = $eavAttributes;
 
-                //add status global value to the base table
-                /* @var $status Mage_Eav_Model_Entity_Attribute */
-                $status = $this->_productHelper->getAttribute('status');
-                $temporaryEavAttributes[$status->getBackendTable()]['status'] = $status;
-                //Create list of temporary tables based on available attributes attributes
-                foreach ($temporaryEavAttributes as $tableName => $columns) {
-                    $this->_createTemporaryTable($this->_getTemporaryTableName($tableName), $columns);
+            //add status global value to the base table
+            /* @var $status Mage_Eav_Model_Entity_Attribute */
+            $status = $this->_productHelper->getAttribute('status');
+            $temporaryEavAttributes[$status->getBackendTable()]['status'] = $status;
+            //Create list of temporary tables based on available attributes attributes
+            foreach ($temporaryEavAttributes as $tableName => $columns) {
+                $this->_createTemporaryTable($this->_getTemporaryTableName($tableName), $columns);
+            }
+
+            //Fill "base" table which contains all available products
+            $this->_fillTemporaryEntityTable($entityTableName, $entityTableColumns, $changedIds);
+
+            //Add primary key to "base" temporary table for increase speed of joins in future
+            $this->_addPrimaryKeyToTable($this->_getTemporaryTableName($entityTableName));
+            unset($temporaryEavAttributes[$entityTableName]);
+
+            foreach ($temporaryEavAttributes as $tableName => $columns) {
+                $temporaryTableName = $this->_getTemporaryTableName($tableName);
+
+                //Add primary key to temporary table for increase speed of joins in future
+                $this->_addPrimaryKeyToTable($temporaryTableName);
+
+                //Create temporary table for composite attributes
+                if (isset($this->_valueTables[$temporaryTableName . $this->_valueFieldSuffix])) {
+                    $this->_addPrimaryKeyToTable($temporaryTableName . $this->_valueFieldSuffix);
                 }
 
-                //Fill "base" table which contains all available products
-                $this->_fillTemporaryEntityTable($entityTableName, $entityTableColumns, $changedIds);
-
-                //Add primary key to "base" temporary table for increase speed of joins in future
-                $this->_addPrimaryKeyToTable($this->_getTemporaryTableName($entityTableName));
-                unset($temporaryEavAttributes[$entityTableName]);
-
-                foreach ($temporaryEavAttributes as $tableName => $columns) {
-                    $temporaryTableName = $this->_getTemporaryTableName($tableName);
-
-                    //Add primary key to temporary table for increase speed of joins in future
-                    $this->_addPrimaryKeyToTable($temporaryTableName);
-
-                    //Create temporary table for composite attributes
-                    if (isset($this->_valueTables[$temporaryTableName . $this->_valueFieldSuffix])) {
-                        $this->_addPrimaryKeyToTable($temporaryTableName . $this->_valueFieldSuffix);
-                    }
-
-                    //Fill temporary tables with attributes grouped by it type
-                    $this->_fillTemporaryTable($tableName, $columns, $changedIds);
-                }
+                //Fill temporary tables with attributes grouped by it type
+                $this->_fillTemporaryTable($tableName, $columns, $changedIds);
             }
             //Create and fill flat temporary table
             $this->_createTemporaryFlatTable();
@@ -806,7 +796,6 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
             $this->_updateEventAttributes($this->_storeId);
             $this->_updateRelationProducts($this->_storeId, $changedIds);
             $this->_cleanRelationProducts($this->_storeId);
-            self::$_calls++;
             $flag->setIsBuilt(true)->setStoreBuilt($this->_storeId, true)->save();
         } catch (Exception $e) {
             $flag->setIsBuilt(false)->setStoreBuilt($this->_storeId, false)->save();

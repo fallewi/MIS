@@ -86,13 +86,11 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Changelog
         $changedIds = $this->_selectChangedIds();
         if (!empty($changedIds)) {
             $stores = Mage::app()->getStores();
-            $resetFlag = true;
             foreach ($stores as $store) {
                 $idsBatches = array_chunk($changedIds, Mage::helper('enterprise_index')->getBatchSize());
                 foreach ($idsBatches as $ids) {
-                    $this->_reindex($store->getId(), $ids, $resetFlag);
+                    $this->_reindex($store->getId(), $ids);
                 }
-                $resetFlag = false;
             }
             $this->_setChangelogValid();
             Mage::dispatchEvent('catalog_product_flat_partial_reindex', array('product_ids' => $changedIds));
