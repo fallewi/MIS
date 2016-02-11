@@ -1,0 +1,79 @@
+---
+
+# pre-deployment
+- include: git-deps.yml
+
+# deployment tasks
+##################
+
+- name: detect prior deployment via presence of REPO_ROOT
+  stat: path="{{ REPO_ROOT }}"
+  register: repo_root
+  always_run: yes
+  tags:
+    - git
+    - git-deploy-only
+
+- name: ensure clean working copy (excluding skel/ directory)
+  command: git status -uno --porcelain | grep -v -E "^[A-Z]?\s*{{ SKEL_DIR | default('skel') }}/.*"
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  register: command_result
+  changed_when: False
+  failed_when: "command_result.stdout"
+  when: repo_root.stat.exists
+  always_run: yes
+  tags:
+    - git
+    - git-deploy-only
+
+- name: ensure working HEAD matches deployment log. pass SKIP_REF_CHECK extra var to skip.
+  shell: if [ -e "{{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log" ]; then [ "$(tail -n 1 {{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log | awk '{ print $1 }')" = "$(git rev-parse --short HEAD)" ] && exit 0 ; exit 1 ; fi
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  always_run: yes
+  changed_when: false
+  when: repo_root.stat.exists and (SKIP_REF_CHECK is not defined or not SKIP_REF_CHECK)
+  tags:
+    - git
+    - git-deploy-only
+
+- name: git checkout
+  git:
+    repo: "{{ REPO_REMOTE }}"
+    version: "{{ REPO_REF }}"
+    dest: "{{ REPO_ROOT }}"
+    key_file: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+    force: yes
+    depth: 1
+    accept_hostkey: yes
+  tags:
+    - git
+    - git-deploy-only
+
+
+#
+# ensure we're using latest skel + configuration files
+#
+
+- include: conf-envsync.yml
+
+#
+# write to deploy log
+#
+
+- name: register deployment log suffix
+  local_action: shell echo "deployed by $(whoami)@$(hostname) on $(date) [GIT CHECKOUT]"
+  register: deploylog_result
+  run_once: True
+  tags:
+    - git
+    - git-deploy-only
+
+- name: write to deployment log
+  shell: echo "$(git rev-parse --short HEAD) {{ deploylog_result.stdout }}" >> {{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  tags:
+    - git
+    - git-deploy-only

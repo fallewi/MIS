@@ -1,0 +1,38 @@
+---
+
+# deployment requisite tasks
+############################
+
+- name: ensure deployment key [1/2]
+  file: path={{ BLUEACORN_DIR }}/util state=directory
+  tags:
+    - git
+    - git-deps-only
+
+- name: ensure deployment key [2/2]
+  copy:
+    src: "files/github-deploy.key"
+    dest: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+    mode: 0600
+  tags:
+    - git
+    - git-deps-only
+
+- name: set prefered identify file for github.com
+  ssh_config:
+    host: github.com
+    identity_file: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+    state: present
+    user: "{{ ansible_ssh_user }}"
+  tags:
+    - git
+    - git-deps-only
+
+- name: set git authorship
+  shell: >
+    git config --global user.name "{{ inventory_hostname }}" &&
+    git config --global user.email "{{ ansible_ssh_user  }}@{{ inventory_hostname }}.@DOMAIN" &&
+    git config --global core.filemode false
+  tags:
+    - git
+    - git-deps-only

@@ -1,0 +1,23 @@
+---
+
+#
+# variables matching all environments.
+#
+# use <env>.yml for environment specific vars
+#
+
+################################################################################
+# NEWRELIC_LICENSCE, NEWRELIC_TOKEN - used to provision newrelic agents and
+# by deployment notifications
+NEWRELIC_LICENSE:
+NEWRELIC_TOKEN:
+
+
+################################################################################
+# playbook behavior configurations
+
+
+################################################################################
+# vars used when ansible is configured to fully provision servers/environments
+#HTTP_PORT: 80
+#HTTPS_PORT: 443

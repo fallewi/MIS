@@ -1,0 +1,42 @@
+---
+
+- name: ensure BLUEACORN_DIR
+  file:
+    path: "{{ BLUEACORN_DIR }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+  become: False
+  when: BLUEACORN_DIR.startswith('/home/')
+  tags:
+    - provision
+    - provision-ba-dir-only
+
+- name: ensure BLUEACORN_DIR [sudo]
+  file:
+    path: "{{ BLUEACORN_DIR }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+  become: True
+  when: not BLUEACORN_DIR.startswith('/home/')
+  tags:
+    - provision
+    - provision-ba-dir-only
+
+- name: ensure BLUEACORN_DIR directories
+  file:
+    path: "{{ BLUEACORN_DIR }}/{{ item }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+  with_items:
+    - bin
+    - conf
+    - log
+    - sites
+    - tmp
+    - util
+  tags:
+    - provision
+    - provision-ba-dir-only
