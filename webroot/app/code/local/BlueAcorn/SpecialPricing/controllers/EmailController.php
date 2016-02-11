@@ -66,18 +66,18 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
 
             $email_variables = array(
                 'productName' => $product->getName(),
-                'manufacturer' => $product->getManufacturer(),
+                'manufacturer' => $product->getAttributeText('manufacturer'),
+                'productmpn' => $product->getMpn(),
                 'price' => $formattedPrice,
                 'link' => $addToCartLink,
                 'token' => $token,
-                'productImage' => $product->getImageUrl(),
+                'productImage' => $product->getImageUrl()
             );
 
             $sender_name = Mage::getStoreConfig('trans_email/ident_general/name');
             $sender_email = Mage::getStoreConfig('trans_email/ident_general/email');
             $email_template->setSenderName($sender_name);
             $email_template->setSenderEmail($sender_email);
-            $email_template->setTemplateSubject("Mission Restaurant Supply - Exclusive Price Request");
 
             Mage::getSingleton('core/session')->addSuccess('Your email has been sent!');
             $email_template->send($customerEmail, $sender_name, $email_variables);
