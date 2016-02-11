@@ -1,0 +1,48 @@
+FROM node:0.12
+
+# deps
+######
+#- everything needed to run most deployments.
+#- roll a custom Dockerfile if necessary.
+
+# ansible
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive && apt-get install -y \
+  python \
+  python-yaml \
+  python-pip \
+  python-dev \
+  rsync \
+  curl \
+  gcc \
+  sudo && \
+    pip install ansible==1.9.4 httplib2 && \
+    apt-get -f -y --auto-remove remove gcc python-pip python-dev && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*  /tmp/*
+
+# install grunt + bower
+RUN npm install -g grunt-cli bower
+
+# runtime
+#########
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["deploy"]
+
+# configuration
+###############
+#- at bottom to take advantage of docker build cache
+
+COPY deploy.key /root/.ssh/
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts && \
+  chmod 0600 /root/.ssh/deploy.key && \
+  printf "Host github.com\n  IdentityFile /root/.ssh/deploy.key\n" >> \
+    /root/.ssh/config
+
+# build args require docker 1.9+, use build.sh to build this image
+ARG CLIENT_CODE
+ARG REPO_REMOTE
+
+# volume mount /deploybot on deploybot host for faster checkouts/deploys
+ENV \
+  REFERENCE_REPO="/deploybot/references/$CLIENT_CODE" \
+  REFERENCE_REPO_REMOTE="$REPO_REMOTE"
