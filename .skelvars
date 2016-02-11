@@ -1,0 +1,5 @@
+SKEL_REMOTE=git@github.com:BlueAcornInc/devops-skel.git
+SKEL_RELEASE=m1
+SKEL_REMOTE_REF=release/m1
+SKEL_DIR=skel
+SKEL_BRANCH=develop
