@@ -326,6 +326,7 @@ class Enterprise_Catalog_Model_Observer
 
     /**
      * Listener for product attribute duplication event.
+     *
      * @param Varien_Event_Observer $observer
      */
     public function removeUrlKey(Varien_Event_Observer $observer)
@@ -334,39 +335,49 @@ class Enterprise_Catalog_Model_Observer
     }
 
     /**
-     * Add Seo suffix to category's URL if doesn't exists.
+     * Add Seo suffix to category's URL if does not exist.
      *
      * @param Varien_Event_Observer $observer
      */
     public function addSeoSuffixToCategoryUrl(Varien_Event_Observer $observer)
     {
         $seoSuffix = (string) Mage::app()->getStore()->getConfig(
-            Mage_Catalog_Helper_Category::XML_PATH_CATEGORY_URL_SUFFIX
-        );
+            Mage_Catalog_Helper_Category::XML_PATH_CATEGORY_URL_SUFFIX);
+        if (!strlen($seoSuffix)) {
+            return;
+        }
+
         $this->_addSuffixToUrl($observer->getCollection()->getItems(), $seoSuffix);
     }
 
     /**
-     * Add Seo suffix to product's URL if doesn't exists.
+     * Add Seo suffix to product's URL if does not exist.
      *
      * @param Varien_Event_Observer $observer
      */
     public function addSeoSuffixToProductUrl(Varien_Event_Observer $observer)
     {
         $seoSuffix = (string) Mage::app()->getStore()->getConfig(
-            Mage_Catalog_Helper_Product::XML_PATH_PRODUCT_URL_SUFFIX
-        );
+            Mage_Catalog_Helper_Product::XML_PATH_PRODUCT_URL_SUFFIX);
+        if (!strlen($seoSuffix)) {
+            return;
+        }
+
         $this->_addSuffixToUrl($observer->getCollection()->getItems(), $seoSuffix);
     }
 
     /**
      * Iterate via items and add suffix to item's URL.
      *
-     * @param $items
-     * @param $seoSuffix
+     * @param array $items
+     * @param string $seoSuffix
      */
     protected function _addSuffixToUrl($items, $seoSuffix)
     {
+        if (!strlen($seoSuffix)) {
+            return;
+        }
+
         foreach ($items as $item) {
             if ($item->getUrl() && strpos($item->getUrl(), $seoSuffix) === false) {
                 $item->setUrl($item->getUrl() . '.' . $seoSuffix);

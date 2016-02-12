@@ -37,3 +37,7 @@ patching file app/code/core/Enterprise/Catalog/Model/Index/Action/Product/Flat/R
 patching file app/code/core/Enterprise/Catalog/Model/Index/Action/Product/Flat/Refresh/Changelog.php
 
 
+-e -n 2016-02-12 22:06:45 UTC | SUPEE-5873 | EE_1.14.1.0 | v1 | 08bf42251cbda9918bb30bd1d8de9bbf005eca50 | Fri Apr 24 10:56:35 2015 -0700 | v1.14.1.0..HEAD
+patching file app/code/core/Enterprise/Catalog/Model/Observer.php
+
+
