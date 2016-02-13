@@ -21,15 +21,13 @@
     "compass"
   ],
   "dependencies": {
-    "grunt-autoprefixer": "*",
     "grunt": "*",
+    "autoprefixer": "*",
+    "grunt-postcss": "*",
     "grunt-banner": "*",
     "grunt-concurrent": "*",
-    "grunt-contrib-imagemin": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-postcss": "*",
-    "grunt-newer": "*",
     "grunt-sass": "*",
     "grunt-shell": "*",
     "grunt-usebanner": "*",
@@ -37,8 +35,6 @@
     "jit-grunt": "*"
   },
   "devDependencies": {
-    "grunt-devtools": "*",
-    "grunt-contrib-clean": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-watch": "*",
     "grunt-githooks": "*"
