@@ -43,63 +43,62 @@ module.exports = function(grunt){
             }
         },
 
-        autoprefixer: {
+        postcss: {
             dev: {
                 options: {
-                    remove: true,
-                    cascade: false,
-                    map: {
-                        inline: false,
-                        prev: true,
-                        annotation: false
-                    },
-                    browsers: [
-                        'last 3 Explorer versions',
-                        'last 2 Chrome versions',
-                        'last 2 Safari versions',
-                        'last 2 Firefox Versions',
-                        'last 2 iOS versions',
-                        'last 2 ChromeAndroid versions',
-                        '> 1%'
-                    ],
+                    map: true,
+                    processors: [
+                        require('autoprefixer')({
+                            browsers: [
+                                'last 3 Explorer versions',
+                                'last 2 Chrome versions',
+                                'last 2 Safari versions',
+                                'last 2 Firefox Versions',
+                                'last 2 iOS versions',
+                                'last 2 ChromeAndroid versions',
+                                '> 1%'
+                            ],
+                            map: {
+                                inline: false,
+                                prev: true,
+                                annotation: false,
+                                sourceContent: false
+                            }
+                        })
+                    ]
                 },
-                expand: true,
-                flatten: true,
-                src: ['<%=skinDir%>/css/**/*.css', '!<%=skinDir%>/css/**/*ie8.css'],
-                dest: '<%=skinDir%>/css'
+                src: ['<%=skinDir%>/css/**/*.css', '!<%=skinDir%>/css/**/*ie8.css']
             },
             ie: {
                 options: {
-                    remove: true,
-                    cascade: false,
                     map: false,
-                    browsers: ['Explorer 8'],
+                    processors: [
+                        require('autoprefixer')({
+                            browsers: ['Explorer 8']
+                        })
+                    ]
                 },
-                expand: true,
-                flatten: true,
-                src: ['<%=skinDir%>/css/**/*ie8.css'],
-                dest: '<%=skinDir%>/css'
+                src: ['<%=skinDir%>/css/**/*ie8.css']
             },
             production: {
                 options: {
-                    remove: true,
-                    cascade: false,
                     map: false,
-                    browsers: [
-                        'last 3 Explorer versions',
-                        'last 2 Chrome versions',
-                        'last 2 Safari versions',
-                        'last 2 Firefox Versions',
-                        'last 2 iOS versions',
-                        'last 2 ChromeAndroid versions',
-                        '> 1%'
-                    ],
+                    processors: [
+                        require('autoprefixer')({
+                            browsers: [
+                                'last 3 Explorer versions',
+                                'last 2 Chrome versions',
+                                'last 2 Safari versions',
+                                'last 2 Firefox Versions',
+                                'last 2 iOS versions',
+                                'last 2 ChromeAndroid versions',
+                                '> 1%'
+                            ]
+                        })
+                    ]
                 },
-                expand: true,
-                flatten: true,
-                src: ['<%=skinDir%>/css/**/*.css', '!<%=skinDir%>/css/**/*ie8.css'],
-                dest: '<%=skinDir%>/css'
-            },
+                src: ['<%=skinDir%>/css/**/*.css', '!<%=skinDir%>/css/**/*ie8.css']
+            }
         },
 
         sass: {
@@ -222,20 +221,6 @@ module.exports = function(grunt){
             }
         },
 
-        imagemin: {
-            dynamic: {
-                options: {
-                    optimizationLevel: 5
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%=skinDir%>/src/',
-                    src: ['**/*.{png,jpg,gif,svg}'],
-                    dest: '<%=skinDir%>/images/'
-                }]
-            }
-        },
-
         watch: {
             app: {
                 files: ['<%=appDir%>/**/*.xml', '<%=appDir%>/**/*.phtml'],
@@ -243,7 +228,7 @@ module.exports = function(grunt){
             },
             sass: {
                 files: ['<%=skinDir%>/scss/**/*.scss'],
-                tasks: ['concurrent:sass', 'concurrent:autoprefixer'],
+                tasks: ['concurrent:sass', 'concurrent:postcss'],
                 sourceComments: 'normal',
                 options: {
                     sourceMap: true
@@ -251,7 +236,7 @@ module.exports = function(grunt){
             },
             js: {
                 files: ['<%=skinDir%>/js/**/*.js'],
-                tasks: ['newer:jshint', 'newer:uglify:dev'],
+                tasks: ['jshint', 'uglify:dev'],
             },
             livereload: {
                 files: ['<%=skinDir%>/css/**/*.css'],
@@ -259,17 +244,15 @@ module.exports = function(grunt){
                     livereload: true,
                     sourceMap: true
                 }
-            },
-            images: {
-                files: ['<%=skinDir%>/src/**.*{png,jpg,gif,svg}'],
-                task: ['newer:imagemin']
-            },
+            }
         },
 
         concurrent: {
             setup: ['copy:app', 'copy:skin'],
             sass: ['sass:dev', 'sass:ie'],
-            autoprefixer: ['autoprefixer:dev', 'autoprefixer:ie']
+            sassprod: ['sass:production', 'sass:ie'],
+            postcss: ['postcss:dev', 'postcss:ie'],
+            postcssprod: ['postcss:production', 'postcss:ie']
         },
 
     });
@@ -284,7 +267,7 @@ module.exports = function(grunt){
     grunt.registerTask('default', ['watch']);
 
     // Quality Control Task, used to verify content quality of Frontend Assets
-    grunt.registerTask('qc', ['newer:jshint']);
+    grunt.registerTask('qc', ['jshint']);
 
     // Grunt Setup Task
     grunt.registerTask('setup', function(){
@@ -295,13 +278,13 @@ module.exports = function(grunt){
     });
 
     // Compilation Task, used to re-compile Frontend Assets.
-    grunt.registerTask('compile', ['concurrent:sass', 'concurrent:autoprefixer', 'jshint', 'uglify:dev', 'shell:cache']);
+    grunt.registerTask('compile', ['concurrent:sass', 'concurrent:postcss', 'jshint', 'uglify:dev', 'shell:cache']);
 
     // Staging Deployment Task, used for post-deployment compilation of Frontend Assets on Staging.
-    grunt.registerTask('staging', ['sass:production', 'sass:ie', 'autoprefixer:production', 'autoprefixer:ie', 'jshint', 'uglify:production', 'newer:imagemin', 'shell:cache']);
+    grunt.registerTask('staging', ['concurrent:sassprod', 'concurrent:postcssprod','jshint', 'uglify:production', 'shell:cache']);
 
     // Production Deployment Task, used for post-deployment compilation of Frontend Assets on Production.
-    grunt.registerTask('production', ['sass:production', 'sass:ie', 'autoprefixer:production', 'autoprefixer:ie', 'jshint', 'uglify:production', 'newer:imagemin', 'shell:cache']);
+    grunt.registerTask('production', ['concurrent:sassprod', 'concurrent:postcssprod','jshint', 'uglify:production', 'shell:cache']);
 
     // Local compilation and uglification on branch change.
     grunt.registerTask('dev-githooks', ['githooks:dev']);
