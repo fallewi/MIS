@@ -8,7 +8,7 @@ display_help() {
 
   A utility to open an environment in tmux
 
-  Usage: tmux.sh [environment]
+  Usage: tmux [environment]
 
   Arguments:
     environment          Environment to tmux into
@@ -31,8 +31,6 @@ EOF
 
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
-REPO_ROOT=`git rev-parse --show-toplevel`
-
 
 # run functions
 ###############

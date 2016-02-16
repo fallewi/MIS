@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
+
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
-REPO_ROOT=`git rev-parse --show-toplevel`
-
-
 CMD_HELP_PREFIX="A utility for deploying to an environment.
 
-  Usage: deploy.sh <environment>
-" 
+  Usage: deploy <environment>
+"
 
 ANSIBLE_PLAYBOOK="deploy.yml"
 

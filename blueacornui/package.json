@@ -20,24 +20,23 @@
     "jquery",
     "compass"
   ],
-  "devDependencies": {
+  "dependencies": {
     "grunt": "*",
-    "grunt-autoprefixer": "*",
+    "autoprefixer": "*",
+    "grunt-postcss": "*",
     "grunt-banner": "*",
     "grunt-concurrent": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-copy": "*",
-    "grunt-contrib-imagemin": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-devtools": "*",
-    "grunt-githooks": "^0.3.1",
-    "grunt-newer": "*",
     "grunt-sass": "*",
     "grunt-shell": "*",
     "grunt-usebanner": "*",
-    "jit-grunt": "*",
-    "time-grunt": "*"
+    "time-grunt": "*",
+    "jit-grunt": "*"
+  },
+  "devDependencies": {
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-githooks": "*"
   }
 }

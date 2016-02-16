@@ -11,7 +11,7 @@ display_help() {
 
   A utility for testing a site
 
-  Usage: tests.sh [options]
+  Usage: tests [options]
 
   Options:
     --help               Display help
@@ -39,14 +39,11 @@ error(){
 
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-ENV_DIR="$REPO_ROOT/skel/env"
 
-[ -e $ENV_DIR/envars ] || error "uninitialized"
-source $ENV_DIR/envars
+source $CWD/.functions.sh || error "unable to load shared functions"
 
 if [ -z "$CLIENT_CODE" ]; then
-  error "CLIENT_CODE undefined" "has an environment been set with manage.sh?"
+  error "CLIENT_CODE undefined" "has an environment been set?"
 fi
 
 

@@ -4,10 +4,10 @@
   local_action: newrelic_deployment
   args:
     token: "{{ NEWRELIC_TOKEN }}"
-    application_id: "{{ NEWRELIC_APPID }}" 
-    revision: "{{ lookup('pipe','git rev-parse --short ' + REPO_REF) }}"
+    application_id: "{{ NEWRELIC_APPID }}"
+    revision: "{{ lookup('pipe','git rev-parse --short origin/' + REPO_REF) }}"
     user: "{{ lookup('pipe','whoami') }}"
   run_once: True
   ignore_errors: True
-        
-  
+  tags:
+    - notify-newrelic

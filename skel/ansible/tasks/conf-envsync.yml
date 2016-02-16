@@ -1,0 +1,28 @@
+---
+
+- name: pull authoritative configuration from groundcontrol
+  shell: bin/skel pull
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  ignore_errors: yes
+  tags:
+    - env
+    - env-groundcontrol-only
+
+- name: ensure environment is set
+  shell: bin/env set {{ ENV }} --no-prompt
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  ignore_errors: yes
+  tags:
+    - env
+    - env-set-only
+
+- name: sync environment files
+  shell: bin/sync --no-prompt
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  ignore_errors: yes
+  tags:
+    - env
+    - env-sync-only

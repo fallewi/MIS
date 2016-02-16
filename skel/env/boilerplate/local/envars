@@ -1,0 +1,16 @@
+#
+# @CLIENT_CODE:local envars
+# see /docs/ENVIRONMENTS.md for definitions
+#
+
+REPO_ROOT="@REPO_ROOT"
+REPO_REF="HEAD"
+
+MAGE_URL="@MAGE_URL"
+MAGE_ROOT="${REPO_ROOT}/webroot"
+
+# don't worry about setting these. we replace automatically in docker containers.
+# MAGE_DB_HOST="@MAGE_DB_HOST"
+# MAGE_DB_NAME="@MAGE_DB_NAME"
+# MAGE_DB_USER="@MAGE_DB_USER"
+# MAGE_DB_PASS="@MAGE_DB_PASS"

@@ -87,5 +87,5 @@
   args:
     chdir: "{{ BLUEACORN_DIR }}/tmp/ioncube"
     creates: "{{ php_extensiondir_result.stdout }}/ioncube_loader_lin_{{ php_version_result.stdout }}.so"
-  sudo: True
+  become: True
   notify: restart php5-fpm

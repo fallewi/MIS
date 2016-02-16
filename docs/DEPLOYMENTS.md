@@ -1,8 +1,46 @@
-## Deployment
+Deployments
+===========
 
-**Manual** deployment instructions.
+Skel projects leverage "git based" deployments -- meaning git is used
+to set the codebase on remote webservers to a desired version (git ref).
 
-Automatic deployments are performed by triggering the [MIS Jenkins Deployment Job](http://jenkins.badevops.com/job/MIS/).
+Deployments are typically triggered by the [MIS Jenkins Deployment Job](http://jenkins.badevops.com/job/MIS/), which runs an
+ansible deployment via `bin/deploy` against a specified environment and git ref.
+
+
+### Ansible Deployment
+
+A per-environment playbook exists to perform deployments which:
+  * executes pre-deployment tasks (such as asset compilation)
+  * manages dependencies
+  * performs the deployment
+  * executes post-deployment tasks (such as cache clearing and notifications).
+
+
+Use `bin/deploy` to deploy, and understand:
+
+* ansible connects to servers using ssh and your private key.
+  * you may pass the password and sudo-password `--ask-pass` and `--sudo-pass` flags.
+* ansible uses the `github-deploy.key.pub` key when interfacing with repositories. ensure it
+   has been added as a [deploy key]((https://github.com/blog/2024-read-only-deploy-keys) to this repository.
+
+##### bin/deploy basics
+
+Keep in mind that deploy is an environment-specific command, and the hosts that get deployed to are in the environment's
+ssh_config. 
+
+When executing `bin/deploy <env>`, the `skel/ansible/<env>.deploy.yml` ansible playbook runs. Playbooks run against
+a set of hosts -- and these hosts are defined in `skel/env/<env>/ssh_config`. 
+
+The ssh_config must be kept up to date. See [ENVIRONMENTS.md](ENVIRONMENTS.md) for more on environments.
+
+Architects are tasked managing this playbook per environment and
+sending changes to [groundcontrol](docs/SKEL.md#groundcontrol) -- although
+its transparent nature allows contributions from anyone.
+
+
+
+### Manual Deployment
 
 
 #### Terms

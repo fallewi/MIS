@@ -76,19 +76,33 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
     }
 
     /**
-     * insertMultipleProductsToCategory
+     * Assign products to categories at specified positions, skipping non-existing products/categories
      *
-     * @param mixed $insertData
+     * @param array $insertData
      * @return void
      */
     public function insertMultipleProductsToCategory($insertData)
     {
         $write = $this->_getWriteAdapter();
+
+        // Attempt to insert all rows at once, assuming that referential integrity is maintained
         try {
             $write->insertMultiple($this->catalogCategoryProduct, $insertData);
+            return;
         } catch (Exception $e) {
-            Mage::log($e->getMessage());
+            // Fall back to per-row insertion, because even one erroneous row fails entire batch
         }
+
+        // Insert rows one by one, skipping erroneous ones and logging encountered errors
+        $write->beginTransaction();
+        foreach ($insertData as $insertRow) {
+            try {
+                $write->insert($this->catalogCategoryProduct, $insertRow);
+            } catch (Exception $e) {
+                Mage::log($e->getMessage());
+            }
+        }
+        $write->commit();
     }
 
     /**

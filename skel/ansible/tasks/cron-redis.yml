@@ -6,12 +6,19 @@
     src: templates/redis-cleanup.php
     dest: "{{ BLUEACORN_DIR }}/util/{{ ENV }}.redis-cleanup.php"
     mode: 0755
+  tags:
+    - cron
+    - cron-redis-only
 
 - name: schedule redis cleanup
   cron:
     job: "php {{ BLUEACORN_DIR }}/util/{{ ENV }}.redis-cleanup.php"
+    minute: "0"
     hour: "*/8"
     name: "{{ ENV }} redis cleanup"
     user: "{{ HTTPD_USER }}"
     state: present
-  sudo: True
+  become: True
+  tags:
+    - cron
+    - cron-redis-only

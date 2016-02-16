@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
+
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
-REPO_ROOT=`git rev-parse --show-toplevel`
-
-
 CMD_HELP_PREFIX="A utility for provisioning hosts in an environment.
 
-  Configures httpd, php, nfs, etc. 
+  Configures httpd, php, nfs, etc.
 
-  Usage: provision.sh <environment>
-" 
+  Usage: provision <environment>
+"
 
 ANSIBLE_PLAYBOOK="provision.yml"
 

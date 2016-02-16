@@ -1,5 +1,5 @@
 #
-# MIS:staging
+# MIS:production
 #
 # stick to web*, db*, cache* conventions for ansible host pattern matching
 # 
@@ -7,8 +7,3 @@
 Host web-1
   HostName 104.130.59.34
   User blueacorn
-
-#Host db-1
-#  HostName 255.255.255.255
-#  Port 2222
-#  User mysql
