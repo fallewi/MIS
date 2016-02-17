@@ -16,14 +16,13 @@ class BlueAcorn_Southware_Model_Customer_Api extends Mage_Customer_Model_Custome
      */
     public function setSouthwareCustomerId($customerEmail, $southwareCustomerId)
     {
-        Mage::log($customerEmail . " : " . $southwareCustomerId);
-//        $defaultStoreId = Mage::app()->getDefaultStoreView()->getId();
-//        $customer = Mage::getModel("customer/customer");
-//
-//        $customer->setWebsiteId($defaultStoreId);
-//        $customer->loadByEmail($customerEmail);
-//        $customer->setSouthwareCustomerId($southwareCustomerId);
+        $defaultStoreId = Mage::app()->getDefaultStoreView()->getId();
+        $customer = Mage::getModel("customer/customer");
 
-//        $customer->save();
+        $customer->setWebsiteId($defaultStoreId);
+        $customer->loadByEmail($customerEmail);
+        $customer->setSouthwareCustomerId($southwareCustomerId);
+
+        $customer->save();
     }
 }

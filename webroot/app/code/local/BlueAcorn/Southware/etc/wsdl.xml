@@ -17,7 +17,7 @@
 
     <message name="southware_orderUpdateRequest">
         <part name="sessionId" type="xsd:string" />
-        <part name="orderNum" type="xsd:string" />
+        <part name="orderNumber" type="xsd:string" />
         <part name="southwareOrderId" type="xsd:string" />
     </message>
     <message name="southware_orderUpdateResponse">

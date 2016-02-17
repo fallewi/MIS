@@ -33,6 +33,8 @@
                 <xsd:complexType>
                     <xsd:sequence>
                         <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="orderNumber" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="southwareOrderId" type="xsd:string" />
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

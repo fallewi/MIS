@@ -13,23 +13,19 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
     /**
      * Sets Southware Order ID on Order provided by Southware
      *
-     * @param $orderNum
+     * @param $orderNumber
      * @param $southwareOrderId
      */
-    public function setSouthwareOrderId($orderNum, $southwareOrderId)
+    public function setSouthwareOrderId($orderNumber, $southwareOrderId)
     {
+        $resource = Mage::getSingleton('core/resource');
+        $writeConnection = $resource->getConnection('core_write');
 
-        Mage::log($orderNum . " : " . $southwareOrderId);
+        $order = Mage::getModel('sales/order')->loadByIncrementId($orderNumber);
+        $orderId = $order->getId();
 
-//        $resource = Mage::getSingleton('core/resource');
-//        $writeConnection = $resource->getConnection('core_write');
-//
-//        $order = Mage::getModel('sales/order')->loadByIncrementId($orderNum);
-//        $orderId = $order->getId();
-//
-//        $query = "UPDATE {self::TABLE_NAME} SET southware_order_id = '{$southwareOrderId}' WHERE order_id = "
-//            . (int)$orderId;
-//
-//        $writeConnection->query($query);
+        $query = "UPDATE " . self::TABLE_NAME . " SET southware_order_id = '{$southwareOrderId}' WHERE order_id = " . (int)$orderId;
+
+        $writeConnection->query($query);
     }
 }
