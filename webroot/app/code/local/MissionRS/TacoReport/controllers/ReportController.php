@@ -9,7 +9,6 @@ class MissionRS_TacoReport_ReportController extends Mage_Adminhtml_Controller_Ac
 {
     public function indexAction()
     {
-        Mage::log(__METHOD__);
         $this->_title($this->__('Taco Report'));
         $this->loadLayout();
         $this->renderLayout();
@@ -20,8 +19,6 @@ class MissionRS_TacoReport_ReportController extends Mage_Adminhtml_Controller_Ac
      */
     public function dateAction()
     {
-        Mage::log(__METHOD__);
-
         $data = array();
         $params = $this->getRequest()->getParams();
 
@@ -38,7 +35,6 @@ class MissionRS_TacoReport_ReportController extends Mage_Adminhtml_Controller_Ac
      */
     public function customRangeAction()
     {
-        Mage::log(__METHOD__);
         $params = $this->getRequest()->getParams();
 
         if($params['date-input-box-from'] && $params['date-input-box-to'] )
