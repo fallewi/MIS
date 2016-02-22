@@ -70,33 +70,18 @@ class SFC_Kount_Helper_EnsHandler extends Mage_Core_Helper_Abstract
                 Mage::log('DMC event received, but nothing to do.', Zend_Log::INFO, SFC_Kount_Helper_Data::KOUNT_LOG_FILE);
                 break;
 
-            // -- Workflow
             case 'WORKFLOW_QUEUE_ASSIGN':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: Assign transactions to agents.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-
             case 'WORKFLOW_NOTES_ADD':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $newValue = $aEvent['new_value'];
-                $sComment = $newValue['_value'];
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-
             case 'WORKFLOW_REEVALUATE':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: Press Reevaluate Risk button for transaction.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
+            case 'RISK_CHANGE_SCOR':
+            case 'RISK_CHANGE_REPLY':
+            case 'SPECIAL_ALERT_TRANSACTION':
+            case 'RISK_CHANGE_VELO':
+            case 'RISK_CHANGE_VMAX':
+            case 'RISK_CHANGE_GEOX':
+            case 'RISK_CHANGE_NETW':
+            case 'RISK_CHANGE_REAS':
+                Mage::log('DMC event '.$aEvent['name'].' received, ignored.', Zend_Log::INFO, SFC_Kount_Helper_Data::KOUNT_LOG_FILE);
                 break;
 
             case 'WORKFLOW_STATUS_EDIT':
@@ -112,88 +97,6 @@ class SFC_Kount_Helper_EnsHandler extends Mage_Core_Helper_Abstract
                 // Handle status change on Magento order
                 $this->handleKountStatusChange($aEvent, $oOrder);
                 break;
-
-            // -- Risk
-            case 'RISK_CHANGE_SCOR':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment and status
-                $sNewValue = $aEvent['new_value'];
-                $sComment = "Kount ENS Notification: RIS Score changed to {$sNewValue}.";
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->setData('kount_ris_score', $aEvent['new_value']);
-                $oOrder->save();
-                break;
-
-            case 'RISK_CHANGE_REPLY':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment and status
-                $sNewValue = $aEvent['new_value'];
-                $sComment = "Kount ENS Notification: RIS Response changed to {$sNewValue}.";
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->setData('kount_ris_response', $aEvent['new_value']);
-                $oOrder->save();
-                // Handle status change on Magento order
-                $this->handleKountStatusChange($aEvent, $oOrder);
-                break;
-
-            // -- Special
-            case 'SPECIAL_ALERT_TRANSACTION':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // -- -- New value
-                $sNewValue = 'D';
-                $sComment = "Kount ENS Notification: RIS Response changed to {$sNewValue}.";
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->setData('kount_ris_response', $sNewValue);
-                $oOrder->save();
-                break;
-
-            case 'RISK_CHANGE_VELO':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: 2 week velocity has changed.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-
-            case 'RISK_CHANGE_VMAX':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: 6 hour velocity has changed.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-
-            case 'RISK_CHANGE_GEOX':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: Risk connected to region has changed.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-            case 'RISK_CHANGE_NETW':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: Network type has changed.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-
-            case 'RISK_CHANGE_REAS':
-                // -- -- Get order
-                $oOrder = $this->loadOrder($aEvent);
-                // Set comment
-                $sComment = 'Kount ENS Notification: One or more risk reasons have changed.';
-                $oOrder->addStatusHistoryComment($sComment);
-                $oOrder->save();
-                break;
-
         }
 
         return true;

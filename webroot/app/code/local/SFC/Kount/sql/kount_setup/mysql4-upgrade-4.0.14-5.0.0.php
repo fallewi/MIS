@@ -18,48 +18,45 @@ $oSetup = $oInstaller->startSetup();
 $oSetup = new Mage_Sales_Model_Mysql4_Setup('sales_setup');
 
 // Custom order statuses?
-if (Mage::helper('kount')->isCompatibleVersion()) {
+// Kount Review
+$sStatus = SFC_Kount_Helper_Order::ORDER_STATUS_KOUNT_REVIEW;
+$sStatusLabel = SFC_Kount_Helper_Order::ORDER_STATUS_KOUNT_REVIEW_LABEL;
+$oInstaller->run("
+DELETE FROM `{$this->getTable('sales_order_status')}` WHERE status = '{$sStatus}';
+INSERT INTO `{$this->getTable('sales_order_status')}` VALUES (
+    '{$sStatus}',
+    '{$sStatusLabel}'
+);
+");
+$sState = Mage_Sales_Model_Order::STATE_HOLDED;
+$oInstaller->run("
+DELETE FROM `{$this->getTable('sales_order_status_state')}` WHERE status = '{$sStatus}';
+INSERT INTO `{$this->getTable('sales_order_status_state')}` VALUES (
+    '{$sStatus}',
+    '{$sState}',
+    '0'
+);
+");
 
-    // Kount Review
-    $sStatus = SFC_Kount_Helper_Data::ORDER_STATUS_KOUNT_REVIEW;
-    $sStatusLabel = SFC_Kount_Helper_Data::ORDER_STATUS_KOUNT_REVIEW_LABEL;
-    $oInstaller->run("
-    DELETE FROM `{$this->getTable('sales_order_status')}` WHERE status = '{$sStatus}';
-    INSERT INTO `{$this->getTable('sales_order_status')}` VALUES (
-        '{$sStatus}',
-        '{$sStatusLabel}'
-    );
-    ");
-    $sState = Mage_Sales_Model_Order::STATE_HOLDED;
-    $oInstaller->run("
-    DELETE FROM `{$this->getTable('sales_order_status_state')}` WHERE status = '{$sStatus}';
-    INSERT INTO `{$this->getTable('sales_order_status_state')}` VALUES (
-        '{$sStatus}',
-        '{$sState}',
-        '0'
-    );
-    ");
-
-    // Kount Decline
-    $sStatus = SFC_Kount_Helper_Data::ORDER_STATUS_KOUNT_DECLINE;
-    $sStatusLabel = SFC_Kount_Helper_Data::ORDER_STATUS_KOUNT_DECLINE_LABEL;
-    $oInstaller->run("
-    DELETE FROM `{$this->getTable('sales_order_status')}` WHERE status = '{$sStatus}';
-    INSERT INTO `{$this->getTable('sales_order_status')}` VALUES (
-        '{$sStatus}',
-        '{$sStatusLabel}'
-    );
-    ");
-    $sState = Mage_Sales_Model_Order::STATE_HOLDED;
-    $oInstaller->run("
-    DELETE FROM `{$this->getTable('sales_order_status_state')}` WHERE status = '{$sStatus}';
-    INSERT INTO `{$this->getTable('sales_order_status_state')}` VALUES (
-        '{$sStatus}',
-        '{$sState}',
-        '0'
-    );
-    ");
-}
+// Kount Decline
+$sStatus = SFC_Kount_Helper_Order::ORDER_STATUS_KOUNT_DECLINE;
+$sStatusLabel = SFC_Kount_Helper_Order::ORDER_STATUS_KOUNT_DECLINE_LABEL;
+$oInstaller->run("
+DELETE FROM `{$this->getTable('sales_order_status')}` WHERE status = '{$sStatus}';
+INSERT INTO `{$this->getTable('sales_order_status')}` VALUES (
+    '{$sStatus}',
+    '{$sStatusLabel}'
+);
+");
+$sState = Mage_Sales_Model_Order::STATE_HOLDED;
+$oInstaller->run("
+DELETE FROM `{$this->getTable('sales_order_status_state')}` WHERE status = '{$sStatus}';
+INSERT INTO `{$this->getTable('sales_order_status_state')}` VALUES (
+    '{$sStatus}',
+    '{$sState}',
+    '0'
+);
+");
 
 // Order and quote attributes
 // -- Order
