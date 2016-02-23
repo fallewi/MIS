@@ -680,4 +680,38 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 	{
 		return $this->isEnabled() && (int)$this->getData('stripcategorybase') === 1;
 	}
+
+	/**
+	 * Process the SEO values for the Tribe Events homepage
+	 *
+	 * @param $action
+	 * @param Varien_Object $post
+	 */	
+	public function processRouteWpAddonEventscalendarIndexIndex($object)
+	{
+		return $this;
+	}
+	
+	/**
+	 * Process the SEO values for the Tribe Events view page
+	 *
+	 * @param $action
+	 * @param Varien_Object $post
+	 */	
+	public function processRouteWpAddonEventscalendarEventView($post)
+	{
+		$this->_applyPostPageLogic($post, $post->getPostType());
+		
+		return $this;
+	}
+	
+	/**
+	 * Tribe Events category page
+	 *
+	 * @param Varien_Object $category
+	 */
+	public function processRouteWpAddonEventscalendarEventCategoryView($term)
+	{
+		return $this->processRouteWordpressTermView($term);
+	}
 }

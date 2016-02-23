@@ -222,6 +222,12 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 				))
 			);
 		}
+		
+		$transportObject = new Varien_Object(array('post_types' => self::$_postTypes));
+		
+		Mage::dispatchEvent('wordpress_app_init_post_types_after', array('transport' => $transportObject, 'helper' => $this));
+		
+		self::$_postTypes = $transportObject->getPostTypes();
 
 		return $this;
 	}
@@ -371,6 +377,12 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 				self::$_taxonomies['category']->setSlug('');
 			}
 		}
+		
+		$transportObject = new Varien_Object(array('taxonomies' => self::$_taxonomies));
+		
+		Mage::dispatchEvent('wordpress_app_init_taxonomies_after', array('transport' => $transportObject, 'helper' => $this));
+		
+		self::$_taxonomies = $transportObject->getTaxonomies();
 
 		return $this;
 	}
@@ -442,6 +454,10 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 			}
 			else {
 				self::$_store = $this->getDefaultStore(Mage::app()->getRequest()->getParam('website', null));
+			}
+			
+			if (!self::$_store) {
+				self::$_store = Mage::app()->getStore();
 			}
 		}
 		

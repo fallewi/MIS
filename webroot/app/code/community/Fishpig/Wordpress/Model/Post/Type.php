@@ -43,13 +43,24 @@ class Fishpig_Wordpress_Model_Post_Type extends Mage_Core_Model_Abstract
 	public function getPermalinkStructure()
 	{
 		$structure = ltrim(str_replace('index.php/', '', ltrim($this->getData('rewrite/slug'), ' -/')), '/');
-		
+
 		if (!$this->isDefault() && strpos($structure, '%postname%') === false) {
 			$structure = rtrim($structure, '/') . '/%postname%/';
 		}
 		
 		if ($this->isHierarchical()) {
 			$structure = str_replace('%postname%', '%postnames%', $structure);
+		}
+		
+
+		if ((int)$this->getData('rewrite/with_front') === 1) {
+			$postPermalink = Mage::helper('wordpress/app')->getPostType('post')->getPermalinkStructure();
+			
+			if (substr($postPermalink, 0, 1) !== '%') {
+				$front = trim(substr($postPermalink, 0, strpos($postPermalink, '%')), '/');
+				
+				$structure = $front . '/' . $structure;
+			}
 		}
 
 		return $structure;
@@ -89,7 +100,7 @@ class Fishpig_Wordpress_Model_Post_Type extends Mage_Core_Model_Abstract
 	 */
 	public function permalinkHasTrainingSlash()
 	{
-		return !$this->isDefault() || substr($this->getData('rewrite/slug'), -1) == '/';
+		return substr($this->getData('rewrite/slug'), -1) === '/' || substr($this->getPermalinkStructure(), -1) === '/';
 	}
 
 	/**
@@ -127,25 +138,32 @@ class Fishpig_Wordpress_Model_Post_Type extends Mage_Core_Model_Abstract
 	 *
 	 * @return string
 	 */
+	/**
+	 * Get the archive slug for the post type
+	 *
+	 * @return string
+	 */
 	public function getArchiveSlug()
 	{
-		if ((int)$this->hasArchive() !== 1) {
+		if (!$this->hasArchive()) {
 			return false;
 		}
 		
-		if ($this->hasArchiveSlug()) {
-			return $this->_getData('archive_slug');
+		if (((string)$slug = $this->getHasArchive()) !== '1') {
+			return $slug;
 		}
 		
-		$slug = $this->getSlug();
-
-		$this->setArchiveSlug(
-			strpos($slug, '%') !== false
-			? trim(substr($slug, 0, strpos($slug, '%')), '/')
-			: trim($slug, '/')
-		);
-
-		return $this->_getData('archive_slug');
+		if ($slug = $this->getSlug()) {
+			if (strpos($slug, '%') !== false) {
+				$slug = trim(substr($slug, 0, strpos($slug, '%')), '%/');
+			}
+			
+			if ($slug) {
+				return $slug;
+			}
+		}
+		
+		return $this->getPostType();
 	}
 	
 	/**
@@ -172,6 +190,31 @@ class Fishpig_Wordpress_Model_Post_Type extends Mage_Core_Model_Abstract
 			? in_array($taxonomy, $this->getTaxonomies())
 			: false;
 	}
+	
+	/**
+	 * Get a taxonomy that is supported by the post type
+	 *
+	 * @return string
+	 */
+	public function getAnySupportedTaxonomy($prioritise = array())
+	{
+		if (!is_array($prioritise)) {
+			$prioritise = array($prioritise);
+		}
+		
+		foreach($prioritise as $type) {
+			if ($this->isTaxonomySupported($type)) {
+				return Mage::helper('wordpress/app')->getTaxonomy($type);
+			}
+		}
+		
+		if ($taxonomies = $this->getTaxonomies()) {
+			return Mage::helper('wordpress/app')->getTaxonomy(array_shift($taxonomies));
+		}
+		
+		return false;
+	}
+	
 	
 	/**
 	 * Get the name of the post type
@@ -261,7 +304,7 @@ class Fishpig_Wordpress_Model_Post_Type extends Mage_Core_Model_Abstract
 	 */
 	public function hasArchive()
 	{
-		return (int)$this->getHasArchive() === 1;
+		return $this->getHasArchive() && $this->getHasArchive() !== '0';
 	}
 	
 	/**

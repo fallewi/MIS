@@ -24,6 +24,13 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	protected $_crumbs = array();
 	
 	/**
+	 * Determine whether to include jQuery
+	 *
+	 * @var bool
+	 */
+	protected $_includejQuery = false;
+	
+	/**
 	 * Plugins can add scripts here
 	 *
 	 * @var array
@@ -85,6 +92,25 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 			return;
 		}
 
+		// Check for redirects and forwards
+		$transport = new Varien_Object();
+
+		Mage::dispatchEvent(
+			'wordpress_' . strtolower(substr(get_class($this), strlen('Fishpig_Wordpress_'), -strlen('Controller'))) . '_controller_pre_dispatch_after', 
+			array(
+				'transport' => $transport,
+				'action' => $this,
+			)
+		);
+		
+		if ($transport->getForward()) {
+			return $this->_forward(
+				$transport->getForward()->getAction(),
+				$transport->getForward()->getController(),
+				$transport->getForward()->getModule()
+			);
+		}
+		
 		return $this;
     }
 
@@ -162,8 +188,25 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 
 		if (count($this->_beforeBodyEndContent) > 0) {
 			if ($beforeBodyEnd = $this->getLayout()->getBlock('before_body_end')) {
+				$helper = Mage::helper('wordpress');
+				$before = '';
+				$jsTemplate = '<script type="text/javascript" src="%s"></script>';
+				
+				if ($this->_includejQuery) {
+					if ($headBlock = $this->getLayout()->getBlock('head')) {
+						if (strpos(implode(',', array_keys($headBlock->getItems())), 'jquery') === false) {
+							$before .= sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/jquery/jquery.js?ver=1.11.3'));
+							$before .= sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'));
+						}
+						
+						if (strpos(implode(',', array_keys($headBlock->getItems())), 'underscore') === false) {
+							$before .= sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/underscore.min.js?ver=1.6.0'));
+						}
+					}
+				}
+
 				$beforeBodyEnd->append(
-					$this->getLayout()->createBlock('core/text')->setText(implode("\n", $this->_beforeBodyEndContent))
+					$this->getLayout()->createBlock('core/text')->setText($before . implode("\n", $this->_beforeBodyEndContent))
 				);
 			}
 		}
@@ -185,13 +228,20 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	 */
 	public function addContentToBeforeBodyEnd($content, $key = null)
 	{
-		if (!is_null($key)) {
-			$this->_beforeBodyEndContent[$key] = $content;
-		}
-		else {
-			array_push($this->_beforeBodyEndContent, $content);
+		if (is_null($key)) {
+			$key = count($this->_beforeBodyEndContent) + 10;
+			
+			while(isset($this->_beforeBodyEndContent[$key])) {
+				$key++;
+			}
 		}
 		
+		if (strpos($content, 'underscore') !== false) {
+			return $this;
+		}
+		
+		$this->_beforeBodyEndContent[$key] = $content;
+
 		return $this;
 	}
 	
@@ -202,11 +252,8 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	 */
 	public function includejQuery()
 	{
-		$helper = Mage::helper('wordpress');
-		
-		$this->addContentToBeforeBodyEnd(sprintf('<script type="text/javascript" src="%s"></script>', $helper->getBaseUrl('wp-includes/js/jquery/jquery.js?ver=1.11.3')), 0);
-		$this->addContentToBeforeBodyEnd(sprintf('<script type="text/javascript" src="%s"></script>', $helper->getBaseUrl('wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1')), 1);
-		
+		$this->_includejQuery = true;
+
 		return $this;
 	}
 
@@ -310,12 +357,12 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 
 		array_unshift($handles, 'wordpress_default');
 
-#		$storeHandlePrefix = 'STORE_' . Mage::app()->getStore()->getCode() . '_';
+		$storeHandlePrefix = 'STORE_' . Mage::app()->getStore()->getCode() . '_';
 		$allHandles = array();
 		
 		foreach($handles as $it => $handle) {
 			$allHandles[] = $handle;
-#			$allHandles[] = $storeHandlePrefix . $handle;
+			$allHandles[] = $storeHandlePrefix . $handle;
 		}
 
 		array_unshift($allHandles, 'default');
@@ -324,17 +371,16 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 			$update->addHandle($handle);
 		}
 		
-#		$this->addActionLayoutHandles();
+		$this->addActionLayoutHandles();
 		
 		$handles = $update->getHandles();
 
-#		$update->addHandle($storeHandlePrefix . array_pop($handles));
+		$update->addHandle($storeHandlePrefix . array_pop($handles));
 		
 		$this->loadLayoutUpdates();		
 		$this->generateLayoutXml();
 		$this->generateLayoutBlocks();
-		
-#		echo '<pre>';print_r($this->getLayout()->getUpdate()->getHandles());exit;
+
 		$this->_isLayoutLoaded = true;
 		
 		return $this;

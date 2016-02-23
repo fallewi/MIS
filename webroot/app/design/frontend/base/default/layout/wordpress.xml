@@ -58,18 +58,21 @@
 			<action method="unsetChildren" ifconfig="wordpress/misc/sidebar_left_empty" />
 			<block type="wordpress/sidebar" name="wordpress_sidebar_left" as="wp.sidebar.left" before="-">
 				<action method="setWidgetArea"><area>sidebar-1</area></action>
+				<!--<action method="setWidgetArea"><area>left</area></action>-->
 			</block>
 		</reference>
 		<reference name="sidebar">
 			<action method="unsetChildren" ifconfig="wordpress/misc/sidebar_left_empty" />
 			<block type="wordpress/sidebar" name="wordpress_sidebar_sidebar" as="wp.sidebar.left" before="-">
 				<action method="setWidgetArea"><area>sidebar-1</area></action>
+				<!--<action method="setWidgetArea"><area>sidebar</area></action>-->
 			</block>
 		</reference>
 		<reference name="right">
 			<action method="unsetChildren" ifconfig="wordpress/misc/sidebar_right_empty" />
 			<block type="wordpress/sidebar" name="wordpress_sidebar_right" as="wp.sidebar.right" before="-">
-				<action method="setWidgetArea"><area>sidebar-1</area></action>
+				<action method="setWidgetArea"><area>sidebar-2</area></action>
+				<!--<action method="setWidgetArea"><area>right</area></action>-->
 			</block>
 		</reference>
 	</wordpress_default>

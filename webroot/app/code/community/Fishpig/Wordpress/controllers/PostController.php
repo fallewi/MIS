@@ -58,7 +58,7 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 				return $this->_redirectUrl(Mage::helper('wordpress')->getUrl());
 			}
 		}
-
+		
 		if ($post->getTypeInstance()->isHierarchical()) {
 			$buffer = $post->getParentPost();
 	
@@ -133,8 +133,8 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 				$this->addCrumb('post_' . $buffer->getId(), array('label' => $buffer->getPostTitle(), 'link' => $buffer->getUrl()));
 			}
 		}
-		else if ($post->getTypeInstance()->isTaxonomySupported('category')) {
-			if ($term = $post->getParentTerm('category')) {
+		else if ($taxonomy = $post->getTypeInstance()->getAnySupportedTaxonomy('category')) {
+			if ($term = $post->getParentTerm($taxonomy->getTaxonomyType())) {
 				$terms = array();
 	
 				while($term) {
@@ -150,6 +150,12 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 		
 		if (!$isHomepage) {
 			$this->addCrumb('post', array('label' => $post->getPostTitle()));
+		}
+		
+		if (strpos($post->getMetaValue('_wp_page_template'), 'full-width') !== false) {
+			if ($root = $this->getLayout()->getBlock('root')) {
+				$root->setTemplate('page/1column.phtml');
+			}
 		}
 
 		$this->renderLayout();

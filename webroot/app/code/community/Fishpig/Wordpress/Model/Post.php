@@ -101,14 +101,27 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 	 *
 	 * @return string
 	 */
-	public function getPostExcerpt($includeSuffix = true)
+	public function getPostExcerpt($maxWords = 0)
 	{
 		if (!$this->getData('post_excerpt')) {
-			$excerpt = $this->hasMoreTag()
-				? $this->_getPostTeaser($includeSuffix)
-				: $this->getPostContent('excerpt');
+			if ($this->hasMoreTag()) {
+				$this->setPostExcerpt($this->_getPostTeaser(true));
+			}
+			else if ((int)$maxWords > 1) {
+				$excerpt = explode(' ', trim(strip_tags($this->_getData('post_content'))));
+
+				if (count($excerpt) > $maxWords) {
+					$excerpt = rtrim(implode(' ', array_slice($excerpt, 0, $maxWords)), "!@£$%^&*()_-+=[{]};:'\",<.>/? ") . '...';
+				}
+				else {
+					$excerpt = implode(' ', $excerpt);
+				}
 				
-			$this->setPostExcerpt($excerpt);
+				$this->setPostExcerpt($excerpt);
+			}
+			else {
+				$this->setPostExcerpt($this->getPostContent('excerpt'));
+			}
 		}			
 
 		return $this->getData('post_excerpt');
@@ -523,7 +536,9 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 			$this->setUrl($this->getGuid());
 			
 			if ($this->hasPermalink()) {
-				$this->setUrl(Mage::helper('wordpress')->getUrl($this->_getData('permalink')));
+				$this->setUrl(Mage::helper('wordpress')->getUrl(
+					$this->_urlEncode($this->_getData('permalink'))
+				));
 			}
 			else if ($this->getTypeInstance()->isHierarchical()) {
 				if ($uris = $this->getTypeInstance()->getAllRoutes()) {
@@ -537,7 +552,32 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 		return $this->_getData('url');
 	}
 
+	/**
+	 * Encode the URL, ignoring '/' character
+	 *
+	 * @param string $url
+	 * @return string
+	 */
+	protected function _urlEncode($url)
+	{
+		if (strpos($url, '/') !== false) {
+			$parts = explode('/', $url);
+
+			foreach($parts as $key => $value) {
+				$parts[$key] = urlencode($value);
+			}
+			
+			return implode('/', $parts);
+		}
+		
+		return urlencode($url);
+	}
 	
+	/**
+	 * Get the parent ID of the post
+	 *
+	 * @return int
+	 */
 	public function getParentId()
 	{
 		return (int)$this->_getData('post_parent');

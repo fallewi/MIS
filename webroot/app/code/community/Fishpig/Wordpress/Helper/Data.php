@@ -241,7 +241,7 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 			$this->_cache('is_wpmu', false);
 			
 			if ($this->isWordPressMUInstalled()) {
-				$this->_cache('is_wpmu', Mage::helper('wpmultisite')->canRun());
+				$this->_cache('is_wpmu', Mage::helper('wp_addon_multisite')->canRun());
 			}
 		}
 		

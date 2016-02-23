@@ -155,7 +155,7 @@ class Fishpig_Wordpress_Block_Sidebar extends Fishpig_Wordpress_Block_Abstract
 	 */
 	public function getRealWidgetArea()
 	{
-		if (!Mage::helper('wordpress')->isPluginEnabled('customsidebars')) {
+		if (!Mage::helper('wordpress')->isPluginEnabled('custom-sidebars/customsidebars.php')) {
 			return $this->getWidgetArea();
 		}
 
@@ -187,7 +187,7 @@ class Fishpig_Wordpress_Block_Sidebar extends Fishpig_Wordpress_Block_Abstract
 			}
 			
 			# Single post by category
-			if ($categoryIdResults = $post->getResource()->getParentCategoryIdsByPostIds(array($post->getId()))) {
+			if ($categoryIdResults = $post->getResource()->getParentTermsByPostId($post->getId(), $taxonomy = 'category')) {
 				$categoryIdResults = array_pop($categoryIdResults);
 
 				if (isset($categoryIdResults['category_ids'])) {
