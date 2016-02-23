@@ -7,9 +7,10 @@ describe("A spec", function() {
     });
 
     it("can have more than one expectation", function() {
-        var foo = 1;
+        var foo = 0;
         foo += 1;
 
         expect(foo).toEqual(2);
+        expect(true).toEqual(true);
     });
 });
