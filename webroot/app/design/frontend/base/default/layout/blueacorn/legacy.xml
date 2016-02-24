@@ -1,13 +1,6 @@
 <?xml version="1.0"?>
 
 <layout>
-    <sales_order_history translate="label">
-        <reference name="sales.order.history">
-            <block type="blueacorn_legacy/order_history" name="blueacorn.legacy.order.history"
-                   template="blueacorn/legacy/order/history.phtml"/>
-        </reference>
-    </sales_order_history>
-
     <blueacorn_legacy_order_view translate="label">
         <label>Customer My Account Order View</label>
         <update handle="customer_account"/>
