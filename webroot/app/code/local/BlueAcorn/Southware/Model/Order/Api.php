@@ -8,8 +8,6 @@
 
 class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
 {
-    const TABLE_NAME = 'amasty_amorderattr_order_attribute';
-
     /**
      * Sets Southware Order ID on Order provided by Southware
      *
@@ -18,14 +16,9 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
      */
     public function setSouthwareOrderId($orderNumber, $southwareOrderId)
     {
-        $resource = Mage::getSingleton('core/resource');
-        $writeConnection = $resource->getConnection('core_write');
-
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderNumber);
         $orderId = $order->getId();
 
-        $query = "UPDATE " . self::TABLE_NAME . " SET southware_order_id = '{$southwareOrderId}' WHERE order_id = " . (int)$orderId;
-
-        $writeConnection->query($query);
+        Mage::getResourceModel('sales/order')->setSouthWareOrderId($orderId, $southwareOrderId);
     }
 }
