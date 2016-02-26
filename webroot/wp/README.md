@@ -1,2 +1,0 @@
-# wp
-MRS wordpress blog
