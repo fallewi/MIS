@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Shipperhq_Pickup>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Shipping />
+                <Shipperhq_Shipper />
+                <Shipperhq_Frontend />
+                <Shipperhq_Splitrates />
+            </depends>
+        </Shipperhq_Pickup>
+    </modules>
+</config>
