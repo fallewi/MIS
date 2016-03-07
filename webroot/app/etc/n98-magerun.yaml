@@ -1,0 +1,14 @@
+commands:
+  N98\Magento\Command\Database\DumpCommand:
+    table-groups:
+
+      # - id: n98
+      #   description: Tables starting with n98
+      #   tables: n98*
+      # - id: development
+      #   description: Removes logs and trade data so developers do not have to work with real customer data
+      #   tables: @trade @stripped @n98
+
+      - id: basnapshots
+        description: https://github.com/netz98/n98-magerun/wiki/Stripped-Database-Dumps
+        tables: @development
