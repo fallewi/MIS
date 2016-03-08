@@ -14,7 +14,7 @@
 <config>
     <modules>
         <SFC_Kount>
-            <version>7.1.0</version>
+            <version>7.1.2.2</version>
         </SFC_Kount>
     </modules>
     <global>
@@ -186,13 +186,13 @@
     </frontend>
     <admin>
         <routers>
-            <kount>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>SFC_Kount</module>
-                    <frontName>kount</frontName>
+                    <modules>
+                        <kount after="Mage_Adminhtml">SFC_Kount</kount>
+                    </modules>
                 </args>
-            </kount>
+            </adminhtml>        
         </routers>
     </admin>
     <default>
@@ -212,6 +212,11 @@
             <phonetoweb>
                 <enable>0</enable>
             </phonetoweb>
+            <workflow>
+                <workflow_mode>pre_auth</workflow_mode>
+                <decline_action>cancel</decline_action>
+                <notify_processor_decline>1</notify_processor_decline>
+            </workflow>
             <log>
                 <enable>1</enable>
             </log>

@@ -3,13 +3,13 @@
  Plugin Name: Network Publisher
  Plugin URI: http://wordpress.org/extend/plugins/network-publisher/
  Description: Automatically publish your blog posts to Social Networks including Twitter, Facebook, and, LinkedIn.
- Version: 6.0
+ Version: 6.1
  Author: linksalpha
  Author URI: http://www.linksalpha.com
  */
 
 /*
- Copyright (C) 2013 LinksAlpha.
+ Copyright (C) 2015 LinksAlpha.
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -30,18 +30,16 @@ define('NETWORKPUB_WP_PLUGIN_URL',					networkpub_get_plugin_dir());
 define('NETWORKPUB_WIDGET_NAME', 					__("Network Publisher"));
 define('NETWORKPUB_WIDGET_NAME_INTERNAL', 			'networkpub');
 define('NETWORKPUB_WIDGET_NAME_INTERNAL_NW', 		'nw');
-define('NETWORKPUB_PLUGIN_ADMIN_URL', 				admin_url() . 'plugins.php?page=' . NETWORKPUB_WIDGET_NAME_INTERNAL);
-define('NETWORKPUB_WIDGET_NAME_POSTBOX', 			__("Postbox"));
-define('NETWORKPUB_WIDGET_NAME_POSTBOX_INTERNAL', 	'networkpubpostbox');
+define('NETWORKPUB_PLUGIN_ADMIN_URL', 				esc_url(get_admin_url(null, 'options-general.php?page='.networkpub_get_plugin_file(NETWORKPUB_WIDGET_NAME))));
 define('NETWORKPUB_WIDGET_PREFIX', 					'networkpub');
-define('NETWORKPUB', 								__('Automatically publish your blog posts to 20+ Social Networks including Facebook, Twitter, LinkedIn, Yahoo, Yammer, MySpace, Identi.ca'));
+define('NETWORKPUB', 								__('Automatically publish your blog posts to Social Networks including Facebook, Twitter, and LinkedIn'));
 define('NETWORKPUB_ERROR_INTERNAL', 				'internal error');
 define('NETWORKPUB_ERROR_INVALID_URL', 				'invalid url');
 define('NETWORKPUB_ERROR_INVALID_KEY', 				'invalid key');
 define('NETWORKPUB_CURRENTLY_PUBLISHING', 			__('You are currently Publishing your Blog to'));
 define('NETWORKPUB_SOCIAL_NETWORKS', 				__('Social Networks'));
 define('NETWORKPUB_SOCIAL_NETWORK', 				__('Social Network'));
-define('NETWORKPUB_PLUGIN_VERSION', 				'6.0');
+define('NETWORKPUB_PLUGIN_VERSION', 				'6.1');
 define('NETWORKPUB_API_URL', 						'http://www.linksalpha.com/a/');
 
 $networkpub_settings['api_key'] = array('label' => 'API Key:', 'type' => 'text', 'default' => '');
@@ -67,11 +65,12 @@ function networkpub_init() {
 		wp_register_style('networkpublishercss', NETWORKPUB_WP_PLUGIN_URL . 'networkpub.css');
 		wp_enqueue_style('networkpublishercss');
 		//Hook into admin menu and activation loop
-		add_action('admin_menu', 'networkpub_pages');
 		add_action('activate_{$plugin}', 'networkpub_pushpresscheck');
 		add_action("activated_plugin", "networkpub_pushpresscheck");
 		//Deactivate loop
 		register_deactivation_hook(__FILE__, 'networkpub_deactivate');
+		// Action
+		add_action('admin_menu', 'networkpub_admin');
 	}
 }
 
@@ -102,6 +101,20 @@ add_action('admin_menu', 'networkpub_create_post_meta_box');
 add_action('wp_head', 'networkpub_add_metatags');
 add_filter('language_attributes', 'networkpub_html_schema');
 
+
+function networkpub_admin() {
+	if (function_exists('add_options_page')) {
+	    add_options_page('Network Publisher', 'Network Publisher', 'manage_options', __FILE__, 'networkpub_conf');
+	}
+}
+
+add_filter( 'plugin_action_links', 'networkpub_add_action_plugin', 10, 5 );
+
+function networkpub_add_action_plugin( $links, $plugin_file ) {
+	echo $plugin_file;
+	$links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page='.$plugin_file) ) .'">Settings</a>';
+   	return $links;
+}
 
 function networkpub_options() {
 	$options = get_option(NETWORKPUB_WIDGET_NAME_INTERNAL);
@@ -144,22 +157,12 @@ function networkpub_options() {
 	if (!array_key_exists('networkpub_post_image_video', $options)) {
 		$options['networkpub_post_image_video'] = 'image';
 	}
-	if (!array_key_exists('networkpub_install_extension_alert_show', $options)) {
-		$options['networkpub_install_extension_alert_show'] = 1;
-	}
 	if (!array_key_exists('networkpub_networks_data', $options)) {
 		$options['networkpub_networks_data'] = "";
 	}
 	update_option(NETWORKPUB_WIDGET_NAME_INTERNAL, $options);
 }
 
-function networkpub_actlinks($links) {
-	$settings_link = '<a href="' . NETWORKPUB_PLUGIN_ADMIN_URL . '">' . __('Settings') . '</a>';
-	array_unshift($links, $settings_link);
-	return $links;
-}
-$plugin = plugin_basename(__FILE__);
-add_filter("plugin_action_links_$plugin", 'networkpub_actlinks');
 
 function networkpub_create_post_meta_box() {
 	add_meta_box( 'networkpub_meta_box', NETWORKPUB_WIDGET_NAME, 'networkpub_post_meta_box', 'post', 'side', 'core' );
@@ -191,24 +194,6 @@ function networkpub_post_meta_box($object, $box) {
 	}
 	//HTML
 	$html  = '';
-	//Extension download
-	$networkpub_install_extension_alert_show = $options['networkpub_install_extension_alert_show'];
-	if($networkpub_install_extension_alert_show) {
-		global $is_gecko, $is_safari, $is_chrome;
-		$html .= '<div style="display: none;" id="linksalpha_post_download_chrome" class="misc-pub-section networkpublisher_post_meta_box_first"><img src="//lh4.ggpht.com/RcHmTiAjiRPW5GSamTaet1etjiNYaeHVT2yOtEsJDEs9IRWTdt1P64zpDmh6XzAbN4HH9byl9YhgTK_NbcXq=s16" style="vertical-align: text-bottom" />&nbsp;Install <a class="linksalpha_post_download_chrome_link" target="_blank" href="https://chrome.google.com/webstore/detail/ffifmkcjncgmnnmkedgkiabklmjdmpgi">Post extension for Chrome</a>.</div>';
-		$html .= '<div style="display: none;" id="linksalpha_post_download_firefox" class="misc-pub-section networkpublisher_post_meta_box_first"><img src="//lh5.ggpht.com/HE6TEsIgCGZgRKAZJ8SI1Yq7rGGxy5s_TQhleiphoEY2QFye1OlFRm8r_6JmGq4OUfHq07OE2dk6XeHWcYyU=s16" style="vertical-align: text-bottom" />&nbsp;Install <a class="linksalpha_post_download_firefox_link" href="http://www.linksalpha.com/files/post.xpi">Post extension for Firefox</a>.</div>';
-		$html .= '<div style="display: none;" id="linksalpha_post_download_safari" class="misc-pub-section networkpublisher_post_meta_box_first"><img src="//lh6.ggpht.com/4FQoS1Pn8OQOlahH5ESbjJv8iuVPV2If34-fABfBWcrJLUja5wiyLgWAekHWEuk_WaZg_iU9bf4Jli07WDQrRQ=s16" style="vertical-align: text-bottom" />&nbsp;Install <a class="linksalpha_post_download_safari_link" href="http://www.linksalpha.com/files/post.safariextz">Post extension for Safari</a>.</div>';
-		if($is_gecko) {
-			$browser = 'firefox';
-		} elseif($is_chrome) {
-			$browser = 'chrome';
-		} elseif($is_safari) {
-			$browser = 'safari';
-		} else {
-			$browser = '';
-		}
-		$html .= '<input type="hidden" name="linksalpha_browser" id="linksalpha_browser" value="'.$browser.'" autocomplete="off" />';
-	}
 	//Publish All
 	$curr_val_publish = get_post_meta($object->ID, 'networkpub_meta_publish', true);
 	if ($curr_val_publish == '') {
@@ -898,13 +883,6 @@ function networkpub_conf() {
 					$networkpub_post_image_video = 'image';
 				}
 				networkpub_update_option('networkpub_post_image_video', $networkpub_post_image_video);
-			} elseif ($_POST['networkpub_form_type'] == 'networkpub_install_extension_alert_show') {
-				if (array_key_exists('networkpub_install_extension_alert_show', $_POST)) {
-					$networkpub_install_extension_alert_show = 1;
-				} else {
-					$networkpub_install_extension_alert_show = 0;
-				}
-				networkpub_update_option('networkpub_install_extension_alert_show', $networkpub_install_extension_alert_show);
 			}
 		}
 	}
@@ -1007,16 +985,6 @@ function networkpub_conf() {
 		} else {
 			$networkpub_post_image_video = 'image';
 		}
-		if (array_key_exists('networkpub_install_extension_alert_show', $options)) {
-			$networkpub_install_extension_alert_show = $options['networkpub_install_extension_alert_show'];
-			if ($networkpub_install_extension_alert_show) {
-				$networkpub_install_extension_alert_show = 'checked';
-			} else {
-				$networkpub_install_extension_alert_show = '';
-			}
-		} else {
-			$networkpub_install_extension_alert_show = 'checked';
-		}
 	} else {
 		$networkpub_enable = 'checked';
 		$networkpub_auth_error_show = 'checked';
@@ -1031,7 +999,6 @@ function networkpub_conf() {
 		$networkpub_custom_field_image_url = '';
 		$networkpub_thumbnail_size = 'medium';
 		$networkpub_post_image_video = 'image';
-		$networkpub_install_extension_alert_show = 'checked';
 	}
 	$fb_langs = networkpub_fb_langs();
 	$fb_langs_options = '';
@@ -1087,28 +1054,21 @@ function networkpub_conf() {
 				<span><div class="icon32" id="networkpubisher_laicon"><br /></div><h2>' . NETWORKPUB_WIDGET_NAME . '</h2></span>
 			</div>
 			<div class="wrap">
-			<div style="width:76%;float:left;">
 				<div class="networkpublisher_share_box">
 					<table>
 						<tr>
 							<td class="networkpublisher_share_box_left">
-								<span>Install Browser Extension&nbsp;</span>
-								<span><img src="//lh4.ggpht.com/RcHmTiAjiRPW5GSamTaet1etjiNYaeHVT2yOtEsJDEs9IRWTdt1P64zpDmh6XzAbN4HH9byl9YhgTK_NbcXq=s16" style="vertical-align: text-bottom" />&nbsp;<a target="_blank" href="https://chrome.google.com/webstore/detail/ffifmkcjncgmnnmkedgkiabklmjdmpgi">Chrome</a></span>
-								<span><img src="//lh5.ggpht.com/HE6TEsIgCGZgRKAZJ8SI1Yq7rGGxy5s_TQhleiphoEY2QFye1OlFRm8r_6JmGq4OUfHq07OE2dk6XeHWcYyU=s16" style="vertical-align: text-bottom" />&nbsp;<a href="http://www.linksalpha.com/files/post.xpi">Firefox</a></span>
-								<span><img src="//lh6.ggpht.com/4FQoS1Pn8OQOlahH5ESbjJv8iuVPV2If34-fABfBWcrJLUja5wiyLgWAekHWEuk_WaZg_iU9bf4Jli07WDQrRQ=s16" style="vertical-align: text-bottom" />&nbsp;<a href="http://www.linksalpha.com/files/post.safariextz">Safari</a></span>
+								&nbsp;
 							</td>
 							<td class="networkpublisher_share_box_right">
-								<table>
-									<tr>
-										<td>
-											<span style="float:right">
-											<div class="linksalpha-email-button" id="linksalpha_tag_208867858" data-url="http://www.linksalpha.com" data-text="LinksAlpha - Making Social Media Easy!" data-desc="LinksAlpha provides quick and easy way for companies and users to connect and share on social web. Using LinksAlpha tools, you can integrate Social Media Buttons into your website, Publish your Website Content Automatically to Social Media Sites, and Track Social Media Profiles, all from one place." data-image="http://www.linksalpha.com/images/LALOGO_s175.png"></div>
-											<script type="text/javascript" src="http://www.linksalpha.com/social/loader?tag_id=linksalpha_tag_208867858&fblikefont=arial&vkontakte=1&livejournal=1&twitter=1&xinglang=de&linkedin=1&tumblr=1&hyves=1&fblikelang=en_US&delicious=1&twitterw=110&gpluslang=en-US&gmail=1&weibo=1&posterous=1&xing=1&sonico=1&twitterlang=en&pinterest=1&myspace=1&msn=1&print=1&mailru=1&email=1&counters=googleplus%2Cfacebook%2Clinkedin%2Ctwitter&reddit=1&hotmail=1&netlog=1&twitterrelated=linksalpha&aolmail=1&link=http%3A%2F%2Fwww.linksalpha.com&diigo=1&evernote=1&digg=1&yahoomail=1&yammer=1&stumbleupon=1&instapaper=1&facebookw=90&googleplus=1&fblikeverb=like&fblikeref=linksalpha&halign=left&readitlater=1&v=2&facebook=1&button=googleplus%2Cfacebook%2Clinkedin%2Ctwitter&identica=1"></script>
-											</span>
-											<span>' . __('Share') . '&nbsp;&nbsp;</span>
-										</td>
-									</tr>
-								</table>
+								<span style="display: inline-block;padding-right: 5px;">
+									Get a Free E-commerce Store
+								</span>
+								<span>
+									<a href="http://www.singlecontactapp.com" target="_blank">
+										<img src="https://www.singlecontactapp.com/images/logo_singlecontact.png" title="SingleContactapp.com" alt="SingleContactapp.com" style="height: 16px;" />
+									</a>
+								</span>
 							</td>
 						</tr>
 					</table>
@@ -1431,24 +1391,6 @@ function networkpub_conf() {
 								</div>
 							</div>
 						</a>
-						<div style="padding:40px 0px 0px 0px;">
- 							<div class="networkpublisher_header">
- 								<strong>' . __('Show/Hide message to Install Browser Extension') . '</strong>
- 							</div>
- 							<div class="networkpublisher_content_box">
- 								<div style="padding-bottom:10px;">
- 									<form action="" method="post">
- 										<div>
- 											<input type="checkbox" id="networkpub_install_extension_alert_show" name="networkpub_install_extension_alert_show" ' . $networkpub_install_extension_alert_show . ' /><label for="networkpub_install_extension_alert_show">&nbsp;&nbsp;' . __('Check this box to show the message in Network Publisher widget to install browser extension from LinksAlpha.com.') . ' <a target="_blank" href="http://www.linksalpha.com/downloads">' . __('Click Here') . '</a> ' . __('to learn more.') . '</label>
- 										</div>
- 										<div style="padding-top:5px;">
- 											<input type="hidden" name="networkpub_form_type" value="networkpub_install_extension_alert_show" />
- 											<input type="submit" name="submit" class="button-primary" value="' . __('Update') . '" />
- 										</div>
- 									</form>
- 								</div>
- 							</div>
- 						</div>
 						<div style="font-size:13px;margin:40px 0px 0px 0px;">
                             <div class="networkpublisher_header">
 								<strong>' . __('Note') . '</strong>
@@ -1460,16 +1402,7 @@ function networkpub_conf() {
 					</div>
 				</div>
 			</div>
-			<div style="vertical-align:top;padding-left:2%;text-align:right;width:20%;float:left;">
-				<div class="networkpub_clear_both"></div>
-				<div class="networkpublisher_header_3" style="float:right;margin-right:-35px;">' . __('Supported Networks') . '</div>
-				<div class="networkpub_clear_both"></div>
-				<div class="networkpublisher_content_box_3" style="float:right;margin-right:-35px;">
-					' . networkpub_supported_networks() . '
-				</div>
-				<div class="networkpub_clear_both"></div>
-			</div>
-			</div>';
+			';
 	echo $html;
 }
 
@@ -1690,31 +1623,6 @@ function networkpub_update_option($option, $value) {
 	$options = get_option(NETWORKPUB_WIDGET_NAME_INTERNAL);
 	$options[$option] = $value;
 	update_option(NETWORKPUB_WIDGET_NAME_INTERNAL, $options);
-	return;
-}
-
-function networkpub_pages() {
-	if (function_exists('add_submenu_page')) {
-		$page = add_submenu_page('plugins.php', NETWORKPUB_WIDGET_NAME, NETWORKPUB_WIDGET_NAME, 'manage_options', NETWORKPUB_WIDGET_NAME_INTERNAL, 'networkpub_conf');
-		if (is_admin()) {
-			$page = add_submenu_page('edit.php', NETWORKPUB_WIDGET_NAME_POSTBOX, NETWORKPUB_WIDGET_NAME_POSTBOX, 'manage_options', NETWORKPUB_WIDGET_NAME_POSTBOX_INTERNAL, 'networkpub_postbox');
-		}
-	}
-}
-
-function networkpub_postbox() {
-	$html = '<div class="wrap"><div class="icon32" id="networkpubisher_laicon"><br /></div><h2>' . NETWORKPUB_WIDGET_NAME . ' - ' . NETWORKPUB_WIDGET_NAME_POSTBOX . '</h2></div>';
-	$html .= '<iframe id="networkpub_postbox" src="http://www.linksalpha.com/post?source=wordpress&netpublink=' . urlencode(NETWORKPUB_WP_PLUGIN_URL) . '&sourcelink=' . urlencode(networkpub_postbox_url()) . '#' . urlencode(networkpub_postbox_url()) . '" width="1050px;" height="650px;" scrolling="no" style="background-color: transparent; border:none !important;" allowTransparency="allowTransparency" frameBorder="0"></iframe>';
-	$html .= '<div style="padding:10px 10px 6px 10px;background-color:#FFFFFF;margin-bottom:15px;margin-top:0px;border:1px solid #F0F0F0;width:1005px;">
-				<div style="width:130px;float:left;font-weight:bold;">
-					' . __('Share this Plugin') . '
-				</div>
-				<div style="width:700px">
-					<div class="linksalpha-email-button" id="linksalpha_tag_20886785813" data-url="http://www.linksalpha.com" data-text="LinksAlpha - Making Social Media Easy!" data-desc="LinksAlpha provides quick and easy way for companies and users to connect and share on social web. Using LinksAlpha tools, you can integrate Social Media Buttons into your website, Publish your Website Content Automatically to Social Media Sites, and Track Social Media Profiles, all from one place." data-image="http://www.linksalpha.com/images/LALOGO_s175.png"></div>
-					<script type="text/javascript" src="http://www.linksalpha.com/social/loader?tag_id=linksalpha_tag_20886785813&fblikefont=arial&vkontakte=1&livejournal=1&twitter=1&xinglang=de&linkedin=1&tumblr=1&hyves=1&fblikelang=en_US&delicious=1&twitterw=110&gpluslang=en-US&gmail=1&weibo=1&posterous=1&xing=1&sonico=1&twitterlang=en&pinterest=1&myspace=1&msn=1&print=1&mailru=1&email=1&counters=googleplus%2Cfacebook%2Clinkedin%2Ctwitter&reddit=1&hotmail=1&netlog=1&twitterrelated=linksalpha&aolmail=1&link=http%3A%2F%2Fwww.linksalpha.com&diigo=1&evernote=1&digg=1&yahoomail=1&yammer=1&stumbleupon=1&instapaper=1&facebookw=90&googleplus=1&fblikeverb=like&fblikeref=linksalpha&halign=left&readitlater=1&v=2&facebook=1&button=googleplus%2Cfacebook%2Clinkedin%2Ctwitter&identica=1"></script>
-				</div>
-			  </div>';
-	echo $html;
 	return;
 }
 
@@ -2047,16 +1955,6 @@ function networkpub_pushpresscheck() {
 			}
 		}
 	}
-}
-
-function networkpub_postbox_url() {
-	global $wp_version;
-	if (version_compare($wp_version, '3.0.0', '<')) {
-		$admin_url = site_url() . '/wp-admin/edit.php?page=' . NETWORKPUB_WIDGET_NAME_POSTBOX_INTERNAL;
-	} else {
-		$admin_url = site_url() . '/wp-admin/edit.php?page=' . NETWORKPUB_WIDGET_NAME_POSTBOX_INTERNAL;
-	}
-	return $admin_url;
 }
 
 function networkpub_version() {
@@ -2441,6 +2339,15 @@ function networkpub_get_post_data_republish($p) {
 		$post_data['page_url_image'] 	= 	$page_url_image;	
 	}
 	return $post_data;
+}
+
+function networkpub_get_plugin_file( $plugin_name ) {
+    require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+    $plugins = get_plugins();
+    foreach( $plugins as $plugin_file => $plugin_info ) {
+        if ( $plugin_info['Name'] == $plugin_name ) return $plugin_file;
+    }
+    return null;
 }
 
 register_deactivation_hook(__FILE__, 'networkpub_deactivate');

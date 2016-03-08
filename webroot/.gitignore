@@ -23,4 +23,16 @@ var
 
 
 # wordpress blog
-wp/
+wp/*.log
+wp/.htaccess
+wp/sitemap.xml
+wp/sitemap.xml.gz
+wp/wp-config.php
+wp/wp-content/advanced-cache.php
+wp/wp-content/backup-db/
+wp/wp-content/backups/
+wp/wp-content/blogs.dir/
+wp/wp-content/cache/
+wp/wp-content/upgrade/
+wp/wp-content/uploads/
+wp/wp-content/wp-cache-config.php

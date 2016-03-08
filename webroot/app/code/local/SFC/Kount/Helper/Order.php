@@ -197,7 +197,12 @@ class SFC_Kount_Helper_Order extends Mage_Core_Helper_Abstract
         catch (\Exception $e) {
             // Log details of this exception
             Mage::log($e->getMessage(), Zend_Log::ERR, SFC_Kount_Helper_Data::KOUNT_LOG_FILE);
-
+            
+            Mage::log('Unable to refund Magento order.', Zend_Log::ERR, SFC_Kount_Helper_Data::KOUNT_LOG_FILE);
+            
+            if($this->cancelOrder($order) == false) {
+                $this->setOrderToKountDecline($order);
+            }
             // return false
             return false;
         }

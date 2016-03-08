@@ -91,6 +91,19 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 		return Mage::getStoreConfigFlag('wordpress/integration/full', Mage::helper('wordpress/app')->getStore()->getId());
 	}
 	
+	public function getCustomizerData()
+	{
+		if (Mage::app()->getRequest()->getPost('wp_customize') === 'on') {
+			if ($data = Mage::app()->getRequest()->getPost('customized')) {
+				if ($data = json_decode(stripslashes($data), true)) {
+					return $data;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Gets a Wordpress option based on it's option name
 	 *
@@ -100,6 +113,12 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 	 */
 	public function getWpOption($key, $default = null)
 	{
+		if ($data = $this->getCustomizerData()) {
+			if (isset($data[$key])) {
+				return $data[$key];
+			}
+		}
+			
 		$db = $this instanceof Fishpig_Wordpress_Helper_App
 			? $this->getDbConnection()
 			: Mage::helper('wordpress/app')->getDbConnection();
@@ -159,34 +178,15 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 	 */
 	public function getDefaultStore($websiteCode = null)
 	{
-		if (!$this->_isCached('default_store')) {	
-			$resource = Mage::getSingleton('core/resource');
-			$connection = $resource->getConnection('core_read');
-			$select = $connection->select()
-				->from(array('_store_table' => $resource->getTableName('core/store')), 'store_id')
-				->where('_store_table.store_id > ?', 0)
-				->where('_store_table.code != ?', 'admin')
-				->limit(1)
-				->order('_store_table.sort_order ASC');
-			
-			if (!is_null($websiteCode)) {
-				$select->join(
-					array('_website_table' => $resource->getTableName('core/website')),
-					$connection->quoteInto('`_website_table`.`website_id`=`_store_table`.`website_id` AND `_website_table`.`code`=?', $websiteCode),
-					''
-				);
-			}
-			
-			$store = Mage::getModel('core/store')->load($connection->fetchOne($select));
-			
-			if (!$store->getId() && !is_null($websiteCode)) {
-				return $this->getDefaultStore();
-			}
-			
-			$this->_cache('default_store', $store);
+		if (!is_null($websiteCode)) {
+			$website = Mage::app()->getWebsite($websiteCode);
 		}
-		
-		return $this->_cached('default_store');
+		else {
+			$allWebsites = Mage::app()->getWebsites(false);
+			$website = array_shift($allWebsites);
+		}
+			
+		return $website->getDefaultStore();
 	}
 	
 	/**

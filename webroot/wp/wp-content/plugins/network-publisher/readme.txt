@@ -1,47 +1,29 @@
 === Plugin Name ===
 Contributors: linksalpha
-Tags: twitter, page, widgets, widget, linkedin, linkedin groups, linkedin company page, linkedin page, Post, facebook, facebook page, facebook profile, facebook wall, facebook event, facebook group, yammer, google, sidebar, rss, plugin, posts, publish, distribute, status, update, status update, twitter oauth, oauth, admin, links, auto posts, auto, automatic posting, Blogger, Delicious, Diigo, Plurk, Sonico, Tumblr, Typepad, Status.net, socialcast, p2, tumblr, appnet
+Tags: twitter, page, widgets, widget, linkedin, linkedin groups, linkedin company page, linkedin page, Post, facebook, facebook page, facebook profile, yammer, google, sidebar, rss, plugin, posts, publish, distribute, status, update, status update, twitter, admin, links, auto posts, auto, automatic posting, Blogger, Tumblr, Typepad
 Requires at least: 1.0.0
-Tested up to: 3.8
-Stable tag: 6.0
+Tested up to: 4.4
+Stable tag: 6.1
 
 == Description ==
 
 Plugin enables you to `Automatically Publish` your `Blog Posts to Social Networks`. Currently Supported Networks include:
 
-1. Facebook Profile/Wall
+1. Facebook Profile
 1. Facebook Pages
-1. Facebook Groups
-1. Facebook Events
 1. Twitter
 1. LinkedIn
 1. LinkedIn Groups
 1. Yammer
-1. Status.net
-1. Socialcast
 1. Plurk
-1. Sonico
-1. Delicious
-1. Diigo
 1. Wordpress.com Blog
 1. Wordpress.org Blog
 1. Blogger
 1. Tumblr
-1. Typepad
-1. App.net
 
 **Getting Started**
 
 New user? [Click here](http://help.linksalpha.com/networks/getting-started) to read help document. 
-
-**Browser Extensions**
-
-We are excited to announce launch of [LinksAlpha.com](http://www.linksalpha.com) browser extensions for Chrome, Firefox, or Safari. These extensions enable quick and easy posting to your social profiles from your browser. Below are the download links:
-
-1. [Chrome](https://chrome.google.com/webstore/detail/ffifmkcjncgmnnmkedgkiabklmjdmpgi)
-1. [Firefox](http://www.linksalpha.com/files/post.xpi)
-1. [Safari](http://www.linksalpha.com/files/post.safariextz)
-
 
 **Additional Features**
 
@@ -59,6 +41,11 @@ We are excited to announce launch of [LinksAlpha.com](http://www.linksalpha.com)
 **Miscellaneous:**
  
 * Get Support: [Support Desk](http://support.linksalpha.com/home)
+
+
+**Free E-commerce Store Builder**
+
+We are excited to announce launch of [SingleContactapp.com](http://www.singlecontactapp.com), a free E-commerce Store builder. Add products, setup payments, and shipping and you are ready to sell!
 
 
 == Installation ==
@@ -85,6 +72,9 @@ We are excited to announce launch of [LinksAlpha.com](http://www.linksalpha.com)
 6. Network Publisher widget in the WordPress Post Editor window
 
 == Changelog ==
+
+= 6.1 =
+* Minor bug fixes.
 
 = 6.0 =
 * Users can now select networks to which the post can get published from the Post/Page editor.

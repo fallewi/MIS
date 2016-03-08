@@ -152,41 +152,7 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 	 */		
 	public function initWordpressConfigObserver(Varien_Event_Observer $observer)
 	{
-		return;
-		$config = Mage::app()->getConfig();
-		
-		print_r($config->getNode('sections/wordpress/groups'));
-		exit;
-		$config = Mage::getSingleton('adminhtml/config')->getSections('wordpress')->wordpress;
-
-
-		$modules = array('wp_addon_multisite' => 'Multisite2');
-		$template = trim("<%s><label>%s</label>
-	<frontend_model>wordpress/adminhtml_system_config_backend_form_field_license</frontend_model>
-	<sort_order>1</sort_order><show_in_default>1</show_in_default>
-</%s>");
-
-		foreach($modules as $helperClass => $name) {
-			$xml[] = sprintf($template, $helperClass, $name, $helperClass);
-		}
-
-		$configNew = new Varien_Simplexml_Config();
-
-		$configNew->loadString(
-			sprintf('<config><wordpress><groups><license><fields>%s</fields></license></groups></wordpress></config>', implode("\n", $xml))
-		);
-		
-		$config->extend($configNew);
-		
-		if (strpos($config->asXml(), 'Multisite2') !== false) {
-			echo 'It appears';
-			exit;
-		}
-		
-		exit('no');
-		echo '<pre>' . htmlentities($config->asXml());exit;
-		echo '<pre>';
-		print_r($config);exit;
+		return $this;
 	}
 	
 	/**

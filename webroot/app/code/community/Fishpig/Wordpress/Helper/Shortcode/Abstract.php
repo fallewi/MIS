@@ -151,11 +151,11 @@ abstract class Fishpig_Wordpress_Helper_Shortcode_Abstract extends Fishpig_Wordp
 	protected function _convertRawUrls(&$content)
 	{
 		$content = "\n" . $content . "\n";
-		
+
 		if (($regex = $this->getRawUrlRegex()) !== '') {
 			$regexes = array(
 				'[\r\n]{1}' . $regex . '[\r\n]{1}',
-				'<p>' . $regex . '<\/p>',
+				'<p>[\s]{0,}' . $regex . '[\s]{0,}<\/p>',
 			);
 			
 			foreach($regexes as $regex) {

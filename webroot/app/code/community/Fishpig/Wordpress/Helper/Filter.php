@@ -93,6 +93,10 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function addParagraphsToString($content)
 	{
+		if (function_exists('wpautop')) {
+			return wpautop($content);
+		}
+
 		$protectedTags = array(
 			'script',
 			'style',

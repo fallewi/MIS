@@ -74,4 +74,30 @@ class Fishpig_Wordpress_Model_Resource_Term extends Fishpig_Wordpress_Model_Reso
 		
 		return self::$_tableHasTermOrder;
 	}
+	
+	/**
+	 * Get all child ID's for a parent
+	 * This includes recursive levels
+	 *
+	 * @param int $parentId
+	 * @return array
+	 */
+	public function getChildIds($parentId)
+	{
+		$select = $this->_getReadAdapter()
+			->select()
+				->from($this->getTable('wordpress/term_taxonomy'), 'term_id')
+				->where('parent=?', $parentId)
+				->where('count>?', 0);
+		
+		if ($termIds = $this->_getReadAdapter()->fetchCol($select)) {
+			foreach($termIds as $key => $termId) {
+				$termIds = array_merge($termIds, $this->getChildIds($termId));
+			}
+			
+			return array_merge(array($parentId), $termIds);
+		}
+		
+		return array($parentId);
+	}
 }

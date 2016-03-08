@@ -45,7 +45,7 @@ class SFC_Kount_Model_Observer
             return;
 
         // Use Kount for this transaction?
-        if ($this->useKountForThisTransaction($payment->getMethod())) {
+        if ($this->useKountForThisTransaction($payment->getMethod(), $payment->getOrder()->getStoreId())) {
             if($workflowHelper = $this->workflowHelper())
                 $workflowHelper->onSalesOrderPaymentPlaceStart($payment);
         }
@@ -111,7 +111,7 @@ class SFC_Kount_Model_Observer
             return;
 
         // Use Kount for this transaction?
-        if ($this->useKountForThisTransaction($order->getPayment()->getMethod())) {
+        if ($this->useKountForThisTransaction($order->getPayment()->getMethod(), $order->getStoreId())) {
             if($workflowHelper = $this->workflowHelper())
                 $workflowHelper->onSalesOrderServiceQuoteSubmitFailure($order);
         }
@@ -147,7 +147,7 @@ class SFC_Kount_Model_Observer
                 continue;
                 
             // Use Kount for this transaction?
-            if ($this->useKountForThisTransaction($order->getPayment()->getMethod())) {
+            if ($this->useKountForThisTransaction($order->getPayment()->getMethod(), $order->getStoreId())) {
                 if($workflowHelper = $this->workflowHelper())
                     $workflowHelper->onCheckoutSubmitAllAfter($order);
             }
@@ -156,7 +156,7 @@ class SFC_Kount_Model_Observer
         return $this;
     }
 
-    protected function useKountForThisTransaction($paymentMethodCode)
+    protected function useKountForThisTransaction($paymentMethodCode, $storeId = null)
     {
         /** @var SFC_Kount_Helper_Data $helper */
         $helper = Mage::helper('kount');
@@ -165,8 +165,8 @@ class SFC_Kount_Model_Observer
 
         // Kount enabled for this store?
         // Should we skip processing because this is the admin panel?
-        if (Mage::getStoreConfig('kount/account/enabled') == '1' && !$helper->shouldSkipAdminProcessing()) {
-            if (!$paymentMethodHelper->methodIsDisabledForKount($paymentMethodCode)) {
+        if (Mage::getStoreConfig('kount/account/enabled', $storeId) == '1' && !$helper->shouldSkipAdminProcessing()) {
+            if (!$paymentMethodHelper->methodIsDisabledForKount($paymentMethodCode, $storeId)) {
                 return true;
             }
             else {

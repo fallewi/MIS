@@ -71,8 +71,21 @@ class SFC_Kount_Helper_PaymentMethod extends Mage_Core_Helper_Abstract
         }
         // Handle silent POST methods
         else if (in_array($methodCode, $silentPostMethods)) {
-            // For these methods, there is no chance to get the actual credit card number
-            $request->setGiftCardPayment($payment->getData('cc_last4'));
+            if($methodCode == SFC_Kount_Helper_Ris::RIS_PAYTYPE_BRAINTREE){
+                $postData = Mage::app()->getRequest()->getParams();
+                Mage::log($postData);
+                if(!empty($postData['payment']['cc_token']))
+                    $cardNumber = $postData['payment']['cc_token'];
+                else if(!empty($postData['payment']['cc_number']))
+                    $cardNumber = $postData['payment']['cc_number'];
+                else if(!empty($postData['payment']['cc_last4']))
+                    $cardNumber = $postData['payment']['cc_last4'];
+                
+                $request->setGiftCardPayment($cardNumber);
+            } else {
+                // For these methods, there is no chance to get the actual credit card number
+                $request->setGiftCardPayment($payment->getData('cc_last4'));
+            }
             $request->setPaymentTokenLast4($payment->getData('cc_last4'));
         }
         // Handle StoreFront Consulting Tokenized Payment Methods
@@ -140,7 +153,7 @@ class SFC_Kount_Helper_PaymentMethod extends Mage_Core_Helper_Abstract
      * @param string $methodCode
      * @return bool
      */
-    public function methodIsDisabledForKount($methodCode)
+    public function methodIsDisabledForKount($methodCode, $storeId = null)
     {
         
         Mage::log('Current Payment Method is '.$methodCode.', checking Config.', Zend_Log::INFO, SFC_Kount_Helper_Data::KOUNT_LOG_FILE);
@@ -154,7 +167,7 @@ class SFC_Kount_Helper_PaymentMethod extends Mage_Core_Helper_Abstract
             'verisign',             // PayPal PayFlow Pro
         );
         // Check arbitrary list of disabled methods
-        $disabledMethods = Mage::getStoreConfig('kount/paymentmethods/disable_methods');
+        $disabledMethods = Mage::getStoreConfig('kount/paymentmethods/disable_methods', $storeId);
         $disabledMethods = explode(',', $disabledMethods);
         $disabledMethodCodes = array();
         foreach ($disabledMethods as $disabledMethod) {

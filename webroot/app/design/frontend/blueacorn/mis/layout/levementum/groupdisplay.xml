@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout>
+    <customer_logged_in>
+        <reference name="top.links">
+            <action method="addLink" translate="label title">
+                <label helper="levementum_groupdisplay/getgroupimage" />
+                <url helper="levementum_groupdisplay/getcategoryurl" />
+            </action>
+        </reference>
+    </customer_logged_in>
+
+    <customer_account>
+        <reference name="left">
+            <block type="levementum_groupdisplay/customdisplay" before="-" after="customer_account_dashboard" as="groupdisplay" name="groupdisplay" />
+        </reference>
+    </customer_account>
+
+
+</layout>

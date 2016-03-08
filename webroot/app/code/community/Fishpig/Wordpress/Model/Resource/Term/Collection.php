@@ -8,6 +8,20 @@
 
 class Fishpig_Wordpress_Model_Resource_Term_Collection extends Fishpig_Wordpress_Model_Resource_Collection_Abstract
 {
+	/**
+	 * Name prefix of events that are dispatched by model
+	 *
+	 * @var string
+	*/
+	protected $_eventPrefix = 'wordpress_term_collection';
+	
+	/**
+	 * Name of event parameter
+	 *
+	 * @var string
+	*/
+	protected $_eventObject = 'terms';
+	
 	public function _construct()
 	{
 		$this->_init('wordpress/term');

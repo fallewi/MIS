@@ -16,6 +16,8 @@ class Fishpig_Wordpress_Block_Feed_Post extends Fishpig_Wordpress_Block_Feed_Abs
 	 */
 	protected function _addEntriesToFeed($feed)
 	{
+			$this->getItemAfterContent();
+			
 		$posts = Mage::getSingleton('core/layout')->createBlock($this->getSourceBlock())
 			->getPostCollection();
 
@@ -46,7 +48,9 @@ class Fishpig_Wordpress_Block_Feed_Post extends Fishpig_Wordpress_Block_Feed_Abs
 				));
 			}
 			
-			$description = $this->displayExceprt() ? $post->getPostExcerpt() : $post->getPostContent();
+			$description = $this->_applyVars(Mage::helper('wp_addon_wordpressseo')->getData('rssbefore'), $post)
+				. ($this->displayExceprt() ? $post->getPostExcerpt() : $post->getPostContent())
+				. $this->_applyVars(Mage::helper('wp_addon_wordpressseo')->getData('rssafter'), $post);
 
 			$entry->setDescription($description ? $description : '&nbsp;');
 			
@@ -59,6 +63,7 @@ class Fishpig_Wordpress_Block_Feed_Post extends Fishpig_Wordpress_Block_Feed_Abs
 			$feed->addEntry($entry);
 		}
 	
+
 		return $this;
 	}
 
@@ -70,5 +75,49 @@ class Fishpig_Wordpress_Block_Feed_Post extends Fishpig_Wordpress_Block_Feed_Abs
 	public function displayExceprt()
 	{
 		return Mage::helper('wordpress')->getWpOption('rss_use_excerpt');
+	}
+
+	/**
+	 * Apply variables to a string
+	 *
+	 * @param string $str
+	 * @param Fishpig_Wordpress_Model_Post $post
+	 * @return string
+	 */
+	protected function _applyVars($str, $post)
+	{
+		if (trim($str) === '') {
+			return '';
+		}
+
+		$_helper = Mage::helper('wordpress');
+
+		return str_replace(
+			array(
+				'%%AUTHORLINK%%',
+				'%%POSTLINK%%',
+				'%%BLOGLINK%%',
+				'%%BLOGDESCLINK%%',
+			),
+			array(
+				$this->_createATag($post->getAuthor()->getUrl(), $post->getAuthor()->getDisplayName()),
+				$this->_createATag($post->getPermalink(), $post->getPostTitle()),
+				$this->_createATag($_helper->getUrl(), $_helper->getWpOption('blogname')),
+				$this->_createATag($_helper->getUrl(), $_helper->getWpOption('blogname') . ' - ' . $_helper->getWpOption('blogdescription')),
+			),
+			$str
+		);
+	}
+	
+	/**
+	 * Create an 'A' HTML tag
+	 *
+	 * @param string $href
+	 * @param string $anchor
+	 * @return string
+	 */
+	protected function _createATag($href, $anchor)
+	{
+		return sprintf('<a href="%s">%s</a>', $href, htmlentities($anchor));
 	}
 }
