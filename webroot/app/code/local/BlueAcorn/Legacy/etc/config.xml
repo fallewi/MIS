@@ -33,6 +33,11 @@
             <blueacorn_legacy>
                 <class>BlueAcorn_Legacy_Block</class>
             </blueacorn_legacy>
+            <sales>
+                <rewrite>
+                    <order_history>BlueAcorn_Legacy_Block_Order_History</order_history>
+                </rewrite>
+            </sales>
         </blocks>
         <resources>
             <blueacorn_legacy_setup>
