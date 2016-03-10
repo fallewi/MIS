@@ -91,11 +91,11 @@
         </reference>
     </adminhtml_origins_edit>
 
-    <shiphawk_shipping_adminhtml_shipment_newshipment>
+    <adminhtml_shiphawkshipping_shipment_newshipment>
         <reference name="head">
             <action method="addItem"><type>js_css</type><name>shiphawk/shiphawk.css</name></action>
         </reference>
-    </shiphawk_shipping_adminhtml_shipment_newshipment>
+    </adminhtml_shiphawkshipping_shipment_newshipment>
 
     <adminhtml_sales_order_view>
         <reference name="order_tab_info">

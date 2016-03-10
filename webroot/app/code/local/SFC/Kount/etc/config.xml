@@ -189,7 +189,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <kount after="Mage_Adminhtml">SFC_Kount</kount>
+                        <sfckount after="Mage_Adminhtml">SFC_Kount_Adminhtml</sfckount>
                     </modules>
                 </args>
             </adminhtml>        

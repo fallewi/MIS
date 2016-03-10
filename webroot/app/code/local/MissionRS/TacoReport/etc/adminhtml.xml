@@ -4,7 +4,7 @@
         <missionrs_tacoreport translate="title" module="missionrs_tacoreport">
             <title>Taco Report</title>
             <sort_order>100</sort_order>
-            <action>missionrs_tacoreport/report</action>
+            <action>adminhtml/tacoreport_report</action>
         </missionrs_tacoreport>
     </menu>
     <acl>

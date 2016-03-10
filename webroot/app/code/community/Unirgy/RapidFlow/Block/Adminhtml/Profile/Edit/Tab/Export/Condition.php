@@ -32,7 +32,7 @@ class Unirgy_RapidFlow_Block_Adminhtml_Profile_Edit_Tab_Export_Condition extends
             'legend'=>Mage::helper('urapidflow')->__('Export only products matching the following conditions (leave blank for all products)')
         ))->setRenderer($this->getLayout()->createBlock('adminhtml/widget_form_renderer_fieldset')
             ->setTemplate('promo/fieldset.phtml')
-            ->setNewChildUrl($this->getUrl('urapidflowadmin/adminhtml_profile/newConditionHtml', array('form'=>'conditions')))
+            ->setNewChildUrl($this->getUrl('adminhtml/urapidflowadmin_profile/newConditionHtml', array('form'=>'conditions')))
         );
 
         $fieldset->addField('conditions_post', 'text', array(

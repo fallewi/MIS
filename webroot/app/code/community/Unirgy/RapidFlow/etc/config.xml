@@ -93,13 +93,13 @@
 
     <admin>
         <routers>
-            <urapidflowadmin>
-                <use>admin</use>
-                <args>
-                    <module>Unirgy_RapidFlow</module>
-                    <frontName>urapidflowadmin</frontName>
-                </args>
-            </urapidflowadmin>
+            <adminhtml>
+				<args>
+					<modules>
+						<urapidflowadmin before="Mage_Adminhtml">Unirgy_RapidFlow_Adminhtml</urapidflowadmin>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
 
@@ -110,18 +110,18 @@
                     <urapidflow translate="title" module="urapidflow">
                         <title>RapidFlow</title>
                         <sort_order>45</sort_order>
-                        <action>urapidflowadmin/adminhtml_profile</action>
+                        <action>adminhtml/urapidflowadmin_profile</action>
                         <!--
                         <children>
                             <batch module="urapidflow">
                                 <title>Batches</title>
                                 <sort_order>10</sort_order>
-                                <action>urapidflowadmin/adminhtml_batch</action>
+                                <action>adminhtml/urapidflowadmin_batch</action>
                             </batch>
                             <profile module="urapidflow">
                                 <title>Profiles</title>
                                 <sort_order>20</sort_order>
-                                <action>urapidflowadmin/adminhtml_profile</action>
+                                <action>adminhtml/urapidflowadmin_profile</action>
                             </profile>
                         </children>
                         -->

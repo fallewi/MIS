@@ -34,7 +34,7 @@ class Bronto_Email_Block_Adminhtml_System_Email_Import_Grid extends Mage_Adminht
         }
 
         // Limit grid to show only those templates without message id assigned
-        $collection->addFieldToFilter("`{$brontoTable}`.`bronto_message_id`", array('null' => true));
+        $collection->addFieldToFilter("{$brontoTable}.bronto_message_id", array('null' => true));
 
         $this->setCollection($collection);
 

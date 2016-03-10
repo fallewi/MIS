@@ -19,13 +19,13 @@
     </global>
     <admin>
         <routers>
-            <missionrs_tacoreport>
-                <use>admin</use>
-                <args>
-                    <module>MissionRS_TacoReport</module>
-                    <frontName>missionrs_tacoreport</frontName>
-                </args>
-            </missionrs_tacoreport>
+            <adminhtml>
+				<args>
+					<modules>
+						<tacoreport before="Mage_Adminhtml">MissionRS_TacoReport_Adminhtml</tacoreport>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <adminhtml>
