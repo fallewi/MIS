@@ -48,10 +48,7 @@ local.xml, robots.txt, &c.
 _because local.xml is typically in .gitignore, this pattern allows us to track configuration files_.
 
 activating an environment (`bin/env set <env>`) will symbolically link files
-listed in `skel/envfiles` from `skel/<env>/<file>` to the site's DocumentRoot.
-
-See `skel/envfiles` for a listing of configuration files that get linked during
-activation.
+under skel/env/<env>/webroot to their corresponding location in APP_ROOT
 
 #### ssh_config
 each environment has a __ssh_config__ file describing the hosts making it up
