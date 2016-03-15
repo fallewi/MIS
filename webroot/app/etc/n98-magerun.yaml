@@ -1,3 +1,7 @@
+# bypass root warning
+application:
+  check-root-user: false
+
 commands:
   N98\Magento\Command\Database\DumpCommand:
     table-groups:
