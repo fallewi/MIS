@@ -53,7 +53,7 @@ class Amasty_Ogrid_Block_Adminhtml_Sales_Order_Grid_Renderer_Default extends Mag
             
             $val = implode("", $htmlSl);
             
-            $url = $this->getUrl('amogrid/adminhtml_index/view', array(
+            $url = $this->getUrl('adminhtml/amogrid_index/view', array(
                 'order_id' => $entityId
             ));
             

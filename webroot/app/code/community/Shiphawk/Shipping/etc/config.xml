@@ -201,23 +201,12 @@
     <admin>
         <routers>
             <adminhtml>
-                <args>
-                    <modules>
-                        <shiphawk_shipping before="Mage_Adminhtml">Shiphawk_Shipping_Adminhtml</shiphawk_shipping>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
-    <admin>
-        <routers>
-            <shiphawk_shipping>
-                <use>admin</use>
-                <args>
-                    <module>Shiphawk_Shipping</module>
-                    <frontName>adminshiphawk</frontName>
-                </args>
-            </shiphawk_shipping>
+				<args>
+					<modules>
+						<shiphawk_shipping before="Mage_Adminhtml">Shiphawk_Shipping_Adminhtml</shiphawk_shipping>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <default>

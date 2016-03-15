@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <layout>
 
-    <missionrs_tacoreport_report_index>
+    <adminhtml_tacoreport_report_index>
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>css/tacoreport.css</name></action>
         </reference>
         <reference name="content">
-            <block type="missionrs_tacoreport/report" as="missionrs_tacoreport" name="missionrs_tacoreport" />
+            <block type="missionrs_tacoreport/adminhtml_report" as="missionrs_tacoreport" name="missionrs_tacoreport" />
         </reference>
-    </missionrs_tacoreport_report_index>
+    </adminhtml_tacoreport_report_index>
 </layout>

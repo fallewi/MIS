@@ -23,7 +23,7 @@ class SFC_Kount_Block_Adminhtml_System_Config_Form_Field_IPAddress extends Mage_
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         // What's my ip address
-        $sHtml = '<a href="' . $this->getUrl('kount/adminhtml_kount/whatsmyip') . '" target="_blank">What\'s My IP Address?</a>';
+        $sHtml = '<a href="' . $this->getUrl('adminhtml/sfckount_kount/whatsmyip') . '" target="_blank">What\'s My IP Address?</a>';
 
         return $element->getElementHtml() . $sHtml;
     }
