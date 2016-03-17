@@ -1,0 +1,40 @@
+---
+
+#
+# media snapshot.
+#   rsyncs the media folder from a web node to target directory
+#
+#  ** run this on a single, less busy host**
+#
+
+- name: "MIS:staging media snapshot"
+  hosts: web-admin
+  gather_facts: False
+
+  vars:
+    SNAPSHOT_BASE: "{{ SNAPSHOTS_DIR | default(LOCAL_ROOT + '/snapshots') }}/{{ ENV }}"
+
+  tasks:
+    - include: tasks/snapshot-media.yml
+      vars:
+        MEDIA_DIR: "{{ APP_ROOT }}/media"
+        AUTO_COMPRESS_MEDIA: True
+
+
+#
+# database snapshot.
+#   syncs ba-snapdb script, runs it, and copies the snapshot to target directory
+#
+#  ** it is highly recommended to run databse snapshots against read replicas **
+#  ** run this on a single, less busy host**
+#
+
+- name: "MIS:staging database snapshot"
+  hosts: web-admin
+  gather_facts: False
+
+  vars:
+    SNAPSHOT_BASE: "{{ SNAPSHOTS_DIR | default(LOCAL_ROOT + '/snapshots') }}/{{ ENV }}"
+
+  tasks:
+    - include: tasks/snapshot-database.yml

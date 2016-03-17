@@ -1,0 +1,18 @@
+#
+# MIS:staging envars
+# see /docs/ENVIRONMENTS.md for definitions
+#
+
+# The default tracking branch for this environment.
+REPO_REF="develop"
+
+SUBDOMAIN="staging"
+APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
+
+# path to codebase checkout on remote servers
+REPO_ROOT="${BLUEACORN_DIR}/sites/${SUBDOMAIN}.${DOMAIN}"
+APP_ROOT="${REPO_ROOT}/webroot"
+
+# evaluate onset.sh when setting this environment.
+#  prefer skel/env/staging/onset.sh. defaults to skel/env/onset.sh
+#ONSET_ACTIVE=true
