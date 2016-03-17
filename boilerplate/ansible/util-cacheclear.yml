@@ -1,0 +1,49 @@
+---
+
+# cacheclear -- also called by deploy playbook.
+
+#
+# clears cache stored in redis
+#
+#  !! be sure to set a _single_ host with redis-cli on it,
+#  !! and double check that the database IDs and ports are correct
+#
+# safely removed if not using redis|memcache
+#
+
+- name: "@CLIENT_CODE:@ENV clear redis cache"
+  hosts: web-admin
+  gather_facts: False
+  tasks:
+
+    - include: tasks/cache-redisclear.yml
+      when: REDIS_HOST is defined and REDIS_HOST
+
+#
+# clear filesystem cache and merged css|js across all webnodes
+#
+
+- name: "@CLIENT_CODE:@ENV clear merged JS and CSS"
+  hosts: web*
+  gather_facts: False
+  tasks:
+    - include: tasks/cache-fsclear.yml
+
+#
+# clear akamai cdn cache w/ purge request
+#  - Requires httpdlib2 on ansible host
+#
+
+#- name: "@CLIENT_CODE:@ENV clear cdn caches"
+#  hosts: 127.0.0.1
+#  connection: local
+#  gather_facts: False
+#  tasks:
+#    - include: tasks/cache-akamai.yml
+#      vars:
+#        AKAMAI_USER:
+#        AKAMAI_PASS:
+#        AKAMAI_BODY:
+#          type: cpcode
+#          objects:
+#          - "410810"

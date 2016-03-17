@@ -1,0 +1,38 @@
+---
+
+#
+#  setup scheduled tasks like magento's cron and redis cleanup scripts
+#
+#  !! set a _single_ appropriate host to run cron tasks on, usually web-admin
+#
+#  !! uncomment appropriate tasks
+#
+
+- name: "@CLIENT_CODE:@ENV scheduled tasks"
+  hosts: web-admin
+  gather_facts: False
+  tasks:
+
+    # Schedule Magento Cron
+    #   If using AOE, set CRON_TYPE to "aoe". Else use "magento" for vanilla
+    #   You may also change the CRON_INTERVAL. Defaults to every minute. E.g.
+    #     CRON_INTERVAL: "*/5"  <-- to run every 5 minutes
+    #
+    #   NOTE: magento requres cron be run as HTTPD_USER - the below tasks
+    #         use sudo (become: True) to register jobs in the HTTPD_USER's
+    #         crontab. _THIS REQUIRES A WORKING SUDO_. If you do NOT have sudo
+    #         access, ask the provider to register the jobs under HTTPD_USER,
+    #         or if HTTPD_USER is the ssh user, then copy the contents of
+    #         appropriate task and remove or set "become: False"...
+    #
+    #         ansible doesn't support a conditional become: value, and we want
+    #         to avoid code replication while ensuring cron runs appropriately.
+    #
+    - include: tasks/cron.yml
+      vars:
+        #CRON_TYPE: magento
+        CRON_TYPE: aoe
+
+    # periodically cleanup redis tags
+    - include: tasks/cron-redis.yml
+      when: REDIS_HOST is defined and REDIS_HOST

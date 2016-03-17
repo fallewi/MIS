@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+#@TODO add gifref option
+
+
+# utility
+#########
+
+display_help() {
+  cat <<-EOF
+
+  A utility for testing a site
+
+  Usage: tests [options]
+
+  Options:
+    --help               Display help
+
+    --repo-root-match    docker volume REPO_ROOT match string to replace
+    --repo-root-replace  docker volume REPO_ROOT replace string
+
+
+EOF
+
+  if [ $# -eq 0 ]; then
+    exit 0
+  fi
+
+  exit $1
+}
+
+error(){
+  printf "\033[31m%s\n\033[0m" "$@" >&2
+  exit 1
+}
+
+# globals
+#########
+
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
+
+. $CWD/.functions.sh || error "unable to load shared functions"
+
+if [ -z "$CLIENT_CODE" ]; then
+  error "CLIENT_CODE undefined" "has an environment been set?"
+fi
+
+
+FORCE_BUILD=${LAUNCH_FORCE_BUILD:-false}
+DOCKER_RUN_FLAGS=${DOCKER_RUN_FLAGS:-'-t --rm=true'}
+DOCKER_BUILD_FLAGS=${DOCKER_BUILD_FLAGS:-'--pull=true'}
+
+# functions
+###########
+
+get_docker_name(){
+  DOCKER_NAME=${1,,}
+  DOCKER_NAME=${DOCKER_NAME//-/_}
+  DOCKER_NAME=${DOCKER_NAME// /_}
+  DOCKER_NAME=${DOCKER_NAME//[^a-z0-9_]/}
+}
+
+run_tests(){
+  get_docker_name "${CLIENT_CODE}_tests"
+
+  cd $REPO_ROOT/tests
+
+  if $FORCE_BUILD || [ -z "$(docker images -q $DOCKER_NAME)" ]; then
+    docker build $DOCKER_BUILD_FLAGS -t $DOCKER_NAME .
+  fi
+
+  docker run $DOCKER_RUN_FLAGS \
+    -v ${DOCKER_REPO_ROOT}:/repo:ro \
+    -v ${DOCKER_REPO_ROOT}/tests:/repo/tests:rw \
+    -u $UID \
+    $DOCKER_NAME ${DOCKER_COMMAND:-}
+}
+
+
+
+# runtime
+#########
+
+runstr="run_tests"
+
+while [ $# -ne 0 ]; do
+  case $1 in
+    -h|--help|help)    display_help ;;
+    --build|-b)        FORCE_BUILD=true ;;
+    --cmd|-c)          DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -i"
+                       DOCKER_COMMAND="$2" ;
+                       shift ;;
+    --repo-root-match) REPO_ROOT_MATCH="$2" ; shift ;;
+    --repo-root-replace) REPO_ROOT_REPLACE="$2" ; shift ;;
+    *)                 echo "invalid option: $1" ; display_help 1 ;;
+  esac
+  shift
+done
+
+
+if [ -z "$DOCKER_REPO_ROOT" ] && [ ! -z "$REPO_ROOT_MATCH" ]; then
+  DOCKER_REPO_ROOT=$(echo "$REPO_ROOT" | sed "s|$REPO_ROOT_MATCH|$REPO_ROOT_REPLACE|")
+else
+  DOCKER_REPO_ROOT=${DOCKER_REPO_ROOT:-$REPO_ROOT}
+fi
+
+$runstr
+exit $?

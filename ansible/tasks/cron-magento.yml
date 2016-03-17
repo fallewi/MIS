@@ -1,0 +1,27 @@
+---
+
+- debug: msg="magento cron state - {{ ba_cron_toggle }}"
+
+- name: ensure magento cron files exist
+  file:
+    path: "{{ item }}"
+    state: file
+  with_items:
+    - "{{ APP_ROOT }}/cron.sh"
+    - "{{ APP_ROOT }}/cron.php"
+  when: CRON_TYPE == "magento"
+  tags:
+    - cron
+    - cron-magento-only
+
+- name: schedule magento cron
+  cron:
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && sh {{ APP_ROOT }}/cron.sh"
+    minute: "{{ CRON_INTERVAL | default('*') }}"
+    name: "{{ ENV }} magento cron"
+    user: "{{ HTTPD_USER }}"
+    state: "{{ ba_cron_toggle }}"
+  become: True
+  tags:
+    - cron
+    - cron-magento-only

@@ -1,0 +1,11 @@
+---
+
+#
+# best to avoid customizations on these while we iron it out.
+#
+
+- name: "term-container - qa environment cacheclear"
+  hosts: term-container
+  any_errors_fatal: yes
+  tasks:
+    - include: tasks/cache-fsclear.yml

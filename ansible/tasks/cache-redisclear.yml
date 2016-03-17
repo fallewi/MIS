@@ -1,0 +1,14 @@
+---
+
+- name: flush object cache
+  shell: redis-cli -h {{ REDIS_HOST }} -p {{ REDIS_OBJ_PORT }} -n {{ REDIS_OBJ_DB }} flushdb
+  tags:
+    - cacheclear
+    - cacheclear-obj-only
+
+
+- name: flush FPC
+  shell: redis-cli -h {{ REDIS_HOST }} -p {{ REDIS_FPC_PORT }} -n {{ REDIS_FPC_DB }} flushdb
+  tags:
+    - cacheclear
+    - cacheclear-fpc-only

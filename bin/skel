@@ -1,0 +1,371 @@
+#!/usr/bin/env bash
+
+# utility
+#########
+
+display_help() {
+  cat <<-EOF
+
+  A utility for managing skel projects
+
+  Usage: skel <command> [options]
+
+  Commands:
+    init                 Merge and localize skel/boilerplate. Optionally
+                         generate a deployment key and green-pistachio.
+                         ** Run after every downstream **
+
+    pull                 Checks out the skel from authoritative-skel branch.
+
+    push                 Commits skel to groundcontrol.
+                         Must be run from authoritative branch.
+
+    downstream           Downstream latest from upstream skel repo in .skelvars
+
+    deploykey            Generate a new deployment key
+
+    localize             Runs string replacements on boilerplate
+
+  Options:
+    --help               Display help
+
+    --force | -f         Force overwriting of files
+
+    --client-code        Client Code (e.g. SIG)
+
+    --repo-remote        Repository (e.g. git@github.com:BlueAcornInc/SIG.git)
+
+    --domain             Top Level Domain (e.g. signaturehardware.com)
+
+    --gp-remote <remote> Repository of blueacornui / green-pistachio
+                         (def: git@github.com:BlueAcornInc/green-pistachio.git)
+
+    --gp-skip            Skip prompting to install blueacornui / green-pistachio
+
+
+EOF
+
+  if [ $# -eq 0 ]; then
+    exit 0
+  fi
+
+  exit $1
+}
+
+error(){
+  printf "\033[31m%s\n\033[0m" "$@" >&2
+  exit 1
+}
+
+prompt_confirm() {
+  while true; do
+    read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY
+    case $REPLY in
+      [yY]) echo ; return 0 ;;
+      [nN]) echo ; return 1 ;;
+      *) printf " \033[31m %s \n\033[0m" "invalid input"
+    esac
+  done
+}
+
+
+# globals
+#########
+
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
+
+. $CWD/.functions.sh || error "unable to load shared functions"
+
+# defaults
+FORCE_OVERWRITE=${INIT_FORCE_OVERWRITE:-false}
+GP_REMOTE=${INIT_GP_REMOTE:-"git@github.com:BlueAcornInc/green-pistachio.git"}
+SKIP_GP=false
+
+# run functions
+###############
+
+run_task() {
+  cd $REPO_ROOT || error "error switching to REPO_ROOT"
+  local SKIP_CHECK=${3:-false}
+  if ! $SKIP_CHECK; then
+    [ "$WORKING_BRANCH" = "$SKEL_BRANCH" ] || error \
+      "You must run $1 from the $SKEL_BRANCH (currently on $WORKING_BRANCH)" \
+      "please checkout $SKEL_BRANCH and try again"
+  fi
+
+  printf "\n\n * starting $2 -->\n\n"
+  $1
+}
+
+repo_init(){
+
+  REPO_HEAD="$(git rev-parse --short HEAD)"
+
+  run_task "init_boilerplate" "merge $SKEL_DIR/ boilerplate"
+  run_task "init_localize" "localize boilerplate"
+  repo_deploykey
+  run_task "init_blueacornui" "modman init + green-pistachio/blueacornui"
+
+  printf "\n  ************************************ \n"
+  printf "\n            skel initialized\n"
+  printf "\n  git diff $REPO_HEAD..HEAD   for a list of file changes"
+  printf "\n  review and push when you're ready."
+  printf "\n               thanks!\n\n"
+
+}
+
+repo_localize(){
+  run_task "init_localize" "localize boilerplate"
+
+  printf "\n  ************************************ \n"
+  printf "\n         localized boilerplate\n"
+  printf "\n  git diff     for a list of file changes"
+  printf "\n  commit and push when you're ready."
+  printf "\n               thanks!\n\n"
+
+}
+
+
+repo_push(){
+  run_task "skel_push" "launching into groundcontrol/outer-space 10...9...8..."
+
+  printf "\n  ************************************ \n"
+  printf "\n           we have liftoff!\n\n"
+}
+
+repo_pull(){
+  run_task "skel_pull" "pulling skel/ from the $SKEL_BRANCH branch" true
+
+  printf "\n  ************************************ \n"
+  printf "\n         skel is now up-to-date\n\n"
+
+}
+
+repo_deploykey(){
+  KEYFILE="$REPO_ROOT/$SKEL_DIR/deploy.key"
+  run_task "deploykey_make" "generate deployment key"
+  run_task "deploykey_link" "link deployment key"
+}
+
+
+# initialization fns
+####################
+
+init_boilerplate(){
+  [ -z "$(git status -uno --porcelain)" ] || error \
+    "index contains uncommited changes" \
+    "please stash or commit them before continuing"
+
+  # determine latest squash (commit from last skel/ downstream)
+  eval $(find_latest_squash $SKEL_DIR)
+  [ -z $LAST_SQUASH ] && error "error finding latest squash"
+
+  echo "[BOILERPLATE] : checking out $LAST_SQUASH_TREE" && git checkout -q $LAST_SQUASH_TREE
+  local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=boilerplate/REPO_ROOT/)
+  echo "[BOILERPLATE]: built tree \"$MERGE_TREE\", returning" && git checkout -q $WORKING_BRANCH
+
+  if [ -z $MERGE_TREE ]; then
+    echo "[BOILERPLATE]: $LAST_SQUASH already appears merged"
+    return
+  fi
+
+  # @TODO distribute the rerere cache, at least in groundcontrol where we plan
+  # to automatically update/downstream all skels
+  git config rerere.enabled true
+
+  git merge --rerere-autoupdate \
+    -m "applied boilerplate/REPO_ROOT/ changes from $(git rev-parse --short $LAST_SQUASH)" $MERGE_TREE
+
+  # merges where rerere resolves _all_ conflicts still exit as 1.
+  #  we workaround by checking if conflicts persist (rerere diff !empty)
+  [ -z "$(git rerere diff)" ] || error "error applying $MERGE_TREE boilerplate tree" \
+    "please resolve conflicts and then re-initialize"
+
+  git commit --no-edit
+}
+
+
+init_localize(){
+
+  if [ -z "$CLIENT_CODE" ] || [ "$CLIENT_CODE" = "@CLIENT_CODE" ] ; then
+    read -p "Value to use for CLIENT_CODE (e.g. SIG): " CLIENT_CODE
+    echo
+  fi
+
+  if [ -z "$REPO_REMOTE" ] || [ "$REPO_REMOTE" = "@REPO_REMOTE" ] ; then
+    read -p "Value to use for REPO_REMOTE (e.g. git@github.com:BlueAcornInc/SIG.git): " REPO_REMOTE
+    echo
+  fi
+
+  if [ -z "$DOMAIN" ] || [ "$DOMAIN" = "@DOMAIN" ] ; then
+    read -p "Value to use for Base Domain (e.g. signaturehardware.com): " DOMAIN
+    echo
+  fi
+
+  local SED_REPLACE="s|@CLIENT_CODE|$CLIENT_CODE|g;s|@REPO_REMOTE|$REPO_REMOTE|g;s|@DOMAIN|$DOMAIN|g"
+
+  local FILES="
+    README.md
+    docs/
+    $SKEL_DIR/docker/
+    $SKEL_DIR/env/appvars
+  "
+
+  for file in $FILES; do
+
+    cd $REPO_ROOT
+
+    [ ! -e $file ] && echo "skipping $file, doesn't exist." && continue
+
+    if [ -d $file ]; then
+      cd $file
+      for file in $(find * -type f); do
+        echo "templating $file"
+        sed_inplace $file $SED_REPLACE && \
+        git add $file
+      done
+    else
+      echo "templating $file"
+      sed_inplace $file $SED_REPLACE && \
+      git add $file
+    fi
+  done
+
+}
+
+init_blueacornui(){
+
+  if [ -d "$WEBROOT_DIR/blueacornui" ] || [ -d "$REPO_ROOT/blueacornui" ] || $SKIP_GP ; then
+    echo "skipping green pistachio..."
+    return
+  fi
+
+  prompt_confirm "add blueacornui / green pistachio [y/n]?" || return
+
+  type modman >/dev/null 2>&1 || error "modman is not installed"
+
+  echo "checking for modman..."
+  if [ ! -d "$WEBROOT_DIR/.modman" ]; then
+    cd $WEBROOT_DIR
+    modman init
+  fi
+
+  echo "checking for blueacornui..."
+  if [ ! -d "$REPO_ROOT/blueacornui" ]; then
+    cd $WEBROOT_DIR
+    modman clone --copy $GP_REMOTE
+  fi
+}
+
+skel_downstream(){
+  curl https://get.blueacorn.net/downstream-skel.sh | bash
+}
+
+skel_push(){
+
+  GC_REMOTE="git@github.com:BlueAcornInc/devops-groundcontrol.git"
+  GC_REMOTE_NAME="upstream-groundcontrol"
+  GC_REMOTE_BRANCH="outer-space"
+  GC_SKEL_DIR="skels/$CLIENT_CODE"
+
+  if [ -z "$CLIENT_CODE" ] || [ "$CLIENT_CODE" = "@CLIENT_CODE" ]; then
+    error "CLIENT_CODE must be set" "has skel been initialized?"
+  fi
+
+  [ -z "$(git status -uno --porcelain)" ] || error \
+    "index contains uncommited changes" \
+    "please stash or commit them before continuing"
+
+  git remote add $GC_REMOTE_NAME $GC_REMOTE >/dev/null 2>&1
+  git fetch $GC_REMOTE_NAME || error "error fetching from $GC_REMOTE_NAME"
+  git checkout $GC_REMOTE_NAME/$GC_REMOTE_BRANCH || error "checkout error"
+
+  git rm -rf $GC_SKEL_DIR
+  git clean -df $SKEL_DIR
+  git checkout $SKEL_BRANCH -- $SKEL_DIR/
+  git mv $SKEL_DIR $GC_SKEL_DIR
+  git commit -m "launched $CLIENT_CODE $SKEL_DIR/ from $(git rev-parse --short $SKEL_BRANCH)"
+  git push $GC_REMOTE_NAME HEAD:$GC_REMOTE_BRANCH
+
+  git checkout $WORKING_BRANCH || error "error returning to $WORKING_BRANCH"
+}
+
+skel_pull(){
+
+  [ -z "$SKEL_DIR" ] && error "SKEL_DIR not defined" "has skel been attached?"
+  [ -z "$SKEL_BRANCH" ] && error "SKEL_BRANCH not defined" "has skel been attached?"
+  [ -z "$REPO_REMOTE_NAME" ] && error "REPO_REMOTE_NAME not defined" "has REPO_REMOTE been defined in appvars?"
+
+  if [ "$WORKING_BRANCH" = "$SKEL_BRANCH" ]; then
+    echo "already on $SKEL_BRANCH"
+    return 0
+  fi
+
+  git rm -rf $SKEL_DIR
+  git checkout --theirs $REPO_REMOTE_NAME/$SKEL_BRANCH -- $SKEL_DIR/ || error "error updating skel"
+}
+
+deploykey_make(){
+
+  $FORCE_OVERWRITE && rm $KEYFILE
+
+  [ -f $KEYFILE ] && echo \
+    "$KEYFILE already exists" "pass the -f argument to regenerate one." && \
+    return 1
+
+  [ -z "$CLIENT_CODE" ] && read -p "Value to use for CLIENT_CODE (e.g. SIG): " CLIENT_CODE
+  echo
+
+  echo "generating deployment key..."
+  ssh-keygen -t rsa -b 4096 -C "deploy-key@${CLIENT_CODE}-$(date +%Y-%m-%d)" -N "" -f $KEYFILE && \
+    git add $KEYFILE*
+
+  echo
+  echo "!!! deployment key generated."
+  echo "    please add $KEYFILE.pub"
+  echo "    as a deploy key to the github repository !!!"
+  echo
+
+}
+
+deploykey_link(){
+  echo "linking deployment key..."
+  local target_dir=$REPO_ROOT/$SKEL_DIR/ansible/files
+
+  [ -d $target_dir ] || mkdir -p $target_dir
+  cd $target_dir && \
+    ln -fs ../../$(basename $KEYFILE) github-deploy.key && \
+    git add github-deploy.key
+}
+
+# runtime
+#########
+
+runstr="display_help"
+
+if [ $# -eq 0 ]; then
+  display_help 1
+else
+  while [ $# -ne 0 ]; do
+    case $1 in
+      -h|--help|help)    display_help ;;
+      --force|-f)        FORCE_OVERWRITE=true ;;
+      --gp-remote)       GP_REMOTE="$2" ; shift ;;
+      --gp-skip)         SKIP_GP=true ;;
+      --client-code)     CLIENT_CODE="$2" ; shift ;;
+      --repo-remote)     REPO_REMOTE="$2" ; shift ;;
+      --domain)          DOMAIN="$2" ; shift ;;
+      init)              runstr="repo_init" ;;
+      push)              runstr="repo_push" ;;
+      pull)              runstr="repo_pull" ;;
+      localize)          runstr="repo_localize" ;;
+      deploykey)         runstr="repo_deploykey" ;;
+      downstream)        runstr="skel_downstream" ;;
+      *)                 echo "invalid option: $1" ; display_help 1 ;;
+    esac
+    shift
+  done
+
+  $runstr
+fi

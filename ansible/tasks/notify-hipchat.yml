@@ -1,0 +1,10 @@
+---
+
+- name: Notify HipChat
+  hipchat:
+    token: "{{ HIPCHAT_TOKEN | default('7b85930ec4fdbff96a732299f2b4f5') }}"
+    room: "{{ HIPCHAT_ROOM | default('notifications') }}"
+    msg: "{{ HIPCHAT_MESSAGE }}"
+    color: "{{ HIPCHAT_COLOR | default('green') }}"
+    from: "{{ HIPCHAT_FROM | default('Blueacorn') }}"
+  run_once: True

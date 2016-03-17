@@ -1,0 +1,31 @@
+---
+
+- name: flush filesystem var/cache
+  shell: rm -rf {{ APP_ROOT }}/var/cache/*
+  tags:
+    - cacheclear
+    - cacheclear-obj-only
+
+- name: flush filesystem var/full_page_cache
+  shell: rm -rf {{ APP_ROOT }}/var/full_page_cache/*
+  tags:
+    - cacheclear
+    - cacheclear-fpc-only
+
+- name: clear merged js (media/js)
+  shell: rm -rf {{ APP_ROOT }}/media/js/*
+  tags:
+    - cacheclear
+    - cacheclear-merged-only
+
+- name: clear merged css (media/css)
+  shell: rm -rf {{ APP_ROOT }}/media/css/*
+  tags:
+    - cacheclear
+    - cacheclear-merged-only
+
+- name: clear merged css_secure (media/css_secure)
+  shell: rm -rf {{ APP_ROOT }}/media/css_secure/*
+  tags:
+    - cacheclear
+    - cacheclear-merged-only

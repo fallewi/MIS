@@ -1,0 +1,146 @@
+---
+
+# based on https://gist.github.com/briceburg/ded5e82a70e5af71a611
+
+- name: perform a safe upgrade
+  apt:
+    upgrade: safe
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - lamp
+    - lamp-upgrade-only
+
+- name: common utilities
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - git
+    - curl
+    - sudo
+    - vim
+    - uuid-runtime
+  tags:
+    - lamp
+
+- name: php with common extensions
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - php5-cli
+    - php5-curl
+    - php5-mysqlnd
+    - php5-gd
+    - php5-mcrypt
+    - php5-json
+    - php5-intl
+    - php5-redis
+  tags:
+    - lamp
+    - lamp-php-only
+
+- name: ensure opcode cache is running
+  shell: php -i | grep -q "opcache.enable => On => On"
+  changed_when: False
+  tags:
+    - lamp
+    - lamp-php-only
+
+- name: install mysql (mariadb)
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - mariadb-server
+    - mariadb-client
+    - python-mysqldb
+  tags:
+    - lamp
+    - lamp-mysql-only
+
+- name: start mysql server
+  service:
+    name: mysql
+    enabled: yes
+    state: started
+  tags:
+    - lamp
+    - lamp-mysql-only
+
+- name: secure mysql
+  shell: curl https://raw.githubusercontent.com/AndrianBdn/mysql_secure_installation_silent/master/mysql_secure_installation_silent | sh
+  args:
+    creates: ~/.my.cnf
+  tags:
+    - lamp
+    - lamp-mysql-only
+
+- name: install apache, modphp
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - apache2
+    - php5
+    - libapache2-mod-php5
+  tags:
+    - lamp
+    - lamp-apache-only
+
+- name: enable rewrite module
+  shell: a2enmod rewrite
+  tags:
+    - lamp
+    - lamp-apache-only
+
+- name: add siteop user
+  user:
+    name: siteop
+    system: yes
+    home: /sites
+    shell: /bin/bash
+    password: no
+  tags:
+    - lamp
+    - lamp-siteop-only
+
+- name: generate siteop ssh key
+  shell: ssh-keygen -t rsa -b 4909 -f ~/.ssh/id_rsa -N ''
+  args:
+    creates: /sites/.ssh/id_rsa
+  become: yes
+  become_user: siteop
+  tags:
+    - lamp
+    - lamp-siteop-only
+
+- name: add authorized keys to siteop user
+  shell: curl https://github.com/{{ item }}.keys >> ~/.ssh/authorized_keys
+  with_items: "{{ AUTHORIZED_GITHUB_USERS }}"
+  become: yes
+  become_user: siteop
+  tags:
+    - lamp
+    - lamp-siteop-only
+
+- name: copy root .my.cnf to siteop user
+  shell: cp -a /root/.my.cnf /sites/.my.cnf && chown siteop /sites/.my.cnf
+  args:
+    creates: /sites/.my.cnf
+  tags:
+    - lamp
+    - lamp-siteop-only
+    - lamp-mysql-only
+
+
+# @TODO : nullmailer configuration

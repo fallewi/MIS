@@ -1,0 +1,11 @@
+---
+
+- name: copy n98 binary to BLUEACORN_DIR/bin
+  copy:
+    src: "files/n98-magerun.1.97.11.phar"
+    dest: "{{ BLUEACORN_DIR }}/bin/n98-magerun"
+    mode: 0755
+  when: inventory_hostname.startswith('web')
+  tags:
+    - provision
+    - provision-deps-only

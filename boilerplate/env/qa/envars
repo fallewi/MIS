@@ -1,0 +1,26 @@
+#
+# @CLIENT_CODE:@ENV envars
+# see /docs/ENVIRONMENTS.md for definitions
+#
+
+#
+# when installed for first time, ...
+#  what media/database snapshot environment should we use to seed?
+SNAPSHOT_BASE_ENV="www??"
+REPO_REF="develop??"
+
+##
+#
+# shouldn't need to modify much below
+DOMAIN="@ENV.blueacorn.net"
+SUBDOMAIN="@CLIENT_CODE"
+
+# path to codebase checkout on remote servers
+REPO_ROOT="/magento"
+
+APP_ROOT="${REPO_ROOT}/webroot"
+APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
+
+# evaluate onset.sh when setting this environment.
+#  prefer skel/env/@ENV/onset.sh. defaults to skel/env/onset.sh
+ONSET_ACTIVE=true
