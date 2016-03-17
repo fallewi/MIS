@@ -6,7 +6,7 @@
 CLIENT_CODE="MIS"
 DOMAIN="missionrs.com"
 REPO_REMOTE="git@github.com:BlueAcornInc/MIS.git"
-BLUEACORN_DIR="/var/blueacorn"
+BLUEACORN_DIR="/home/blueacorn/blueacorn"
 
 # variables are arbitrary. set what you need and they will be picked up by
 #  bin commands and automation

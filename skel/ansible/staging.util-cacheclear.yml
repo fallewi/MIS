@@ -12,7 +12,7 @@
 #
 
 - name: "MIS:staging clear redis cache"
-  hosts: web-admin
+  hosts: web-1
   gather_facts: False
   tasks:
 

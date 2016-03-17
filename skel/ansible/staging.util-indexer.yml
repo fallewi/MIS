@@ -9,7 +9,7 @@
 
 
 - name: "MIS:staging indexer"
-  hosts: web-admin
+  hosts: web-1
   gather_facts: False
   any_errors_fatal: yes
 

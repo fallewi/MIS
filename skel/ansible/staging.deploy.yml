@@ -22,7 +22,7 @@
     # copy (rsync) grunt compiled assets (from ansible host => remote hosts)
     - include: tasks/grunt-sync.yml
       vars:
-        THEME_DIR: "skin/frontend/blueacorn/site"
+        THEME_DIR: "skin/frontend/blueacorn/mis"
         SYNCED_PATHS:
           - "css"
           - "jsmin"
@@ -34,20 +34,19 @@
       vars:
         WRITABLE_PATHS:
           - "{{ APP_ROOT }}/var"
-        # exclude media as it's a NFS/shared link (below), and not a directory.
-        #  - "{{ APP_ROOT }}/media"
+          - "{{ APP_ROOT }}/media"
           - "{{ APP_ROOT }}/includes"
 
     # setup shared/linked folders (e.g. NFS shares).
-    - include: tasks/file-shares.yml
-      vars:
-        SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
-        LINKED_PATHS:
-          - "media"
-          - "var/export"
-          - "var/import"
-          - "var/powerreviews"
-          - "var/urapidflow"
+#    - include: tasks/file-shares.yml
+#      vars:
+#        SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
+#        LINKED_PATHS:
+#          - "media"
+#          - "var/export"
+#          - "var/import"
+#          - "var/powerreviews"
+#          - "var/urapidflow"
 
     # post deployment and notifications
     - include: tasks/postdeploy.yml

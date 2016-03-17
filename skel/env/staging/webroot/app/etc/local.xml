@@ -1,104 +1,88 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!--
 /**
- * Magento
+ * Magento Enterprise Edition
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE_AFL.txt.
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
+ * http://www.magento.com/license/enterprise-edition
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
+ * to license@magento.com so we can send you a copy immediately.
  *
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
+ * needs please refer to http://www.magento.com for more information.
  *
- * @category   Mage
- * @package    Mage_Core
- * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
- * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @category    Mage
+ * @package     Mage_Core
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
  */
 -->
 <config>
-  <global>
-    <install>
-      <date><![CDATA[Wed, 06 May 2015 14:49:08 +0000]]></date>
-    </install>
-    <crypt>
-      <key><![CDATA[@DEV_CRYPT_KEY]]></key>
-    </crypt>
-    <disable_local_modules>false</disable_local_modules>
-    <resources>
-      <db>
-        <table_prefix />
-      </db>
-      <default_setup>
-        <connection>
-          <host><![CDATA[@APP_DB_HOST]]></host>
-          <dbname><![CDATA[@APP_DB_NAME]]></dbname>
-          <username><![CDATA[@APP_DB_USER]]></username>
-          <password><![CDATA[@APP_DB_PASS]]></password>
-          <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
-          <model><![CDATA[mysql4]]></model>
-          <type><![CDATA[pdo_mysql]]></type>
-          <pdoType />
-          <active>1</active>
-        </connection>
-      </default_setup>
-    </resources>
-    <admin>
-      <routers>
-        <adminhtml>
-          <args>
-            <frontName><![CDATA[admin]]></frontName>
-          </args>
-        </adminhtml>
-      </routers>
-    </admin>
-    
-    
-    <!-- CONFIGURE FOR CACHES AND SESSIONS IN REDIS -->
-    <!--  https://github.com/BlueAcornInc/devops-snippets/tree/master/redis -->
-    <!--  STAGING ENVIRONMENT -->
-    
-    
-    <!-- SESSIONS :6390 -->
-    <session_save>db</session_save>
-    <redis_session>
-      <host>@MAGE_REDIS_HOST</host>
-      <port>6390</port>
-      <db>0</db>
-    </redis_session>
-    
-    <!-- OBJECT CACHE :6391 -->
-    <cache>
-      <backend>Cm_Cache_Backend_Redis</backend>
-      <backend_options>
-        <server>@MAGE_REDIS_HOST</server>
-        <port>6391</port>
-        <!-- cache object instance -->
-        <database>0</database>
-        <force_standalone>0</force_standalone>
-      </backend_options>
-    </cache>
-    
-    <!-- FPC :6392 -->
-    <full_page_cache>
-      <backend>Cm_Cache_Backend_Redis</backend>
-      <backend_options>
-        <server>@MAGE_REDIS_HOST</server>
-        <port>6392</port>
-        <database>0</database>
-        <force_standalone>0</force_standalone>
-        <compress_data>0</compress_data>
-      </backend_options>
-    </full_page_cache>
-  </global>
-</config>
+    <global>
+        <install>
+            <date><![CDATA[Fri, 08 May 2015 18:21:26 +0000]]></date>
+        </install>
+        <crypt>
+            <key><![CDATA[2937611d4c669ec2891b0b805d22080e]]></key>
+        </crypt>
+        <disable_local_modules>false</disable_local_modules>
+        <resources>
+            <db>
+                <table_prefix><![CDATA[]]></table_prefix>
+            </db>
+            <default_setup>
+                <connection>
+                    <host><![CDATA[172.24.16.35]]></host>
+                    <username><![CDATA[staging_mission]]></username>
+                    <password><![CDATA[jZ62mKQTnNQ3]]></password>
+                    <dbname><![CDATA[staging_mission]]></dbname>
+                    <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
+                    <model><![CDATA[mysql4]]></model>
+                    <type><![CDATA[pdo_mysql]]></type>
+                    <pdoType><![CDATA[]]></pdoType>
+                    <active>1</active>
+                </connection>
+            </default_setup>
+        </resources>
+        <session_save><![CDATA[files]]></session_save>
+<!-- FPC -->
+<full_page_cache>
+            <backend>Mage_Cache_Backend_Redis</backend>
+            <backend_options>
+                <server>10.136.244.35</server>
+                <port>6391</port>
+                <database>0</database>
+                <force_standalone>0</force_standalone>
+                <compress_data>0</compress_data>
+            </backend_options>
+        </full_page_cache>
+<!-- OBJ/CACHE -->
+        <cache>
+            <backend>Mage_Cache_Backend_Redis</backend>
+            <backend_options>
+                <server>10.136.244.35</server>
+                <port>6392</port>
+                <database>0</database>
+                <force_standalone>0</force_standalone>
+            </backend_options>
+        </cache>
 
+</global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <frontName><![CDATA[admin]]></frontName>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

@@ -8,7 +8,7 @@
 #
 
 - name: "MIS:staging media snapshot"
-  hosts: web-admin
+  hosts: web-1
   gather_facts: False
 
   vars:
@@ -30,7 +30,7 @@
 #
 
 - name: "MIS:staging database snapshot"
-  hosts: web-admin
+  hosts: web-1
   gather_facts: False
 
   vars:

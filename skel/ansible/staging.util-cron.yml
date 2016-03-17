@@ -9,7 +9,7 @@
 #
 
 - name: "MIS:staging scheduled tasks"
-  hosts: web-admin
+  hosts: web-1
   gather_facts: False
   tasks:
 
