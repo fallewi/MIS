@@ -4,7 +4,7 @@ Deployments
 Skel projects leverage "git based" deployments -- meaning git is used
 to set the codebase on remote webservers to a desired version (git ref).
 
-Deployments are typically triggered by the [@CLIENT_CODE Jenkins Deployment Job](http://jenkins.badevops.com/job/@CLIENT_CODE/), which runs an
+Deployments are typically triggered by the [MIS Jenkins Deployment Job](http://jenkins.badevops.com/job/MIS/), which runs an
 ansible deployment via `bin/deploy` against a specified environment and git ref.
 
 
@@ -63,14 +63,14 @@ These steps are run _once_.
  * git
  * rsync
 
-assumes repository is checked out in __/sites/@CLIENT_CODE__
+assumes repository is checked out in __/sites/MIS__
 ```sh
-cd /sites && git clone @REPO_REMOTE
+cd /sites && git clone git@github.com:BlueAcornInc/MIS.git
 ```
 
 if blueacornui exists, configure for compiling assets
 ```sh
-cd /sites/@CLIENT_CODE/blueacornui
+cd /sites/MIS/blueacornui
 npm install
 bower install
 ```
@@ -79,10 +79,10 @@ bower install
  * git
  * rsync
 
-assumes repository is checked out in __/sites/@CLIENT_CODE__ , and default environment branch checked out.
+assumes repository is checked out in __/sites/MIS__ , and default environment branch checked out.
 ```sh
-cd /sites && git clone @REPO_REMOTE
-cd /sites/@CLIENT_CODE
+cd /sites && git clone git@github.com:BlueAcornInc/MIS.git
+cd /sites/MIS
 git checkout develop # or master or whatever environment default.
 ```
 
@@ -92,15 +92,15 @@ assumes httpd is setup with __server root__ pointing to __webroot__ directorty
 ###############
 server {
   listen       80;
-  server_name  www.@DOMAIN;
-  root         /sites/@CLIENT_CODE/webroot;
+  server_name  www.missionrs.com;
+  root         /sites/MIS/webroot;
   ...
 
 # apache example
 ################
 <VirtualHost *:80>
-	ServerName www.@DOMAIN
-	DocumentRoot /sites/@CLIENT_CODE/webroot
+	ServerName www.missionrs.com
+	DocumentRoot /sites/MIS/webroot
 	...
 ```
 
@@ -108,25 +108,25 @@ server {
 
 1. (if blueacornui exists) On __Deployment Host__, compile Assets in "production" mode
   ```
-  cd /sites/@CLIENT_CODE/blueacornui
+  cd /sites/MIS/blueacornui
   grunt production
 
   # assets are compiled to:
-  #  /sites/@CLIENT_CODE/webroot/skin/frontend/blueacorn/site/css/
-  #  /sites/@CLIENT_CODE/webroot/skin/frontend/blueacorn/site/jsmin/
+  #  /sites/MIS/webroot/skin/frontend/blueacorn/site/css/
+  #  /sites/MIS/webroot/skin/frontend/blueacorn/site/jsmin/
   ```
 
 1. On __Deployment Targets__, checkout desired Deployment Ref'
   ```
-  cd /sites/@CLIENT_CODE
+  cd /sites/MIS
   git fetch && git reset <DEPLOYMENT_REF> --merge
   ```
 
 1. (if blueacornui exists) On __Deployment Host__, copy Assets to Deployment Targets
   ```
-  cd /sites/@CLIENT_CODE/webroot/skin/frontend/blueacorn/site
-  rsync -zrL --delete-after css/ target_host:/@CLIENT_CODE/webroot/skin/frontend/blueacorn/site
-  rsync -zrL --delete-after jsmin/ target_host:/@CLIENT_CODE/webroot/skin/frontend/blueacorn/site
+  cd /sites/MIS/webroot/skin/frontend/blueacorn/site
+  rsync -zrL --delete-after css/ target_host:/MIS/webroot/skin/frontend/blueacorn/site
+  rsync -zrL --delete-after jsmin/ target_host:/MIS/webroot/skin/frontend/blueacorn/site
   ```
 1. On __Deployment Target(s)__, Clear the FPC and Object Cache
   * use n98-magerun -or-

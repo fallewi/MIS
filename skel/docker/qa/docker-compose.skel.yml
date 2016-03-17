@@ -4,7 +4,7 @@
 # default QA composition.
 #
 # variable defaults:
-#  SUBDOMAIN: @CLIENT_CODE
+#  SUBDOMAIN: MIS
 #             VTB
 #
 #  DOMAIN: @ENV.blueacorn.net
