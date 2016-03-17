@@ -1,0 +1,9 @@
+---
+
+# notification services
+#######################
+
+- include: notify-newrelic.yml
+  when: NEWRELIC_APPID is defined and NEWRELIC_APPID
+
+# - include: notify-hipchat.yml

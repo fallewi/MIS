@@ -1,0 +1,15 @@
+#
+# global appvars
+# see /docs/ENVIRONMENTS.md for definitions
+#
+
+CLIENT_CODE="@CLIENT_CODE"
+DOMAIN="@DOMAIN"
+REPO_REMOTE="@REPO_REMOTE"
+BLUEACORN_DIR="/var/blueacorn"
+
+# variables are arbitrary. set what you need and they will be picked up by
+#  bin commands and automation
+# YODA=true
+# LANDO=true
+# EMPEROR=false

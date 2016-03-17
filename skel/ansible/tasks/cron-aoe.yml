@@ -1,0 +1,51 @@
+---
+
+- debug: msg="aoe cron state - {{ ba_cron_toggle }}"
+
+- name: ensure magento and aoe scheduler_cron.sh exist
+  file:
+    path: "{{ item }}"
+    state: file
+  with_items:
+    - "{{ APP_ROOT }}/scheduler_cron.sh"
+    - "{{ APP_ROOT }}/cron.php"
+  when: CRON_TYPE == "aoe"
+  tags:
+    - cron
+    - cron-magento
+
+- name: schedule aoe cron (Aoe_Scheduler always group)
+  cron:
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && /bin/bash {{ APP_ROOT }}/scheduler_cron.sh --mode always"
+    minute: "{{ CRON_INTERVAL | default('*') }}"
+    name: "{{ ENV }} magento cron always"
+    user: "{{ HTTPD_USER }}"
+    state: "{{ ba_cron_toggle }}"
+  become: True
+  tags:
+    - cron
+    - cron-magento
+
+- name: schedule aoe cron (Aoe_Scheduler default group)
+  cron:
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && /bin/bash {{ APP_ROOT }}/scheduler_cron.sh --mode default"
+    minute: "{{ CRON_INTERVAL | default('*') }}"
+    name: "{{ ENV }} magento cron default"
+    user: "{{ HTTPD_USER }}"
+    state: "{{ ba_cron_toggle }}"
+  become: True
+  tags:
+    - cron
+    - cron-magento
+
+- name: schedule aoe cron (Aoe_Scheduler watchdog)
+  cron:
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && cd {{ APP_ROOT }}/shell && $(which php) scheduler.php --action watchdog"
+    minute: "*/10"
+    name: "{{ ENV }} magento cron watchdog"
+    user: "{{ HTTPD_USER }}"
+    state: "{{ ba_cron_toggle }}"
+  become: True
+  tags:
+    - cron
+    - cron-magento-only

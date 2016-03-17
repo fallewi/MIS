@@ -1,0 +1,2 @@
+# list of modules to ENABLE, one per line
+# should be the name of xml file in app/etc/modules/ - case sensitive!

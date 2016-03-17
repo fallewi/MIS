@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+# utility
+#########
+
+display_help() {
+  cat <<-EOF
+
+  Copy assets from sync/ to webroot/ -- useful for tracking
+  assets under .gitignored directories (such as webroot/media/)
+
+  Usage: sync [options]
+
+  Options:
+    --help               Display help
+
+    --quiet | -q         semantic output
+
+    --force | -f         Overwrite files when syncing
+
+    --no-prompt | -np    Avoids prompts (skips existing files) when syncing
+EOF
+
+  if [ $# -eq 0 ]; then
+    exit 0
+  fi
+
+  exit $1
+}
+
+error(){
+  printf "\033[31m%s\n\033[0m" "$@" >&2
+  exit 1
+}
+
+# globals
+#########
+
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
+
+. $CWD/.functions.sh || error "unable to load shared functions"
+
+FORCE_OVERWRITE=false
+SKIP_PROMPTS=false
+
+
+# run functions
+###############
+
+run_task() {
+  echo
+  echo "  * starting: $2 -->"
+  echo
+
+  $1
+}
+
+prompt_confirm() {
+  while true; do
+    read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY
+    case $REPLY in
+      [yY]) echo ; return 0 ;;
+      [nN]) echo ; return 1 ;;
+      *) printf " \033[31m %s \n\033[0m" "invalid input"
+    esac
+  done
+}
+
+sync_env(){
+  run_task "env_sync" "copying boilerplate from REPO_ROOT/sync/"
+}
+
+# environment fns
+#################
+
+env_sync() {
+  file_sync() {
+    SRC=$1
+    DEST=$(echo $1 | sed "s|./|$APP_ROOT/|")
+
+    if ! $FORCE_OVERWRITE ; then
+      if [ -e $DEST ] || [ -h $DEST ] ; then
+        $SKIP_PROMPTS && return
+        prompt_confirm "Overwrite $DEST" || return
+      fi
+    fi
+
+    echo "syncing $DEST"
+    if [ -e $DEST ] || [ -h $DEST ]; then
+     rm $DEST
+    elif [ ! -d $(dirname $DEST) ]; then
+      mkdir -p $(dirname $DEST)
+    fi
+    cp $SRC $DEST
+  }
+
+  cd $REPO_ROOT/sync || error "could not enter $REPO_ROOT/sync"
+
+  for file in $(find . -type f); do
+    file_sync "$file"
+  done
+}
+
+# runtime
+#########
+
+runstr="sync_env"
+
+while [ $# -ne 0 ]; do
+  case $1 in
+    -h|--help|help)    display_help ;;
+    --force|-f)        FORCE_OVERWRITE=true ;;
+    --no-prompt|-np)   SKIP_PROMPTS=true ;;
+    *)                 echo "invalid option: $1" ; display_help 1 ;;
+  esac
+  shift
+done
+
+$runstr

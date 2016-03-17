@@ -1,0 +1,36 @@
+---
+
+# @TODO : Notify hipchat of database snapshot
+
+- debug: msg="*** writing database to {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz and copying to {{ SNAPSHOT_BASE }}/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz ***"
+
+- name: remove existing database snapshot
+  file:
+    path: "{{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz"
+    state: absent
+  tags:
+    - snapshot
+    - snapshot-database-only
+
+- name: perform database snapshot
+  shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun db:dump \
+    --strip='{{ N98_DB_STRIP_STRING | default('@basnapshots') }}' \
+    --stdout | gzip -c > \
+    {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz"
+  args:
+    chdir: "{{ APP_ROOT }}"
+  run_once: True
+  tags:
+    - snapshot
+    - snapshot-database-only
+
+- name: fetch database snapshot
+  fetch:
+    src: "{{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz"
+    dest: "{{ SNAPSHOT_BASE }}/"
+    flat: yes
+    fail_on_missing: yes
+  run_once: True
+  tags:
+    - snapshot
+    - snapshot-database-only
