@@ -4,9 +4,9 @@
 #
 
 # The default tracking branch for this environment.
-REPO_REF="develop"
+REPO_REF="develop_old"
 
-SUBDOMAIN="staging"
+SUBDOMAIN="old"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
 
 # path to codebase checkout on remote servers
