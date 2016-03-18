@@ -192,14 +192,14 @@
                     </enterprise_persistent>
                 </observers>
             </controller_action_predispatch_wishlist_index_update>
-            <controller_action_predispatch_wishlist_index_updateItemOptions>
+            <controller_action_predispatch_wishlist_index_updateitemoptions>
                 <observers>
                     <enterprise_persistent>
                         <class>enterprise_persistent/observer</class>
                         <method>emulateWishlist</method>
                     </enterprise_persistent>
                 </observers>
-            </controller_action_predispatch_wishlist_index_updateItemOptions>
+            </controller_action_predispatch_wishlist_index_updateitemoptions>
             <controller_action_predispatch_wishlist_index_createwishlist>
                 <observers>
                     <enterprise_persistent>
@@ -264,22 +264,22 @@
                     </enterprise_persistent>
                 </observers>
             </sales_quote_save_before>
-            <controller_action_predispatch_checkout_onepage_saveMethod>
+            <controller_action_predispatch_checkout_onepage_savemethod>
                 <observers>
                     <enterprise_persistent>
                         <class>enterprise_persistent/observer</class>
                         <method>preventSettingQuotePersistent</method>
                     </enterprise_persistent>
                 </observers>
-            </controller_action_predispatch_checkout_onepage_saveMethod>
-            <controller_action_predispatch_checkout_onepage_saveOrder>
+            </controller_action_predispatch_checkout_onepage_savemethod>
+            <controller_action_predispatch_checkout_onepage_saveorder>
                 <observers>
                     <enterprise_persistent>
                         <class>enterprise_persistent/observer</class>
                         <method>preventSettingQuotePersistent</method>
                     </enterprise_persistent>
                 </observers>
-            </controller_action_predispatch_checkout_onepage_saveOrder>
+            </controller_action_predispatch_checkout_onepage_saveorder>
             <render_block>
                 <observers>
                     <enterprise_persistent>
