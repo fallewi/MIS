@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-source setup.sh
+curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+chmod +x phpcs.phar
 
-command -v phpcs >/dev/null 2>&1 || \
-{ echo "The command phpcs (PHP Code Sniffer) is required but not installed. Aborting." >&2; exit 1; }
+
+source setup.sh
 
 RULESETS_DIR="${TEST_DIR}/assets/rulesets"
 
-cd $REPO_ROOT
-
-phpcs --extensions=php --standard=$RULESETS_DIR/codesniffer.xml $FILE_LIST
-
+./phpcs.phar --extensions=php --standard=$RULESETS_DIR/codesniffer.xml $FILE_LIST
 exit $?
