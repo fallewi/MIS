@@ -12,9 +12,11 @@ jasmine.configureDefaultReporter({
 jasmine.onComplete(function(passed) {
     if(passed) {
         console.log('All specs have passed');
+	process.exit(0);
     }
     else {
         console.log('At least one spec has failed');
+	process.exit(1);
     }
 });
 jasmine.execute();
