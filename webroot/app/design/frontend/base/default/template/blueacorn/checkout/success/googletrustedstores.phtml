@@ -12,7 +12,6 @@
     $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
     $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
     $address = $order->getShippingAddress();
-    $helper = Mage::helper('blueacorn_googletrustedstores');
 ?>
 <!-- START Google Trusted Stores Order -->
 <div id="gts-order" style="display:none;" translate=”no”>
@@ -29,7 +28,7 @@
     <span id="gts-o-tax-total"><?php echo $order->getTaxAmount(); ?></span>
     <span id="gts-o-est-ship-date">ORDER_EST_SHIP_DATE</span>
     <span id="gts-o-est-delivery-date">ORDER_EST_DELIVERY_DATE</span>
-    <span id="gts-o-has-preorder"><?php echo $this->hasBackorderPreorder($order) ? 'Y' : 'N'; ?></span>
+    <span id="gts-o-has-preorder"><?php echo $this->hasBackorderPreorder($order); ?></span>
     <span id="gts-o-has-digital"><?php echo $this->hasDigitalGoods(); ?>/span>
     <!-- end order and merchant information -->
 
