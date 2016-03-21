@@ -1,0 +1,62 @@
+---
+
+#
+# deploy a codebase across all webnodes
+#
+# !! be sure to properly define writable paths/permissions and shared folders
+#
+
+- name: "MIS:preproduction deployment"
+  hosts: web*
+  gather_facts: False
+  any_errors_fatal: yes
+  tasks:
+
+    # grunt compile blueacornui (locally, on machine running ansible)
+    - include: tasks/grunt-compile.yml
+
+    - include: tasks/git-deploy.yml
+
+    # copy (rsync) grunt compiled assets (from ansible host => remote hosts)
+    - include: tasks/grunt-sync.yml
+      vars:
+        THEME_DIR: "skin/frontend/blueacorn/mis"
+        SYNCED_PATHS:
+          - "css"
+          - "jsmin"
+
+  post_tasks:
+
+    # ensure HTTPD_USER writable paths
+    # on sudoless environments, copy task content here. set become: False
+    - include: tasks/file-perms.yml
+      vars:
+        WRITABLE_PATHS:
+          - "{{ MAGE_ROOT }}/var"
+          - "{{ MAGE_ROOT }}/media"
+          - "{{ MAGE_ROOT }}/includes"
+
+    # setup shared/linked folders (e.g. NFS shares).
+    # - include: tasks/file-shares.yml
+    #   vars:
+    #     SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
+    #     LINKED_PATHS:
+    #       - "media"
+    #       - "var/export"
+    #       - "var/import"
+    #       - "var/powerreviews"
+    #       - "var/urapidflow"
+
+    # post deployment and notifications
+    - include: tasks/postdeploy.yml
+
+
+# run cacheclear playbook after deployment
+##########################################
+- include: preproduction.util-cacheclear.yml
+
+# run reindex playbook if requested
+###################################
+# @TODO: ansible 2.0, conditionally include indexer playbook.
+# for now, do not re-index on every deployment.
+# - include: preproduction.util-indexer.yml
