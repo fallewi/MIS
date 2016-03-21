@@ -21,7 +21,19 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         return $this->getData('order_id');
     }
 
-    public function hasBackorderPreorder() {}
+    public function hasBackorderPreorder(Mage_Sales_Model_Order $order)
+    {
+        $hasBackorderPreorder = 'N';
+        $helper = Mage::helper('productdetails');
+
+        foreach($order->getAllItems() as $orderItem)
+        {
+            if($helper->isBackordered($orderItem->getProduct())) {
+                $hasBackorderPreorder = 'Y';
+            }
+        }
+        return $hasBackorderPreorder;
+    }
 
     public function hasDigitalGoods() {
         $hasDigitalGoods = 'N';

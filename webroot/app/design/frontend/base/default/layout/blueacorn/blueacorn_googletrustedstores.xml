@@ -10,11 +10,11 @@
 <layout version="0.1.0">
     <default>
         <reference name="before_body_end">
-            <block type="core/template" template="blueacorn/googletrustedstores.phtml"/>
+            <block type="core/template" template="blueacorn/googletrustedstores_badgecode.phtml"/>
         </reference>
     </default>
     <checkout_onepage_success>
-        <reference name="">
+        <reference name="before_body_end">
             <block type="blueacorn_googletrustedstores/onepage_success" template="blueacorn/checkout/success/googletrustedstores.phtml"/>
         </reference>
     </checkout_onepage_success>
