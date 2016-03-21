@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<gridcontrol>
+    <grids>
+        <!-- grid id -->
+        <sales_order_grid>
+            <ship_method>
+                <add>
+                    <header>Shipping Method</header>
+                    <join table="sales/order" condition="main_table.entity_id={{table}}.entity_id" field="shipping_description"/>
+                    <index>shipping_description</index>
+                </add>
+                <after>status</after>
+            </ship_method>
+            <dispatch_date>
+                <add>
+                    <header>Dispatch Date</header>
+                    <join table="sales/order" condition="main_table.entity_id={{table}}.entity_id" field="dispatch_date"/>
+                    <index>dispatch_date</index>
+                </add>
+                <after>ship_method</after>
+            </dispatch_date>
+            <delivery_date>
+                <add>
+                    <header>Delivery Date</header>
+                    <join table="sales/order" condition="main_table.entity_id={{table}}.entity_id" field="delivery_date"/>
+                    <index>delivery_date</index>
+                </add>
+                <after>dispatch_date</after>
+            </delivery_date>
+            <time_slot>
+                <add>
+                    <header>Pickup Time Slot</header>
+                    <join table="sales/order" condition="main_table.entity_id={{table}}.entity_id" field="time_slot"/>
+                    <index>time_slot</index>
+                </add>
+                <after>delivery_date</after>
+            </time_slot>
+        </sales_order_grid>
+    </grids>
+</gridcontrol>
