@@ -6,7 +6,7 @@ error_reporting(E_ALL | E_STRICT);
 
 // CHANGE THIS BELOW LINE TO MATCH DEPLOYMENT
 /////////////////////////////////////////////
-require_once '{{ MAGE_ROOT }}/app/Mage.php';
+require_once '{{ APP_ROOT }}/app/Mage.php';
 
 Mage::app()->getCache()->getBackend()->clean('old');
 Enterprise_PageCache_Model_Cache::getCacheInstance()->getFrontend()->getBackend()->clean('old');

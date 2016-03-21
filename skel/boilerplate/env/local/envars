@@ -1,0 +1,16 @@
+#
+# @CLIENT_CODE:local envars
+# see /docs/ENVIRONMENTS.md for definitions
+#
+
+REPO_ROOT="@REPO_ROOT"
+REPO_REF="HEAD"
+
+APP_URL="@APP_URL"
+APP_ROOT="${REPO_ROOT}/webroot"
+
+# don't worry about setting these. we replace automatically in docker containers.
+# APP_DB_HOST="@APP_DB_HOST"
+# APP_DB_NAME="@APP_DB_NAME"
+# APP_DB_USER="@APP_DB_USER"
+# APP_DB_PASS="@APP_DB_PASS"

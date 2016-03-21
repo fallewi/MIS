@@ -5,7 +5,7 @@
 - name: reindex indexer(s)
   shell: php shell/indexer.php --reindex {{ INDEXER }}
   args:
-    chdir: "{{ MAGE_ROOT }}"
+    chdir: "{{ APP_ROOT }}"
   become: True
   become_user: "{{ HTTPD_USER }}"
   tags:

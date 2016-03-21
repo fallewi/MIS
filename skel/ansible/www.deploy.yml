@@ -6,7 +6,7 @@
 # !! be sure to properly define writable paths/permissions and shared folders
 #
 
-- name: "MIS:www deployment"
+- name: "MIS:staging deployment"
   hosts: web*
   gather_facts: False
   any_errors_fatal: yes
@@ -14,6 +14,8 @@
 
     # grunt compile blueacornui (locally, on machine running ansible)
     - include: tasks/grunt-compile.yml
+      vars:
+        BLUEACORNUI_DIR: "blueacornui"
 
     - include: tasks/git-deploy.yml
 
@@ -28,24 +30,23 @@
   post_tasks:
 
     # ensure HTTPD_USER writable paths
-    # on sudoless environments, copy task content here. set become: False
     - include: tasks/file-perms.yml
       vars:
         WRITABLE_PATHS:
-          - "{{ MAGE_ROOT }}/var"
-          - "{{ MAGE_ROOT }}/media"
-          - "{{ MAGE_ROOT }}/includes"
+          - "{{ APP_ROOT }}/var"
+          - "{{ APP_ROOT }}/media"
+          - "{{ APP_ROOT }}/includes"
 
     # setup shared/linked folders (e.g. NFS shares).
-    # - include: tasks/file-shares.yml
-    #   vars:
-    #     SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
-    #     LINKED_PATHS:
-    #       - "media"
-    #       - "var/export"
-    #       - "var/import"
-    #       - "var/powerreviews"
-    #       - "var/urapidflow"
+#    - include: tasks/file-shares.yml
+#      vars:
+#        SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
+#        LINKED_PATHS:
+#          - "media"
+#          - "var/export"
+#          - "var/import"
+#          - "var/powerreviews"
+#          - "var/urapidflow"
 
     # post deployment and notifications
     - include: tasks/postdeploy.yml
@@ -53,10 +54,10 @@
 
 # run cacheclear playbook after deployment
 ##########################################
-- include: www.util-cacheclear.yml
+- include: staging.util-cacheclear.yml
 
 # run reindex playbook if requested
 ###################################
 # @TODO: ansible 2.0, conditionally include indexer playbook.
 # for now, do not re-index on every deployment.
-# - include: www.util-indexer.yml
+# - include: staging.util-indexer.yml

@@ -2,10 +2,10 @@
 
 - name: ensure shared paths
   file:
-    path: "{{ MAGE_ROOT }}/{{ item }}"
+    path: "{{ APP_ROOT }}/{{ item }}"
     src: "{{ SHARE_ROOT }}/{{ item }}"
     state: link
-  with_items: LINKED_PATHS
+  with_items: "{{ LINKED_PATHS }}"
   ignore_errors: yes
   tags:
     - filesystem

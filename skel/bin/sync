@@ -39,7 +39,7 @@ error(){
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
 
-source $CWD/.functions.sh || error "unable to load shared functions"
+. $CWD/.functions.sh || error "unable to load shared functions"
 
 FORCE_OVERWRITE=false
 SKIP_PROMPTS=false
@@ -68,7 +68,7 @@ prompt_confirm() {
 }
 
 sync_env(){
-  run_task "env_sync" "copying webroot boilerplate from sync/"
+  run_task "env_sync" "copying boilerplate from REPO_ROOT/sync/"
 }
 
 # environment fns
@@ -77,7 +77,7 @@ sync_env(){
 env_sync() {
   file_sync() {
     SRC=$1
-    DEST=$(echo $1 | sed "s|./|$MAGE_ROOT/|")
+    DEST=$(echo $1 | sed "s|./|$APP_ROOT/|")
 
     if ! $FORCE_OVERWRITE ; then
       if [ -e $DEST ] || [ -h $DEST ] ; then

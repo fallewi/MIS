@@ -23,9 +23,10 @@ source $SKELVARS || error "unable to source skelvars. has skel been attached?"
 WEBROOT_DIR=${WEBROOT_DIR:-webroot}
 ENV_DIR="$REPO_ROOT/$SKEL_DIR/env"
 ANSIBLE_DIR="$REPO_ROOT/$SKEL_DIR/ansible"
-MAGE_ROOT="$REPO_ROOT/$WEBROOT_DIR"
+BOILERPLATE_DIR="$REPO_ROOT/$SKEL_DIR/boilerplate"
+APP_ROOT="$REPO_ROOT/$WEBROOT_DIR"
 
-[ -d "$MAGE_ROOT" ] || error "MAGE_ROOT $MAGE_ROOT doesn't exist"
+[ -d "$APP_ROOT" ] || error "APP_ROOT $APP_ROOT doesn't exist"
 [ -d "$ENV_DIR" ] || error "ENV_DIR $ENV_DIR doesn't exist"
 [ -d "$ANSIBLE_DIR" ] || error "ANSIBLE_DIR $ANSIBLE_DIR doesn't exist"
 
@@ -33,8 +34,10 @@ MAGE_ROOT="$REPO_ROOT/$WEBROOT_DIR"
 if [ -f "$ENV_DIR/appvars" ]; then
   grep @CLIENT_CODE $ENV_DIR/appvars >/dev/null 2>&1 || \
     source $ENV_DIR/appvars
+  [ -z "$REPO_REMOTE" ] || REPO_REMOTE_NAME=$(git remote -v | grep $REPO_REMOTE | head -n 1 | awk '{print $1}')
 fi
 
+REPO_REMOTE_NAME=${REPO_REMOTE_NAME:-origin}
 
 # sed_inplace : in place file substitution
 ############################################
@@ -122,6 +125,14 @@ find_latest_squash()
   return 1
 }
 
+
+configure_docker_machine(){
+  eval $(docker-machine env $1)
+  [ $(docker-machine active) = "$1" ] || error "unable to configure $1 machine"
+  docker info || error "unable to communicate with $1 machine"
+}
+
+
 env_bootstrap(){
 
   if [ -z "$ENV" ]; then
@@ -132,16 +143,36 @@ env_bootstrap(){
   fi
 
   [ -d "$ENV_DIR/$ENV" ] || error "$ENV environment not found"
-  [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"
+
+  if [[ $ENV == qa-* ]]; then
+    ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/qa_hosts.py
+    FORCE_ENVIRONMENT_PLAYBOOK=false
+    ANSIBLE_PLAYBOOK="qa.$ANSIBLE_PLAYBOOK"
+
+    # force activation of configured machine
+    case $ENV in
+      qa-1) configure_docker_machine node-a ;;
+      qa-2) configure_docker_machine node-b ;;
+      qa-3) configure_docker_machine node-z ;;
+      *)    error "no docker-machine has been configured for $ENV" ;;
+    esac
+
+  else
+    [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"
+  fi
+
 }
 
 env_bootstrap_ansible(){
   env_bootstrap
 
-  ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/ssh_hosts.py}
+  ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/ssh_hosts.py}
 
   [ -e "$ANSIBLE_INV_SCRIPT" ] || error "missing inventory script:" \
     "$ANSIBLE_INV_SCRIPT"
+
+  [ -z "$REPO_REMOTE_NAME" ] && error "REPO_REMOTE_NAME not defined" \
+    "has REPO_REMOTE been defined in appvars?"
 
   export ANSIBLE_SSH_CONF_FILE="$ENV_DIR/$ENV/ssh_config"
   export ANSIBLE_SSH_CONF_ENVARS="$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
@@ -151,13 +182,15 @@ env_bootstrap_ansible(){
   #  http://docs.ansible.com/ansible/intro_inventory.html
   cd $ANSIBLE_DIR
 
-  if $FORCE_ENVIRONMENT_PLAYBOOK || [ ! -e "$ANSIBLE_PLAYBOOK" ] ; then
-    $FORCE_ENVIRONMENT_PLAYBOOK || ANSIBLE_OPB="$ANSIBLE_DIR/$ANSIBLE_PLAYBOOK"
+  if [ -e ${ENV}.${ANSIBLE_PLAYBOOK} ]; then
     ANSIBLE_PLAYBOOK="${ENV}.${ANSIBLE_PLAYBOOK}"
+  else
+    $FORCE_ENVIRONMENT_PLAYBOOK && error "missing playbook" \
+      "${ENV}.${ANSIBLE_PLAYBOOK}"
   fi
 
   [ -e "$ANSIBLE_PLAYBOOK" ] || error "missing playbook(s)" \
-    "$ANSIBLE_OPB" "$ANSIBLE_DIR/$ANSIBLE_PLAYBOOK"
+    "$ANSIBLE_PLAYBOOK" "${ENV}.${ANSIBLE_PLAYBOOK}"
 }
 
 
@@ -222,7 +255,7 @@ ansible_command(){
   ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
     $ANSIBLE_TAGS $ANSIBLE_LIMIT $ANSIBLE_VERBOSITY $ANSIBLE_CHECK \
     $ANSIBLE_ASK_SSH_PASS $ANSIBLE_ASK_SUDO_PASS $ANSIBLE_STEP \
-    --extra-vars="ENV=$ENV LOCAL_ROOT=$REPO_ROOT $ANSIBLE_VARS"
+    --extra-vars="ENV=$ENV LOCAL_ROOT=$REPO_ROOT REPO_REMOTE_NAME=$REPO_REMOTE_NAME $ANSIBLE_VARS"
 }
 
 ansible_command_help() {

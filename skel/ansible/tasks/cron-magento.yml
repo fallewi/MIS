@@ -7,8 +7,8 @@
     path: "{{ item }}"
     state: file
   with_items:
-    - "{{ MAGE_ROOT }}/cron.sh"
-    - "{{ MAGE_ROOT }}/cron.php"
+    - "{{ APP_ROOT }}/cron.sh"
+    - "{{ APP_ROOT }}/cron.php"
   when: CRON_TYPE == "magento"
   tags:
     - cron
@@ -16,7 +16,7 @@
 
 - name: schedule magento cron
   cron:
-    job: "! test -e {{ MAGE_ROOT }}/maintenance.flag && sh {{ MAGE_ROOT }}/cron.sh"
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && sh {{ APP_ROOT }}/cron.sh"
     minute: "{{ CRON_INTERVAL | default('*') }}"
     name: "{{ ENV }} magento cron"
     user: "{{ HTTPD_USER }}"

@@ -40,3 +40,22 @@
   tags:
     - provision
     - provision-ba-dir-only
+
+- name: add BLUEACORN_DIR/bin to PATH in USER_ENV_FILE
+  lineinfile:
+    dest: "{{ item }}"
+    create: yes
+    regexp: "^export PATH={{ BLUEACORN_DIR | replace('/', '\\/') }}\\/bin"
+    line: "export PATH={{ BLUEACORN_DIR }}/bin:$PATH"
+  with_items:
+    - "~/{{ USER_ENV_FILE | default('.bash_profile') }}"
+    - "~/.bashrc"
+  tags:
+    - provision
+    - provision-user-path-only
+
+
+# application dependencies
+##########################
+
+- include: provision-deps.yml

@@ -4,15 +4,6 @@
 
 - debug: msg="*** writing database to {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz and copying to {{ SNAPSHOT_BASE }}/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz ***"
 
-- name: ensure database snapshot script
-  copy:
-    src: "files/ba-snapdb.sh"
-    dest: "{{ BLUEACORN_DIR }}/util/ba-snapdb.sh"
-    mode: 0755
-  tags:
-    - snapshot
-    - snapshot-database-only
-
 - name: remove existing database snapshot
   file:
     path: "{{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz"
@@ -22,11 +13,13 @@
     - snapshot-database-only
 
 - name: perform database snapshot
-  shell: "{{ BLUEACORN_DIR }}/util/ba-snapdb.sh --no-prompt \
-    {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz \
-    -m {{ MAGE_ROOT }}/"
+  shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun db:dump \
+    --strip='{{ N98_DB_STRIP_STRING | default('@basnapshots') }}' \
+    --stdout | gzip -c > \
+    {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz"
+  args:
+    chdir: "{{ APP_ROOT }}"
   run_once: True
-  register: result
   tags:
     - snapshot
     - snapshot-database-only

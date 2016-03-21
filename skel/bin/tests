@@ -40,7 +40,7 @@ error(){
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
 
-source $CWD/.functions.sh || error "unable to load shared functions"
+. $CWD/.functions.sh || error "unable to load shared functions"
 
 if [ -z "$CLIENT_CODE" ]; then
   error "CLIENT_CODE undefined" "has an environment been set?"

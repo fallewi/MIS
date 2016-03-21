@@ -65,7 +65,7 @@ prompt_confirm() {
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
 
-MAGE_ROOT="."
+APP_ROOT="."
 PROMPT=true
 SANITIZE=true
 
@@ -254,7 +254,7 @@ else
   while [ $# -ne 0 ]; do
     case $1 in
       -h|--help|help)    display_help ;;
-      -m|--mage-root)    MAGE_ROOT="$2" ; shift ;;
+      -m|--mage-root)    APP_ROOT="$2" ; shift ;;
       -y|--no-prompt)    PROMPT=false ;;
       -s|--skip-san)     SANITIZE=false ;;
       *)                 DBFILENAME="$1" ;
@@ -262,11 +262,11 @@ else
     shift
   done
 
-  MAGENTOROOT="$MAGE_ROOT"
+  MAGENTOROOT="$APP_ROOT"
   checkTools
 
-  [ -d "$MAGE_ROOT/app/etc" ] || error \
-    "missing $MAGE_ROOT/app/etc" "cd into or pass a proper magento root"
+  [ -d "$APP_ROOT/app/etc" ] || error \
+    "missing $APP_ROOT/app/etc" "cd into or pass a proper magento root"
 
   if $PROMPT ; then
      prompt_confirm "Write snapshot to $DBFILENAME ?" || exit 0

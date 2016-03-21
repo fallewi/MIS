@@ -19,6 +19,8 @@ display_help() {
     list                 Print the available environments
                          (directories under env/)
 
+    make qa              Generates qa environments (currently qa-1, qa-2)
+
     make <envname>       Generates a new environment from skel templates
 
     vars [envname]       Prints variables from current [or passed] environment
@@ -26,6 +28,9 @@ display_help() {
 
     var <name> [envname] Print a variable value from the current environment
                          (if set), or optionally from the passed environment
+
+    test                 Tests that an environment is set and its configuration
+                         matches that in the authoritative skel branch
 
   Options:
     --help               Display help
@@ -63,7 +68,7 @@ error(){
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
 
-source $CWD/.functions.sh || error "unable to load shared functions"
+. $CWD/.functions.sh || error "unable to load shared functions"
 
 QUIET=false
 FORCE_OVERWRITE=false
@@ -100,9 +105,9 @@ set_env(){
   echo
 
   if [ "$ENV" = "local" ]; then
-    # if the local environment doesn't yet exist, copy it from skel
+    # if the local environment doesn't yet exist, copy it from boilerplate
     #  (lazy provisioning allows local/ to remain untracked in .gitignore)
-    [ -d "$ENV_DIR/local" ] || cp -a $ENV_DIR/boilerplate/local $ENV_DIR/
+    [ -d "$ENV_DIR/local" ] || cp -a $BOILERPLATE_DIR/env/local $ENV_DIR/
 
     run_task "env_local" "local-only steps"
   fi
@@ -111,6 +116,7 @@ set_env(){
 
   run_task "env_conf" "linking config files"
   run_task "env_mark" "marking environment as '$ENV'"
+  run_task "env_onset" "evaluate onset activation script"
 
   printf "\n [+] configured environment: \033[35m %s \n\033[0m\n\n" "$ENV"
 
@@ -139,8 +145,8 @@ print_vars(){
   ! $QUIET && printf "\n\033[35m%s\033[0m vars -->\n\n" "$ENV"
 
   local CMD="set -a ; \
-    source $ENV_DIR/appvars ; \
-    source $ENV_DIR/$ENV/envars ; \
+    . $ENV_DIR/appvars ; \
+    . $ENV_DIR/$ENV/envars ; \
     printenv | sed '/^\(SHLVL\|PWD\|_\)=/d'"
   env -i sh -c "$CMD"
 }
@@ -150,7 +156,7 @@ print_var(){
   [ -z $REQUESTED_VAR ] && error "must specifiy a variable to print"
 
   [ -e $ENV_DIR/appvars ] || error "missing appvars"
-  source $ENV_DIR/appvars
+  . $ENV_DIR/appvars
 
   if [ -z "$ENV" ]; then
     ENV="current"
@@ -158,7 +164,7 @@ print_var(){
     [ -d $ENV_DIR/$ENV ] || error "environment $ENV not found"
   fi
 
-  [ -e $ENV_DIR/$ENV/envars ] && source $ENV_DIR/$ENV/envars
+  [ -e $ENV_DIR/$ENV/envars ] && . $ENV_DIR/$ENV/envars
 
   printf ${!REQUESTED_VAR}
 }
@@ -168,37 +174,29 @@ print_var(){
 #################
 
 env_conf() {
-  link() {
-    SRC=$ENV_DIR/$ENV/$1
-    DEST=$REPO_ROOT/$1
 
-    if [ ! -e $SRC ]; then
-      echo "skipping $1"; return
-    fi
+  cd $REPO_ROOT
+
+  for SRC in $(find $SKEL_DIR/env/$ENV/webroot/ -type f); do
+
+    DEST=${SRC//$SKEL_DIR\/env\/$ENV\/webroot\//$WEBROOT_DIR\/}
 
     if ! $FORCE_OVERWRITE ; then
       if [ -e $DEST ] || [ -h $DEST ] ; then
         $SKIP_PROMPTS && return
-        prompt_confirm "Overwrite $1?" || return
+        prompt_confirm "Overwrite $DEST?" || continue
       fi
     fi
 
-    echo "linking $1"
+    echo "linking $SRC"
     if [ -e $DEST ] || [ -h $DEST ]; then
      rm $DEST
     elif [ ! -d $(dirname $DEST) ]; then
       mkdir -p $(dirname $DEST)
     fi
-    ln -s $SRC $DEST
-  }
-
-  local envfiles="$ENV_DIR/$ENV/envfiles"
-  [ -e "$envfiles" ] || envfiles="$ENV_DIR/envfiles"
-  [ -e "$envfiles" ] || error "envfiles not found!"
-
-  for file in $(cat $envfiles); do
-    link "$file"
+    ln -s $REPO_ROOT/$SRC $DEST
   done
+
 }
 
 env_mark(){
@@ -211,11 +209,13 @@ env_mark(){
 env_local() {
 
   echo "[GIT] assuming index.php as unchanged"
-  git update-index --assume-unchanged $MAGE_ROOT/index.php
+  git update-index --assume-unchanged $APP_ROOT/index.php
 
   echo "[GIT] configure core.fileMode as false"
   git config core.fileMode false
 
+  $SKIP_PROMPTS && return
+  prompt_confirm "initialize blueacornui?" || return
   env_blueacornui
 }
 
@@ -235,7 +235,7 @@ env_blueacornui() {
     bower install
   fi
 
-  if [ ! -d "$MAGE_ROOT/skin/frontend/blueacorn/site" ]; then
+  if [ ! -d "$APP_ROOT/skin/frontend/blueacorn/site" ]; then
     grunt setup:site
   fi
 
@@ -253,71 +253,94 @@ env_blueacornui() {
 env_make() {
 
   [ -e $ENV_DIR/appvars ] || error "missing appvars"
-  source $ENV_DIR/appvars
+  . $ENV_DIR/appvars
 
   [ -z "$ENV" ] && read -p "environment name to generate: " ENV
 
-  printf "\nskel environments -->"
-  cd $ENV_DIR/boilerplate
-  printf "\n\n  (BOILERPLATE): \n"
-  ls -d */ 2>/dev/null | grep -v local | sed "s/\///"
+  if [ "$ENV" = "qa" ]; then
+    BASE_ENV="qa"
+    BASE_DIR="$BOILERPLATE_DIR/env/$BASE_ENV"
+    SKIP_ANSIBLE=true
+    env_make_arg "qa-1"
+    env_make_arg "qa-2"
+  else
+
+    printf "\nskel environments -->"
+    cd $BOILERPLATE_DIR/env
+    printf "\n\n  (BOILERPLATE): \n"
+    ls -d */ 2>/dev/null | grep -v local | sed "s/\///"
+
+    cd $ENV_DIR
+    printf "\n\n  (EXISTING): \n"
+    ls -d */ 2>/dev/null | grep -v -E 'current|local|boilerplate'| sed "s/\///"
+
+    while true; do
+      printf "\nenvironment to base \033[35m%s\033[0m on: " "$ENV"
+      read -r BASE_ENV
+
+      BASE_DIR="$ENV_DIR/$BASE_ENV"
+
+      if [ -d "$BASE_DIR" ]; then
+        BASE_TYPE="existing"
+        SED_REPLACE="s|$BASE_ENV|$ENV|g"
+      else
+        BASE_DIR="$BOILERPLATE_DIR/env/$BASE_ENV"
+        BASE_TYPE="skel"
+      fi
+
+      [ -d "$BASE_DIR" ] && break
+
+      printf "\n 404 $BASE_ENV - invalid base environment \n"
+
+    done
+
+    env_make_arg $ENV
+
+  fi
+
+}
+
+env_make_arg() {
+
+  printf "\ncreating \033[35m%s\033[0m...\n" "$1"
 
   cd $ENV_DIR
-  printf "\n\n  (EXISTING): \n"
-  ls -d */ 2>/dev/null | grep -v -E 'current|local|boilerplate'| sed "s/\///"
 
-
-  while true; do
-    printf "\nskel environment to base \033[35m%s\033[0m on: " "$ENV"
-    read -r SKEL
-
-    local BASE_DIR="$ENV_DIR/$SKEL"
-
-    if [ -d "$BASE_DIR" ]; then
-      local BASE_TYPE="existing"
-      local SED_REPLACE="s|$SKEL|$ENV|g"
-    else
-      local BASE_DIR="$ENV_DIR/boilerplate/$SKEL"
-      local BASE_TYPE="skel"
-      local SED_REPLACE="s|@ENV|$ENV|g;s|@CLIENT_CODE|$CLIENT_CODE|g;s|@REPO_REMOTE|$REPO_REMOTE|g;s|@DOMAIN|$DOMAIN|g"
-    fi
-
-    [ -d "$BASE_DIR" ] && break
-
-    printf "\n !!! $SKEL is not a valid base environment !!! \n"
-
-  done
-
+  [ -d $BASE_DIR ] || error "404! $BASE_DIR/ - is BASE_DIR set?"
 
   if ! $SKIP_ENV ; then
 
-    [ -d "$ENV_DIR/$ENV" ] && error "environment \"$ENV\" already exists"
+    [ -d "$ENV_DIR/$1" ] && \
+      echo "environment \"$1\" already exists" && \
+      return 1
 
-    echo "  generating $ENV from $BASE_TYPE $SKEL ..."
-    cp -a $BASE_DIR $ENV_DIR/$ENV
+    echo "  generating $1 from $BASE_TYPE $BASE_ENV ..."
+    cp -a $BASE_DIR $ENV_DIR/$1
 
-    echo "  activating $ENV ..."
-    cd $ENV_DIR/$ENV
-    for file in `find * -type f`; do
+    cd $ENV_DIR/$1
+    echo "  localizing $1 ... $ENV_DIR/$1"
+    local SED_REPLACE="s|@ENV|$1|g;s|@CLIENT_CODE|$CLIENT_CODE|g;s|@REPO_REMOTE|$REPO_REMOTE|g;s|@DOMAIN|$DOMAIN|g"
+    for file in $(find * -type f); do
+      echo "sed_inplace \"$file\" \"$SED_REPLACE\""
       sed_inplace "$file" "$SED_REPLACE"
     done
   fi
 
   if ! $SKIP_ANSIBLE ; then
-    [ -d "$ENV_DIR/$ENV" ] || error "environment \"$ENV\" does not exist"
+    [ -d "$ENV_DIR/$1" ] || error "environment \"$1\" does not exist"
 
-    echo "  generating $ENV ansible templates from $BASE_TYPE $SKEL ..."
+    echo "  generating $1 ansible templates from $BASE_TYPE $BASE_ENV ..."
 
     if [ "$BASE_TYPE" = "skel" ]; then
-      cd $ANSIBLE_DIR/boilerplate || error "missing ansible boilerplate"
+      cd $BOILERPLATE_DIR/ansible || error "missing ansible boilerplate"
       for file in *; do
         cp $file $ANSIBLE_DIR/${ENV}.$file
         sed_inplace "$ANSIBLE_DIR/${ENV}.$file" "$SED_REPLACE"
       done
     else
       cd $ANSIBLE_DIR || error "ansible dir missing"
-      for file in $SKEL.*; do
-        local target=$ENV.${file//$SKEL./}
+      for file in $BASE_ENV.*; do
+        local target=$1.${file//$BASE_ENV./}
         cp $file $target
         sed_inplace "$target" "$SED_REPLACE"
       done
@@ -325,9 +348,71 @@ env_make() {
 
   fi
 
-  printf "\n...\033[35m%s\033[0m has been created!\n" "$ENV"
+  printf "\n...\033[35m%s\033[0m has been created!\n" "$1"
 }
 
+env_test() {
+
+  [ ! -e $ENV_DIR/current ] && echo "environment has not been set" && exit 127
+  [ -d $ENV_DIR/current/webroot ] || error "environment has no configuration"
+
+  [ -z "$REPO_REMOTE_NAME" ] && error "REPO_REMOTE_NAME not defined" \
+    "has REPO_REMOTE been defined in appvars?"
+  git fetch $REPO_REMOTE_NAME $SKEL_BRANCH || error "error fetching SKEL_BRANCH"
+
+  cd $REPO_ROOT || error "error changing to REPO_ROOT"
+
+  QUIET=true
+  ERRORS=
+  ENV=$(print_env)
+  [ -z "$ENV" ] && error "unable to detect environment"
+
+  for file in $(find $SKEL_DIR/env/$ENV/webroot/ -type f); do
+    dest=${file//$SKEL_DIR\/env\/$ENV\/webroot\//}
+    if [ -L $WEBROOT_DIR/$dest ]; then
+      git diff -w --exit-code $REPO_REMOTE_NAME/$SKEL_BRANCH:$file -- $(readlink $WEBROOT_DIR/$dest) || \
+        ERRORS=$(printf "$ERRORS\n$dest\t does not match -$SKEL_BRANCH\n")
+    else
+      ERRORS=$(printf "$ERRORS\n$dest\t is not symlinked to its environment\n")
+    fi
+  done
+
+  [ -z "$ERRORS" ] || error "configuration test failed" "$ERRORS"
+
+}
+
+env_onset(){
+  ONSET_ACTIVE=false
+
+  ORIG_APP_ROOT=$APP_ROOT
+
+  # export sourced vars
+  set -a
+  [ -e $ENV_DIR/appvars ] && . $ENV_DIR/appvars
+  [ -e $ENV_DIR/$ENV/envars ] && . $ENV_DIR/$ENV/envars
+  set +a
+
+  export ENV=$ENV
+  export ENV_DIR=$ENV_DIR
+  export ANSIBLE_DIR=$ANSIBLE_DIR
+  export BOILERPLATE_DIR=$BOILERPLATE_DIR
+  export APP_ROOT=$ORIG_APP_ROOT
+
+  if ! $ONSET_ACTIVE; then
+    printf "$ENV's ONSET_ACTIVE is not truthy. Skipping onset...\n\n"
+    return
+  fi
+
+  for file in $ENV_DIR/$ENV/onset.sh $ENV_DIR/onset.sh; do
+    if [ -e $file ]; then
+      printf "\n running \033[35m%s\033[0m...\n" "$file"
+      $file
+      break
+    else
+      printf "\n ENOENT \033[35m%s\033[0m skipping...\n" "$file"
+    fi
+  done
+}
 
 
 # runtime
@@ -347,6 +432,7 @@ else
       --skip-ansible)    SKIP_ANSIBLE=true ;;
       --skip-env)        SKIP_ENV=true ;;
       list)              runstr="print_list" ;;
+      test)              runstr="env_test" ;;
       make)              runstr="env_make" ;
                          if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
                            ENV="$2" ; shift ;
@@ -377,4 +463,6 @@ else
   done
 
   $runstr
+  echo
+  exit $?
 fi

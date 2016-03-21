@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# globals
+#########
+
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
+
+# run functions
+###############
+
+. $CWD/.functions.sh || error "unable to load shared functions"
+
+RELEASE_VERSION="1.1.0-rc4"
+DOWNLOAD_URL="https://get.blueacorn.net/bin/release_linux-amd64_latest"
+if [[ $OSTYPE == darwin* ]]; then
+    DOWNLOAD_URL=${DOWNLOAD_URL//release_linux/release_darwin}
+fi
+
+RELEASE_BIN=$REPO_ROOT/$SKEL_DIR/bin/downloads/release-$RELEASE_VERSION
+
+mkdir -p $(dirname $RELEASE_BIN) 2>/dev/null
+
+if [ ! -e $RELEASE_BIN ]; then
+  curl -Lf "${DOWNLOAD_URL}?access_token=${RELEASE_OAUTH_TOKEN}" > $RELEASE_BIN
+  chmod +x $RELEASE_BIN
+fi
+
+exec $RELEASE_BIN $@
+exit $?

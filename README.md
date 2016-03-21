@@ -106,21 +106,21 @@ perform the merge. You can find the author of a line of code using `git blame`.
 
 ## Testing
 
-Testing is performed by a javascript-based test suite. For your convenience a docker container
+Testing is performed by a javascript-based test suite called [Jasmine 2.0](http://jasmine.github.io/edge/introduction.html). For your convenience a docker container
 pre-installed with all test dependencies can be launched via `bin/tests`.
 
-You may also run tests by executing `gulp` in the [tests/](tests/) directory
-(you'll need node and [gulp](http://gulpjs.com/) installed for this).
+You may also run tests by executing `node .` in the [tests/](tests/) directory
+(you'll need node installed for this).
 
 ```sh
 # run tests in docker [prefered]
 cd /path/to/repo
 bin/tests
 
-# alternatively, manually run tests [requires node + gulp]
+# alternatively, manually run tests [requires node]
 cd /path/to/repo/tests
 npm install
-gulp
+node .
 ```
 
 **Add tests for your feature or hotfixes** to tests/tests.d . See [docs/TESTS.md](docs/TESTS.md) for more.

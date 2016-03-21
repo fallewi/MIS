@@ -1,8 +1,22 @@
 ---
 
-# on sudoless environments, copy task contents to deployment palybook
+- name: ensure HTTPD_USER writable paths (nosudo)
+  file:
+    path: "{{ item }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ HTTPD_USER }}"
+    mode: 0770
+    state: directory
+  become: False
+  when: ansible_ssh_user == HTTPD_USER
+  with_items: "{{ WRITABLE_PATHS }}"
+  ignore_errors: yes
+  tags:
+    - filesystem
+    - filesystem-perms-only
 
-- name: ensure HTTPD_USER writable paths
+
+- name: ensure HTTPD_USER writable paths (sudo)
   file:
     path: "{{ item }}"
     owner: "{{ ansible_ssh_user }}"
@@ -10,7 +24,8 @@
     mode: 0770
     state: directory
   become: True
-  with_items: WRITABLE_PATHS
+  when: ansible_ssh_user != HTTPD_USER
+  with_items: "{{ WRITABLE_PATHS }}"
   ignore_errors: yes
   tags:
     - filesystem

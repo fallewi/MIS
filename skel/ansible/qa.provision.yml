@@ -1,0 +1,80 @@
+---
+#
+# best to avoid customizations on these while we iron it out.
+#
+
+- name: "localhost - qa environment provisioning"
+  hosts: localhost
+  tasks:
+    - name: ensure containers are running on docker-machine
+      local_action: shell ./manage.sh {{ ENV }} up
+      args:
+        chdir: "{{ LOCAL_ROOT }}/skel/docker/qa"
+      run_once: True
+      tags:
+        - start-containers
+
+    - name: sleeping 10s while containers come online
+      shell: sleep 10
+
+# placeholder for running commands against the docker-machine
+#  useful for UFS/volume setup.
+
+# - name: "docker-machine - qa environment provisioning"
+#   hosts: docker-machine
+#   tasks:
+#
+#     - name: copy SQL_FILE to docker-machine if SQL_FILE extravar has been passed.
+#       copy:
+#         src: "{{ SQL_FILE }}"
+#         dest: "/tmp/${ENV}-${CLIENT_CODE}-{{ SQL_FILE | basename }}"
+#       when: SQL_FILE is definied
+#       tags:
+#         - db
+
+- name: "term-container - qa environment provisioning"
+  hosts: term-container
+  vars:
+    # force import will overwrite existing db
+    FORCE_MYSQL_IMPORT: false
+    DB_SNAPSHOT_PATH: /nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz > /tmp/db.sql
+  tasks:
+
+    - name: check for presence of core_config_data table
+      shell: echo "SELECT COUNT(1) FROM core_config_data;" | mysql
+      register: result
+      ignore_errors: True
+      tags:
+        - db
+
+    - name: copy SQL_FILE if SQL_FILE extravar has been passed. It must be gzipped compressed .sql.gz!!!
+      copy:
+        src: "{{ SQL_FILE }}"
+        dest: "/tmp/sql.gz"
+      when: SQL_FILE is defined
+      tags:
+        - db
+
+    - set_fact:
+        DB_SNAPSHOT_PATH: "/tmp/sql.gz"
+      when: SQL_FILE is defined
+      tags:
+        - db
+
+    - name: import mysql database [1/3]
+      shell: zcat {{ DB_SNAPSHOT_PATH }} > /tmp/db.sql
+      when: result|failed or FORCE_MYSQL_IMPORT
+      tags:
+        - db
+
+    - name: import mysql database [2/3]
+      shell: mysql -e "SET autocommit=0; SET unique_checks=0; SET foreign_key_checks=0; source /tmp/db.sql; COMMIT; SET unique_checks=1; SET foreign_key_checks=1;"
+      when: result|failed or FORCE_MYSQL_IMPORT
+      tags:
+        - db
+
+    - name: import mysql database [3/3]
+      shell: rm /tmp/db.sql
+      when: result|failed or FORCE_MYSQL_IMPORT
+      tags:
+        - db

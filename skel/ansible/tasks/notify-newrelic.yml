@@ -5,7 +5,7 @@
   args:
     token: "{{ NEWRELIC_TOKEN }}"
     application_id: "{{ NEWRELIC_APPID }}"
-    revision: "{{ lookup('pipe','git rev-parse --short origin/' + REPO_REF) }}"
+    revision: "{{ lookup('pipe','git rev-parse --short ' + REPO_REMOTE_NAME + '/' + REPO_REF) }}"
     user: "{{ lookup('pipe','whoami') }}"
   run_once: True
   ignore_errors: True

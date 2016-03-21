@@ -10,7 +10,7 @@
     delete: yes
     mode: push
     recursive: yes
-  with_items: SYNCED_PATHS
+  with_items: "{{ SYNCED_PATHS }}"
   tags:
     - grunt
     - grunt-sync-only

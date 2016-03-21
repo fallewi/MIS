@@ -39,7 +39,7 @@ the playbooks are usually called by the bin/ tools, for instance
 `bin/deploy prod` will run the `ansible/prod.deploy.yml` playbook using
 `env/prod/ssh_config` as hosts.
 
-playbooks are copied from `ansible/boilerplate` when an environment is created --
+playbooks are copied from `boilerplate/ansible/` when an environment is created --
 allowing for site/environment-specific customization.
 
 #### bin
@@ -54,7 +54,7 @@ environments are defined in the `env/` directory.
 
 an environment is a grouping of configuration files specifying where a site runs.
 think of environments as "deployment targets" -- with an `ssh_config` defining
-hosts, `envars` files defining the environment (such as MAGE_URL), and
+hosts, `envars` files defining the environment (such as APP_URL), and
 configuration files  (such as local.xml and robots.txt) in `webroot`.
 
 this allows us to keep environmental information and configuration in

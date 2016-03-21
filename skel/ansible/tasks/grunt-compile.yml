@@ -5,6 +5,7 @@
   args:
     chdir: "{{ LOCAL_ROOT }}/"
   run_once: True
+  when: SKIP_CHECKS is not defined or not SKIP_CHECKS
   tags:
     - grunt
     - grunt-compile-only
@@ -14,7 +15,7 @@
   local_action: shell npm install --production ; bower --allow-root --config.interactive=false install
   args:
     creates: "{{ LOCAL_ROOT }}/blueacornui/node_modules"
-    chdir: "{{ LOCAL_ROOT }}/blueacornui"
+    chdir: "{{ LOCAL_ROOT }}/{{ BLUEACORNUI_DIR | default('blueacornui') }}"
   run_once: True
   tags:
     - grunt
@@ -24,7 +25,7 @@
 - name: prepare / compile static assets
   local_action: shell grunt {{ GRUNT_COMMAND | default('production') }}
   args:
-    chdir: "{{ LOCAL_ROOT }}/blueacornui"
+    chdir: "{{ LOCAL_ROOT }}/{{ BLUEACORNUI_DIR | default('blueacornui') }}"
   run_once: True
   tags:
     - grunt

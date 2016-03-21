@@ -7,8 +7,8 @@
     path: "{{ item }}"
     state: file
   with_items:
-    - "{{ MAGE_ROOT }}/scheduler_cron.sh"
-    - "{{ MAGE_ROOT }}/cron.php"
+    - "{{ APP_ROOT }}/scheduler_cron.sh"
+    - "{{ APP_ROOT }}/cron.php"
   when: CRON_TYPE == "aoe"
   tags:
     - cron
@@ -16,7 +16,7 @@
 
 - name: schedule aoe cron (Aoe_Scheduler always group)
   cron:
-    job: "! test -e {{ MAGE_ROOT }}/maintenance.flag && /bin/bash {{ MAGE_ROOT }}/scheduler_cron.sh --mode always"
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && /bin/bash {{ APP_ROOT }}/scheduler_cron.sh --mode always"
     minute: "{{ CRON_INTERVAL | default('*') }}"
     name: "{{ ENV }} magento cron always"
     user: "{{ HTTPD_USER }}"
@@ -28,7 +28,7 @@
 
 - name: schedule aoe cron (Aoe_Scheduler default group)
   cron:
-    job: "! test -e {{ MAGE_ROOT }}/maintenance.flag && /bin/bash {{ MAGE_ROOT }}/scheduler_cron.sh --mode default"
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && /bin/bash {{ APP_ROOT }}/scheduler_cron.sh --mode default"
     minute: "{{ CRON_INTERVAL | default('*') }}"
     name: "{{ ENV }} magento cron default"
     user: "{{ HTTPD_USER }}"
@@ -40,7 +40,7 @@
 
 - name: schedule aoe cron (Aoe_Scheduler watchdog)
   cron:
-    job: "! test -e {{ MAGE_ROOT }}/maintenance.flag && cd {{ MAGE_ROOT }}/shell && $(which php) scheduler.php --action watchdog"
+    job: "! test -e {{ APP_ROOT }}/maintenance.flag && cd {{ APP_ROOT }}/shell && $(which php) scheduler.php --action watchdog"
     minute: "*/10"
     name: "{{ ENV }} magento cron watchdog"
     user: "{{ HTTPD_USER }}"

@@ -7,7 +7,7 @@
 #  ** run this on a single, less busy host**
 #
 
-- name: "MIS:www media snapshot"
+- name: "MIS:staging media snapshot"
   hosts: web-1
   gather_facts: False
 
@@ -17,7 +17,7 @@
   tasks:
     - include: tasks/snapshot-media.yml
       vars:
-        MEDIA_DIR: "{{ MAGE_ROOT }}/media"
+        MEDIA_DIR: "{{ APP_ROOT }}/media"
         AUTO_COMPRESS_MEDIA: True
 
 
@@ -29,7 +29,7 @@
 #  ** run this on a single, less busy host**
 #
 
-- name: "MIS:www database snapshot"
+- name: "MIS:staging database snapshot"
   hosts: web-1
   gather_facts: False
 

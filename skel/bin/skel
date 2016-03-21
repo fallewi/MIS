@@ -75,7 +75,7 @@ prompt_confirm() {
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
 
-source $CWD/.functions.sh || error "unable to load shared functions"
+. $CWD/.functions.sh || error "unable to load shared functions"
 
 # defaults
 FORCE_OVERWRITE=${INIT_FORCE_OVERWRITE:-false}
@@ -162,7 +162,7 @@ init_boilerplate(){
   [ -z $LAST_SQUASH ] && error "error finding latest squash"
 
   echo "[BOILERPLATE] : checking out $LAST_SQUASH_TREE" && git checkout -q $LAST_SQUASH_TREE
-  local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=boilerplate/)
+  local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=boilerplate/REPO_ROOT/)
   echo "[BOILERPLATE]: built tree \"$MERGE_TREE\", returning" && git checkout -q $WORKING_BRANCH
 
   if [ -z $MERGE_TREE ]; then
@@ -170,9 +170,19 @@ init_boilerplate(){
     return
   fi
 
-  git merge -m "applied boilerplate/ changes from $(git rev-parse --short $LAST_SQUASH)" $MERGE_TREE || error \
-    "error applying $MERGE_TREE boilerplate tree" \
+  # @TODO distribute the rerere cache, at least in groundcontrol where we plan
+  # to automatically update/downstream all skels
+  git config rerere.enabled true
+
+  git merge --rerere-autoupdate \
+    -m "applied boilerplate/REPO_ROOT/ changes from $(git rev-parse --short $LAST_SQUASH)" $MERGE_TREE
+
+  # merges where rerere resolves _all_ conflicts still exit as 1.
+  #  we workaround by checking if conflicts persist (rerere diff !empty)
+  [ -z "$(git rerere diff)" ] || error "error applying $MERGE_TREE boilerplate tree" \
     "please resolve conflicts and then re-initialize"
+
+  git commit --no-edit
 }
 
 
@@ -249,7 +259,7 @@ init_blueacornui(){
 }
 
 skel_downstream(){
-  curl https://get.blueacorn.net/downstream-skel.sh | sh
+  curl https://get.blueacorn.net/downstream-skel.sh | bash
 }
 
 skel_push(){
@@ -285,18 +295,15 @@ skel_pull(){
 
   [ -z "$SKEL_DIR" ] && error "SKEL_DIR not defined" "has skel been attached?"
   [ -z "$SKEL_BRANCH" ] && error "SKEL_BRANCH not defined" "has skel been attached?"
-  [ -z "$REPO_REMOTE" ] && error "REPO_REMOTE not defined" "has appvars been set?"
+  [ -z "$REPO_REMOTE_NAME" ] && error "REPO_REMOTE_NAME not defined" "has REPO_REMOTE been defined in appvars?"
 
   if [ "$WORKING_BRANCH" = "$SKEL_BRANCH" ]; then
     echo "already on $SKEL_BRANCH"
     return 0
   fi
 
-  local REMOTE=$(git remote -v | grep $REPO_REMOTE | head -n 1 | awk '{print $1}')
-  [ -z "$REMOTE" ] && error "REMOTE could not be detected" "Be sure REPO_REMOTE is set"
-
   git rm -rf $SKEL_DIR
-  git checkout --theirs $REMOTE/$SKEL_BRANCH -- $SKEL_DIR/ || error "error updating skel"
+  git checkout --theirs $REPO_REMOTE_NAME/$SKEL_BRANCH -- $SKEL_DIR/ || error "error updating skel"
 }
 
 deploykey_make(){
