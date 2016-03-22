@@ -127,7 +127,9 @@ class Enterprise_Pci_Model_Resource_Admin_User extends Mage_Admin_Model_Resource
         return $this->_getReadAdapter()->fetchCol(
             $this->_getReadAdapter()->select()
                 ->from($table, 'password_hash')
-                ->where('user_id = :user_id'),
+                ->where('user_id = :user_id')
+                ->order('password_id ' . Varien_Db_Select::SQL_DESC)
+                ->limit($retainLimit),
             array(':user_id' => $userId)
         );
     }

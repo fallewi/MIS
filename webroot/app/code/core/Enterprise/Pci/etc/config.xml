@@ -69,14 +69,14 @@
             </enterprise_pci_setup>
         </resources>
         <events>
-            <admin_user_save_before>
+            <admin_user_validate>
                 <observers>
                     <enterprise_pci>
                         <class>enterprise_pci/observer</class>
-                        <method>checkAdminPasswordChange</method>
+                        <method>validateAdminUser</method>
                     </enterprise_pci>
                 </observers>
-            </admin_user_save_before>
+            </admin_user_validate>
             <admin_user_save_after>
                 <observers>
                     <enterprise_pci>
