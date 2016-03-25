@@ -18,8 +18,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     {
         parent::_construct();
 
-        if(!$this->hasData('order_id'))
-        {
+        if (!$this->hasData('order_id')) {
             $this->setData('order_id', Mage::getSingleton('checkout/session')->getLastOrderId());
         }
     }
@@ -38,19 +37,18 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Returns the back order status of order items
      *
-     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Sales_Model_Order $order Order
      * @return string $hasBackOrder
      */
     public function hasBackorderPreorder($order)
     {
         $hasBackOrder = 'N';
 
-        foreach($order->getAllItems() as $orderItem)
-        {
+        foreach ($order->getAllItems() as $orderItem) {
             $productId = $orderItem->getProductId();
             $product = Mage::getModel("catalog/product")->load($productId);
             $hasBackOrder = $this->_getBackOrderStatus($product);
-            if($hasBackOrder === 'Y') {
+            if ($hasBackOrder === 'Y') {
                 break;
             }
         }
@@ -68,12 +66,11 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         $orderId = $this->getOrderId();
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        foreach($order->getAllItems() as $item)
-        {
+        foreach ($order->getAllItems() as $item) {
             $product = $item->getProduct();
             $productType = $product->getTypeId();
 
-            if($productType == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL) {
+            if ($productType == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL) {
                 $hasDigitalGoods = 'Y';
             }
         }
@@ -94,13 +91,12 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Returns back order status of product
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Catalog_Model_Product $product Product
      * @return string
      */
     protected function _getBackOrderStatus($product)
     {
-        if($product->isSaleable() && !$product->getIsInStock())
-        {
+        if ($product->isSaleable() && !$product->getIsInStock()) {
             return 'Y';
         } else {
             return 'N';
