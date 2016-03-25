@@ -61,7 +61,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         return Mage::app()->getStore()->getCurrentCurrencyCode();
     }
 
-    protected function _getBackOrderStatus($product) {
+    protected function _getBackOrderStatus($product)
+    {
         if($product->isSaleable() && !$product->getIsInStock()) {
             return 'Y';
         } else {
