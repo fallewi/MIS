@@ -3,11 +3,11 @@
  * @package     BlueAcorn\GoogleTrustedStores
  * @version     1.0.0
  * @author      Blue Acorn, Inc. <code@blueacorn.com>
- * @copyright   Copyright © 2016 Blue Acorn, Inc.
+ * @copyright   Copyright © 2016 Blue Acorn, Inc
  */
 
-class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_Block_Onepage_Success {
-
+class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_Block_Onepage_Success
+{
     protected function _construct()
     {
         parent::_construct();
@@ -17,7 +17,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         }
     }
 
-    public function getOrderId() {
+    public function getOrderId()
+    {
         return $this->getData('order_id');
     }
 
@@ -30,12 +31,15 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
             $productId = $orderItem->getProductId();
             $product = Mage::getModel("catalog/product")->load($productId);
             $hasBackOrder = $this->_getBackOrderStatus($product);
-            if($hasBackOrder === 'Y') break;
+            if($hasBackOrder === 'Y') {
+                break;
+            }
         }
         return $hasBackOrder;
     }
 
-    public function hasDigitalGoods() {
+    public function hasDigitalGoods()
+    {
         $hasDigitalGoods = 'N';
         $orderId = $this->getOrderId();
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
@@ -52,7 +56,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         return $hasDigitalGoods;
     }
 
-    public function getCurrency() {
+    public function getCurrency()
+    {
         return Mage::app()->getStore()->getCurrentCurrencyCode();
     }
 
@@ -63,5 +68,4 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
             return 'N';
         }
     }
-
 }
