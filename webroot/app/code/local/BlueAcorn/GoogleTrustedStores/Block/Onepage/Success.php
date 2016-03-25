@@ -8,11 +8,18 @@
 
 class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_Block_Onepage_Success
 {
+    /**
+     *
+     * Constructor function
+     *
+     * @return void
+     */
     protected function _construct()
     {
         parent::_construct();
 
-        if(!$this->hasData('order_id')) {
+        if(!$this->hasData('order_id'))
+        {
             $this->setData('order_id', Mage::getSingleton('checkout/session')->getLastOrderId());
         }
     }
@@ -38,7 +45,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     {
         $hasBackOrder = 'N';
 
-        foreach($order->getAllItems() as $orderItem) {
+        foreach($order->getAllItems() as $orderItem)
+        {
             $productId = $orderItem->getProductId();
             $product = Mage::getModel("catalog/product")->load($productId);
             $hasBackOrder = $this->_getBackOrderStatus($product);
@@ -60,7 +68,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         $orderId = $this->getOrderId();
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        foreach($order->getAllItems() as $item) {
+        foreach($order->getAllItems() as $item)
+        {
             $product = $item->getProduct();
             $productType = $product->getTypeId();
 
@@ -74,7 +83,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
 
     /**
      * Returns currency code
-     * 
+     *
      * @return string
      */
     public function getCurrency()
@@ -90,7 +99,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
      */
     protected function _getBackOrderStatus($product)
     {
-        if($product->isSaleable() && !$product->getIsInStock()) {
+        if($product->isSaleable() && !$product->getIsInStock())
+        {
             return 'Y';
         } else {
             return 'N';
