@@ -17,17 +17,28 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         }
     }
 
+    /**
+     *
+     * Returns the order id of the current order
+     *
+     * @return mixed
+     */
     public function getOrderId()
     {
         return $this->getData('order_id');
     }
 
+    /**
+     * Returns the back order status of order items
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @return string $hasBackOrder
+     */
     public function hasBackorderPreorder($order)
     {
         $hasBackOrder = 'N';
 
-        foreach($order->getAllItems() as $orderItem)
-        {
+        foreach($order->getAllItems() as $orderItem) {
             $productId = $orderItem->getProductId();
             $product = Mage::getModel("catalog/product")->load($productId);
             $hasBackOrder = $this->_getBackOrderStatus($product);
@@ -38,6 +49,11 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         return $hasBackOrder;
     }
 
+    /**
+     * Returns status of an order that has digital goods
+     *
+     * @return string $hasDigitalGoods
+     */
     public function hasDigitalGoods()
     {
         $hasDigitalGoods = 'N';
@@ -56,11 +72,22 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         return $hasDigitalGoods;
     }
 
+    /**
+     * Returns currency code
+     * 
+     * @return string
+     */
     public function getCurrency()
     {
         return Mage::app()->getStore()->getCurrentCurrencyCode();
     }
 
+    /**
+     * Returns back order status of product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
     protected function _getBackOrderStatus($product)
     {
         if($product->isSaleable() && !$product->getIsInStock()) {
