@@ -38,6 +38,6 @@
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
     <rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
     <rule ref="Squiz.Commenting.VariableComment" />
-    <rule ref="../BlueAcorn/ruleset.xml" />s
-    <rule ref="../Ecg/ruleset.xml" />
+    <rule ref="../../BlueAcorn/ruleset.xml" />s
+    <rule ref="../../Ecg/ruleset.xml" />
 </ruleset>

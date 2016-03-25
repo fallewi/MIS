@@ -8,5 +8,5 @@ source setup.sh
 
 RULESETS_DIR="${TEST_DIR}/assets/rulesets"
 
-./phpcs.phar --extensions=php --standard=$RULESETS_DIR/codesniffer.xml $FILE_LIST
+./phpcs.phar --extensions=php --standard=$RULESETS_DIR/codesniffer/ruleset.xml $FILE_LIST
 exit $?
