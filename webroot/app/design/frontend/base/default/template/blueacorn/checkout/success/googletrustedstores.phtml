@@ -1,0 +1,46 @@
+<?php
+/**
+ * @package     BlueAcorn\GoogleTrustedStores
+ * @version     1.0.0
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2016 Blue Acorn, Inc.
+ */
+?>
+<?php
+    // Obtain order variables with Magento functions
+    $orderId = $this->getOrderId();
+    $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+    $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+    $address = $order->getShippingAddress();
+?>
+<!-- START Google Trusted Stores Order -->
+<div id="gts-order" style="display:none;" translate=”no”>
+
+    <!-- start order and merchant information -->
+    <span id="gts-o-id"><?php echo $orderId; ?></span>
+    <span id="gts-o-domain"><?php echo Mage::getBaseUrl(); ?></span>
+    <span id="gts-o-email"><?php echo htmlentities($customer->getEmail()); ?></span>
+    <span id="gts-o-country"><?php echo htmlentities($address->getCountryId()); ?></span>
+    <span id="gts-o-currency"><?php echo $this->getCurrency(); ?></span>
+    <span id="gts-o-total"><?php echo $order->getGrandTotal(); ?></span>
+    <span id="gts-o-discounts"><?php echo $order->getDiscountAmount(); ?></span>
+    <span id="gts-o-shipping-total"><?php echo $order->getShippingAmount(); ?></span>
+    <span id="gts-o-tax-total"><?php echo $order->getTaxAmount(); ?></span>
+    <span id="gts-o-est-ship-date">ORDER_EST_SHIP_DATE</span>
+    <span id="gts-o-est-delivery-date">ORDER_EST_DELIVERY_DATE</span>
+    <span id="gts-o-has-preorder"><?php echo $this->hasBackorderPreorder($order); ?></span>
+    <span id="gts-o-has-digital"><?php echo $this->hasDigitalGoods(); ?>/span>
+    <!-- end order and merchant information -->
+
+    <!-- start repeated item specific information -->
+    <?php foreach ($order->getAllItems() as $item): ?>
+    <span class="gts-item">
+        <span class="gts-i-name"><?php echo htmlentities($item->getName()); ?></span>
+        <span class="gts-i-price"><?php echo $item->getBasePrice(); ?></span>
+        <span class="gts-i-quantity"><?php echo (int)$item->getQtyOrdered(); ?></span>
+    </span>
+    <?php endforeach; ?>
+    <!-- end repeated item specific information -->
+
+</div>
+<!-- END Trusted Stores -->
