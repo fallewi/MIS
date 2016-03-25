@@ -37,7 +37,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Returns the back order status of order items
      *
-     * @param Mage_Sales_Model_Order $order Order
+     * @param Mage_Sales_Model_Order $order Order.
      * @return string $hasBackOrder
      */
     public function hasBackorderPreorder($order)
@@ -91,7 +91,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Returns back order status of product
      *
-     * @param Mage_Catalog_Model_Product $product Product
+     * @param Mage_Catalog_Model_Product $product Product.
      * @return string
      */
     protected function _getBackOrderStatus($product)
