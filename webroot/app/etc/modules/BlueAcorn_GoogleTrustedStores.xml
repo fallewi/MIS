@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_GoogleTrustedStores>
+            <active>true</active>
+            <codePool>local</codePool>
+        </BlueAcorn_GoogleTrustedStores>
+    </modules>
+</config>
