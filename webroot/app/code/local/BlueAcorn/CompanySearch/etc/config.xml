@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_CompanySearch>
+            <version>1.0.0</version>
+        </BlueAcorn_CompanySearch>
+    </modules>
+    <global>
+        <blocks>
+            <blueacorn_companysearch>
+                <class>BlueAcorn_CompanySearch_Block</class>
+            </blueacorn_companysearch>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_create_customer_grid>BlueAcorn_CompanySearch_Block_Adminhtml_Sales_Order_Create_Customer_Grid</sales_order_create_customer_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <blueacorn_companysearch>
+                <class>BlueAcorn_CompanySearch_Helper</class>
+            </blueacorn_companysearch>
+        </helpers>
+    </global>
+</config>
