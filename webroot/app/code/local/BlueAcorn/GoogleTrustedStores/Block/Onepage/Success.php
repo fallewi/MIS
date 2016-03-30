@@ -93,7 +93,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Return filtered address
      *
-     * @param String $email  Email to be filtered
+     * @param string $email Email to be filtered.
      * @return float|integer|string
      */
     public function filterEmail($email)
@@ -104,7 +104,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Return filtered price
      *
-     * @param String $price Price to be filtered
+     * @param string $price Price to be filtered.
      * @return float|integer|string
      */
     public function filterPrice($price)
@@ -130,8 +130,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Returns a formatted string
      *
-     * @param String $stringToFormat Value that will be formatted
-     * @param String $type Value type that will be formatted
+     * @param string $stringToFormat Value that will be formatted.
+     * @param string $type Value type that will be formatted.
      * @return float|integer|string
      */
     protected function _format($stringToFormat,$type)
@@ -150,7 +150,6 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
                     $stringToFormat = 0;
                 }
                 break;
-            //TODO Add case for handling date formatting if/when needed
         }
         return $stringToFormat;
     }
