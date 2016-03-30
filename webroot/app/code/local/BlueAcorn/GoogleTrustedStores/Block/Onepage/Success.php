@@ -98,7 +98,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
      */
     public function filterEmail($email)
     {
-        return $this->_format($email,'email');
+        return $this->_format($email, 'email');
     }
 
     /**
@@ -140,11 +140,11 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
             case 'email':
                 if ($stringToFormat == "") {
                     $stringToFormat = self::GUEST_EMAIL_USER . '@' . preg_replace('#^https?://#', '', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
-                    $stringToFormat = rtrim($stringToFormat,'/');
+                    $stringToFormat = rtrim($stringToFormat, '/');
                 }
                 break;
             case 'price':
-                $stringToFormat = number_format(floatval($stringToFormat),2);
+                $stringToFormat = number_format(floatval($stringToFormat), 2);
                 if ($stringToFormat == 0) {
                     $stringToFormat = 0;
                 }
