@@ -556,14 +556,14 @@
                     </enterprise_pagecache>
                 </observers>
             </customer_address_save_after>
-            <controller_action_postdispatch_customer_account_logoutSuccess>
+            <controller_action_postdispatch_customer_account_logoutsuccess>
                 <observers>
                     <enterprise_pagecache>
                         <class>enterprise_pagecache/observer</class>
                         <method>customerLogout</method>
                     </enterprise_pagecache>
                 </observers>
-            </controller_action_postdispatch_customer_account_logoutSuccess>
+            </controller_action_postdispatch_customer_account_logoutsuccess>
             <sales_quote_save_after>
                 <observers>
                     <enterprise_pagecache>

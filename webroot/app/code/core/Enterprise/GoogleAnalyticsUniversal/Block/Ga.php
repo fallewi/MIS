@@ -104,7 +104,7 @@ class Enterprise_GoogleAnalyticsUniversal_Block_Ga extends Mage_GoogleAnalytics_
                 ($order->getBaseTaxAmount() + $order->getBaseShippingAmount());
             $actionField['tax'] = $order->getBaseTaxAmount();
             $actionField['shipping'] = $order->getBaseShippingAmount();
-            $actionField['coupon'] = (string)$order->getCouponCode();
+            $actionField['coupon'] = $this->escapeHtml(strval($order->getCouponCode()));
 
             $products = array();
             /** @var Mage_Sales_Model_Order_Item $item*/
