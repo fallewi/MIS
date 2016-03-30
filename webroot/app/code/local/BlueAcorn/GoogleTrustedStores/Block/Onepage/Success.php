@@ -91,9 +91,9 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     }
 
     /**
-     * Return filtered email
+     * Return filtered address
      *
-     * @param $email String to be filtered
+     * @param String $email  Email to be filtered
      * @return float|integer|string
      */
     public function filterEmail($email)
@@ -104,7 +104,7 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Return filtered price
      *
-     * @param $price String to be filtered
+     * @param String $price Price to be filtered
      * @return float|integer|string
      */
     public function filterPrice($price)
@@ -130,8 +130,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     /**
      * Returns a formatted string
      *
-     * @param $stringToFormat String that will be formatted
-     * @param $type String type that will be formatted
+     * @param String $stringToFormat Value that will be formatted
+     * @param String $type Value type that will be formatted
      * @return float|integer|string
      */
     protected function _format($stringToFormat,$type)
@@ -139,7 +139,8 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         switch($type) {
             case 'email':
                 if ($stringToFormat == "") {
-                    $stringToFormat = self::GUEST_EMAIL_USER . '@' . preg_replace('#^https?://#', '', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+                    $domain = preg_replace('#^https?://#', '', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+                    $stringToFormat = self::GUEST_EMAIL_USER . '@' . $domain;
                     $stringToFormat = rtrim($stringToFormat, '/');
                 }
                 break;
