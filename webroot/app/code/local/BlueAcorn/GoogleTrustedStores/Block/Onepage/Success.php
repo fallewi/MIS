@@ -8,6 +8,8 @@
 
 class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_Block_Onepage_Success
 {
+    const GUEST_EMAIL_USER = 'guest';
+
     /**
      *
      * Constructor function
@@ -89,6 +91,26 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     }
 
     /**
+     * Return filtered email
+     *
+     * @param $email String to be filtered
+     * @return float|int|string
+     */
+    public function filterEmail($email) {
+        return $this->_format($email,'email');
+    }
+
+    /**
+     * Return filtered price
+     *
+     * @param $price String to be filtered
+     * @return float|int|string
+     */
+    public function filterPrice($price) {
+        return $this->_format($price, 'price');
+    }
+
+    /**
      * Returns back order status of product
      *
      * @param Mage_Catalog_Model_Product $product Product.
@@ -101,5 +123,31 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         } else {
             return 'N';
         }
+    }
+
+    /**
+     * Returns a formatted string
+     *
+     * @param $stringToFormat String that will be formatted
+     * @param $type String type that will be formatted
+     * @return float|int|string
+     */
+    protected function _format($stringToFormat,$type) {
+        switch($type) {
+            case 'email':
+                if($stringToFormat == "") {
+                    $stringToFormat = self::GUEST_EMAIL_USER . '@' . preg_replace('#^https?://#', '', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+                    $stringToFormat = rtrim($stringToFormat,'/');
+                }
+                break;
+            case 'price':
+                $stringToFormat = number_format(floatval($stringToFormat),2);
+                if($stringToFormat == 0){
+                    $stringToFormat = 0;
+                }
+                break;
+            //TODO Add case for handling date formatting if/when needed
+        }
+        return $stringToFormat;
     }
 }
