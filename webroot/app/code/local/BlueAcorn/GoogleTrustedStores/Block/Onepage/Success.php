@@ -131,10 +131,10 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
      * Returns a formatted string
      *
      * @param string $stringToFormat Value that will be formatted.
-     * @param string $type Value type that will be formatted.
+     * @param string $type Value that will be formatted.
      * @return float|integer|string
      */
-    protected function _format($stringToFormat,$type)
+    protected function _format($stringToFormat, $type)
     {
         switch($type) {
             case 'email':
