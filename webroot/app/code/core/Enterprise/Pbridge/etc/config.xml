@@ -113,14 +113,14 @@
                     </pbridge_save_order_after_submit>
                 </observers>
             </checkout_submit_all_after>
-            <controller_action_postdispatch_checkout_onepage_saveOrder>
+            <controller_action_postdispatch_checkout_onepage_saveorder>
                 <observers>
                     <pbridge_save_order_onepage>
                         <class>enterprise_pbridge/observer</class>
                         <method>setResponseAfterSaveOrder</method>
                     </pbridge_save_order_onepage>
                 </observers>
-            </controller_action_postdispatch_checkout_onepage_saveOrder>
+            </controller_action_postdispatch_checkout_onepage_saveorder>
         </events>
     </frontend>
     <adminhtml>

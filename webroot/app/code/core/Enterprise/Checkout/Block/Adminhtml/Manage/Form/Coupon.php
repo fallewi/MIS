@@ -40,7 +40,7 @@ class Enterprise_Checkout_Block_Adminhtml_Manage_Form_Coupon extends Mage_Adminh
      */
     public function getCouponCode()
     {
-        return $this->_getQuote()->getCouponCode();
+        return $this->escapeHtml($this->_getQuote()->getCouponCode());
     }
 
     /**

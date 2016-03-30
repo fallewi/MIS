@@ -111,14 +111,14 @@
                     </enterprise_salesarchive>
                 </observers>
             </sales_order_creditmemo_resource_update_grid_records>
-            <controller_action_postdispatch_adminhtml_sales_order_shipment_massPrintShippingLabel>
+            <controller_action_postdispatch_adminhtml_sales_order_shipment_massprintshippinglabel>
                 <observers>
                     <enterprise_salesarchive>
                         <class>enterprise_salesarchive/observer</class>
                         <method>replaceSalesOrderRedirect</method>
                     </enterprise_salesarchive>
                 </observers>
-            </controller_action_postdispatch_adminhtml_sales_order_shipment_massPrintShippingLabel>
+            </controller_action_postdispatch_adminhtml_sales_order_shipment_massprintshippinglabel>
             <controller_action_postdispatch_adminhtml_sales_order_pdfshipments>
                 <observers>
                     <enterprise_salesarchive>
@@ -151,30 +151,30 @@
                     </enterprise_salesarchive>
                 </observers>
             </controller_action_postdispatch_adminhtml_sales_order_pdfdocs>
-            <controller_action_postdispatch_adminhtml_sales_order_massHold>
+            <controller_action_postdispatch_adminhtml_sales_order_masshold>
                 <observers>
                     <enterprise_salesarchive>
                         <class>enterprise_salesarchive/observer</class>
                         <method>replaceSalesOrderRedirect</method>
                     </enterprise_salesarchive>
                 </observers>
-            </controller_action_postdispatch_adminhtml_sales_order_massHold>
-            <controller_action_postdispatch_adminhtml_sales_order_massUnhold>
+            </controller_action_postdispatch_adminhtml_sales_order_masshold>
+            <controller_action_postdispatch_adminhtml_sales_order_massunhold>
                 <observers>
                     <enterprise_salesarchive>
                         <class>enterprise_salesarchive/observer</class>
                         <method>replaceSalesOrderRedirect</method>
                     </enterprise_salesarchive>
                 </observers>
-            </controller_action_postdispatch_adminhtml_sales_order_massUnhold>
-            <controller_action_postdispatch_adminhtml_sales_order_massCancel>
+            </controller_action_postdispatch_adminhtml_sales_order_massunhold>
+            <controller_action_postdispatch_adminhtml_sales_order_masscancel>
                 <observers>
                     <enterprise_salesarchive>
                         <class>enterprise_salesarchive/observer</class>
                         <method>replaceSalesOrderRedirect</method>
                     </enterprise_salesarchive>
                 </observers>
-            </controller_action_postdispatch_adminhtml_sales_order_massCancel>
+            </controller_action_postdispatch_adminhtml_sales_order_masscancel>
         </events>
     </global>
     <admin>
