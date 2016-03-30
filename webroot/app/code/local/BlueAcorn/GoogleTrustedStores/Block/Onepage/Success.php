@@ -8,6 +8,8 @@
 
 class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_Block_Onepage_Success
 {
+    const GUEST_EMAIL_USER = 'guest';
+
     /**
      *
      * Constructor function
@@ -89,6 +91,28 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
     }
 
     /**
+     * Return filtered address
+     *
+     * @param string $email Email to be filtered.
+     * @return float|integer|string
+     */
+    public function filterEmail($email)
+    {
+        return $this->_format($email, 'email');
+    }
+
+    /**
+     * Return filtered price
+     *
+     * @param string $price Price to be filtered.
+     * @return float|integer|string
+     */
+    public function filterPrice($price)
+    {
+        return $this->_format($price, 'price');
+    }
+
+    /**
      * Returns back order status of product
      *
      * @param Mage_Catalog_Model_Product $product Product.
@@ -101,5 +125,32 @@ class BlueAcorn_GoogleTrustedStores_Block_Onepage_Success extends Mage_Checkout_
         } else {
             return 'N';
         }
+    }
+
+    /**
+     * Returns a formatted string
+     *
+     * @param string $stringToFormat Value that will be formatted.
+     * @param string $type Value that will be formatted.
+     * @return float|integer|string
+     */
+    protected function _format($stringToFormat, $type)
+    {
+        switch($type) {
+            case 'email':
+                if ($stringToFormat == "") {
+                    $domain = preg_replace('#^https?://#', '', Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+                    $stringToFormat = self::GUEST_EMAIL_USER . '@' . $domain;
+                    $stringToFormat = rtrim($stringToFormat, '/');
+                }
+                break;
+            case 'price':
+                $stringToFormat = number_format(floatval($stringToFormat), 2);
+                if ($stringToFormat == 0) {
+                    $stringToFormat = 0;
+                }
+                break;
+        }
+        return $stringToFormat;
     }
 }
