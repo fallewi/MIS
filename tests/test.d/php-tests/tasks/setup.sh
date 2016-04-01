@@ -21,3 +21,5 @@ FILE_LIST=""
 for i in $(git diff --name-only  $BRANCH..origin/develop | grep -e "app/code/local/BlueAcorn.*\.php$" | tr " " "\n"); do
     FILE_LIST=$FILE_LIST" /repo/"$i
 done;
+
+FILE_LIST=$(echo $FILE_LIST | tr -d '\n')
