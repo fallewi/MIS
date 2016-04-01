@@ -24,6 +24,30 @@
         <part name="result" type="typens:boolean" />
     </message>
 
+    <message name="southware_orderNoteRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="orderNumber" type="xsd:string" />
+    </message>
+    <message name="southware_orderNoteResponse">
+        <part name="result" type="typens:boolean" />
+    </message>
+
+    <message name="southware_orderUomRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="orderNumber" type="xsd:string" />
+    </message>
+    <message name="southware_orderUomResponse">
+        <part name="result" type="typens:boolean" />
+    </message>
+
+    <message name="southware_orderStockRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="orderNumber" type="xsd:string" />
+    </message>
+    <message name="southware_orderStockResponse">
+        <part name="result" type="typens:boolean" />
+    </message>
+
     <!--END MESSAGES -->
 
 
@@ -41,6 +65,24 @@
             <documentation>Update Southware Order ID</documentation>
             <input message="typens:southware_orderUpdateRequest" />
             <output message="typens:southware_orderUpdateResponse" />
+        </operation>
+
+        <operation name="southware_orderNote">
+            <documentation>Get Order Customer Notes</documentation>
+            <input message="typens:southware_orderNoteRequest" />
+            <output message="typens:southware_orderNoteResponse" />
+        </operation>
+
+        <operation name="southware_orderUom">
+            <documentation>Get Unit of Measure</documentation>
+            <input message="typens:southware_orderUomRequest" />
+            <output message="typens:southware_orderUomResponse" />
+        </operation>
+
+        <operation name="southware_orderStock">
+            <documentation>Get Order Customer Notes</documentation>
+            <input message="typens:southware_orderStockRequest" />
+            <output message="typens:southware_orderStockResponse" />
         </operation>
 
     </portType>
@@ -66,6 +108,36 @@
 
         <!--BEGIN ORDER BINDINGS -->
         <operation name="southware_orderUpdate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+
+        <operation name="southware_orderNote">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+
+        <operation name="southware_orderUom">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+
+        <operation name="southware_orderStock">
             <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
             <input>
                 <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />

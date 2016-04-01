@@ -25,4 +25,15 @@ class BlueAcorn_Southware_Model_Resource_Order extends Mage_Sales_Model_Resource
 
         $writeConnection->query($query);
     }
+
+    public function getCustomerComments($orderId)
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+
+        $query = 'SELECT customer_note FROM ' . self::TABLE_NAME . ' WHERE order_id = ' . (int)$orderId;
+
+        $customerComment = $readConnection->fetchOne($query);
+        return $customerComment;
+    }
 }

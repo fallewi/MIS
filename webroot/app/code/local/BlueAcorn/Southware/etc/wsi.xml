@@ -45,6 +45,54 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+
+            <xsd:element name="southware_orderNoteRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="orderNumber" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="southware_orderNoteResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="southware_orderUomRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="orderNumber" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="southware_orderUomResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="southware_orderStockRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="orderNumber" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="southware_orderStockResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
             <!--END ORDER PARAMS -->
 
         </xsd:schema>
@@ -69,6 +117,27 @@
     <wsdl:message name="southware_orderUpdateResponse">
         <wsdl:part name="parameters" element="typens:southware_orderUpdateResponseParam" />
     </wsdl:message>
+
+    <wsdl:message name="southware_orderNoteRequest">
+        <wsdl:part name="parameters" element="typens:southware_orderNoteRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="southware_orderNoteResponse">
+        <wsdl:part name="parameters" element="typens:southware_orderNoteResponseParam" />
+    </wsdl:message>
+
+    <wsdl:message name="southware_orderUomRequest">
+        <wsdl:part name="parameters" element="typens:southware_orderUomRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="southware_orderNoteResponse">
+        <wsdl:part name="parameters" element="typens:southware_orderUomResponseParam" />
+    </wsdl:message>
+
+    <wsdl:message name="southware_orderStockRequest">
+        <wsdl:part name="parameters" element="typens:southware_orderStockRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="southware_orderStockResponse">
+        <wsdl:part name="parameters" element="typens:southware_orderStockResponseParam" />
+    </wsdl:message>
     <!-- END ORDER MESSAGES -->
 
     <!-- END MESSAGES -->
@@ -78,7 +147,7 @@
         <!-- BEGIN PORT TYPES -->
         <!-- BEGIN CUSTOMER PORT TYPES -->
         <wsdl:operation name="southware_customerUpdate">
-            <wsdl:documentation>Retrieve customer groups</wsdl:documentation>
+            <wsdl:documentation>Set customer ID</wsdl:documentation>
             <wsdl:input message="typens:southware_customerUpdateRequest" />
             <wsdl:output message="typens:southware_customerUpdateResponse" />
         </wsdl:operation>
@@ -86,9 +155,27 @@
 
         <!-- BEGIN ORDER PORT TYPES -->
         <wsdl:operation name="southware_orderUpdate">
-            <wsdl:documentation>Retrieve customer groups</wsdl:documentation>
+            <wsdl:documentation>Set order ID</wsdl:documentation>
             <wsdl:input message="typens:southware_orderUpdateRequest" />
             <wsdl:output message="typens:southware_orderUpdateResponse" />
+        </wsdl:operation>
+
+        <wsdl:operation name="southware_orderNote">
+            <wsdl:documentation>Retrieve customer note</wsdl:documentation>
+            <wsdl:input message="typens:southware_orderNoteRequest" />
+            <wsdl:output message="typens:southware_orderNoteResponse" />
+        </wsdl:operation>
+
+        <wsdl:operation name="southware_orderUom">
+            <wsdl:documentation>Retrieve Unit of Measure</wsdl:documentation>
+            <wsdl:input message="typens:southware_orderUomRequest" />
+            <wsdl:output message="typens:southware_orderUomResponse" />
+        </wsdl:operation>
+
+        <wsdl:operation name="southware_orderStock">
+            <wsdl:documentation>Retrieve Stock Attribute</wsdl:documentation>
+            <wsdl:input message="typens:southware_orderStockRequest" />
+            <wsdl:output message="typens:southware_orderStockResponse" />
         </wsdl:operation>
         <!-- END ORDER PORT TYPES -->
 
@@ -112,6 +199,36 @@
 
         <!-- BEGIN ORDER BINDINGS -->
         <wsdl:operation name="southware_orderUpdate">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="southware_orderNote">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="southware_orderUom">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="southware_orderStock">
             <soap:operation soapAction="" />
             <wsdl:input>
                 <soap:body use="literal" />
