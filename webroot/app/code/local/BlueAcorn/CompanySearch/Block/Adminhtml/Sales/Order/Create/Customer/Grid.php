@@ -3,9 +3,11 @@
  * @package     BlueAcorn\CompanySearch
  * @version     1.0.0
  * @author      Blue Acorn, Inc. <code@blueacorn.com>
- * @copyright   Copyright © 2016 Blue Acorn, Inc.
- */ 
-class BlueAcorn_CompanySearch_Block_Adminhtml_Sales_Order_Create_Customer_Grid extends Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Customer_Grid
+ * @copyright   Copyright © 2016 Blue Acorn, Inc
+ */
+
+class BlueAcorn_CompanySearch_Block_Adminhtml_Sales_Order_Create_Customer_Grid
+    extends Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Customer_Grid
 {
 
     /**
@@ -14,7 +16,6 @@ class BlueAcorn_CompanySearch_Block_Adminhtml_Sales_Order_Create_Customer_Grid e
      * collection in order to add the proper field to it
      *
      * @return Mage_Adminhtml_Block_Widget_Grid
-     * @throws Mage_Core_Exception
      */
     protected function _prepareCollection()
     {
