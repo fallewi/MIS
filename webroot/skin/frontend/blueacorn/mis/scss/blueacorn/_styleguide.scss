@@ -20,7 +20,6 @@
 
 .cms-style-guide section {
     @include g(m, all);
-    display: none;
     margin: 0 0 50px;
     &.active-section {
         display: block;

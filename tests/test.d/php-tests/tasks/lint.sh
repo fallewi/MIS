@@ -2,6 +2,10 @@
 
 source setup.sh
 
+if [ -z "$FILE_LIST" ]; then
+    exit 0
+fi
+
 FAILURE_FLAG=0
 
 for i in $FILE_LIST

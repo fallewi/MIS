@@ -5,6 +5,9 @@ chmod +x phpmd.phar
 
 source setup.sh
 
+if [ -z "$FILE_LIST" ]; then
+    exit 0
+fi
 
 RULESETS_DIR="${TEST_DIR}/assets/rulesets"
 FAILURE_FLAG=0
