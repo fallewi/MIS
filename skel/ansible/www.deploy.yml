@@ -6,7 +6,7 @@
 # !! be sure to properly define writable paths/permissions and shared folders
 #
 
-- name: "MIS:staging deployment"
+- name: "@CLIENT_CODE:@ENV deployment"
   hosts: web*
   gather_facts: False
   any_errors_fatal: yes
@@ -17,7 +17,11 @@
       vars:
         BLUEACORNUI_DIR: "blueacornui"
 
-    - include: tasks/git-deploy.yml
+    # deployment tasks (updates remote hosts)
+    #########################################
+    - include: tasks/deploy.yml
+      vars:
+        DEPLOY_DRIVER: git
 
     # copy (rsync) grunt compiled assets (from ansible host => remote hosts)
     - include: tasks/grunt-sync.yml
@@ -30,7 +34,7 @@
   post_tasks:
 
     # ensure HTTPD_USER writable paths
-    - include: tasks/file-perms.yml
+    - include: tasks/fs-perms.yml
       vars:
         WRITABLE_PATHS:
           - "{{ APP_ROOT }}/var"
@@ -38,7 +42,7 @@
           - "{{ APP_ROOT }}/includes"
 
     # setup shared/linked folders (e.g. NFS shares).
-#    - include: tasks/file-shares.yml
+#    - include: tasks/fs-shares.yml
 #      vars:
 #        SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
 #        LINKED_PATHS:
@@ -54,10 +58,10 @@
 
 # run cacheclear playbook after deployment
 ##########################################
-- include: staging.util-cacheclear.yml
+- include: www.util-cacheclear.yml
 
 # run reindex playbook if requested
 ###################################
 # @TODO: ansible 2.0, conditionally include indexer playbook.
 # for now, do not re-index on every deployment.
-# - include: staging.util-indexer.yml
+# - include: @ENV.util-indexer.yml
