@@ -9,10 +9,10 @@
     password: "{{ AKAMAI_PASS }}"
   register: uri_result
   tags:
-    - cacheclear
-    - cacheclear-cdn-only
+    - cache
+    - cache-cdn-only
 
 - debug: var=uri_result.json
   tags:
-    - cacheclear
-    - cacheclear-cdn-only
+    - cache
+    - cache-cdn-only

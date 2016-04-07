@@ -8,5 +8,5 @@
   with_items: "{{ LINKED_PATHS }}"
   ignore_errors: yes
   tags:
-    - filesystem
-    - filesystem-shares-only
+    - fs
+    - fs-shares-only

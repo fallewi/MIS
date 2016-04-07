@@ -1,68 +1,18 @@
 ---
 
+# @TODO/@DEPRECATE - remove once skels have been updated.
+- fail: msg="including git-deploy.yml directly is deprecated. please update your playbook to include deploy.yml passing the git DEPLOY_DRIVER. see example in {{ LOCAL_ROOT }}/skel/boilerplate/ansible/deploy.yml"
+  when: DEPLOY_DRIVER is not defined
+
 # pre-deployment
+################
 - include: git-deps.yml
+- include: git-predeploy.yml
 
-# deployment tasks
-##################
-
-- name: detect prior deployment via presence of REPO_ROOT
-  stat: path="{{ REPO_ROOT }}"
-  register: repo_root
-  always_run: yes
-  tags:
-    - git
-    - git-deploy-only
-    - env-test
-
-- name: test for on-server configuration changes
-  shell: bin/env test
-  args:
-    chdir: "{{ REPO_ROOT }}"
-  ignore_errors: yes
-  register: result
-  always_run: yes
-  when: repo_root.stat.exists and (SKIP_CHECKS is not defined or not SKIP_CHECKS)
-  tags:
-    - git
-    - git-deploy-only
-    - env-test
-
-- fail: msg="test failure typically occurs when configuration files are edited on the server. be sure to track these changes in the skel branch and re-deploy. pass SKIP_CHECKS=true as an extra var to skip."
-  when: (SKIP_CHECKS is not defined or not SKIP_CHECKS) and repo_root.stat.exists and result.rc > 0 and result.rc < 100
-  tags:
-    - git
-    - git-deploy-only
-    - env-test
-
-- name: ensure clean working copy (excludes skel/ directory)
-  command: git status -uno --porcelain | grep -v -E "^[A-Z]?\s*{{ SKEL_DIR | default('skel') }}/.*"
-  args:
-    chdir: "{{ REPO_ROOT }}"
-  register: command_result
-  changed_when: False
-  failed_when: "command_result.stdout"
-  when: (SKIP_CHECKS is not defined or not SKIP_CHECKS) and repo_root.stat.exists
-  always_run: yes
-  tags:
-    - git
-    - git-deploy-only
-
-- name: ensure working HEAD matches deployment log. pass SKIP_CHECKS=true as an extra var to skip.
-  shell: if [ -e "{{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log" ]; then [ "$(tail -n 1 {{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log | awk '{ print $1 }')" = "$(git rev-parse --short HEAD)" ] && exit 0 ; exit 1 ; fi
-  args:
-    chdir: "{{ REPO_ROOT }}"
-  always_run: yes
-  changed_when: false
-  when: repo_root.stat.exists and (SKIP_CHECKS is not defined or not SKIP_CHECKS)
-  tags:
-    - git
-    - git-deploy-only
+# remote-deployment
+###################
 
 - include: notify-hipchat.yml
-  tags:
-    - git
-    - git-deploy-only
   vars:
     HIPCHAT_MESSAGE: "{{ CLIENT_CODE }}-{{  ENV }} deployment started by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }} for , ref: {{ REPO_REF }}, skel: {{ SKEL_VERSION | default('unknown version') }}"
 
@@ -74,21 +24,8 @@
     key_file: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
     force: yes
     accept_hostkey: yes
-  tags:
-    - git
-    - git-deploy-only
 
+# post-deployment
+#################
 
-#
-# ensure we're using latest skel + configuration files
-#
-
-- include: conf-envsync.yml
-
-- name: write to deployment log
-  shell: echo "$(git rev-parse --short HEAD) deployed by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }}" >> {{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log
-  args:
-    chdir: "{{ REPO_ROOT }}"
-  tags:
-    - git
-    - git-deploy-only
+- include: git-postdeploy.yml

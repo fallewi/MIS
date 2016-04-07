@@ -11,7 +11,7 @@ type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
 
 . $CWD/.functions.sh || error "unable to load shared functions"
 
-RELEASE_VERSION="1.1.0-rc4"
+RELEASE_VERSION="1.1.0-rc5"
 DOWNLOAD_URL="https://get.blueacorn.net/bin/release_linux-amd64_latest"
 if [[ $OSTYPE == darwin* ]]; then
     DOWNLOAD_URL=${DOWNLOAD_URL//release_linux/release_darwin}

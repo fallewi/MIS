@@ -24,6 +24,7 @@ WEBROOT_DIR=${WEBROOT_DIR:-webroot}
 ENV_DIR="$REPO_ROOT/$SKEL_DIR/env"
 ANSIBLE_DIR="$REPO_ROOT/$SKEL_DIR/ansible"
 BOILERPLATE_DIR="$REPO_ROOT/$SKEL_DIR/boilerplate"
+TESTS_DIR="$REPO_ROOT/tests"
 APP_ROOT="$REPO_ROOT/$WEBROOT_DIR"
 
 [ -d "$APP_ROOT" ] || error "APP_ROOT $APP_ROOT doesn't exist"
@@ -128,7 +129,7 @@ find_latest_squash()
 
 configure_docker_machine(){
   eval $(docker-machine env $1)
-  [ $(docker-machine active) = "$1" ] || error "unable to configure $1 machine"
+  [ "$(docker-machine active)" = "$1" ] || error "unable to configure $1 machine"
   docker info || error "unable to communicate with $1 machine"
 }
 
