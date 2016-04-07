@@ -17,7 +17,7 @@
 - include: git-deploy.yml
   tags:
     - deploy-only
-  when: DEPLOY_DRIVER is 'git'
+#  when: DEPLOY_DRIVER is 'git'
 
 # remote post-deploy
 - include: deploy-postdeploy.yml
