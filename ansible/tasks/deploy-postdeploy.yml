@@ -1,5 +1,8 @@
 ---
 
+# remote post-deployment tasks
+##############################
+
 - name: pull authoritative configuration from groundcontrol
   shell: bin/skel pull
   args:
@@ -26,3 +29,7 @@
   tags:
     - env
     - env-sync-only
+
+
+# include application remote post-deployment
+- include: app-postdeploy.yml

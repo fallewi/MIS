@@ -6,8 +6,7 @@
 - name: ensure deployment key [1/2]
   file: path={{ BLUEACORN_DIR }}/util state=directory
   tags:
-    - git
-    - git-deps-only
+    - git-deps
 
 - name: ensure deployment key [2/2]
   copy:
@@ -15,8 +14,7 @@
     dest: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
     mode: 0600
   tags:
-    - git
-    - git-deps-only
+    - git-deps
 
 - name: set prefered identify file for github.com
   ssh_config:
@@ -25,8 +23,7 @@
     state: present
     user: "{{ ansible_ssh_user }}"
   tags:
-    - git
-    - git-deps-only
+    - git-deps
 
 - name: set git authorship
   shell: >
@@ -34,5 +31,4 @@
     git config --global user.email "{{ ansible_ssh_user  }}@{{ inventory_hostname }}.@DOMAIN" &&
     git config --global core.filemode false
   tags:
-    - git
-    - git-deps-only
+    - git-deps

@@ -1,0 +1,31 @@
+---
+
+# remote pre-deployment tasks
+##############################
+
+- name: detect prior deployment
+  stat: path="{{ REPO_ROOT }}"
+  register: repo_root
+  always_run: yes
+  tags:
+    - env-test
+
+- name: test for on-server configuration changes
+  shell: bin/env test
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  ignore_errors: yes
+  register: result
+  always_run: yes
+  when: repo_root.stat.exists and (SKIP_CHECKS is not defined or not SKIP_CHECKS)
+  tags:
+    - env-test
+
+- fail: msg="test failure typically occurs when configuration files are edited on the server. be sure to track these changes in the skel branch and re-deploy. pass SKIP_CHECKS=true as an extra var to skip."
+  when: (SKIP_CHECKS is not defined or not SKIP_CHECKS) and repo_root.stat.exists and result.rc > 0 and result.rc < 100
+  tags:
+    - env-test
+
+
+# include application remote pre-deployment
+- include: app-predeploy.yml
