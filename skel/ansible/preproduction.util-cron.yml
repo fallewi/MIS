@@ -8,7 +8,7 @@
 #  !! uncomment appropriate tasks
 #
 
-- name: "MIS:preproduction scheduled tasks"
+- name: "MIS:staging scheduled tasks"
   hosts: web-1
   gather_facts: False
   tasks:
