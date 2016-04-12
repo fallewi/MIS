@@ -183,7 +183,7 @@ env_conf() {
 
     if ! $FORCE_OVERWRITE ; then
       if [ -e $DEST ] || [ -h $DEST ] ; then
-        $SKIP_PROMPTS && return
+        $SKIP_PROMPTS && continue
         prompt_confirm "Overwrite $DEST?" || continue
       fi
     fi

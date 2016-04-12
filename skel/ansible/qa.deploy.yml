@@ -7,6 +7,8 @@
 - name: "term-container - qa environment deployment"
   hosts: term-container
   any_errors_fatal: yes
+  vars:
+    HTTPD_USER: www-data
   tasks:
 
     - name: git checkout
@@ -28,13 +30,17 @@
       tags:
         - filesystem
 
-    - name: ensure var/ exists and is writable
-      file:
-        path: "{{ APP_ROOT }}/var"
-        state: directory
-        mode: 0777
+    # ensure HTTPD_USER writable paths
+    - include: tasks/fs-perms.yml
+        WRITABLE_PATHS:
+          - "{{ APP_ROOT }}/var"
+          - "{{ APP_ROOT }}/media"
+          - "{{ APP_ROOT }}/includes"
+      notify:
+        - fix media permissions
+        - fix var permissions
 
-    - include: tasks/conf-envsync.yml
+    - include: tasks/deploy-postdeploy.yml
 
     - name: blueacornui / grunt dependencies
       shell: npm install --production ; bower --allow-root --config.interactive=false install
@@ -52,7 +58,14 @@
 
   handlers:
     - name: fix media permissions
-      shell: chmod -R 777 {{ APP_ROOT }}/media
+      shell: chown -R {{ HTTPD_USER }}.{{ HTTPD_USER }} * && find . -type d -exec chmod 0755 {} \; && find . -type f -exec chmod 0644 {} \;
+      args:
+        chdir: "{{ APP_ROOT }}/media"
+
+    - name: fix var permissions
+      shell: chown -R {{ HTTPD_USER }}.{{ HTTPD_USER }} * && find . -type d -exec chmod 0755 {} \; && find . -type f -exec chmod 0644 {} \;
+      args:
+        chdir: "{{ APP_ROOT }}/var"
 
 # run cacheclear playbook after deployment
 ##########################################

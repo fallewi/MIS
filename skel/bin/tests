@@ -1,24 +1,49 @@
 #!/usr/bin/env bash
 
-#@TODO add gifref option
-
-
 # utility
 #########
 
 display_help() {
   cat <<-EOF
 
-  A utility for testing a site
+  Manages tests/ and executes them in a Docker Container
 
-  Usage: tests [options]
+  The downstreamer reads TESTS_REPO_URL and TESTS_REPO_REF from .skelvars
+  if provided before falling back to defaults
+
+  Usage: tests <command> [options]
+
+  Example:
+
+    # run tests
+    bin/tests run
+
+    # pull latest tests
+    bin/tests pull
+
+    # pull latest tests (overwriting all existing tests)
+    bin/tests pull --force
+
+  Commands:
+    run                  Runs tests in a docker container
+
+    pull                 Downstreams the most recent version of functional tests
+                         into $TESTS_DIR
 
   Options:
-    --help               Display help
+    -h | --help          Display help
 
-    --repo-root-match    docker volume REPO_ROOT match string to replace
-    --repo-root-replace  docker volume REPO_ROOT replace string
+    -f | --force         When pulling,
+                           replace and overwrite existing tests/
+                         When running,
+                           force a rebuild of the test docker container
 
+    -c | --cmd           When running, specifies the test docker container CMD
+
+    --repo-url           Tests repository URL to use when pulling.
+                         git@github.com:BlueAcornInc/devops-functional-tests.git
+
+    --repo-ref           Tests repository ref to use when pulling.
 
 EOF
 
@@ -42,68 +67,105 @@ type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
 
 . $CWD/.functions.sh || error "unable to load shared functions"
 
-if [ -z "$CLIENT_CODE" ]; then
-  error "CLIENT_CODE undefined" "has an environment been set?"
+if [ -z "$CLIENT_CODE" ] || [ "$CLIENT_CODE" = "@CLIENT_CODE" ]; then
+  error "CLIENT_CODE undefined" "has skel been initialized?"
 fi
 
 
-FORCE_BUILD=${LAUNCH_FORCE_BUILD:-false}
-DOCKER_RUN_FLAGS=${DOCKER_RUN_FLAGS:-'-t --rm=true'}
-DOCKER_BUILD_FLAGS=${DOCKER_BUILD_FLAGS:-'--pull=true'}
+if [ -z "$CLIENT_CODE" ] || [ "$CLIENT_CODE" = "@CLIENT_CODE" ]; then
+  error "CLIENT_CODE undefined" "has skel been initialized?"
+fi
+
+FORCE=false
+DOCKER_RUN_FLAGS="-t --rm=true"
+DOCKER_BUILD_FLAGS="--pull=true"
 
 # functions
 ###########
 
-get_docker_name(){
-  DOCKER_NAME=${1,,}
-  DOCKER_NAME=${DOCKER_NAME//-/_}
-  DOCKER_NAME=${DOCKER_NAME// /_}
-  DOCKER_NAME=${DOCKER_NAME//[^a-z0-9_]/}
-}
-
 run_tests(){
-  get_docker_name "${CLIENT_CODE}_tests"
+
+  DOCKER_IMAGE=$(echo "tests_${CLIENT_CODE//[^A-Za-z0-9_]/_}" | awk '{print tolower($0)}')
 
   cd $REPO_ROOT/tests
 
-  if $FORCE_BUILD || [ -z "$(docker images -q $DOCKER_NAME)" ]; then
-    docker build $DOCKER_BUILD_FLAGS -t $DOCKER_NAME .
+  if $FORCE || [ -z "$(docker images -q $DOCKER_IMAGE)" ]; then
+    docker build $DOCKER_BUILD_FLAGS -t $DOCKER_IMAGE .
   fi
 
   docker run $DOCKER_RUN_FLAGS \
-    -v ${DOCKER_REPO_ROOT}:/repo:ro \
-    -v ${DOCKER_REPO_ROOT}/tests:/repo/tests:rw \
+    -v ${REPO_ROOT}:/repo:ro \
+    -v ${REPO_ROOT}/tests:/repo/tests:rw \
     -u $UID \
-    $DOCKER_NAME ${DOCKER_COMMAND:-}
+    $DOCKER_IMAGE ${DOCKER_COMMAND:-}
 }
 
+pull_tests() {
+  cd $REPO_ROOT
+
+  ##
+  # lazily adds TESTS_REPO_URL and TESTS_REPO_REF to .skelvars
+  ##
+  [ -z $TESTS_REPO_URL ] && TESTS_REPO_URL="git@github.com:BlueAcornInc/devops-functional-tests.git"
+  [ -z $TESTS_REPO_REF ] && TESTS_REPO_REF="release/$SKEL_RELEASE"
+
+  line_in_file $SKELVARS "^TESTS_REPO_URL=.*$" "TESTS_REPO_URL=$TESTS_REPO_URL"
+  line_in_file $SKELVARS "^TESTS_REPO_REF=.*$" "TESTS_REPO_REF=$TESTS_REPO_REF"
+
+  if [ ! -z "$(git status -uno --porcelain $SKELVARS)" ]; then
+    printf "\n  !!! updating TESTS_REPO_URL and TESTS_REPO_REF in .skelvars\n\n"
+    git add $SKELVARS
+    git commit -m "update TESTS_REPO_URL and TESTS_REPO_REF in .skelvars"
+  fi
+
+
+  ##
+  # start downstreaming...
+  ##
+
+  [ -z "$(git status -uno --porcelain --)" ] || error \
+   "uncommitted changes detected" "commit or stash before continuing..."
+
+  if $FORCE; then
+    git rm -rf $TESTS_DIR 2>/dev/null && git commit -m \
+      "removing $(basename $TESTS_DIR)/ in preparation of downstreaming"
+    rm -rf $TESTS_DIR 2>/dev/null
+  fi
+
+  if [ -d $TESTS_DIR ]; then
+    # tests directory already exists -- update it
+    git subtree pull --prefix=$(basename $TESTS_DIR)/ $TESTS_REPO_URL $TESTS_REPO_REF --squash || \
+      error "was $TESTS_DIR added as a subtree? use --force to add"
+  else
+    # tests directory does not exist -- add it
+    git subtree add --prefix=$(basename $TESTS_DIR)/ $TESTS_REPO_URL $TESTS_REPO_REF --squash || \
+      error "unable to add tests/ subtree"
+  fi
+
+  printf "\n  tests be pulled!\n\nbe sure to push your changes!\n\n"
+}
 
 
 # runtime
 #########
 
-runstr="run_tests"
+runstr="display_help"
+[ $# -eq 0 ] && display_help 1
 
 while [ $# -ne 0 ]; do
   case $1 in
     -h|--help|help)    display_help ;;
-    --build|-b)        FORCE_BUILD=true ;;
     --cmd|-c)          DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -i"
-                       DOCKER_COMMAND="$2" ;
-                       shift ;;
-    --repo-root-match) REPO_ROOT_MATCH="$2" ; shift ;;
-    --repo-root-replace) REPO_ROOT_REPLACE="$2" ; shift ;;
+                       DOCKER_COMMAND="$2" ; shift ;;
+    -f|--force)        FORCE=true ;;
+    --repo-url)        TESTS_REPO_URL="$2" ; shift ;;
+    --repo-ref)        TESTS_REPO_REF="$2" ; shift ;;
+    pull)              runstr="pull_tests" ;;
+    run)               runstr="run_tests" ;;
     *)                 echo "invalid option: $1" ; display_help 1 ;;
   esac
   shift
 done
-
-
-if [ -z "$DOCKER_REPO_ROOT" ] && [ ! -z "$REPO_ROOT_MATCH" ]; then
-  DOCKER_REPO_ROOT=$(echo "$REPO_ROOT" | sed "s|$REPO_ROOT_MATCH|$REPO_ROOT_REPLACE|")
-else
-  DOCKER_REPO_ROOT=${DOCKER_REPO_ROOT:-$REPO_ROOT}
-fi
 
 $runstr
 exit $?

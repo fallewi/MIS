@@ -121,9 +121,15 @@ env_start(){
   cp ../../deploy.key $CWD/deploy.key || error "could not copy deploy.key" \
     "have you initialized the skel?"
 
-  docker pull registry.badevops.com/m1-term
-  docker pull registry.badevops.com/m1-phpfpm
-  docker pull registry.badevops.com/m1-nginx
+  # alpine variants
+  docker pull registry.badevops.com/mage-term:m1
+  docker pull registry.badevops.com/mage-phpfpm:m1
+  docker pull registry.badevops.com/mage-nginx:m1
+
+  # debian variants
+  docker pull registry.badevops.com/mage-term:m1-debian
+  docker pull registry.badevops.com/mage-phpfpm:m1-debian
+  docker pull registry.badevops.com/mage-nginx:m1-debian
 
   docker-compose $COMPOSE_FLAGS stop
   docker-compose $COMPOSE_FLAGS pull

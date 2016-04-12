@@ -8,7 +8,7 @@
 #
 
 
-- name: "MIS:preproduction indexer"
+- name: "MIS:staging indexer"
   hosts: web-1
   gather_facts: False
   any_errors_fatal: yes

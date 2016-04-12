@@ -17,7 +17,11 @@
       vars:
         BLUEACORNUI_DIR: "blueacornui"
 
-    - include: tasks/git-deploy.yml
+    # deployment tasks (updates remote hosts)
+    #########################################
+    - include: tasks/deploy.yml
+      vars:
+        DEPLOY_DRIVER: git
 
     # copy (rsync) grunt compiled assets (from ansible host => remote hosts)
     - include: tasks/grunt-sync.yml
@@ -30,7 +34,7 @@
   post_tasks:
 
     # ensure HTTPD_USER writable paths
-    - include: tasks/file-perms.yml
+    - include: tasks/fs-perms.yml
       vars:
         WRITABLE_PATHS:
           - "{{ APP_ROOT }}/var"
@@ -39,7 +43,7 @@
           - "{{ APP_ROOT }}/includes"
 
     # setup shared/linked folders (e.g. NFS shares).
-    - include: tasks/file-shares.yml
+    - include: tasks/fs-shares.yml
       vars:
         SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
         LINKED_PATHS:

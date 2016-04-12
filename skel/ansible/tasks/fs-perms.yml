@@ -1,0 +1,30 @@
+---
+
+- name: ensure HTTPD_USER writable paths (nosudo)
+  file:
+    path: "{{ item }}"
+    owner: "{{ HTTPD_USER }}"
+    mode: u+rwx
+    state: directory
+  become: False
+  when: ansible_ssh_user == HTTPD_USER
+  with_items: "{{ WRITABLE_PATHS }}"
+  ignore_errors: yes
+  tags:
+    - fs
+    - fs-perms-only
+
+
+- name: ensure HTTPD_USER writable paths (sudo)
+  file:
+    path: "{{ item }}"
+    owner: "{{ HTTPD_USER }}"
+    mode: u+rwx
+    state: directory
+  become: True
+  when: ansible_ssh_user != HTTPD_USER
+  with_items: "{{ WRITABLE_PATHS }}"
+  ignore_errors: yes
+  tags:
+    - fs
+    - fs-perms-only

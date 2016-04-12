@@ -41,9 +41,9 @@
             <default_setup>
                 <connection>
                     <host><![CDATA[172.24.16.35]]></host>
-                    <username><![CDATA[preprod_mission]]></username>
+                    <username><![CDATA[prod_mission]]></username>
                     <password><![CDATA[493WNzTFuEYw]]></password>
-                    <dbname><![CDATA[prod_mission]]></dbname>
+                    <dbname><![CDATA[preprod_mission]]></dbname>
                     <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
                     <model><![CDATA[mysql4]]></model>
                     <type><![CDATA[pdo_mysql]]></type>
