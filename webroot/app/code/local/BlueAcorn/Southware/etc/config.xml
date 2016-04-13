@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_Southware>
+            <version>1.0.0</version>
+        </BlueAcorn_Southware>
+    </modules>
+    <global>
+        <models>
+            <sales_resource>
+                <rewrite>
+                    <order>BlueAcorn_Southware_Model_Resource_Order</order>
+                </rewrite>
+            </sales_resource>
+            <southware>
+                <class>BlueAcorn_Southware_Model</class>
+            </southware>
+        </models>
+        <helpers>
+            <southware>
+                <class>BlueAcorn_Southware_Helper</class>
+            </southware>
+        </helpers>
+    </global>
+</config>

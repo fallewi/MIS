@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <!-- START CUSTOMER RESOURCES -->
+            <southware_customer translate="title">
+                <model>southware/customer_api</model>
+                <title>Southware Customer API</title>
+                <acl>southware_customer_data</acl>
+                <methods>
+                    <update translate="title">
+                        <title>Update Southware Customer IDs</title>
+                        <method>setSouthwareCustomerId</method>
+                    </update>
+                </methods>
+            </southware_customer>
+            <!-- END CUSTOMER RESOURCES -->
+            <!-- START ORDER RESOURCES -->
+            <southware_order translate="title">
+                <model>southware/order_api</model>
+                <title>Southware Order API</title>
+                <acl>southware_order_data</acl>
+                <methods>
+                    <update translate="title">
+                        <title>Update Southware Order IDs</title>
+                        <method>setSouthwareOrderId</method>
+                    </update>
+                    <note translate="title">
+                        <title>Get Order Comments</title>
+                        <method>getCustomerComments</method>
+                    </note>
+                    <uom>
+                        <title>Get Unit of Measure</title>
+                        <method>getUom</method>
+                    </uom>
+                    <stock>
+                        <title>Get Product Stock Attribute</title>
+                        <method>getStock</method>
+                    </stock>
+                </methods>
+            </southware_order>
+            <!-- END ORDER RESOURCES -->
+        </resources>
+        <v2>
+            <resources_function_prefix>
+                <southware_customer>southware_customer</southware_customer>
+                <southware_order>southware_order</southware_order>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <southware_customer_data translate="title">
+                    <title>Southware Customer Data</title>
+                    <sort_order>3</sort_order>
+                </southware_customer_data>
+                <southware_order_data translate="title">
+                    <title>Southware Order Data</title>
+                    <sort_order>6</sort_order>
+                </southware_order_data>
+            </resources>
+        </acl>
+    </api>
+</config>
