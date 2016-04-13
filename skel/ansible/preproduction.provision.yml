@@ -1,6 +1,6 @@
 ---
 
-- name: "MIS:preproduction common provisioning"
+- name: "MIS:staging common provisioning"
   hosts: all
   tasks:
 
@@ -16,7 +16,7 @@
 
 # run cronjob configuration  [playbook]
 #######################################
-#- include: preproduction.util-cron.yml
+#- include: staging.util-cron.yml
 
 # install newrelic agents [platbook]
 ####################################
@@ -25,17 +25,18 @@
 
 # Debian LAMP bootstrap
 ####################################
-# - name: "MIS:preproduction lamp bootstrap"
+# - name: "MIS:staging lamp bootstrap"
 #   hosts: web*
 #   vars:
 #     ansible_ssh_user: root
 #   remote_user: root
-#   tags:
-#     - lamp
-#     - bootstrap
 #   gather_facts: False
 #   tasks:
-#     - include: debian-lamp.yml
+#     - include: tasks/debian-lamp.yml
+#       vars:
+#         AUTHORIZED_GITHUB_USERS:
+#           - briceburg
+#           - jksimoniii
 #
 #     - name: add passwordless sudo to siteop user
 #       lineinfile: dest=/etc/sudoers state=present regexp='^siteop ALL\=' line='siteop ALL=(ALL) NOPASSWD:ALL' validate='visudo -cf %s'
@@ -43,7 +44,7 @@
 
 # Provision NFS server
 ######################
-# - name: "MIS:preproduction setup nfs server"
+# - name: "MIS:staging setup nfs server"
 #   hosts: web-admin
 #   roles:
 #     - { role: nfs-server, tags: ["nfs-server"], become: True }
@@ -73,7 +74,7 @@
 
 # Provision web servers [for magento - adds php, nginx, php-fpm ]
 #######################
-# - name: "MIS:preproduction webserver provisioning"
+# - name: "MIS:staging webserver provisioning"
 #   hosts: web*
 #   tags:
 #     - web-server

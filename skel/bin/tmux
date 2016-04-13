@@ -16,6 +16,9 @@ display_help() {
 
   Options:
     --help               Display help
+    --tmuxp <path>       Path to tmuxp.yml. Defaults to ENV/tmuxp.yml.
+                         If no tmuxp.yml is provided, fallback to parsing
+                         ENV/ssh_config and connecting to all defined hosts
 
 EOF
 
@@ -38,12 +41,78 @@ type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
 . $CWD/.functions.sh || error "unable to load shared functions"
 
 
+squash_ssh_config() {
+
+  # @TODO use gawk on os x
+  awk 'BEGIN{IGNORECASE=1; RS="Host[[:space:]]"; FS="\n"; OFS=";"}
+      { sub("HostName ","HOST_NAME=");
+        sub("Port ","HOST_PORT=");
+        sub("User ","HOST_USER=");
+      }
+      $1 { print "HOST="$1,$2,$3,$4 }'
+}
+
+
 env_tmux(){
 
   env_bootstrap
+  TMUXP_PATH=${TMUXP_PATH:-"$ENV_DIR/$ENV/tmuxp.yml"}
 
   cd $ENV_DIR/$ENV
-  tmuxp load tmuxp.yml
+
+  if [ -e $TMUXP_PATH ]; then
+    tmuxp load $TMUXP_PATH
+    exit $?
+  fi
+
+  [ -e "ssh_config" ] || error "environment $ENV is missing ssh_config"
+
+
+  TMUX_SESSION="$CLIENT_CODE-$ENV"
+
+  tmux has-session -t $TMUX_SESSION 2>/dev/null && prompt_confirm \
+    "session for $CLIENT_CODE-$ENV already exists. Re-attach Y/N? N will re-create session" && \
+    tmux attach -t $TMUX_SESSION &&
+    exit 0
+
+  tmux kill-session -t $TMUX_SESSION 2>/dev/null
+  tmux new-session -d -s $TMUX_SESSION -n "ssh_config hosts"
+
+
+  #
+  # iterate over hosts in ssh_config...
+  #
+
+  SPLIT_ID=0
+  source ../appvars && source envars
+
+  grep -E -i "^(\s*Host|\s*Hostname|\s*Port|\s*User)" ssh_config | squash_ssh_config | while IFS= read -r line; do
+    # reset entries
+    HOST=
+    HOST_NAME=
+    HOST_PORT=
+    HOST_USER=
+
+    eval $line
+
+    [ -z "$HOST" ] && continue
+    HOST_NAME=${HOST_NAME:-"$HOST"}
+    HOST_PORT=${HOST_PORT:-"22"}
+    HOST_USER=${HOST_USER:-"root"}
+
+
+    [ $SPLIT_ID -eq 0 ] || tmux split-window -v -t $TMUX_SESSION:0
+    SSH_COMMAND="cd $REPO_ROOT ; exec \$SHELL -l"
+
+    # do not cd into app root on db- hosts
+    [[ $HOST == db-* ]] && SSH_COMMAND="exec \$SHELL -l"
+
+    tmux send-keys -t $TMUX_SESSION:0.$SPLIT_ID "ssh -t $HOST_USER@$HOST_NAME -p $HOST_PORT \"$SSH_COMMAND\"" C-m
+    ((SPLIT_ID++))
+
+  done
+
+  tmux attach -t $TMUX_SESSION
 }
 
 
@@ -55,6 +124,7 @@ runstr="env_tmux"
 while [ $# -ne 0 ]; do
   case $1 in
     -h|--help|help)     display_help ;;
+    --tmuxp)            TMUXP_PATH=$2 ; shift ;;
     *)                  if [[ $1 == -* ]]; then
                           echo "invalid option: $1" ; display_help 1
                         fi
