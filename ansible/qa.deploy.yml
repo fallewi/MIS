@@ -32,10 +32,10 @@
 
     # ensure HTTPD_USER writable paths
     - include: tasks/fs-perms.yml
-        WRITABLE_PATHS:
-          - "{{ APP_ROOT }}/var"
-          - "{{ APP_ROOT }}/media"
-          - "{{ APP_ROOT }}/includes"
+      WRITABLE_PATHS:
+        - "{{ APP_ROOT }}/var"
+        - "{{ APP_ROOT }}/media"
+        - "{{ APP_ROOT }}/includes"
       notify:
         - fix media permissions
         - fix var permissions
