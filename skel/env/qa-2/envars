@@ -1,0 +1,26 @@
+#
+# MIS:qa-2 envars
+# see /docs/ENVIRONMENTS.md for definitions
+#
+
+#
+# when installed for first time, ...
+#  what media/database snapshot environment should we use to seed?
+SNAPSHOT_BASE_ENV="www"
+REPO_REF="develop"
+
+##
+#
+# shouldn't need to modify much below
+DOMAIN="qa-2.blueacorn.net"
+SUBDOMAIN="MIS"
+
+# path to codebase checkout on remote servers
+REPO_ROOT="/magento"
+
+APP_ROOT="${REPO_ROOT}/webroot"
+APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
+
+# evaluate onset.sh when setting this environment.
+#  prefer skel/env/qa-2/onset.sh. defaults to skel/env/onset.sh
+ONSET_ACTIVE=true
