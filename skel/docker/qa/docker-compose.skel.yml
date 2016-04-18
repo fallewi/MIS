@@ -23,6 +23,7 @@ nginx:
   links:
     - phpfpm
     - term
+    - smtp
   volumes:
     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
 
@@ -36,6 +37,7 @@ nginx:
 #   links:
 #     - phpfpm
 #     - term
+#     - smtp
 #   volumes:
 #     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
 #
@@ -50,6 +52,7 @@ phpfpm:
   image: registry.badevops.com/mage-phpfpm:m1
   links:
     - mysql
+    - smtp
   volumes:
     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
 
@@ -59,6 +62,7 @@ term:
   build: ./
   dockerfile: Dockerfile-term.skel
   links:
+    - smtp
     - mysql
   volumes:
     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
@@ -85,12 +89,18 @@ cron:
   image: registry.badevops.com/mage-cron:m1
   links:
     - mysql
+    - smtp
   volumes:
     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-cron:/etc/periodic
 
   environment:
     CRON_LOG_DIR: ${APP_ROOT}/var/log
+
+smtp:
+  container_name: ${ENV}-${CLIENT_CODE}-smtp
+  image: registry.badevops.com/mage-smtp
+  log_driver: none
 
 mysql:
   container_name: ${ENV}-${CLIENT_CODE}-mysql
