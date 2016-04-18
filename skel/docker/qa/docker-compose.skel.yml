@@ -19,7 +19,7 @@
 nginx:
   container_name: ${ENV}-${CLIENT_CODE}-nginx
   restart: unless-stopped
-  image: registry.badevops.com/mage-nginx:m1
+  image: registry.badevops.com/mage-nginx:m1-debian
   links:
     - phpfpm
     - term
