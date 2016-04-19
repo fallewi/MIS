@@ -189,7 +189,7 @@ $nav-primary-height: 30px;
     line-height: 22px;
 
     @include bp(max-width, 1024px) {
-        max-width: 150px;
+        max-width: 140px;
     }
 
     @include bp(max-width, 820px){
