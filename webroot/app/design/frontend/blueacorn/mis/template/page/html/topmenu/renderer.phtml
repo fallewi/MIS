@@ -80,12 +80,6 @@ foreach ($children as $child) {
             $html .= $this->getLayout()->createBlock('cms/block')->setBlockId($cmsBlock->getIdentifier())->toHtml();
             $html .= '</div>';
         }
-        if($blockOne){
-            $html .= '<div class="block-one">';
-            $cmsBlock = Mage::getModel('cms/block')->load($blockOne);
-            $html .= $this->getLayout()->createBlock('cms/block')->setBlockId($cmsBlock->getIdentifier())->toHtml();
-            $html .= '</div>';
-        }
         $html .= '</div>';
         $html .= '</div>';
 
