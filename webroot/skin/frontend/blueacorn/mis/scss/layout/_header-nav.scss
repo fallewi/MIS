@@ -157,8 +157,8 @@ $nav-primary-height: 30px;
         font-family: $f-stack-sans;
         padding: 8px 10px 12px 0;
 
-        @include bp(max-width, 1170px) {
-            font-size:12px;
+        @include bp(max-width, 950px) {
+            font-size: 12px;
         }
     }
 
@@ -187,8 +187,8 @@ $nav-primary-height: 30px;
     max-width: 185px;
     line-height: 20px;
 
-    @include bp(max-width, 1024px) {
-        max-width: 165px;
+    @include bp(max-width, 1150px) {
+        max-width: 155px;
     }
 
     @include bp(max-width, 960px){
@@ -335,7 +335,7 @@ $nav-primary-height: 30px;
         }
 
         a.level0 {
-            padding: 16px 15%;
+            padding: 18px 15%;
             letter-spacing: 1px;
         }
 
@@ -431,11 +431,11 @@ $nav-primary-height: 30px;
             text-align: left;
         }
         ul.level0 {
-            width: 70%;
+            width: 80%;
         }
 
         .block-two {
-            width: 30%;
+            width: 20%;
             float: right;
         }
 
