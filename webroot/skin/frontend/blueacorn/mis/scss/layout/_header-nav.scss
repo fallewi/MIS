@@ -128,7 +128,7 @@
         text-align: center;
         display: block;
         margin: 0 auto;
-        height: 76px;
+        height: 78px;
         padding: 0 4px;
 
         &:after {
@@ -167,10 +167,11 @@ $nav-primary-height: 30px;
     }
 
     li.level1 a {
-        font-size: 13px;
+        font-size: 14px;
         line-height: 20px;
         color: $c-text;
         letter-spacing: 0.1px;
+        padding: 8px 10px 0 0;
 
         &.nav-shop-all {
             color: $brand-action;
@@ -196,6 +197,13 @@ $nav-primary-height: 30px;
 
     @include bp(max-width, 960px){
         max-width: 130px;
+    }
+
+    @include bp(max-width, 768px) {
+        max-width: 100%;
+        line-height: 28px;
+        text-transform: uppercase;
+        white-space: nowrap;
     }
 }
 
@@ -282,7 +290,7 @@ $nav-primary-height: 30px;
             display: block;
         }
 
-        .block-one,.block-two, .category-name {
+        .block-two, .category-name {
             display: none;
         }
     }
@@ -339,7 +347,7 @@ $nav-primary-height: 30px;
         a.level0 {
             display: inline-block;
             vertical-align: middle;
-            height: 76px; /* Height of ".nav-primary a.level0" */
+            height: 78px; /* Height of ".nav-primary a.level0" */
 
             &:hover {
                 background: #fff;
@@ -364,7 +372,7 @@ $nav-primary-height: 30px;
         li.level0 .mm-wrapper {
             position: absolute;
             left: 0;
-            top: 76px; /* Height of ".nav-primary a.level0" */
+            top: 78px; /* Height of ".nav-primary a.level0" */
             z-index: 10;
             width: 100%;
             padding: 0 4px;
@@ -437,9 +445,8 @@ $nav-primary-height: 30px;
 
         .block-two {
             img {
-                //margin: 0 auto;
+                margin: 0 auto;
                 height: auto;
-                margin-top: 44px;
             }
         }
 
@@ -456,13 +463,10 @@ $nav-primary-height: 30px;
         display: none;
     }
     .nav-primary .block-two {
-        width: 35%;
-
         img { margin-top: 3px; }
     }
-    .nav-primary ul.level0 {
-        width: 65%;
-        max-width: 500px;
+    li.level1:not(.category-name) {
+        width: 30% !important;
     }
 }
 
@@ -470,6 +474,9 @@ $nav-primary-height: 30px;
     .nav-primary ul.level0 {
         width: 100%;
         max-width: 100%;
+    }
+    li.level1:not(.category-name) {
+        width: 100% !important;
     }
 }
 
