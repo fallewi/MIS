@@ -160,10 +160,6 @@ $nav-primary-height: 30px;
         @include bp(max-width, 1170px) {
             font-size:12px;
         }
-
-        @include bp(max-width, $bp-large){
-            font-size:10px;
-        }
     }
 
     li.level1 a {
@@ -188,15 +184,15 @@ $nav-primary-height: 30px;
 }
 
 .nav-primary li.level0 > a {
-    max-width: 200px;
+    max-width: 185px;
     line-height: 20px;
 
     @include bp(max-width, 1024px) {
-        max-width: 170px;
+        max-width: 165px;
     }
 
     @include bp(max-width, 960px){
-        max-width: 130px;
+        max-width: 120px;
     }
 
     @include bp(max-width, 768px) {
