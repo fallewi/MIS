@@ -12,9 +12,9 @@
 # remote-deployment
 ###################
 
-- include: notify-hipchat.yml
-  vars:
-    HIPCHAT_MESSAGE: "{{ CLIENT_CODE }}-{{  ENV }} deployment started by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }} for , ref: {{ REPO_REF }}, skel: {{ SKEL_VERSION | default('unknown version') }}"
+#- include: notify-hipchat.yml
+#  vars:
+#    HIPCHAT_MESSAGE: "{{ CLIENT_CODE }}-{{  ENV }} deployment started by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }} for , ref: {{ REPO_REF }}, skel: {{ SKEL_VERSION | default('unknown version') }}"
 
 - name: git checkout
   git:
