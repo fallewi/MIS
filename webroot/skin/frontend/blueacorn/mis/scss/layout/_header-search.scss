@@ -132,21 +132,21 @@
     font-family: $f-stack-special;
 
     &::-webkit-input-placeholder {
-        color: $brand-primary;
+        color: $white;
         font-family: $f-stack-sans;
         text-transform: uppercase;
         text-align: right;
     }
 
     &::-moz-placeholder {
-        color: $brand-primary;
+        color: $white;
         font-family: $f-stack-sans;
         text-transform: uppercase;
         text-align: right;
     }
 
     &:-ms-input-placeholder {
-        color: $brand-primary;
+        color: $white;
         font-family: $f-stack-sans;
         text-transform: uppercase;
         text-align: right;
