@@ -168,11 +168,21 @@ $nav-primary-height: 30px;
         color: $c-text;
         letter-spacing: 0.1px;
         padding: 8px 10px 0 0;
+    }
 
-        &.nav-shop-all {
-            color: $brand-action;
-            text-transform: uppercase;
-            padding-top: 28px;
+
+    .nav-shop-all {
+        float: left;
+        left: 53.5%;
+        clear: left;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.1px;
+        color: $brand-action;
+        text-transform: uppercase;
+
+        @include bp(max-width, 1105px) {
+            left: 49%;
         }
     }
 }
@@ -378,7 +388,7 @@ $nav-primary-height: 30px;
             color: $c-text;
 
             .mm-inner-wrapper {
-                padding: 26px 16px 18px 72px;
+                padding: 26px 72px 18px;
                 background: $white;
                 box-shadow: 0 2px 2px rgba(0, 0, 0, .16);
                 width: 100%;
@@ -442,6 +452,7 @@ $nav-primary-height: 30px;
         .block-two {
             img {
                 margin: 0 auto;
+                width: 100%;
                 height: auto;
             }
         }
