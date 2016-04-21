@@ -168,21 +168,31 @@ $nav-primary-height: 30px;
         color: $c-text;
         letter-spacing: 0.1px;
         padding: 8px 10px 0 0;
+
+        &.nav-shop-all {
+            color: $brand-action;
+            text-transform: uppercase;
+        }
     }
 
 
-    .nav-shop-all {
+    .view-all .nav-shop-all {
+        display: block;
         float: left;
         left: 53.5%;
         clear: left;
+        color: $brand-action;
+        text-transform: uppercase;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: 0.1px;
-        color: $brand-action;
-        text-transform: uppercase;
 
         @include bp(max-width, 1105px) {
             left: 49%;
+        }
+
+        @include bp(max-width, 769px) {
+            display: none;
         }
     }
 }
@@ -205,7 +215,7 @@ $nav-primary-height: 30px;
         max-width: 120px;
     }
 
-    @include bp(max-width, 768px) {
+    @include bp(max-width, 769px) {
         max-width: 100%;
         line-height: 28px;
         text-transform: uppercase;
@@ -461,6 +471,14 @@ $nav-primary-height: 30px;
             display:inline-block;
             width: 33%;
             vertical-align: top;
+        }
+
+        .view-all-mobile {
+            display: none !important;
+
+            @include bp(max-width, 769px) {
+                display: inline-block;
+            }
         }
     }
 }

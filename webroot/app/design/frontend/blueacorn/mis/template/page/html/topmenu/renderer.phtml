@@ -76,6 +76,11 @@ foreach ($children as $child) {
 
         $html .= '<ul class="level'. $childLevel .'">';
         $html .=     $this->render($child, $childrenWrapClass);
+        $html .=     '<li class="level'. $nextChildLevel .' view-all-mobile">';
+        $html .=         '<a class="level'. $nextChildLevel .' nav-shop-all" href="'. $child->getUrl() .'">';
+        $html .=             $this->__('Shop All');
+        $html .=         '</a>';
+        $html .=     '</li>';
         $html .= '</ul>';
 
         $html .= '<div class="view-all">';
