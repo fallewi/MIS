@@ -19,7 +19,7 @@
 nginx:
   container_name: ${ENV}-${CLIENT_CODE}-nginx
   restart: unless-stopped
-  image: registry.badevops.com/mage-nginx:m1
+  image: registry.badevops.com/mage-nginx:m1-debian
   links:
     - phpfpm
     - term
@@ -49,7 +49,7 @@ nginx:
 phpfpm:
   container_name: ${ENV}-${CLIENT_CODE}-phpfpm
   restart: unless-stopped
-  image: registry.badevops.com/mage-phpfpm:m1
+  image: registry.badevops.com/mage-phpfpm:m1-debian
   links:
     - mysql
     - smtp
@@ -60,7 +60,7 @@ term:
   container_name: ${ENV}-${CLIENT_CODE}-term
   restart: unless-stopped
   build: ./
-  dockerfile: Dockerfile-term.skel
+  dockerfile: Dockerfile-term
   links:
     - smtp
     - mysql
@@ -86,7 +86,7 @@ cron:
   container_name: ${ENV}-${CLIENT_CODE}-cron
   restart: unless-stopped
   log_driver: none
-  image: registry.badevops.com/mage-cron:m1
+  image: registry.badevops.com/mage-cron:m1-debian
   links:
     - mysql
     - smtp
