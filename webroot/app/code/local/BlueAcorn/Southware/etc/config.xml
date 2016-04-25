@@ -7,6 +7,11 @@
     </modules>
     <global>
         <models>
+            <sales>
+                <rewrite>
+                    <order_api>BlueAcorn_Southware_Model_Order_Api</order_api>
+                </rewrite>
+            </sales>
             <sales_resource>
                 <rewrite>
                     <order>BlueAcorn_Southware_Model_Resource_Order</order>
