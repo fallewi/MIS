@@ -204,19 +204,19 @@ $nav-primary-height: 30px;
 }
 
 .nav-primary li.level0 > a {
-    max-width: 185px;
+    width: 180px;
     line-height: 20px;
 
     @include bp(max-width, 1150px) {
-        max-width: 155px;
+        width: 155px;
     }
 
     @include bp(max-width, 960px){
-        max-width: 120px;
+        width: 120px;
     }
 
     @include bp(max-width, 769px) {
-        max-width: 100%;
+        width: 100%;
         line-height: 28px;
         text-transform: uppercase;
         white-space: nowrap;
