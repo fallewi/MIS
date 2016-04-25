@@ -44,11 +44,11 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
                     Mage::getSingleton('giftmessage/message')->load($item->getGiftMessageId())->getMessage()
                 );
             }
-
+            // BlueAcorn rewrite, adding attrubutes 'UOM' and 'Stock'
             $attributes = array_merge($this->_getAttributes($item, 'order_item'), $this->getUom($orderIncrementId),$this->getStock($orderIncrementId));
             $result['items'][] = $attributes;
         }
-
+        // BlueAcorn rewrite adding customer comments
         $result['customer_comments'] = $this->getCustomerComments($orderIncrementId);
         $result['payment'] = $this->_getAttributes($order->getPayment(), 'order_payment');
 
