@@ -115,8 +115,15 @@
     letter-spacing: 1.11px;
     position: relative;
     top: 8px;
-    margin-right: 30px;
+    right: 40%;
 
+    @include bp(max-width, 1250px) {
+        right: 30%;
+    }
+
+    @include bp(max-width, 1024px) {
+        right: 10%;
+    }
 
     @include bp(min-width, $bp-medium + 1) {
         display: none;
@@ -132,7 +139,7 @@
 
     @include bp(max-width, 979px) {
         top: 31px;
-        margin-right: 120px;
+        right: 50%;
     }
 
     @include bp(max-width, 900px) {
@@ -315,7 +322,7 @@ a.skip-link {
 
 @include bp(min-width, 500px) {
 
-    .skip-link .icon {
+    .header-minicart .icon {
         margin-right: 5px;
     }
 
@@ -333,13 +340,13 @@ a.skip-link {
 
 @include bp(min-width, 500px) {
 
-    .skip-link .label {
+    .header-minicart .label {
         display: inline;
     }
 
 }
 
-.ie8 .skip-link .label{display:inline;}
+.ie8 .header-minicart .label { display:inline; }
 
 /* ============================================ *
  * Skip Content
