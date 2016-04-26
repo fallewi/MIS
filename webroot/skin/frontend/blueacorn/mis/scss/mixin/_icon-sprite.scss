@@ -1,0 +1,18 @@
+/* -------------------------------------------- *
+ * Icons
+ */
+
+.icon-sprite {
+    background-image: url(../images/icon_sprite.png);
+    background-repeat: no-repeat;
+    @include image-replacement;
+}
+
+@if $mq-support == true {
+    @include if-min-resolution(2) {
+        .icon-sprite {
+            background-image: url(../images/icon_sprite@2x.png);
+            background-size: 100px 1000px;
+        }
+    }
+}
