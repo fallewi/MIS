@@ -51,7 +51,7 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
                 );
             }
             // BlueAcorn rewrite, adding attrubutes 'UOM' and 'Stock'
-            $attributes = array_merge($this->_getAttributes($item, 'order_item'), $this->getUom($orderIncrementId),$this->getStock($orderIncrementId));
+            $attributes = array_merge($this->_getAttributes($item, 'order_item'), $this->getUom($item),$this->getStock($item));
             $result['items'][] = $attributes;
         }
         // BlueAcorn rewrite adding customer comments
@@ -85,49 +85,39 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
     /**
      * Returns an array of product's unit of measure attribute
      *
-     * @param $orderNumber
+     * @param $item
      * @return array
      */
-    public function getUom($orderNumber)
+    public function getUom($item)
     {
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderNumber);
-        $attributeTextArray = array();
+        $attributeOptionId = Mage::getResourceModel('catalog/product')
+            ->getAttributeRawValue($item->getProductId(), 'uom', $item->getStoreId());
 
-        foreach($order->getAllVisibleItems() as $item)
-        {
-            $attributeOptionId = Mage::getResourceModel('catalog/product')
-                ->getAttributeRawValue($item->getProductId(), 'uom', $item->getStoreId());
+        $product = Mage::getModel('catalog/product')
+            ->setStoreId($item->getStoreId())
+            ->setData('uom', $attributeOptionId);
 
-            $product = Mage::getModel('catalog/product')
-                ->setStoreId($item->getStoreId())
-                ->setData('uom', $attributeOptionId);
+        $attributeTextArray['uom'] = $product->getAttributeText('uom');
 
-            $attributeTextArray['UOM'] = $product->getAttributeText('uom');
-        }
-            return $attributeTextArray;
+        return $attributeTextArray;
     }
 
     /**
      * Returns product's stock attribute
      *
-     * @param $orderNumber
+     * @param $item
      * @return array
      */
-    public function getStock($orderNumber)
+    public function getStock($item)
     {
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderNumber);
-        $stockTextArray = array();
+        $attributeOptionId = Mage::getResourceModel('catalog/product')
+            ->getAttributeRawValue($item->getProductId(), 'stock', $item->getStoreId());
 
-        foreach($order->getAllVisibleItems() as $item)
-        {
-            $attributeOptionId = Mage::getResourceModel('catalog/product')
-                ->getAttributeRawValue($item->getProductId(), 'stock', $item->getStoreId());
+        $product = Mage::getModel('catalog/product')
+            ->setStoreId($item->getStoreId())
+            ->setData('stock', $attributeOptionId);
+        $stockTextArray['stock'] = $product->getAttributeText('stock');
 
-            $product = Mage::getModel('catalog/product')
-                ->setStoreId($item->getStoreId())
-                ->setData('stock', $attributeOptionId);
-            $stockTextArray['Stock'] = $product->getAttributeText('stock');
-        }
         return $stockTextArray;
     }
 }
