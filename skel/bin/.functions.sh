@@ -128,7 +128,8 @@ find_latest_squash()
 
 
 configure_docker_machine(){
-  eval $(docker-machine env $1)
+  local SHELL=${SHELL:-"sh"}
+  eval $(docker-machine env $1 --shell $SHELL)
   [ "$(docker-machine active)" = "$1" ] || error "unable to configure $1 machine"
   docker info || error "unable to communicate with $1 machine"
 }
