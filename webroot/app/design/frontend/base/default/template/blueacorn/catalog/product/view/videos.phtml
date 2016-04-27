@@ -1,0 +1,80 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php if(Mage::getStoreConfig('blueacorn_productvideos/video/enabled')): ?>
+
+    <?php $_helper = $this->helper('blueacorn_productvideos/product'); ?>
+    <?php $_product = $this->getProduct(); ?>
+    <?php $videos = $_helper->getSelectedVideos($_product) ?>
+
+    <script type="text/javascript">
+        videojs.options.flash.swf = "<?php echo Mage::getBaseUrl('media') . 'video' . '/' . 'video-js.swf'; ?>";
+    </script>
+
+    <?php foreach($videos as $video) : ?>
+        <?php if ($video->getData('status')=='1'): ?>
+
+            <br />
+
+            <?php if(!is_null($video->getData('url'))): ?>
+
+                <img src="<?php echo Mage::getBaseUrl('media') . $this->helper('blueacorn_productvideos/product')->getThumbnail($video);?>"/>
+                <?php echo $_helper->getVideoIFrameProper($video); ?>
+
+
+            <?php elseif(!is_null($video->getData('file'))): ?>
+
+                <img src="<?php echo ($video->getData('thumbnail') && $video->getData('thumbnail') != $this->helper('blueacorn_productvideos/video')->getThumbBaseUrl() )?
+                    $this->helper('blueacorn_productvideos/product')->getThumbnail($video) : $this->helper('blueacorn_productvideos/product')->getDefaultDefaultImage();?>"/>
+
+
+                <video id="<?php echo $this->helper('blueacorn_productvideos/product')->getFormattedVideoTitle($video, 'video');?>" class="video-js vjs-default-skin product-video"
+                       controls preload="none" width="<?php echo Mage::getStoreConfig('blueacorn_productvideos/video/video_width');?>" height="<?php echo Mage::getStoreConfig('blueacorn_productvideos/video/video_height');?>"
+                       poster="<?php echo ($video->getData('thumbnail') && $video->getData('thumbnail') != $this->helper('blueacorn_productvideos/video')->getThumbBaseUrl() )?
+                           $this->helper('blueacorn_productvideos/product')->getThumbnail($video) : null;?>"
+                       data-setup='{"example_option":true}'>
+                    <source src="<?php echo Mage::helper('blueacorn_productvideos/video')->getFileBaseUrl() . $_helper->getVideo($video); ?>" type='video/mp4' />
+                </video>
+
+            <?php else: ?>
+
+                <?php //special actions would go here?>
+
+            <?php endif;?>
+
+            <br />
+
+        <?php endif ?>
+    <?php endforeach ?>
+
+<?php endif ?>

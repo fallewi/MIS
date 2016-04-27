@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_ProductVideos extension
+ * 
+ *
+ * @category       BlueAcorn
+ * @package        BlueAcorn_ProductVideos
+ * @author         Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright      Copyright © 2014 Blue Acorn, Inc.
+ */
+--> 
+<layout>
+    <adminhtml_productvideos_video_index>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>catalog/blueacorn_productvideos/video</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="blueacorn_productvideos/adminhtml_video" name="video" />
+
+        </reference>
+    </adminhtml_productvideos_video_index>
+    <adminhtml_productvideos_video_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="blueacorn_productvideos/adminhtml_video_grid" name="video_grid"/>
+        </block>
+    </adminhtml_productvideos_video_grid>
+    <!-- Video add/edit action -->
+    <adminhtml_productvideos_video_edit>
+        <update handle="editor"/>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>catalog/blueacorn_productvideos/video</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="blueacorn_productvideos/adminhtml_video_edit" name="video_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="blueacorn_productvideos/adminhtml_video_edit_tabs" name="video_tabs"></block>
+        </reference>
+    </adminhtml_productvideos_video_edit>
+
+    <adminhtml_productvideos_video_catalog_product_videos>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="blueacorn_productvideos/adminhtml_catalog_product_edit_tab_video" name="product.edit.tab.video"/>
+            <block type="adminhtml/widget_grid_serializer" name="video_grid_serializer">
+                <reference name="video_grid_serializer">
+                    <action method="initSerializerBlock">
+                        <grid_block_name>product.edit.tab.video</grid_block_name>
+                        <data_callback>getSelectedVideos</data_callback>
+                        <hidden_input_name>videos</hidden_input_name>
+                        <reload_param_name>product_videos</reload_param_name>
+                    </action>
+                    <action method="addColumnInputName">
+                        <input_name>position</input_name>
+                    </action>
+                </reference>
+            </block>
+        </block>
+    </adminhtml_productvideos_video_catalog_product_videos>
+    <adminhtml_productvideos_video_catalog_product_videosgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="blueacorn_productvideos/adminhtml_catalog_product_edit_tab_video" name="product.edit.tab.video"/>
+        </block>
+    </adminhtml_productvideos_video_catalog_product_videosgrid>
+    <adminhtml_productvideos_video_products>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="blueacorn_productvideos/adminhtml_video_edit_tab_product" name="video.edit.tab.product"/>
+            <block type="adminhtml/widget_grid_serializer" name="product_grid_serializer">
+                <reference name="product_grid_serializer">
+                    <action method="initSerializerBlock">
+                        <grid_block_name>video.edit.tab.product</grid_block_name>
+                            <data_callback>getSelectedProducts</data_callback>
+                            <hidden_input_name>products</hidden_input_name>
+                            <reload_param_name>video_products</reload_param_name>
+                    </action>
+                    <action method="addColumnInputName">
+                        <input_name>position</input_name>
+                    </action>
+                </reference>
+            </block>
+        </block>
+    </adminhtml_productvideos_video_products>
+    <adminhtml_productvideos_video_productsgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="blueacorn_productvideos/adminhtml_video_edit_tab_product" name="video.edit.tab.product"/>
+        </block>
+    </adminhtml_productvideos_video_productsgrid>
+</layout>

@@ -1,0 +1,93 @@
+<?php
+
+/*
+ *This page adds the thumbnails/links to the product page as well as creates the modals for the product videos.
+ */
+
+
+?>
+
+
+<?php echo $this->getChildHtml('media'); ?>
+
+<?php if(Mage::getStoreConfig('blueacorn_productvideos/video/enabled')): ?>
+
+    <?php $_product = $this->getProduct(); ?>
+    <?php $videos = $this->helper('blueacorn_productvideos/product')->getSelectedVideos($_product) ?>
+
+    <script type="text/javascript">
+        videojs.options.flash.swf = "<?php echo Mage::getBaseUrl('media') . 'video' . '/' . 'video-js.swf'; ?>";
+    </script>
+
+    <script type="text/javascript" src="<?php echo Mage::getBaseUrl('js') . '/prototype/window.js'; ?>" ></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl('js') . '/prototype/windows/themes/default.css'; ?>">
+    <div class="more-views videos">
+        <ul>
+            <?php foreach($videos as $video) : ?>
+                <?php if ($video->getData('status')=='1') : ?>
+                    <?php if(!is_null($video->getData('url'))) : ?>
+                        <li>
+                            <a class="<?php echo $this->helper('blueacorn_productvideos/product')->getFormattedVideoTitle($video, 'modal');?>" data-video='<?php echo $this->helper('blueacorn_productvideos/product')->getVideoIFrameProper($video); ?>'>
+                                <img src="<?php echo Mage::getBaseUrl('media') . $this->helper('blueacorn_productvideos/product')->getThumbnail($video);?>" width="48" height="48"/>
+                            </a>
+                        </li>
+
+                    <?php elseif(!is_null($video->getData('file'))) : ?>
+                        <li>
+                            <a class="<?php echo $this->helper('blueacorn_productvideos/product')->getFormattedVideoTitle($video, 'modal');?>"
+                               data-video='<video id="<?php echo $this->helper('blueacorn_productvideos/product')->getFormattedVideoTitle($video, 'video');?>"
+                                                    class="video-js vjs-default-skin product-video"
+                                                    controls
+                                                    preload="none"
+                                                    width="<?php echo Mage::getStoreConfig('blueacorn_productvideos/video/video_width');?>"
+                                                    height="<?php echo Mage::getStoreConfig('blueacorn_productvideos/video/video_height');?>"
+                                                    poster="<?php echo ($video->getData('thumbnail') && $video->getData('thumbnail') != $this->helper('blueacorn_productvideos/video')->getThumbBaseUrl())?
+                                                        $this->helper('blueacorn_productvideos/product')->getThumbnail($video) : null;?>"
+                                                    data-setup=&#39;{"example_option": true}&#39;>
+
+                                                    <source src="<?php echo Mage::helper('blueacorn_productvideos/video')->getFileBaseUrl() . $this->helper('blueacorn_productvideos/product')->getVideo($video); ?>" type="video/mp4" />
+                                                </video>'>
+
+                                <img src="<?php echo ($video->getData('thumbnail') && $video->getData('thumbnail') != $this->helper('blueacorn_productvideos/video')->getThumbBaseUrl() )?
+                                    $this->helper('blueacorn_productvideos/product')->getThumbnail($video) : $this->helper('blueacorn_productvideos/product')->getDefaultDefaultImage();?>" width="48" height="48"/>
+                            </a>
+                        </li>
+                    <?php endif;?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <?php //this is by Arch. Greg H., it checks if page has a's -> then assigns observers to each of them -> then grabs the nearest 'a' and gets the data-video attribute from it.?>
+    <script type="text/javascript">
+
+        if($$('.more-views.videos a').length > 0){
+            $$('.more-views.videos a').each(function(el){
+                el.observe('click', function(evt){
+                    var video = evt.findElement('a');
+
+                    var thumbModal = new Window({id: el.readAttribute('class'), windowClassName: "product-video-modal", destroyOnClose: true});
+                    Windows.addModalWindow(thumbModal);
+
+                    var customOnDestroyObserver =
+                    {
+                        onDestroy: function(eventName, win)
+                        {
+                            if (win == thumbModal)
+                            {
+                                Windows.closeAllModalWindows();
+                                Windows.removeModalWindow(thumbModal);
+                            }
+                        }
+                    };
+
+                    Windows.addObserver(customOnDestroyObserver);
+                    thumbModal.setHTMLContent(video.readAttribute('data-video'));
+                    thumbModal.showCenter();
+                    return thumbModal;
+                });
+            });
+        }
+    </script>
+
+<?php endif ?>
