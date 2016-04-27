@@ -186,6 +186,11 @@ span.label.radio-label, span.label.checkbox-label {
     font-style: normal;
 }
 
+/* Fix for spacing issue in the fax field of one-page checkout */
+#billing-new-address-form #fax-field > li {
+    display: none;
+}
+
 .opc {
     .select-container {
         width: 365px;
