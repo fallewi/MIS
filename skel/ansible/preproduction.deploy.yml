@@ -14,8 +14,14 @@
 
     # grunt compile blueacornui (locally, on machine running ansible)
     - include: tasks/grunt-compile.yml
+      vars:
+        BLUEACORNUI_DIR: "blueacornui"
 
-    - include: tasks/git-deploy.yml
+    # deployment tasks (updates remote hosts)
+    #########################################
+    - include: tasks/deploy.yml
+      vars:
+        DEPLOY_DRIVER: git
 
     # copy (rsync) grunt compiled assets (from ansible host => remote hosts)
     - include: tasks/grunt-sync.yml
@@ -28,24 +34,23 @@
   post_tasks:
 
     # ensure HTTPD_USER writable paths
-    # on sudoless environments, copy task content here. set become: False
-    - include: tasks/file-perms.yml
+    - include: tasks/fs-perms.yml
       vars:
         WRITABLE_PATHS:
-          - "{{ MAGE_ROOT }}/var"
-          - "{{ MAGE_ROOT }}/media"
-          - "{{ MAGE_ROOT }}/includes"
+          - "{{ APP_ROOT }}/var"
+          - "{{ APP_ROOT }}/media"
+          - "{{ APP_ROOT }}/includes"
 
     # setup shared/linked folders (e.g. NFS shares).
-    # - include: tasks/file-shares.yml
-    #   vars:
-    #     SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
-    #     LINKED_PATHS:
-    #       - "media"
-    #       - "var/export"
-    #       - "var/import"
-    #       - "var/powerreviews"
-    #       - "var/urapidflow"
+#    - include: tasks/fs-shares.yml
+#      vars:
+#        SHARE_ROOT: /nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}
+#        LINKED_PATHS:
+#          - "media"
+#          - "var/export"
+#          - "var/import"
+#          - "var/powerreviews"
+#          - "var/urapidflow"
 
     # post deployment and notifications
     - include: tasks/postdeploy.yml
@@ -53,7 +58,7 @@
 
 # run cacheclear playbook after deployment
 ##########################################
-- include: preproduction.util-cacheclear.yml
+- include: staging.util-cacheclear.yml
 
 # run reindex playbook if requested
 ###################################

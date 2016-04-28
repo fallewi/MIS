@@ -45,6 +45,10 @@ display_help() {
 
     --repo-ref           Tests repository ref to use when pulling.
 
+    --repo-root-match    When running, run a match|replace on REPO_ROOT. Useful
+    --repo-root-replace  for aligning container=>host paths when running tests
+                         in docker. Defaults to REPO_ROOT_MATCH envar.
+
 EOF
 
   if [ $# -eq 0 ]; then
@@ -93,9 +97,15 @@ run_tests(){
     docker build $DOCKER_BUILD_FLAGS -t $DOCKER_IMAGE .
   fi
 
+  if [ -z "$REPO_ROOT_MATCH" ] && [ -z "$REPO_ROOT_REPLACE"]; then
+    HOST_REPO_ROOT=$REPO_ROOT
+  else
+    HOST_REPO_ROOT=${REPO_ROOT//$REPO_ROOT_MATCH/$REPO_ROOT_REPLACE}
+  fi
+
   docker run $DOCKER_RUN_FLAGS \
-    -v ${REPO_ROOT}:/repo:ro \
-    -v ${REPO_ROOT}/tests:/repo/tests:rw \
+    -v ${HOST_REPO_ROOT}:/repo:ro \
+    -v ${HOST_REPO_ROOT}/tests:/repo/tests:rw \
     -u $UID \
     $DOCKER_IMAGE ${DOCKER_COMMAND:-}
 }
@@ -154,15 +164,17 @@ runstr="display_help"
 
 while [ $# -ne 0 ]; do
   case $1 in
-    -h|--help|help)    display_help ;;
-    --cmd|-c)          DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -i"
-                       DOCKER_COMMAND="$2" ; shift ;;
-    -f|--force)        FORCE=true ;;
-    --repo-url)        TESTS_REPO_URL="$2" ; shift ;;
-    --repo-ref)        TESTS_REPO_REF="$2" ; shift ;;
-    pull)              runstr="pull_tests" ;;
-    run)               runstr="run_tests" ;;
-    *)                 echo "invalid option: $1" ; display_help 1 ;;
+    -h|--help|help)      display_help ;;
+    --cmd|-c)            DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -i"
+                         DOCKER_COMMAND="$2" ; shift ;;
+    -f|--force)          FORCE=true ;;
+    --repo-url)          TESTS_REPO_URL="$2" ; shift ;;
+    --repo-ref)          TESTS_REPO_REF="$2" ; shift ;;
+    --repo-root-match)   REPO_ROOT_MATCH="$2" ; shift ;;
+    --repo-root-replace) REPO_ROOT_REPLACE="$2" ; shift ;;
+    pull)                runstr="pull_tests" ;;
+    run)                 runstr="run_tests" ;;
+    *)                   echo "invalid option: $1" ; display_help 1 ;;
   esac
   shift
 done

@@ -4,7 +4,7 @@
 #
 
 # The default tracking branch for this environment.
-REPO_REF="develop"
+REPO_REF="master"
 
 SUBDOMAIN="@ENV"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"

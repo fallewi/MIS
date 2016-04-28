@@ -11,7 +11,7 @@
 # safely removed if not using redis|memcache
 #
 
-- name: "MIS:preproduction clear redis cache"
+- name: "MIS:staging clear redis cache"
   hosts: web-1
   gather_facts: False
   tasks:
@@ -23,7 +23,7 @@
 # clear filesystem cache and merged css|js across all webnodes
 #
 
-- name: "MIS:preproduction clear merged JS and CSS"
+- name: "MIS:staging clear merged JS and CSS"
   hosts: web*
   gather_facts: False
   tasks:
@@ -34,7 +34,7 @@
 #  - Requires httpdlib2 on ansible host
 #
 
-#- name: "MIS:preproduction clear cdn caches"
+#- name: "MIS:staging clear cdn caches"
 #  hosts: 127.0.0.1
 #  connection: local
 #  gather_facts: False

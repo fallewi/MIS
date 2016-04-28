@@ -1,6 +1,11 @@
 ---
 
-session_name: MIS-staging
+#
+# Example tmuxp.yml. Requires `tmuxp`. Allows fine-grain tmux session control
+# Save as `tmuxp.yml` in your environment directory to activate.
+#
+
+session_name: @CLIENT_CODE-@ENV
 start_directory: ./
 windows:
   - window_name: site

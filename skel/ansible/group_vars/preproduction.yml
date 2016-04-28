@@ -13,10 +13,10 @@ HTTPD_USER: missionrs
 ################################################################################
 # REDIS_HOST - IP/Hostname of Redis Server. Leave non-truthy if not using redis.
 REDIS_HOST: 10.136.244.35
-REDIS_FPC_PORT: 6391
-REDIS_FPC_DB: 0
-REDIS_OBJ_PORT: 6392
-REDIS_OBJ_DB: 0
+REDIS_FPC_PORT: 6381
+REDIS_FPC_DB: 1
+REDIS_OBJ_PORT: 6382
+REDIS_OBJ_DB: 1
 
 
 ################################################################################
