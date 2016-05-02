@@ -61,40 +61,25 @@
 
     <?php //this is by Arch. Greg H., it checks if page has a's -> then assigns observers to each of them -> then grabs the nearest 'a' and gets the data-video attribute from it.?>
     <script type="text/javascript">
-
-        if($$('.more-views.videos a').length > 0){
-            $$('.more-views.videos a').each(function(el){
-                el.observe('click', function(evt){
-                    var video = evt.findElement('a');
-
-                    var thumbModal = new Window({
-                        id: el.readAttribute('class'),
-                        windowClassName: "product-video-modal",
-                        destroyOnClose: true,
-                        minWidth:          500,
-                        minHeight:         281
+        jQuery(document).ready(function($){
+            if($('.more-views.videos a').length > 0) {
+                $(".more-views.videos a").each(function(i, v){
+                    $(this).fancybox({
+                        maxWidth    : 800,
+                        maxHeight   : 600,
+                        fitToView   : false,
+                        width       : '70%',
+                        height      : '50%',
+                        autoSize    : false,
+                        closeClick  : false,
+                        openEffect  : 'elastic',
+                        closeEffect : 'none',
+                        content: $(this).data('video'),
+                        aspectRatio: true
                     });
-                    Windows.addModalWindow(thumbModal);
-
-                    var customOnDestroyObserver =
-                    {
-                        onDestroy: function(eventName, win)
-                        {
-                            if (win == thumbModal)
-                            {
-                                Windows.closeAllModalWindows();
-                                Windows.removeModalWindow(thumbModal);
-                            }
-                        }
-                    };
-
-                    Windows.addObserver(customOnDestroyObserver);
-                    thumbModal.setHTMLContent(video.readAttribute('data-video'));
-                    thumbModal.showCenter();
-                    return thumbModal;
                 });
-            });
-        }
+            }
+        });
     </script>
 
 <?php endif ?>

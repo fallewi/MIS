@@ -137,6 +137,7 @@
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>css/styles-product-ie8.css</name><params/><if><![CDATA[ (lte IE 8) & (!IEMobile)]]></if></action>
             <action method="addItem"><type>skin_css</type><name>css/styles-product.css</name><params/><if><![CDATA[<!--[if (gte IE 9) | (IEMobile)]><!-->]]></if></action>
+            <action method="addItem"><type>js_css</type><name>blueacorn/lib/fancybox/jquery.fancybox.css</name></action>
         </reference>
 
         <reference name="content">
