@@ -1,6 +1,6 @@
 {
   "name": "blueacorn_green_pistachio",
-  "version": "0.2.0",
+  "version": "4.3.0",
   "authors": [
     "Blue Acorn",
     "Inc. <code@blueacorn.com>"
@@ -10,7 +10,6 @@
     "amd",
     "node"
   ],
-  "license": "MIT",
   "homepage": "http://www.blueacorn.com",
   "private": true,
   "ignore": [
