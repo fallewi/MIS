@@ -142,6 +142,7 @@
 
         <reference name="content">
             <block type="catalog/product_view" name="product.top.details" as="product.top.details" template="blueacorn/catalog/product/topdetails.phtml" before="-"/>
+            <remove name="product_videos"/>
         </reference>
 
         <reference name="product.info">
