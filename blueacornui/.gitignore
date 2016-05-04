@@ -1,2 +1,5 @@
-bower_components
-node_modules
+# Blue Acorn UI Directory Specific #
+/app
+/skin
+/bower_components
+/node_modules
