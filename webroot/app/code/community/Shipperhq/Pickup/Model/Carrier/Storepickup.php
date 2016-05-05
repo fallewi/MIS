@@ -104,15 +104,14 @@ class Shipperhq_Pickup_Model_Carrier_Storepickup
         }
         $methodName = '';
         if(isset($carrierRate->rates)) {
-
             $thisCarriersRates = $this->populateRates($carrierRate, $carrierGroupDetail, $carrierGroupId);
             foreach($carrierRate->rates as $oneRate) {
                 $methodName = $oneRate->name;
             }
-            $carrierResultWithRates['rates'] = $thisCarriersRates;
         }
         
         $quoteStorage = Mage::helper('shipperhq_shipper')->getQuoteStorage();
+        $closestLocationName = false;
 
         if(isset($carrierRate->pickupLocationDetails)
             && isset($carrierRate->pickupLocationDetails->pickupLocations)) {
@@ -137,8 +136,10 @@ class Shipperhq_Pickup_Model_Carrier_Storepickup
                 $locationAsArray['calendarDetails'] = $calendarDetails;
                 $locationAsArray['methodName'] = $methodName;
                 $locationAsArray['carrier_id'] = $carrierId;
-              //  $locationAsArray['address_id'] =
                 $locationsAvailable[$location->pickupId] = $locationAsArray;
+                if(!$closestLocationName) {
+                    $closestLocationName = $location->pickupName;
+                }
             }
 
             if (count($locationsAvailable) > 0 ) {
@@ -151,12 +152,22 @@ class Shipperhq_Pickup_Model_Carrier_Storepickup
                     Mage::helper('wsalogger/log')->postInfo('ShipperHQ Pickup', 'Store Pickup closest locations',
                         $locationsAvailable);
                 }
+                if(isset($carrierRate->pickupLocationDetails->pickupCart)
+                    && (string)$carrierRate->pickupLocationDetails->pickupCart == '1'
+                    && !Mage::helper('shipperhq_shipper')->isCheckout()) {
+                    foreach($thisCarriersRates as $key => $rate) {
+                        $rate['method_title'].= ': ' .$closestLocationName;
+                        $thisCarriersRates[$key] = $rate;
+                    }
+                }
             }
             else {
                 $carrierResultWithRates['error'] = array('errorCode' =>  '2000',
                     'description' => Mage::getModel('shipperhq_shipper/carrier_shipper')->getCode('error', 2000));
             }
-
+            if(count($thisCarriersRates) > 0) {
+                $carrierResultWithRates['rates'] = $thisCarriersRates;
+            }
             $pickupDisplayConfig = array();
             $openHours = false;
             $showMap = "hidden";

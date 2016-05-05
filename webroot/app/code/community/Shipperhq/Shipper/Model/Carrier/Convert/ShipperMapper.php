@@ -53,7 +53,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
     protected static $ecommerceType = 'magento';
     protected static $_stdAttributeNames = array(
         'shipperhq_shipping_group', 'shipperhq_post_shipping_group',
-        'shipperhq_warehouse', 'shipperhq_royal_mail_group', 'shipperhq_shipping_qty',
+        'shipperhq_warehouse', 'shipperhq_royal_mail_group', 'shipperhq_shipping_qty', 'shipperhq_availability_date',
         'shipperhq_shipping_fee','shipperhq_additional_price','freight_class',
         'shipperhq_nmfc_class', 'shipperhq_nmfc_sub', 'shipperhq_handling_fee','shipperhq_carrier_code',
         'shipperhq_volume_weight', 'shipperhq_declared_value', 'ship_separately','shipperhq_malleable_product',
@@ -325,8 +325,10 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
             $stdAttributes = array_merge(self::getDimensionalAttributes($magentoItem), self::$_stdAttributeNames);
             $options = self::populateCustomOptions($magentoItem);
             $weight = $magentoItem->getWeight();
-            if($productType!= Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL && is_null($weight)) { //SHIPPERHQ-1855
-                if (Mage::helper('shipperhq_shipper')->isDebug()) {
+            if(is_null($weight)) { //SHIPPERHQ-1855
+                if ($productType!= Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL &&
+                    $productType!= Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE &&
+                    Mage::helper('shipperhq_shipper')->isDebug()) {
                     Mage::helper('wsalogger/log')->postCritical('ShipperHQ','Item weight is null, using 0',
                         'Please review the product configuration for Sku ' .$magentoItem->getSku() .' as product has NULL weight');
                 }
@@ -334,8 +336,8 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
             }
             if(is_null($id)) {
                 if (Mage::helper('shipperhq_shipper')->isDebug()) {
-                    Mage::helper('wsalogger/log')->postCritical('ShipperHQ','Item ID is null',
-                        'Please review the product configuration for Sku ' .$magentoItem->getSku() .' as product has NULL item ID');
+                    Mage::helper('wsalogger/log')->postDebug('ShipperHQ','Item ID is null',
+                        $magentoItem->getSku());
                 }
             }
             $formattedItem = array(
@@ -404,7 +406,6 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                     $formattedItem['discountedTaxInclStorePrice'] = $childPrices['taxInclStorePrice'] * $discountDifference;
                 }
             }
-
             $formattedItems[] = $formattedItem;
 
         }
