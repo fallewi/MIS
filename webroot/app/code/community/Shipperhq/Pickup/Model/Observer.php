@@ -75,24 +75,24 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             $quote = $observer->getOrderCreateModel()->getQuote();
             $shipping_method = $orderData['shipping_method'];
             $carrierCode = Mage::helper('shipperhq_shipper')->isPickupRate($quote->getShippingAddress(), $shipping_method);
-            
+
             if($shipping_method == '' || !$carrierCode) {
                 return;
             }
-            
+
             $pickupLocationId = isset($orderData['location_id_' . $carrierCode]) ? $orderData['location_id_' . $carrierCode] : null;
             $pickupDate = isset($orderData['pickup_date_' . $carrierCode]) ? $orderData['pickup_date_' . $carrierCode] : null;
             $pickupSlot = isset($orderData['pickup_slot_' . $carrierCode]) ? $orderData['pickup_slot_' . $carrierCode] : null;
-            
+
             if (!Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup')) {
                 return;
             }
-            
+
             $shippingAddress = $quote->getShippingAddress();
             $this->_savePickupInfoToShippingAddress($shippingAddress, 0, $pickupLocationId, $carrierCode, $pickupDate, $pickupSlot);
         }
     }
-    
+
     /*
      * Save the pickup location as shipping address on this order
      *
@@ -121,6 +121,8 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
      * Save the pickup location as shipping address on this order
      *
      */
+
+    //todo: add in CG details
 
     public function savePickupLocationMulti($observer)
     {
@@ -176,7 +178,7 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     public function saveShippingBefore($observer) {
-        
+
         Mage::getSingleton('checkout/session')->setFreemethodWeight(null); // @todo what is this?? (Ivan)
         $quote = $observer->getQuote();
         Mage::helper('shipperhq_shipper')->getQuoteStorage($quote)
@@ -241,6 +243,9 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             $shippingAddress->setDispatchDate($pickupDate);
             $shippingAddress->setDeliveryDate($pickupDate);
             $shippingAddress->setPickupDate($pickupDate);
+            $shippingAddress->setPickupEmail($pickupLocation['email']);
+            $shippingAddress->setPickupContact($pickupLocation['contactName']);
+            $shippingAddress->setPickupEmailOption($pickupLocation['emailOption']);
             $pickupText = $pickupLocation['pickupName']. ' ' .$pickupDate ;
             if($pickupSlot != '') {
                 $pickupSlot = str_replace('_', ' - ', $pickupSlot);
@@ -267,7 +272,7 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             if (isset($regionId)) {
                 $shippingAddress->setRegionId($regionId);
             }
-            $shippingAddress->setCountry($pickupLocation['country']);
+            $shippingAddress->setCountryId($pickupLocation['country']);
             $cgDetail = $shippingAddress->getCarriergroupShippingDetails();
             $cgDetail = $this->addPickupToCgDetail($cgDetail, $shippingAddress);
             $shippingAddress->setCarriergroupShippingDetails($cgDetail)
@@ -286,11 +291,25 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
                 $shipDetail['location_name'] = $shippingAddress->getPickupLocation();
                 if($shippingAddress->getPickupDate() != '') {
                     $shipDetail['pickup_date'] = $shippingAddress->getPickupDate();
-
                 }
 
                 if($shippingAddress->getTimeSlot()!= '') {
                     $shipDetail['pickup_slot'] = $shippingAddress->getTimeSlot();
+                }
+
+                if($shippingAddress->getPickupContact() != '') {
+                    $shipDetail['pickup_contact'] = $shippingAddress->getPickupContact();
+
+                }
+
+                if($shippingAddress->getPickupEmail() != '') {
+                    $shipDetail['pickup_email'] = $shippingAddress->getPickupEmail();
+
+                }
+
+                if($shippingAddress->getPickupEmailOption() != '') {
+                    $shipDetail['pickup_email_option'] = $shippingAddress->getPickupEmailOption();
+
                 }
                 $carrierGroupShippingDetail[$key] = $shipDetail;
 

@@ -65,7 +65,6 @@ class Shipperhq_Shipper_Model_Checkout_Helper
                 ->setCarriergroupShippingDetails($encodedShipDetails)
                 ->setCarriergroupShippingHtml(Mage::helper('shipperhq_shipper')->getCarriergroupShippingHtml(
                     $encodedShipDetails))
-                ->setCarriergroupShippingHtml('something funny is going on')
                 ->save();
             Mage::helper('shipperhq_shipper')->setShippingOnItems($shipDetails,  $shippingAddress);
 

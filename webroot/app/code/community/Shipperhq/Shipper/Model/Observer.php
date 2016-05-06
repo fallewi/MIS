@@ -190,9 +190,13 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                         }
                         $carrierGroupId = $carrier_group->carrierGroupId;
                         $carrier_code = $carrier_group->carrier_code;
+                        $shippingMethodCode = $carrier_group->code;
                         $packagesColl= Mage::getModel('shipperhq_shipper/quote_packages')
-                            ->loadByCarrier($shippingAddress->getAddressId(), $carrierGroupId, $carrier_code);
-
+                            ->loadByCarrier($shippingAddress->getAddressId(), $carrierGroupId, $carrier_code. '_' .$shippingMethodCode);
+                        if(count($packagesColl) < 1) {
+                            $packagesColl= Mage::getModel('shipperhq_shipper/quote_packages')
+                                ->loadByCarrier($shippingAddress->getAddressId(), $carrierGroupId, $carrier_code);
+                        }
                         foreach ($packagesColl as $box) {
                             $package = Mage::getModel('shipperhq_shipper/order_packages');
                             $package->setOrderId($orderId);
@@ -206,13 +210,15 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                                 ->setItems($box->getItems());
                             $package->save();
                         }
-                        if($recordOrderPackages && count($packagesColl) > 0)
-                        {
-                            $boxText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($packagesColl);
-                            $order->addStatusToHistory($order->getStatus(), $boxText, false);
+
+                        if (Mage::helper('shipperhq_shipper')->storeDimComments()) {
+                            if ($recordOrderPackages && count($packagesColl) > 0) {
+                                $boxText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($packagesColl);
+                                $order->addStatusToHistory($order->getStatus(), $boxText, false);
+                            }
+                            $order->addStatusToHistory($order->getStatus(), 'ShipperHQ Transaction ID: ' . $carrier_group->transaction, false);
+                            $order->save();
                         }
-                        $order->addStatusToHistory($order->getStatus(), 'ShipperHQ Transaction ID: ' .$carrier_group->transaction, false);
-                        $order->save();
 
                     }
                 }
@@ -234,7 +240,8 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                                 ->setItems($box->getItems());
                             $package->save();
                         }
-                        if($recordOrderPackages && count($packagesColl) > 0)
+                        if(Mage::helper('shipperhq_shipper')->storeDimComments() &&
+                            $recordOrderPackages && count($packagesColl) > 0)
                         {
                             $boxText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($packagesColl);
                             $order->addStatusToHistory($order->getStatus(), $boxText, false);
@@ -259,22 +266,23 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
             $post = $observer->getRequestModel()->getPost();
             if(isset($post['order'])) {
                 $data = $post['order'];
+
                 $found = false;
                 $customCarrierGroupData = array();
-
+                $carriergroupId = isset($data['carriergroup_id']) ? $data['carriergroup_id'] : '';
                 if (isset($data['shipping_amount'])) {
-                    $customCarrierGroupData[''] = array('customPrice' => $data['shipping_amount'], 'carriergroup' => '');
+                    $customCarrierGroupData[$carriergroupId]  = array('customPrice' => $data['shipping_amount'], 'carriergroup' => $carriergroupId);
                     $found = true;
                 }
 
                 if (isset($data['shipping_description'])) {
-                    if(array_key_exists('', $customCarrierGroupData)) {
-                        $shipArray = $customCarrierGroupData[''];
+                    if(array_key_exists($carriergroupId, $customCarrierGroupData)) {
+                        $shipArray = $customCarrierGroupData[$carriergroupId];
                         $shipArray['customCarrier'] = $data['shipping_description'];
-                        $customCarrierGroupData[''] = $shipArray;
+                        $customCarrierGroupData[$carriergroupId] = $shipArray;
                     }
                     else {
-                        $customCarrierGroupData[''] = array('customCarrier' => $data['shipping_description'],  'carriergroup' => '');
+                        $customCarrierGroupData[$carriergroupId]  = array('customCarrier' => $data['shipping_description'],  'carriergroup' => $carriergroupId);
                     }
                     $found = true;
                 }

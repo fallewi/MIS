@@ -65,8 +65,15 @@ class Shipperhq_Postorder_Helper_Data extends Mage_Core_Helper_Abstract
         if(is_array($detail)) {
             foreach($detail as $cgdetail) {
                 $emailOption = $cgdetail['emailOption'];
+                $pickupEmailOption = array_key_exists('pickup_email_option', $cgdetail) ? $cgdetail['pickup_email_option'] : null;
+
                 if($emailOption != '' && !is_null($emailOption) &&
                     $emailOption != Shipperhq_Postorder_Helper_Email::SHIPPERHQ_SEND_EMAIL_NEVER) {
+                    $sendEmail = true;
+                }
+
+                if($pickupEmailOption != '' && !is_null($pickupEmailOption) &&
+                    $pickupEmailOption != Shipperhq_Postorder_Helper_Email::SHIPPERHQ_SEND_EMAIL_NEVER) {
                     $sendEmail = true;
                 }
             }

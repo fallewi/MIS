@@ -224,6 +224,26 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 $package->save();
             }
         }
+
+        if(array_key_exists('rates', $carrierRate) && $carrierRate['rates'] != null) {
+            foreach($carrierRate['rates'] as $rate) {
+                $cgId = array_key_exists('carrierGroupId', $carrierGroupDetail) ? $carrierGroupDetail['carrierGroupId'] : null;
+                $this->cleanUpPackages($shippingAddress->getAddressId(),$cgId, $carrierRate['carrierCode'].'_'.$rate->code);
+                $mapping = $this->getPackagesMapping();
+                $standardData = array('address_id' => $shippingAddress->getAddressId(),
+                    'carrier_group_id' => $cgId,
+                    'carrier_code' =>  $carrierRate['carrierCode'].'_'.$rate->code);
+                if(!isset($rate->shipments)) {
+                    continue;
+                }
+                foreach($rate->shipments as $shipment) {
+                    $data = array_merge($standardData, Mage::helper('shipperhq_shipper/mapper')->map($mapping,(array)$shipment));
+                    $package = Mage::getModel('shipperhq_shipper/quote_packages');
+                    $package->setData($data);
+                    $package->save();
+                }
+            }
+        }
     }
 
     public function isPackageBreakdownDisplayEnabled()
@@ -770,6 +790,14 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         return $cityRequired;
     }
 
+    public function storeDimComments() {
+        $storeDimComments = $this->getGlobalSetting('storeDimComments');
+        if(!$storeDimComments) {
+            $storeDimComments = Mage::getStoreConfig('carriers/shipper/STORE_DIM_COMMENTS');
+        }
+        return $storeDimComments;
+    }
+
     public function isCityRequired()
     {
         return $this->isCityEnabled();
@@ -809,11 +837,42 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         $collection->addFieldToFilter(array(
             array('attribute'=>$attribute_code,'finset'=>$value),
         ));
+
         if($returnCount) {
             return count($collection);
         }
-
         return $collection;
+    }
+
+    public function getIsAttributeValueUsed($attribute_code, $value, $isSelect = false)
+    {
+        $attributeModel = Mage::getSingleton('eav/config')
+            ->getAttribute('catalog_product', $attribute_code);
+
+        $select = Mage::getSingleton('core/resource')
+            ->getConnection('default_read')->select()
+            ->from($attributeModel->getBackend()->getTable(), 'value')
+            ->where('attribute_id=?', $attributeModel->getId())
+            ->where('value!=?','')
+            ->distinct();
+
+        $usedAttributeValues = Mage::getSingleton('core/resource')
+            ->getConnection('default_read')
+            ->fetchCol($select);
+        if($isSelect) {
+            //account for multiselect values
+            $separated = array();
+            foreach($usedAttributeValues as $key => $aValue) {
+                if(strstr($aValue, ',')) {
+                    $values = explode(',', $aValue);
+                    $separated = array_merge($separated,$values);
+                    unset($usedAttributeValues[$key]);
+                }
+            }
+            $usedAttributeValues = array_merge($usedAttributeValues, $separated);
+
+        }
+        return in_array($value, $usedAttributeValues);
     }
 
     public function extractAddressIdAndCarriergroupId(&$addressId, &$carrierGroupId)
