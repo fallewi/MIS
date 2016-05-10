@@ -1,6 +1,6 @@
 /**
 * @package     BlueAcorn/GreenPistachio
-* @version     4.3.0
+* @version     4.3.2
 * @author      Blue Acorn, Inc. <code@blueacorn.com>
 * @copyright   Copyright © 2016 Blue Acorn, Inc.
 */
@@ -24,7 +24,7 @@ _.each(themes, function(theme, name) {
                 compress: true,
                 beautify: false,
                 sourceMap: false,
-                wrap: true
+                wrap: false
             },
             files: combo.jsFiles(name)
         };
