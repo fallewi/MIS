@@ -1,6 +1,6 @@
 {
   "name": "blueacorn_green_pistachio",
-  "version": "4.3.0",
+  "version": "4.3.2",
   "description": "Rapid Development Boilerplate for Responsive Magento Enterprise Websites",
   "private": "true",
   "namespace": "BlueAcorn",
@@ -21,30 +21,31 @@
     "compass"
   ],
   "dependencies": {
-    "autoprefixer": "*",
-    "glob": "*",
-    "grunt": "*",
-    "grunt-banner": "*",
-    "grunt-concurrent": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-postcss": "*",
-    "grunt-sass": "*",
-    "grunt-shell": "*",
-    "grunt-usebanner": "*",
-    "jit-grunt": "*",
-    "load-grunt-config": "*",
-    "path": "*",
-    "time-grunt": "*",
-    "underscore": "*"
+    "autoprefixer": "^6.3.3",
+    "glob": "^7.0.3",
+    "grunt": "^0.4.5",
+    "grunt-banner": "^0.6.0",
+    "grunt-bless": "^0.2.0",
+    "grunt-concurrent": "^2.3.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-postcss": "^0.8.0",
+    "grunt-sass": "^1.1.0",
+    "grunt-shell": "^1.3.0",
+    "grunt-usebanner": "^0.3.1",
+    "jit-grunt": "^0.10.0",
+    "load-grunt-config": "^0.19.2",
+    "path": "^0.12.7",
+    "time-grunt": "^1.3.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "grunt-contrib-copy": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-githooks": "*",
-    "grunt-newer": "*",
-    "grunt-contrib-imagemin": "*",
-    "grunt-svgmin": "*",
-    "grunt-browser-sync": "*"
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-githooks": "^0.6.0",
+    "grunt-newer": "^1.2.0",
+    "grunt-contrib-imagemin": "^1.0.0",
+    "grunt-svgmin": "^3.2.0",
+    "grunt-browser-sync": "^2.2.0"
   }
 }
