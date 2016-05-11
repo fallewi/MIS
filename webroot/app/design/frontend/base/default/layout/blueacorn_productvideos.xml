@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_ProductVideos extension
+ *
+ *
+ * @category       BlueAcorn
+ * @package        BlueAcorn_ProductVideos
+ * @author         Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright      Copyright © 2014 Blue Acorn, Inc.
+ */
+-->
+<layout>
+    <catalog_product_view>
+
+        <reference name="head">
+            <action method="addJs"><script>product_videos/video-js/video.js</script></action>
+            <action method="addCss"><stylesheet>css/video-js.css</stylesheet></action>
+        </reference>
+
+        <reference name="product.info">
+            <block type="catalog/product_view_media" name="product_videos_thumbnail_and_modal"
+                   template="blueacorn/catalog/product/view/productvideosThumbnailsAndModal.phtml">
+                <action method="setChild">
+                    <name>media</name>
+                    <block>product.info.media</block>
+                </action>
+            </block>
+
+            <action method="setChild">
+                <name>media</name>
+                <block>product_videos_thumbnail_and_modal</block>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="catalog/product_view" template="blueacorn/catalog/product/view/videos.phtml" name="product_videos" />
+        </reference>
+    </catalog_product_view>
+</layout>
