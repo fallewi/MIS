@@ -59,7 +59,7 @@ class Shipperhq_Postorder_Model_Observer extends Mage_Core_Model_Abstract
                     $order = $observer->getEvent()->getInvoice()->getOrder();
                     break;
                 default:
-                    $orderStore = '';
+                    $order = '';
             }
             $carriergroupDetail = $order->getCarriergroupShippingDetails();
             if (!Mage::helper('shipperhq_postorder')->isCreateShipmentEmail($carriergroupDetail)) {

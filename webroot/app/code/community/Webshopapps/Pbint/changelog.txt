@@ -1,3 +1,0 @@
-1.0  - Initial version
-1.1  - PITNEY-14 additional logging on catalog upload
-1.2  - PITNEY-15 use instanceOf in class check

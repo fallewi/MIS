@@ -4,7 +4,7 @@
 #
 
 # The default tracking branch for this environment.
-REPO_REF="release/cms-style-guide"
+REPO_REF="release/ShipperHQ_Updates"
 
 SUBDOMAIN="staging"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
