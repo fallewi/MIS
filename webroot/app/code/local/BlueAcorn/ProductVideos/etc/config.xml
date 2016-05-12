@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_ProductVideos extension
+ * 
+ *
+ * @category       BlueAcorn
+ * @package        BlueAcorn_ProductVideos
+ * @author         Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright      Copyright © 2014 Blue Acorn, Inc.
+ */
+-->
+<config>
+    <modules>
+        <BlueAcorn_ProductVideos>
+            <version>1.0.0</version>
+        </BlueAcorn_ProductVideos>
+    </modules>
+    <global>
+        <resources>
+            <blueacorn_productvideos_setup>
+                <setup>
+                    <module>BlueAcorn_ProductVideos</module>
+                </setup>
+            </blueacorn_productvideos_setup>
+        </resources>
+        <blocks>
+            <blueacorn_productvideos>
+                <class>BlueAcorn_ProductVideos_Block</class>
+            </blueacorn_productvideos>
+        </blocks>
+        <helpers>
+            <blueacorn_productvideos>
+                <class>BlueAcorn_ProductVideos_Helper</class>
+            </blueacorn_productvideos>
+        </helpers>
+        <models>
+            <blueacorn_productvideos>
+                <class>BlueAcorn_ProductVideos_Model</class>
+                <resourceModel>blueacorn_productvideos_resource</resourceModel>
+            </blueacorn_productvideos>
+            <blueacorn_productvideos_resource>
+                <class>BlueAcorn_ProductVideos_Model_Resource</class>
+                <entities>
+                    <video>
+                        <table>blueacorn_productvideos_video</table>
+                    </video>
+                    <video_store>
+                        <table>blueacorn_productvideos_video_store</table>
+                    </video_store>
+                    <video_product>
+                        <table>blueacorn_productvideos_video_product</table>
+                    </video_product>
+                </entities>
+            </blueacorn_productvideos_resource>
+        </models>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <blueacorn_productvideos>
+                    <file>blueacorn_productvideos.xml</file>
+                </blueacorn_productvideos>
+            </updates>
+        </layout>
+        <events>
+            <core_block_abstract_prepare_layout_after>
+                <observers>
+                    <blueacorn_productvideos_video_product>
+                        <type>singleton</type>
+                        <class>blueacorn_productvideos/adminhtml_observer</class>
+                        <method>addProductVideoBlock</method>
+                    </blueacorn_productvideos_video_product>
+                </observers>
+            </core_block_abstract_prepare_layout_after>
+            <catalog_product_save_after>
+                <observers>
+                    <blueacorn_productvideos_video_product>
+                        <type>singleton</type>
+                        <class>blueacorn_productvideos/adminhtml_observer</class>
+                        <method>saveProductVideoData</method>
+                    </blueacorn_productvideos_video_product>
+                </observers>
+            </catalog_product_save_after>
+        </events>
+        <global_search>
+            <video>
+                <class>blueacorn_productvideos/adminhtml_search_video</class>
+                <acl>blueacorn_productvideos</acl>
+            </video>
+        </global_search>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <BlueAcorn_ProductVideos before="Mage_Adminhtml">BlueAcorn_ProductVideos_Adminhtml</BlueAcorn_ProductVideos>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <frontend>
+        <routers>
+            <blueacorn_productvideos>
+                <use>standard</use>
+                <args>
+                    <module>BlueAcorn_ProductVideos</module>
+                    <frontName>blueacorn_productvideos</frontName>
+                </args>
+            </blueacorn_productvideos>
+        </routers>
+        <layout>
+            <updates>
+                <blueacorn_productvideos>
+                    <file>blueacorn_productvideos.xml</file>
+                </blueacorn_productvideos>
+            </updates>
+        </layout>
+    </frontend>
+
+
+    <!--Give the system config. height and width settings a default value. (Values are in pixels)-->
+    <default>
+        <blueacorn_productvideos>
+            <video>
+                <video_width>500</video_width>
+                <video_height>281</video_height>
+            </video>
+        </blueacorn_productvideos>
+    </default>
+
+</config>
