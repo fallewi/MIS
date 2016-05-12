@@ -25,18 +25,6 @@
                         <title>Update Southware Order IDs</title>
                         <method>setSouthwareOrderId</method>
                     </update>
-                    <note translate="title">
-                        <title>Get Order Comments</title>
-                        <method>getCustomerComments</method>
-                    </note>
-                    <uom>
-                        <title>Get Unit of Measure</title>
-                        <method>getUom</method>
-                    </uom>
-                    <stock>
-                        <title>Get Product Stock Attribute</title>
-                        <method>getStock</method>
-                    </stock>
                 </methods>
             </southware_order>
             <!-- END ORDER RESOURCES -->
