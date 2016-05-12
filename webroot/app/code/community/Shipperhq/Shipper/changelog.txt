@@ -74,8 +74,21 @@
 2.49  - SHQ16-477 further migrations for freight legacy extensions
 2.50  - SHQ16-538 OSC support for v4.0.9
 2.51  - SHQ16-488 Accessorial support in admin
+2.53  - SHQ16-598 Shipment packages created specific to shipping rates
 
 
 
 
 
+2.58 -SHQ16-556
+2.58 -SHQ16-556
+2.59 -SHQ16-673
+2.60 - Removed module from extension
+2.61 - SHQ16-720 bundle display resolved in my orders page
+2.62 - SHIPPERHQ-1855 item weight set to 0 when null, SHQ16-699 handle item id null
+2.63 - SHQ16-98 availability date support
+2.64 - SHQ16-699 item id check support on multi address checkout
+2.65 - SHQ16-865 - Add ability to switch off shipments being displayed in comments. Added ability to switch off order comments
+2.66 - Fixed issue with pickup address not saving to shipping address
+2.67 - Fixed issue with pickup address not saving to shipping address
+2.68 - SHQ16-825 persist carrier group id on custom admin rates

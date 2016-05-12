@@ -32,7 +32,7 @@
 <config>
     <modules>
         <Shipperhq_Pickup>
-            <version>0.0.4</version>
+            <version>0.0.6</version>
             <!-- implemented in module file -->
             <!--<active>true</active>
             <codePool>community</codePool>
@@ -84,6 +84,13 @@
                     </pickup>
                 </carriers>
             </shipping>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <shipperhq_location/>
+                    </product_attributes>
+                </item>
+            </quote>
         </sales>
         <events>
             <!--display Pickup as option on Multi Address Checkout -->
