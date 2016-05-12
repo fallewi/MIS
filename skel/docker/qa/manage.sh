@@ -22,6 +22,8 @@ display_help() {
 
     down                 stop a qa environment
 
+    status               print [docker-compose] status of qa environment
+
   Options:
 
     -v | --volumes       Creates and or Deletes volumes when starting/stopping
@@ -102,7 +104,8 @@ bootstrap(){
 }
 
 configure_docker_machine(){
-  eval $(docker-machine env $1)
+  local SHELL=${SHELL:-"sh"}
+  eval $(docker-machine env $1 --shell $SHELL)
   [ $(docker-machine active) = "$1" ] || error "unable to configure $1 machine"
   docker info || error "unable to communicate with $1 machine"
 }
@@ -167,7 +170,9 @@ env_stop(){
   fi
 }
 
-
+env_status(){
+  docker-compose $COMPOSE_FLAGS ps
+}
 
 make_volumes(){
   echo
@@ -190,6 +195,7 @@ else
       qa*)               ENV=$1 ;;
       up)                runstr="env_start" ;;
       down)              runstr="env_stop" ;;
+      status)            runstr="env_status" ;;
       *)                 echo "invalid option: $1" ; display_help 1 ;;
     esac
     shift
