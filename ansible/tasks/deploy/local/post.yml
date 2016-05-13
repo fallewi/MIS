@@ -1,0 +1,15 @@
+---
+
+- name: notify hipchat of deployment end
+  hipchat:
+    token: "{{ HIPCHAT_TOKEN }}"
+    room: "{{ HIPCHAT_ROOM | default('notifications') }}"
+    msg: "[{{ CLIENT_CODE }}] {env: {{ ENV }}, ref: {{ REPO_REF }}, skel: {{ SKEL_VERSION | default('unknown') }}} completed by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }}"
+    from: "Ansible Deploy"
+    color: "green"
+  ignore_errors: True
+  when: HIPCHAT_TOKEN is defined and HIPCHAT_TOKEN
+
+# include application remote post-deployment
+- name: start remote [application-specific] post-deployment tasks
+  include: app/post.yml

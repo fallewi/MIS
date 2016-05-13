@@ -1,22 +1,25 @@
 ---
 
-- name: "@CLIENT_CODE:@ENV common provisioning"
-  hosts: all
+- name: "@CLIENT_CODE:@ENV provisioning"
+  hosts: web-*:db-*:cache-*
   tasks:
 
-    - include: tasks/provision-blueacorn.yml
+    - name: start general provisioning tasks
+      include: tasks/provision/provision.yml
 
     # set the hostname to the one in ssh_config -- use PREFERRED_HOSTNAME var
     # to override as necessary. it can be set in ansible/host_vars/<host>.yml
     #
     # NOTE: REQUIRES SUDO - *remove* if:
     #  - on nexess or an environment w/o sudo access
-    - include: tasks/provision-hostname.yml
+    - name: set the hostname
+      include: tasks/provision/hostname.yml
 
 
 # run cronjob configuration  [playbook]
 #######################################
-#- include: @ENV.util-cron.yml
+##- include: @ENV.util-cron.yml
+#- include: util-cron.yml
 
 # install newrelic agents [platbook]
 ####################################
@@ -32,7 +35,7 @@
 #   remote_user: root
 #   gather_facts: False
 #   tasks:
-#     - include: tasks/debian-lamp.yml
+#     - include: tasks/provision/debian-lamp.yml
 #       vars:
 #         AUTHORIZED_GITHUB_USERS:
 #           - briceburg
@@ -45,7 +48,7 @@
 # Provision NFS server
 ######################
 # - name: "@CLIENT_CODE:@ENV setup nfs server"
-#   hosts: web-admin
+#   hosts: ADMIN_HOST
 #   roles:
 #     - { role: nfs-server, tags: ["nfs-server"], become: True }
 #
@@ -92,10 +95,3 @@
 #         update_cache: yes
 #         cache_valid_time: 3600
 #       when: ansible_os_family == "Debian"
-
-
-#---
-#  deprectated yas3fs
-#  yas3fs: fuse python-pip
-#  mounting: yas3fs s3://mageus/yas3fs /s3fs --topic arn:aws:sns:us-west-1:747399827750:mageus-yas3fs --new-queue --region us-west-1
-# sudo sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf # uncomment user_allow_other

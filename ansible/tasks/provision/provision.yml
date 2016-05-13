@@ -58,4 +58,5 @@
 # application dependencies
 ##########################
 
-- include: provision-deps.yml
+- name: start [application-specific] provision tasks
+  include: app/provision.yml

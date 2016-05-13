@@ -21,11 +21,13 @@
   tags:
     - env-test
 
-- fail: msg="test failure typically occurs when configuration files are edited on the server. be sure to track these changes in the skel branch and re-deploy. pass SKIP_CHECKS=true as an extra var to skip."
+- name: fail if on server configuration changes were detected
+  fail: msg="test failure typically occurs when configuration files are edited on the server. be sure to track these changes in the skel branch and re-deploy. pass SKIP_CHECKS=true as an extra var to skip."
   when: (SKIP_CHECKS is not defined or not SKIP_CHECKS) and repo_root.stat.exists and result.rc > 0 and result.rc < 100
   tags:
     - env-test
 
 
 # include application remote pre-deployment
-- include: app-predeploy.yml
+- name: start remote [application-specific] pre-deployment tasks
+  include: app/pre.yml

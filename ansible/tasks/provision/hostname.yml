@@ -1,5 +1,5 @@
 ---
-
+  
 - name: set hostname
   hostname: name={{ PREFERED_HOSTNAME | default(inventory_hostname) }}
   become: True
