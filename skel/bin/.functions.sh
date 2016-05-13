@@ -5,8 +5,6 @@ error(){
   exit 1
 }
 
-FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-true}
-
 # varstrap
 ##########
 
@@ -168,6 +166,7 @@ env_bootstrap(){
 env_bootstrap_ansible(){
   env_bootstrap
 
+  FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-false}
   ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/ssh_hosts.py}
 
   [ -e "$ANSIBLE_INV_SCRIPT" ] || error "missing inventory script:" \
@@ -177,7 +176,7 @@ env_bootstrap_ansible(){
     "has REPO_REMOTE been defined in appvars?"
 
   export ANSIBLE_SSH_CONF_FILE="$ENV_DIR/$ENV/ssh_config"
-  export ANSIBLE_SSH_CONF_ENVARS="$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
+  export ANSIBLE_SSH_CONF_ENVARS="$REPO_ROOT/$SKEL_DIR/.skelvars,$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
   export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
 
   # cd to ansible playbook directory so we can use host_vars, group_vars

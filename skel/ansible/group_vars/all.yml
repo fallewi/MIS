@@ -12,9 +12,17 @@
 NEWRELIC_LICENSE:
 NEWRELIC_TOKEN:
 
+################################################################################
+# HIPCHAT_TOKEN, HIPCHAT_ROOM - used as defaults when notifying hipchat
+HIPCHAT_TOKEN: 9835e86173248f238ca4c9fd8a13b0
+HIPCHAT_ROOM: notifications
 
 ################################################################################
 # playbook behavior configurations
+
+# If using AOE, set CRON_TYPE to "aoe". Else use "magento" for vanilla cron
+CRON_TYPE: aoe
+#CRON_INTERVAL: "*/5"
 
 
 ################################################################################

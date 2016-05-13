@@ -1,0 +1,22 @@
+---
+
+# workaround for ansible 2.0 include: with_items
+# @TODO persists in ansible 2.1?
+- set_fact: BUILD_PATH={{ item }}
+  tags:
+    - grunt
+    - grunt-sync-only
+
+- name: syncing {{ BUILD_PATH }} build artificts
+  synchronize:
+    src: "{{ LOCAL_ROOT }}/{{ BUILD_PATH }}/{{ item }}/"
+    dest: "{{ REPO_ROOT }}/{{ BUILD_PATH }}/{{ item }}/"
+    archive: no
+    copy_links: yes
+    delete: yes
+    mode: push
+    recursive: yes
+  with_items: "{{ SYNCED_PATHS }}"
+  tags:
+    - grunt
+    - grunt-sync-only

@@ -159,11 +159,15 @@ init_boilerplate(){
 
   # determine latest squash (commit from last skel/ downstream)
   eval $(find_latest_squash $SKEL_DIR)
-  [ -z $LAST_SQUASH ] && error "error finding latest squash"
-
-  echo "[BOILERPLATE] : checking out $LAST_SQUASH_TREE" && git checkout -q $LAST_SQUASH_TREE
-  local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=boilerplate/REPO_ROOT/)
-  echo "[BOILERPLATE]: built tree \"$MERGE_TREE\", returning" && git checkout -q $WORKING_BRANCH
+  if [ -z $LAST_SQUASH ]; then
+    echo "[BOILERPLATE] : error finding latest squash, splitting from HEAD boilerplate. coffee break?"
+    LAST_SQUASH="HEAD"
+    local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=$SKEL_DIR/boilerplate/REPO_ROOT/)
+  else
+    echo "[BOILERPLATE] : checking out $LAST_SQUASH_TREE" && git checkout -q $LAST_SQUASH_TREE
+    local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=boilerplate/REPO_ROOT/)
+    echo "[BOILERPLATE]: built tree \"$MERGE_TREE\", returning" && git checkout -q $WORKING_BRANCH
+  fi
 
   if [ -z $MERGE_TREE ]; then
     echo "[BOILERPLATE]: $LAST_SQUASH already appears merged"
@@ -180,7 +184,7 @@ init_boilerplate(){
   # merges where rerere resolves _all_ conflicts still exit as 1.
   #  we workaround by checking if conflicts persist (rerere diff !empty)
   [ -z "$(git rerere diff)" ] || error "error applying $MERGE_TREE boilerplate tree" \
-    "please resolve conflicts and then re-initialize"
+    "please resolve conflicts and then ** re-initialize **" "that means git mergetool && bin/skel/init again"
 
   git commit --no-edit
 }
@@ -208,27 +212,29 @@ init_localize(){
   local FILES="
     README.md
     docs/
+    $ANSIBLE_DIR/*.yml
     $SKEL_DIR/docker/
     $SKEL_DIR/env/appvars
   "
 
-  for file in $FILES; do
+  for lookup in $FILES; do
 
     cd $REPO_ROOT
 
-    [ ! -e $file ] && echo "skipping $file, doesn't exist." && continue
-
-    if [ -d $file ]; then
-      cd $file
+    if [ -d $lookup ]; then
+      cd $lookup
       for file in $(find * -type f); do
         echo "templating $file"
         sed_inplace $file $SED_REPLACE && \
         git add $file
       done
     else
-      echo "templating $file"
-      sed_inplace $file $SED_REPLACE && \
-      git add $file
+      for file in $lookup; do
+        [ ! -e $file ] && echo "skipping $file, doesn't exist." && continue
+        echo "templating $file"
+        sed_inplace $file $SED_REPLACE && \
+        git add $file
+      done
     fi
   done
 

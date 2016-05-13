@@ -1,9 +1,0 @@
----
-
-- include: cron-magento.yml
-  vars:
-    ba_cron_toggle: "{{ (CRON_TYPE == 'magento') | ternary('present','absent') }}"
-
-- include: cron-aoe.yml
-  vars:
-    ba_cron_toggle: "{{ (CRON_TYPE == 'aoe') | ternary('present','absent') }}"
