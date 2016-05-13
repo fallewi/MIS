@@ -1,0 +1,55 @@
+---
+
+# filesystem -- also called by deploy playbook.
+
+#
+# enforces proper permissions and symlink/NFS sharing on webnodes
+#
+#  !! be sure to double-check file paths
+#  !! if you want to disable shares, comment out SHARE_ROOT or set to empty
+#
+
+- name: "MIS:www filesystem"
+  hosts: web*
+  gather_facts: False
+  any_errors_fatal: yes
+  tags: filesystem
+  vars:
+#    SHARE_ROOT: "/path/to/nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}"
+  tasks:
+
+    # on sudoless environments,
+    #  set become: false and ensure ansible_ssh_user == HTTPD_USER
+    - name: ensure HTTPD_USER has write access to WRITABLE_PATHS
+      file:
+        path: "{{ APP_ROOT }}/{{ item }}"
+        group: "{{ HTTPD_USER }}"
+        mode: g+rwx
+        state: directory
+      become: True
+      ignore_errors: yes
+      tags:
+        - filesystem-perms-only
+      # !! triple check these
+      with_items:
+        - "{{ APP_ROOT }}/var"
+        - "{{ APP_ROOT }}/includes"
+        - "{{ APP_ROOT }}/media"
+
+# No NFS for MIS
+#    - name: ensure shared paths
+#      file:
+#        path: "{{ APP_ROOT }}/{{ item }}"
+#        src: "{{ SHARE_ROOT }}/{{ item }}"
+#        state: link
+#      ignore_errors: yes
+#      tags:
+#        - filesystem-shares-only
+#      when: SHARE_ROOT is defined and SHARE_ROOT
+#      # !! triple check these
+#      with_items:
+#        - "media"
+#        - "var/export"
+#        - "var/import"
+#        - "var/powerreviews"
+#        - "var/urapidflow"

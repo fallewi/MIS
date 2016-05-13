@@ -23,7 +23,6 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-FORCE_ENVIRONMENT_PLAYBOOK=false
 ANSIBLE_PLAYBOOK="util-$1.yml"
 shift
 

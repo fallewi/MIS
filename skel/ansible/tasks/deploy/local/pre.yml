@@ -1,0 +1,15 @@
+---
+
+- name: notify hipchat of deployment start
+  hipchat:
+    token: "{{ HIPCHAT_TOKEN }}"
+    room: "{{ HIPCHAT_ROOM | default('notifications') }}"
+    msg: "[{{ CLIENT_CODE }}] {env: {{ ENV }}, ref: {{ REPO_REF }}, skel: {{ SKEL_VERSION | default('unknown') }}} started by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }}"
+    from: "Ansible Deploy"
+    color: "purple"
+  ignore_errors: True
+  when: HIPCHAT_TOKEN is defined and HIPCHAT_TOKEN
+
+# include application local pre-deployment
+- name: start local [application-specific] pre-deployment tasks
+  include: app/pre.yml
