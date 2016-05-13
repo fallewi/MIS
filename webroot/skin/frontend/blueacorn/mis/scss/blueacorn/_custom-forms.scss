@@ -187,8 +187,8 @@ span.label.radio-label, span.label.checkbox-label {
 }
 
 /* Fix for spacing issue in the fax field of one-page checkout */
-#billing-new-address-form #fax-field > li {
-    display: none;
+.fax-field li {
+    display: none !important;
 }
 
 .opc {
