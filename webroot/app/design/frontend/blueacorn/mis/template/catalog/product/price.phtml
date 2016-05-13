@@ -205,7 +205,15 @@ $_msrpPrice = $_taxHelper->getPrice($_product, $_product->getMsrp());
                 </span>
             <?php else: ?>
                 <span class="regular-price three" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
-                    <?php echo $_coreHelper->formatPrice($_msrpPrice, true) ?>
+                    <?php if (!IS_NULL($_msrpPrice)): ?>
+                        <?php echo $_coreHelper->formatPrice($_msrpPrice, true) ?>
+                    <?php else: ?>
+                        <?php if ($_finalPrice == $_price): ?>
+                            <?php echo $_coreHelper->formatPrice($_price, true) ?>
+                        <?php else: ?>
+                            <?php echo $_coreHelper->formatPrice($_finalPrice, true) ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </span>
             <?php endif; ?>
         <?php endif; ?>
