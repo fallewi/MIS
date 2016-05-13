@@ -4,12 +4,12 @@
 #  run the magento indexer. by default indexes "ALL". pass an index by:
 #    bin/indexer <env> -e "INDEXER=<index name>"
 #
-#  !! set a _single_ appropriate host to run reindex from, usually web-admin
+#  !! be sure "admin" host is part of your inventory / ssh_config
+#     it typically points to web-admin or web-1.
 #
 
-
-- name: "@CLIENT_CODE:@ENV indexer"
-  hosts: web-admin
+- name: "@CLIENT_CODE:common indexer"
+  hosts: ADMIN_HOST
   gather_facts: False
   any_errors_fatal: yes
 
@@ -19,4 +19,4 @@
 
   tasks:
 
-    - include: tasks/util-reindex.yml
+    - include: tasks/util/reindex.yml

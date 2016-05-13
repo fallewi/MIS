@@ -1,0 +1,23 @@
+---
+
+# pre-deployment
+################
+- include: deps.yml
+  when: SKIP_DEPS is not defined or not SKIP_DEPS
+- include: pre.yml
+
+# remote-deployment
+###################
+- name: git checkout
+  git:
+    repo: "{{ REPO_REMOTE }}"
+    version: "{{ REPO_REF }}"
+    dest: "{{ REPO_ROOT }}"
+    key_file: "{{ BLUEACORN_DIR }}/util/github-deploy.key"
+    force: yes
+    accept_hostkey: yes
+
+# post-deployment
+#################
+
+- include: post.yml

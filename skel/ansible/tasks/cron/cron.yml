@@ -1,9 +1,11 @@
 ---
 
-- include: cron-magento.yml
+- name: start/toggle vanilla magento cron tasks
+  include: magento.yml
   vars:
     ba_cron_toggle: "{{ (CRON_TYPE == 'magento') | ternary('present','absent') }}"
 
-- include: cron-aoe.yml
+- name: start/toggle aoe cron tasks
+  include: aoe.yml
   vars:
     ba_cron_toggle: "{{ (CRON_TYPE == 'aoe') | ternary('present','absent') }}"

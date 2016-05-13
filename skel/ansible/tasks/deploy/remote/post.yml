@@ -30,6 +30,6 @@
     - env
     - env-sync-only
 
-
 # include application remote post-deployment
-- include: app-postdeploy.yml
+- name: start remote [application-specific] post-deployment tasks
+  include: app/post.yml

@@ -7,15 +7,15 @@
 #  ** run this on a single, less busy host**
 #
 
-- name: "@CLIENT_CODE:@ENV media snapshot"
-  hosts: web-admin
+- name: "@CLIENT_CODE:common media snapshot"
+  hosts: SNAPSHOT_HOST
   gather_facts: False
 
   vars:
     SNAPSHOT_BASE: "{{ SNAPSHOTS_DIR | default(LOCAL_ROOT + '/snapshots') }}/{{ ENV }}"
 
   tasks:
-    - include: tasks/snapshot-media.yml
+    - include: tasks/snapshot/media.yml
       vars:
         MEDIA_DIR: "{{ APP_ROOT }}/media"
         AUTO_COMPRESS_MEDIA: True
@@ -29,12 +29,12 @@
 #  ** run this on a single, less busy host**
 #
 
-- name: "@CLIENT_CODE:@ENV database snapshot"
-  hosts: web-admin
+- name: "@CLIENT_CODE:common database snapshot"
+  hosts: SNAPSHOT_HOST
   gather_facts: False
 
   vars:
     SNAPSHOT_BASE: "{{ SNAPSHOTS_DIR | default(LOCAL_ROOT + '/snapshots') }}/{{ ENV }}"
 
   tasks:
-    - include: tasks/snapshot-database.yml
+    - include: tasks/snapshot/database.yml

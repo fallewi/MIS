@@ -3,18 +3,19 @@
 #
 #  setup scheduled tasks like magento's cron and redis cleanup scripts
 #
-#  !! set a _single_ appropriate host to run cron tasks on, usually web-admin
-#
-#  !! uncomment appropriate tasks
+#  !! to enable cron, add the "cron" host to your inventory / ssh_config
+#     it typically points to the admin or web-1 node.
 #
 
-- name: "@CLIENT_CODE:@ENV scheduled tasks"
-  hosts: web-admin
+- name: "@CLIENT_CODE:common scheduled tasks"
+  # do not change the "cron" host! if not in inventory, will skip this play
+  hosts: CRON_HOST
   gather_facts: False
   tasks:
 
     # Schedule Magento Cron
     #   If using AOE, set CRON_TYPE to "aoe". Else use "magento" for vanilla
+    #   CRON_TYPE is set in inventory / group_vars
     #   You may also change the CRON_INTERVAL. Defaults to every minute. E.g.
     #     CRON_INTERVAL: "*/5"  <-- to run every 5 minutes
     #
@@ -28,11 +29,13 @@
     #         ansible doesn't support a conditional become: value, and we want
     #         to avoid code replication while ensuring cron runs appropriately.
     #
-    - include: tasks/cron.yml
-      vars:
-        #CRON_TYPE: magento
-        CRON_TYPE: aoe
+    - include: tasks/cron/cron.yml
 
-    # periodically cleanup redis tags
-    - include: tasks/cron-redis.yml
+
+- name: "@CLIENT_CODE:common schedule redis cleanup"
+  # do not change the "admin" host! if not in inventory, will skip this play
+  hosts: ADMIN_HOST
+  gather_facts: False
+  tasks:
+    - include: tasks/cache/redis.yml
       when: REDIS_HOST is defined and REDIS_HOST

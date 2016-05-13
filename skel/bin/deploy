@@ -12,6 +12,7 @@ CMD_HELP_PREFIX="A utility for deploying to an environment.
 "
 
 ANSIBLE_PLAYBOOK="deploy.yml"
+FORCE_ENVIRONMENT_PLAYBOOK=true
 
 
 # runtime

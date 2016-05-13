@@ -1,0 +1,89 @@
+---
+
+- name: "before compiling, ensure the local HEAD matches the {{ REPO_REMOTE_NAME }}/REPO_REF that will be deployed to remotes"
+  assert:
+    that:
+      - "'{{ lookup('pipe', 'git rev-parse HEAD') }}' == '{{ lookup('pipe', 'git rev-parse {{ REPO_REMOTE_NAME }}/{{ REPO_REF }}') }}'"
+  when: (SKIP_ALL_CHECKS is not defined or not SKIP_ALL_CHECKS) and (SKIP_BUILD_CHECKS is not defined or not SKIP_BUILD_CHECKS)
+  run_once: true
+  delegate_to: 127.0.0.1
+  tags:
+    - grunt
+    - grunt-compile-only
+
+
+# workaround for ansible 2.0 include: with_items
+# @TODO persists in ansible 2.1?
+
+- set_fact: BUILD_PATH={{ FORCE_BUILD_PATH | default(LOCAL_ROOT) }}/{{ item }}
+  tags:
+    - grunt
+    - grunt-compile-only
+
+- debug: msg="BUILD_PATH is set to {{ BUILD_PATH }}..."
+
+
+#
+# npm deps
+#
+
+- name: compare package.json fingerprint
+  shell: "[ \"$(shasum package.json | awk '{print $1}')\" == \"$(cat node_modules/fingerprint.sha)\" ] || exit 99"
+  args:
+    chdir: "{{ BUILD_PATH }}"
+  always_run: True
+  register: fingerprint
+  changed_when: fingerprint|failed
+  failed_when: False
+  tags:
+    - grunt
+    - grunt-compile-only
+
+- name: update npm dependencies, passing --production flag
+  shell: npm update --production && echo $(shasum package.json | awk '{print $1}') > node_modules/fingerprint.sha
+  args:
+    chdir: "{{ BUILD_PATH }}"
+  when: fingerprint|failed
+  tags:
+    - grunt
+    - grunt-compile-only
+
+#
+# bower deps
+#
+
+- name: compare bower.json fingerprint
+  shell: "[ \"$(shasum bower.json | awk '{print $1}')\" == \"$(cat bower_components/fingerprint.sha)\" ] || exit 99"
+  args:
+    chdir: "{{ BUILD_PATH }}"
+  always_run: True
+  register: fingerprint
+  changed_when: fingerprint|failed
+  failed_when: False
+  tags:
+    - grunt
+    - grunt-compile-only
+
+- name: update bower dependencies
+  shell: bower --allow-root --config.interactive=false install && echo $(shasum bower.json | awk '{print $1}') > bower_components/fingerprint.sha
+  args:
+    chdir: "{{ BUILD_PATH }}"
+  when: fingerprint|failed
+  tags:
+    - grunt
+    - grunt-compile-only
+
+
+#
+# bombs away
+#
+
+- debug: msg="compilation command -- grunt {{ GRUNT_COMMAND | default('production') }}"
+
+- name: compile static assets
+  shell: grunt {{ GRUNT_COMMAND | default('production') }}
+  args:
+    chdir: "{{ BUILD_PATH }}"
+  tags:
+    - grunt
+    - grunt-compile-only

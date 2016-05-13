@@ -1,5 +1,7 @@
 ---
 
+# application depencencies (during provision)
+
 - name: copy n98 binary to BLUEACORN_DIR/bin
   copy:
     src: "files/n98-magerun.1.97.11.phar"

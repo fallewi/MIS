@@ -1,0 +1,7 @@
+---
+
+- name: write to deployment log
+  shell: "[ -d  {{ BLUEACORN_DIR }}/log ] || exit 99 ; echo \"$(git rev-parse --short HEAD) deployed by {{ lookup('pipe', 'whoami') }}@{{ lookup('pipe', 'hostname') }}\" >> {{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log"
+  ignore_errors: True
+  args:
+    chdir: "{{ REPO_ROOT }}"
