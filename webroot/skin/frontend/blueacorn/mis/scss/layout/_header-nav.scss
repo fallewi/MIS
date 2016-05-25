@@ -128,7 +128,7 @@
         text-align: center;
         display: block;
         margin: 0 auto;
-        height: 78px;
+        height: 58px;
         padding: 0 4px;
 
         &:after {
@@ -355,7 +355,7 @@ $nav-primary-height: 30px;
         }
 
         a.level0 {
-            padding: 18px 15%;
+            padding: 8px 15%;
             letter-spacing: 1px;
         }
 
@@ -363,7 +363,7 @@ $nav-primary-height: 30px;
         a.level0 {
             display: inline-block;
             vertical-align: middle;
-            height: 78px; /* Height of ".nav-primary a.level0" */
+            height: 58px; /* Height of ".nav-primary a.level0" */
 
             &:hover {
                 background: #fff;
@@ -388,7 +388,7 @@ $nav-primary-height: 30px;
         li.level0 .mm-wrapper {
             position: absolute;
             left: 0;
-            top: 78px; /* Height of ".nav-primary a.level0" */
+            top: 58px; /* Height of ".nav-primary a.level0" */
             z-index: 10;
             width: 100%;
             padding: 0 4px;
@@ -520,7 +520,11 @@ $nav-primary-height: 30px;
 
 li.level0:nth-child(1).menu-active {
     > .mm-wrapper {
-        left: 12%;
+        left: 15%;
+
+        @include bp(max-width, 1550px) {
+            left: 9%;
+        }
 
         @include bp(max-width, 1350px) {
             left: 2%;
@@ -534,7 +538,11 @@ li.level0:nth-child(1).menu-active {
 
 li.level0:nth-child(n+2).menu-active {
     > .mm-wrapper {
-        left: 17%;
+        left: 24%;
+
+        @include bp(max-width, 1550px) {
+            left: 17%;
+        }
 
         @include bp(max-width, 1350px) {
             left: 10%;
@@ -552,7 +560,11 @@ li.level0:nth-child(n+2).menu-active {
 
 li.level0:nth-child(n+4).menu-active {
     > .mm-wrapper {
-        left: 35%;
+        left: 34%;
+
+        @include bp(max-width, 1500px) {
+            left: 28%;
+        }
 
         @include bp(max-width, 1350px) {
             left: 24%;
