@@ -128,7 +128,7 @@
         text-align: center;
         display: block;
         margin: 0 auto;
-        height: 78px;
+        height: 58px;
         padding: 0 4px;
 
         &:after {
@@ -179,7 +179,7 @@ $nav-primary-height: 30px;
     .view-all .nav-shop-all {
         display: block;
         float: left;
-        left: 53.5%;
+        left: 52.5%;
         clear: left;
         color: $brand-action;
         text-transform: uppercase;
@@ -355,7 +355,7 @@ $nav-primary-height: 30px;
         }
 
         a.level0 {
-            padding: 18px 15%;
+            padding: 8px 15%;
             letter-spacing: 1px;
         }
 
@@ -363,7 +363,7 @@ $nav-primary-height: 30px;
         a.level0 {
             display: inline-block;
             vertical-align: middle;
-            height: 78px; /* Height of ".nav-primary a.level0" */
+            height: 58px; /* Height of ".nav-primary a.level0" */
 
             &:hover {
                 background: #fff;
@@ -388,14 +388,14 @@ $nav-primary-height: 30px;
         li.level0 .mm-wrapper {
             position: absolute;
             left: 0;
-            top: 78px; /* Height of ".nav-primary a.level0" */
+            top: 58px; /* Height of ".nav-primary a.level0" */
             z-index: 10;
             width: 100%;
             padding: 0 4px;
             left: -9999px; /* Hide until displayed. */
             transition: all 0s ease;
-
             color: $c-text;
+            max-width: 900px;
 
             .mm-inner-wrapper {
                 padding: 26px 72px 18px;
@@ -469,8 +469,15 @@ $nav-primary-height: 30px;
 
         li.level1:not(.category-name){
             display:inline-block;
-            width: 33%;
+            width: 32%;
             vertical-align: top;
+
+            a {
+                width: 95%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
 
         .view-all-mobile {
@@ -507,8 +514,69 @@ $nav-primary-height: 30px;
 
 .nav-primary li.menu-active {
     > .mm-wrapper {
-        left: 0;
         transition-delay: 0.15s;
+    }
+}
+
+li.level0:nth-child(1).menu-active {
+    > .mm-wrapper {
+        left: 15%;
+
+        @include bp(max-width, 1550px) {
+            left: 9%;
+        }
+
+        @include bp(max-width, 1350px) {
+            left: 2%;
+        }
+
+        @include bp(max-width, 1150px) {
+            left: 0;
+        }
+    }
+}
+
+li.level0:nth-child(n+2).menu-active {
+    > .mm-wrapper {
+        left: 24%;
+
+        @include bp(max-width, 1550px) {
+            left: 17%;
+        }
+
+        @include bp(max-width, 1350px) {
+            left: 10%;
+        }
+
+        @include bp(max-width, 1150px) {
+            left: 7%;
+        }
+
+        @include bp(max-width, 960px) {
+            left: 0;
+        }
+    }
+}
+
+li.level0:nth-child(n+4).menu-active {
+    > .mm-wrapper {
+        left: 34%;
+
+        @include bp(max-width, 1500px) {
+            left: 28%;
+        }
+
+        @include bp(max-width, 1350px) {
+            left: 24%;
+        }
+
+        @include bp(max-width, 1150px) {
+            left: 12%;
+        }
+
+        @include bp(max-width, 960px) {
+            left: 0;
+        }
     }
 }
 
