@@ -1,0 +1,41 @@
+<?php
+
+//this is the .phtml that will be used when the product video's widget is requested.
+?>
+
+
+
+<?php //Get the current video object from widget/view.php ($this). ?>
+<?php $videoObject = $this->getData('current_video');?>
+
+<?php if($videoObject->getData('status')) : ?>
+    <?php if(!is_null($videoObject->getData('url'))) : ?>
+
+        <img src="<?php echo Mage::getBaseUrl('media') . $this->helper('blueacorn_productvideos/product')->getThumbnail($videoObject);?>"/>
+        <?php echo $this->helper('blueacorn_productvideos/product')->getVideoIFrameProper($videoObject); ?>
+
+    <?php elseif(!is_null($videoObject->getData('file'))): ?>
+
+        <script type="text/javascript">
+            videojs.options.flash.swf = "<?php echo Mage::getBaseUrl('media') . 'video' . '/' . 'video-js.swf'; ?>";
+        </script>
+
+
+        <img src="<?php echo ($videoObject->getData('thumbnail') && $videoObject->getData('thumbnail') != $this->helper('blueacorn_productvideos/video')->getThumbBaseUrl() )?
+                                    $this->helper('blueacorn_productvideos/product')->getThumbnail($videoObject) : null;?>"/>
+
+
+        <video id="<?php echo $this->helper('blueacorn_productvideos/product')->getFormattedVideoTitle($videoObject, 'video');?>" class="video-js vjs-default-skin product-video"
+               controls preload="none" width="<?php echo Mage::getStoreConfig('blueacorn_productvideos/video/video_width');?>" height="<?php echo Mage::getStoreConfig('blueacorn_productvideos/video/video_height');?>"
+               poster="<?php echo ($videoObject->getData('thumbnail') && $videoObject->getData('thumbnail') != $this->helper('blueacorn_productvideos/video')->getThumbBaseUrl() )?
+                                        $this->helper('blueacorn_productvideos/product')->getThumbnail($videoObject) : null;?>"
+               data-setup='{"example_option":true}'>
+            <source src="<?php echo Mage::helper('blueacorn_productvideos/video')->getFileBaseUrl() . $this->helper('blueacorn_productvideos/product')->getVideo($videoObject); ?>" type='video/mp4' />
+        </video>
+
+    <?php else: ?>
+
+        <?php //special actions would go here?>
+
+    <?php endif;?>
+<?php endif; ?>

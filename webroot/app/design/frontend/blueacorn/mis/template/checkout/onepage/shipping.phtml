@@ -117,7 +117,7 @@
                         </div>
                         <div class="field">
                             <label for="shipping:fax"><?php echo $this->__('Fax') ?></label>
-                            <div class="input-box">
+                            <div class="fax-field input-box">
                                 <input type="tel" name="shipping[fax]" value="<?php echo $this->escapeHtml($this->getAddress()->getFax()) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Fax')) ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('fax') ?>" id="shipping:fax" onchange="shipping.setSameAsBilling(false);" />
                             </div>
                         </div>
