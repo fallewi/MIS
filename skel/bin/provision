@@ -14,6 +14,7 @@ CMD_HELP_PREFIX="A utility for provisioning hosts in an environment.
 "
 
 ANSIBLE_PLAYBOOK="provision.yml"
+FORCE_ENVIRONMENT_PLAYBOOK=true
 
 
 # runtime

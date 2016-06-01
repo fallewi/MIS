@@ -42,12 +42,12 @@ class Levementum_GroupDisplay_Helper_Data extends Mage_Core_Helper_Abstract
 	public function getGroupImage ()
 	{
 		$group = $this->getGroup();
-		$groupImage =  Mage::getUrl('media').$group->getCustomerGroupImageUrl();
+		$groupImage =  $group->getCustomerGroupImageUrl();
 		$groupImageTag = "";
 
-		if($groupImage)
+		if(!empty($groupImage))
 		{
-			$groupImageTag = "<img src=\"".$groupImage."\" alt=\"\" style=\"max-width:150px;\" />";
+			$groupImageTag = "<img src=\"".Mage::getUrl('media').$groupImage."\" alt=\"\" style=\"max-width:150px;\" />";
 		}
 		return $groupImageTag;
 	}

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_ProductVideos extension
+ * 
+ *
+ * @category       BlueAcorn
+ * @package        BlueAcorn_ProductVideos
+ * @author         Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright      Copyright © 2014 Blue Acorn, Inc.
+ */
+--> 
+<config>
+    <tabs>
+        <blueacorn translate="label" module="blueacorn_productvideos">
+            <label>BlueAcorn</label>
+            <sort_order>2000</sort_order>
+        </blueacorn>
+    </tabs>
+    <sections>
+        <blueacorn_productvideos translate="label" module="blueacorn_productvideos">
+            <class>separator-top</class>
+            <label>Product Videos</label>
+            <tab>blueacorn</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <video translate="label" module="blueacorn_productvideos">
+                    <label>Product Video</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <thumb_default>
+                            <label>Default Thumbnail Image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">/video/thumbnails</upload_dir>
+                            <base_url type="media" scope_info="1">/video/thumbnails</base_url>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </thumb_default>
+                        <video_width>
+                            <label>Video Width</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[<span class="notice">***Input in pixels.</span>]]>
+                            </comment>
+                            <validate>validate-zero-or-greater</validate>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </video_width>
+                        <video_height>
+                            <label>Video Height</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[<span class="notice">***Input in pixels.</span>]]>
+                            </comment>
+                            <sort_order>6</sort_order>
+                            <validate>validate-zero-or-greater</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </video_height>
+                    </fields>
+                </video>
+            </groups>
+        </blueacorn_productvideos>
+    </sections>
+</config>

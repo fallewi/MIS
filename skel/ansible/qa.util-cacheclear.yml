@@ -8,4 +8,4 @@
   hosts: term-container
   any_errors_fatal: yes
   tasks:
-    - include: tasks/cache-fsclear.yml
+    - include: tasks/cache/filesystem.yml

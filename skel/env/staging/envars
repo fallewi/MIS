@@ -4,7 +4,7 @@
 #
 
 # The default tracking branch for this environment.
-REPO_REF="release/ShipperHQ_Updates"
+REPO_REF="release/mega-menu-redesign"
 
 SUBDOMAIN="staging"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
