@@ -5,8 +5,6 @@ error(){
   exit 1
 }
 
-FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-true}
-
 # varstrap
 ##########
 
@@ -24,6 +22,7 @@ WEBROOT_DIR=${WEBROOT_DIR:-webroot}
 ENV_DIR="$REPO_ROOT/$SKEL_DIR/env"
 ANSIBLE_DIR="$REPO_ROOT/$SKEL_DIR/ansible"
 BOILERPLATE_DIR="$REPO_ROOT/$SKEL_DIR/boilerplate"
+TESTS_DIR="$REPO_ROOT/tests"
 APP_ROOT="$REPO_ROOT/$WEBROOT_DIR"
 
 [ -d "$APP_ROOT" ] || error "APP_ROOT $APP_ROOT doesn't exist"
@@ -127,8 +126,9 @@ find_latest_squash()
 
 
 configure_docker_machine(){
-  eval $(docker-machine env $1)
-  [ $(docker-machine active) = "$1" ] || error "unable to configure $1 machine"
+  local SHELL=${SHELL:-"sh"}
+  eval $(docker-machine env $1 --shell $SHELL)
+  [ "$(docker-machine active)" = "$1" ] || error "unable to configure $1 machine"
   docker info || error "unable to communicate with $1 machine"
 }
 
@@ -166,6 +166,7 @@ env_bootstrap(){
 env_bootstrap_ansible(){
   env_bootstrap
 
+  FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-false}
   ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/ssh_hosts.py}
 
   [ -e "$ANSIBLE_INV_SCRIPT" ] || error "missing inventory script:" \
@@ -175,7 +176,7 @@ env_bootstrap_ansible(){
     "has REPO_REMOTE been defined in appvars?"
 
   export ANSIBLE_SSH_CONF_FILE="$ENV_DIR/$ENV/ssh_config"
-  export ANSIBLE_SSH_CONF_ENVARS="$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
+  export ANSIBLE_SSH_CONF_ENVARS="$REPO_ROOT/$SKEL_DIR/.skelvars,$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
   export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
 
   # cd to ansible playbook directory so we can use host_vars, group_vars

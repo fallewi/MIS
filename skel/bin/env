@@ -41,11 +41,14 @@ display_help() {
 
     --no-prompt | -np    Avoids prompts (skips existing files) when linking
 
-    --skip-ansible       Skip ansible templates when making an environment
+    --only-ansible       Only create Ansible Playbooks when making an environemt
                          (make command only)
 
-    --skip-env           Skip environment folders when making an environment
+    --skip-ansible       Skip Ansible Playbooks when making an environment
                          (make command only)
+
+    --base-env <env>     Base environment to use when making an environment
+                         (make command only - prompts you by default)
 
 
 EOF
@@ -183,7 +186,7 @@ env_conf() {
 
     if ! $FORCE_OVERWRITE ; then
       if [ -e $DEST ] || [ -h $DEST ] ; then
-        $SKIP_PROMPTS && return
+        $SKIP_PROMPTS && continue
         prompt_confirm "Overwrite $DEST?" || continue
       fi
     fi
@@ -261,8 +264,25 @@ env_make() {
     BASE_ENV="qa"
     BASE_DIR="$BOILERPLATE_DIR/env/$BASE_ENV"
     SKIP_ANSIBLE=true
+
     env_make_arg "qa-1"
     env_make_arg "qa-2"
+
+  elif [ ! -z "$BASE_ENV" ]; then
+    BASE_DIR="$ENV_DIR/$BASE_ENV"
+
+    if [ -d "$BASE_DIR" ]; then
+      BASE_TYPE="existing"
+      SED_REPLACE="s|$BASE_ENV|$ENV|g"
+    else
+      BASE_DIR="$BOILERPLATE_DIR/env/$BASE_ENV"
+      BASE_TYPE="skel"
+    fi
+
+    [ -d "$BASE_DIR" ] || error "$BASE_ENV is an invalid base environemt"
+
+    env_make_arg $ENV
+
   else
 
     printf "\nskel environments -->"
@@ -282,7 +302,6 @@ env_make() {
 
       if [ -d "$BASE_DIR" ]; then
         BASE_TYPE="existing"
-        SED_REPLACE="s|$BASE_ENV|$ENV|g"
       else
         BASE_DIR="$BOILERPLATE_DIR/env/$BASE_ENV"
         BASE_TYPE="skel"
@@ -297,7 +316,6 @@ env_make() {
     env_make_arg $ENV
 
   fi
-
 }
 
 env_make_arg() {
@@ -305,6 +323,7 @@ env_make_arg() {
   printf "\ncreating \033[35m%s\033[0m...\n" "$1"
 
   cd $ENV_DIR
+  local SED_REPLACE="s|@ENV|$1|g;s|@CLIENT_CODE|$CLIENT_CODE|g;s|@REPO_REMOTE|$REPO_REMOTE|g;s|@DOMAIN|$DOMAIN|g"
 
   [ -d $BASE_DIR ] || error "404! $BASE_DIR/ - is BASE_DIR set?"
 
@@ -319,7 +338,6 @@ env_make_arg() {
 
     cd $ENV_DIR/$1
     echo "  localizing $1 ... $ENV_DIR/$1"
-    local SED_REPLACE="s|@ENV|$1|g;s|@CLIENT_CODE|$CLIENT_CODE|g;s|@REPO_REMOTE|$REPO_REMOTE|g;s|@DOMAIN|$DOMAIN|g"
     for file in $(find * -type f); do
       echo "sed_inplace \"$file\" \"$SED_REPLACE\""
       sed_inplace "$file" "$SED_REPLACE"
@@ -342,7 +360,7 @@ env_make_arg() {
       for file in $BASE_ENV.*; do
         local target=$1.${file//$BASE_ENV./}
         cp $file $target
-        sed_inplace "$target" "$SED_REPLACE"
+        sed_inplace "$target" "s|$BASE_ENV|$ENV|g"
       done
     fi
 
@@ -429,8 +447,9 @@ else
       --force|-f)        FORCE_OVERWRITE=true ;;
       --no-prompt|-np)   SKIP_PROMPTS=true ;;
       --quiet|-q)        QUIET=true ;;
+      --only-ansible)    SKIP_ENV=true ;;
       --skip-ansible)    SKIP_ANSIBLE=true ;;
-      --skip-env)        SKIP_ENV=true ;;
+      --base-env)        BASE_ENV="$2" ; shift ;;
       list)              runstr="print_list" ;;
       test)              runstr="env_test" ;;
       make)              runstr="env_make" ;

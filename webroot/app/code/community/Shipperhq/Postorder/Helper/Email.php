@@ -49,8 +49,6 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
         }
 
         $this->setOrder($order);
-        // create a new shipment for each vendor
-        $items = $order->getItemsCollection();
 
         // get the carriergroups in the order
         $encDetails = $order->getCarriergroupShippingDetails();
@@ -63,34 +61,19 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
             $shipDetails = Mage::helper('shipperhq_shipper')->decodeShippingDetails($encDetails);
             foreach ($shipDetails as $shipItem) {
                 $sendEmail = $shipItem['emailOption'];
+                $pickupEmail = $shipItem['pickup_email_option'];
+                $shipment = null;
+
                 if (($sendEmail == self::SHIPPERHQ_SEND_EMAIL_ORDER && $eventName == 'sales_order_place_after') ||
                     ($sendEmail == self::SHIPPERHQ_SEND_EMAIL_INVOICE && $eventName == 'sales_order_invoice_save_after')) {
                     $carriergroupId = $shipItem['carrierGroupId'];
                     if (!isset($carriergroupId)){
-                        //should never be in here
-                        continue;
+                        continue; //should never be in here
                     }
 
-                    // create shipments for each warehouse
-                  //  $shippingDescription = $shipItem['carrierTitle'].' - '.$shipItem['methodTitle'];
+                    //create shipments for each warehouse
+                    $shippingDescription = $this->buildShippingDescription($shipItem, $order);
 
-                    $shippingDescription = $shipItem['carrierTitle'].' - '. $shipItem['methodTitle'].' ';
-                    $shippingDescription .= " ". $order->getQuote()->getStore()->formatPrice($shipItem['price']).'<br/>';
-                    if(array_key_exists('pickup_date', $shipItem)) {
-                        $shippingDescription .= Mage::helper('shipperhq_shipper')->__('Location') .' : ' .$shipItem['location_name'];
-                        $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Date') .' : ' .$shipItem['pickup_date'];
-                        if(array_key_exists('pickup_slot', $shipItem)) {
-                            $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Time : ') .str_replace('_', ' - ', $shipItem['pickup_slot']);
-                        }
-                        $shippingDescription.= '<br/>';
-                    }
-                    else if(array_key_exists('delivery_date', $shipItem)) {
-                        $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Delivery Date') .' : ' .$shipItem['delivery_date'];
-                        if(array_key_exists('del_slot', $shipItem)) {
-                            $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Time : ') .$shipItem['del_slot'];
-                        }
-                        $shippingDescription.= '<br/>';
-                    }
                     $emailDetails = $this->getEmailDetails($shipItem);
 
                     if(!$emailDetails['manualship']){
@@ -106,10 +89,53 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
                         $this->sendFullShipmentEmail($shipItem,$shipment,$order);
                     }
                 }
+
+                if (($pickupEmail == self::SHIPPERHQ_SEND_EMAIL_ORDER && $eventName == 'sales_order_place_after') ||
+                    ($pickupEmail == self::SHIPPERHQ_SEND_EMAIL_INVOICE && $eventName == 'sales_order_invoice_save_after')) {
+
+                    $carriergroupId = $shipItem['carrierGroupId'];
+
+                    if (!isset($carriergroupId)) {
+                        continue; //should never be in here
+                    }
+
+                    $shippingDescription = $this->buildShippingDescription($shipItem, $order);
+
+                    if (!isset($shipment)) {
+                        $shipment = $this->createShipment($order, $shipItem, $shippingDescription);
+                    }
+
+                    if ($pickupEmail && $shipment) {
+                        $this->sendFullShipmentEmail($shipItem,$shipment,$order,false,"",true);
+                    }
+                }
             }
         } else {
             // Review action here - as all orders should have carriergroup shipping details
         }
+    }
+
+    private function buildShippingDescription($shipItem, $order)
+    {
+        $shippingDescription = $shipItem['carrierTitle'].' - '. $shipItem['methodTitle'].' ';
+        $shippingDescription .= " ". $order->getQuote()->getStore()->formatPrice($shipItem['price']).'<br/>';
+        if(array_key_exists('pickup_date', $shipItem)) {
+            $shippingDescription .= Mage::helper('shipperhq_shipper')->__('Location') .' : ' .$shipItem['location_name'];
+            $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Date') .' : ' .$shipItem['pickup_date'];
+            if(array_key_exists('pickup_slot', $shipItem)) {
+                $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Time : ') .str_replace('_', ' - ', $shipItem['pickup_slot']);
+            }
+            $shippingDescription.= '<br/>';
+        }
+        else if(array_key_exists('delivery_date', $shipItem)) {
+            $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Delivery Date') .' : ' .$shipItem['delivery_date'];
+            if(array_key_exists('del_slot', $shipItem)) {
+                $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Time : ') .$shipItem['del_slot'];
+            }
+            $shippingDescription.= '<br/>';
+        }
+
+        return $shippingDescription;
     }
 
     public function registerShipment($shipment)
@@ -399,11 +425,20 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
      * @param string $comment
      * @return Mage_Sales_Model_Order_Invoice
      */
-    private function sendFullShipmentEmail($carriergroupDetails,$shipment,$order,  $overrideManual = false, $comment='')
+    private function sendFullShipmentEmail($carriergroupDetails, $shipment, $order, $overrideManual = false, $comment = '', $sendPickupEmail = false)
     {
-        $carriergroupContactDetails = $this->getEmailDetails($carriergroupDetails);
-        if ($carriergroupContactDetails['email']=="" || (!$overrideManual && $carriergroupContactDetails['manualmail']) ){
-            return $this;
+        if ($sendPickupEmail){
+            $carriergroupContactDetails = $this->getPickupEmailDetails($carriergroupDetails);
+
+            if ($carriergroupContactDetails['pickup_email'] == "") {
+                return $this;
+            }
+        } else {
+            $carriergroupContactDetails = $this->getEmailDetails($carriergroupDetails);
+
+            if ($carriergroupContactDetails['email'] == "" || (!$overrideManual && $carriergroupContactDetails['manualmail'])) {
+                return $this;
+            }
         }
 
         $translate = Mage::getSingleton('core/translate');
@@ -423,13 +458,19 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
         $template = Mage::getStoreConfig(self::XML_SHIPPERHQ_PATH_EMAIL_TEMPLATE, $this->getStoreId());
 
         $sendTo = array();
-        $emailAdd = preg_split('/,/', $carriergroupContactDetails['email']);
+        if ($sendPickupEmail) {
+            $emailAdd = preg_split('/,/', $carriergroupContactDetails['pickup_email']);
+            $contactName = $carriergroupContactDetails['pickup_contact'];
+        } else {
+            $emailAdd = preg_split('/,/', $carriergroupContactDetails['email']);
+            $contactName = $carriergroupContactDetails['contact'];
+        }
 
         foreach ($emailAdd as $email) {
 
             $sendTo[] = array (
                 'email' => $email,
-                'name'  => $carriergroupContactDetails['contact']
+                'name'  => $contactName
             );
         }
 
@@ -463,13 +504,13 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
                     $recipient['email'],
                     $recipient['name'],
                     array(
-                        'order'       => $order,
-                        'shipment'    => $shipment,
-                        'comment'     => $comment,
-                        'billing'     => $order->getBillingAddress(),
-                        'carriergroup'	  => $carriergroupDetails['checkoutDescription'],
-                        'carriergroupname'	  => $carriergroupDetails['contactName'],
-                        'dispatchdate'	  => $dispatchDate,
+                        'order'             => $order,
+                        'shipment'          => $shipment,
+                        'comment'           => $comment,
+                        'billing'           => $order->getBillingAddress(),
+                        'carriergroup'	    => $carriergroupDetails['checkoutDescription'],
+                        'carriergroupname'	=> $sendPickupEmail ? $carriergroupDetails['pickup_contact'] : $carriergroupDetails['contactName'],
+                        'dispatchdate'	    => $dispatchDate,
                     )
                 );
         }
@@ -495,6 +536,15 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
             'contact' 		=> $carriergroupDetailArray['contactName'],
             'manualmail' 	=> false,
             'manualship' 	=> false,
+        );
+        return $emailDetails;
+    }
+
+    private function getPickupEmailDetails($carriergroupDetailArray) {
+
+        $emailDetails=array(
+            'pickup_email' 		=> $carriergroupDetailArray['pickup_email'],
+            'pickup_contact' 	=> $carriergroupDetailArray['pickup_contact'],
         );
         return $emailDetails;
     }

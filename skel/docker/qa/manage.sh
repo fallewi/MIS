@@ -22,6 +22,8 @@ display_help() {
 
     down                 stop a qa environment
 
+    status               print [docker-compose] status of qa environment
+
   Options:
 
     -v | --volumes       Creates and or Deletes volumes when starting/stopping
@@ -102,7 +104,8 @@ bootstrap(){
 }
 
 configure_docker_machine(){
-  eval $(docker-machine env $1)
+  local SHELL=${SHELL:-"sh"}
+  eval $(docker-machine env $1 --shell $SHELL)
   [ $(docker-machine active) = "$1" ] || error "unable to configure $1 machine"
   docker info || error "unable to communicate with $1 machine"
 }
@@ -121,9 +124,15 @@ env_start(){
   cp ../../deploy.key $CWD/deploy.key || error "could not copy deploy.key" \
     "have you initialized the skel?"
 
-  docker pull registry.badevops.com/m1-term
-  docker pull registry.badevops.com/m1-phpfpm
-  docker pull registry.badevops.com/m1-nginx
+  # alpine variants
+  docker pull registry.badevops.com/mage-term:m1
+  docker pull registry.badevops.com/mage-phpfpm:m1
+  docker pull registry.badevops.com/mage-nginx:m1
+
+  # debian variants
+  docker pull registry.badevops.com/mage-term:m1-debian
+  docker pull registry.badevops.com/mage-phpfpm:m1-debian
+  docker pull registry.badevops.com/mage-nginx:m1-debian
 
   docker-compose $COMPOSE_FLAGS stop
   docker-compose $COMPOSE_FLAGS pull
@@ -161,7 +170,9 @@ env_stop(){
   fi
 }
 
-
+env_status(){
+  docker-compose $COMPOSE_FLAGS ps
+}
 
 make_volumes(){
   echo
@@ -184,6 +195,7 @@ else
       qa*)               ENV=$1 ;;
       up)                runstr="env_start" ;;
       down)              runstr="env_stop" ;;
+      status)            runstr="env_status" ;;
       *)                 echo "invalid option: $1" ; display_help 1 ;;
     esac
     shift

@@ -134,9 +134,14 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
         if (!$this->getConfigFlag($this->_activeFlag)) {
-
             return false;
         }
+        foreach($request->getAllItems() as $item) {
+            if(is_null($item->getId()) && is_null($item->getQuoteItemId())) {
+                return false;
+            }
+        }
+
         $initVal = microtime(true);
 
         $this->_cacheEnabled = Mage::app()->useCache('collections');
@@ -553,15 +558,15 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                     'Ed'            => 'd EEE',
                 ),
                 'en-GB'            => array(
-                    'yMd'           => 'dd/MM/Y',
+                    'yMd'           => 'dd-MM-Y',
                     'yMMMd'         => 'd MMM Y',
                     'yMMMEd'        => 'EEE, d MMM Y',
-                    'yMEd'          => 'EEE, d/M/Y',
+                    'yMEd'          => 'EEE, d-M-Y',
                     'MMMd'          => 'd MMM',
                     'MMMEd'         => 'EEE, d MMM',
-                    'MEd'           => 'EEE, d/M',
-                    'Md'            => 'd/M',
-                    'yM'            => 'M/Y',
+                    'MEd'           => 'EEE, d-M',
+                    'Md'            => 'd-M',
+                    'yM'            => 'M-Y',
                     'yMMM'          => 'MMM Y',
                     'MMM'          =>  'MMM',
                     'E'             => 'EEE',

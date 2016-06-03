@@ -1,0 +1,35 @@
+---
+
+#
+# best to avoid customizations on these while we iron it out.
+#
+
+- name: "term-container - qa environment cron"
+  hosts: term-container
+  any_errors_fatal: yes
+  vars:
+    ENABLE_MAGENTO_CRON: True
+    HTTPD_USER: www-data
+  tasks:
+
+    #
+    # periodic targets are:
+    #  1min 15min hourly daily weekly monthly
+    #
+
+    - name: enable templated crontab
+      template:
+        src: "{{ item }}"
+        dest: "/etc/periodic/1min/magento"
+        mode: "+x"
+      with_first_found:
+        - "templates/cron.{{ ENV }}.j2"
+        - "templates/cron.j2"
+        - "templates/cron.skel.j2"
+      when: ENABLE_MAGENTO_CRON
+
+    - name: disable templated crontab
+      file:
+        path: "/etc/periodic/1min/magento"
+        state: absent
+      when: not ENABLE_MAGENTO_CRON

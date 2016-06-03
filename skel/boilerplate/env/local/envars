@@ -6,11 +6,9 @@
 REPO_ROOT="@REPO_ROOT"
 REPO_REF="HEAD"
 
-APP_URL="@APP_URL"
 APP_ROOT="${REPO_ROOT}/webroot"
+APP_URL="http://localhost/$CLIENT_CODE"
 
-# don't worry about setting these. we replace automatically in docker containers.
-# APP_DB_HOST="@APP_DB_HOST"
-# APP_DB_NAME="@APP_DB_NAME"
-# APP_DB_USER="@APP_DB_USER"
-# APP_DB_PASS="@APP_DB_PASS"
+# evaluate onset.sh when setting this environment.
+#  prefer skel/env/@ENV/onset.sh. defaults to skel/env/onset.sh
+ONSET_ACTIVE=true

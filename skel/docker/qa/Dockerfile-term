@@ -1,4 +1,4 @@
-FROM registry.badevops.com/m1-term
+FROM registry.badevops.com/mage-term:m1-debian
 
 COPY deploy.key /root/.ssh/id_rsa
 RUN chmod 0600 /root/.ssh/id_rsa

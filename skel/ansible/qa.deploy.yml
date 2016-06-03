@@ -1,59 +1,77 @@
 ---
 
-#
-# best to avoid customizations on these while we iron it out.
-#
-
-- name: "term-container - qa environment deployment"
+# local pre-deploy steps
+########################
+- name: "term-container local pre-deployment"
   hosts: term-container
+  gather_facts: False
+  tasks:
+
+    - name: start local pre-deployment tasks
+      include: tasks/deploy/local/pre.yml
+
+# remote pre-deploy steps
+########################
+- name: "term-container remote pre-deployment"
+  hosts: term-container
+  gather_facts: False
+  any_errors_fatal: yes
+  tasks:
+    - name: start remote pre-deployment tasks
+      include: tasks/deploy/remote/pre.yml
+
+# remote deployment
+###################
+- name: "term-container remote deployment"
+  hosts: term-container
+  gather_facts: False
+  any_errors_fatal: yes
+  tasks:
+    - name: start remote [git] deployment tasks
+      include: tasks/deploy/git/deploy.yml
+      vars:
+        SKIP_DEPS: True
+
+    - name: start local build tasks (blueacornui compilation)
+      include: "tasks/build/blueacornui-compile.yml"
+      vars:
+        SKIP_BUILD_CHECKS: True
+        FORCE_BUILD_PATH: "{{ REPO_ROOT }}"
+      with_items:
+        - blueacornui
+
+# remote post-deploy steps
+##########################
+- name: "term-container remote post-deployment"
+  hosts: term-container
+  gather_facts: False
   any_errors_fatal: yes
   tasks:
 
-    - name: git checkout
-      git:
-        repo: "{{ REPO_REMOTE }}"
-        version: "{{ REPO_REF }}"
-        dest: "{{ REPO_ROOT }}"
-        force: yes
-        accept_hostkey: yes
-      tags:
-        - git
+    - name: start remote post-deployment tasks
+      include: tasks/deploy/remote/post.yml
 
     # @TODO use UFS mount or dumbnail module. for now, copy media
     - name: copy media from NFS
       shell: cp -dR /nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/media {{ APP_ROOT }}/media
       args:
-        creates: "{{ APP_ROOT }}/media/catalog"
-      notify: fix media permissions
+        creates: "{{ APP_ROOT }}/pub"
+      notify: fix permissions
       tags:
         - filesystem
 
-    - name: ensure var/ exists and is writable
-      file:
-        path: "{{ APP_ROOT }}/var"
-        state: directory
-        mode: 0777
-
-    - include: tasks/conf-envsync.yml
-
-    - name: blueacornui / grunt dependencies
-      shell: npm install --production ; bower --allow-root --config.interactive=false install
-      args:
-        chdir: "{{ REPO_ROOT }}/{{ BLUEACORNUI_DIR | default('blueacornui') }}"
-      tags:
-        - grunt
-
-    - name: blueacornui / grunt compilation
-      shell: grunt {{ GRUNT_COMMAND | default('production') }}
-      args:
-        chdir: "{{ REPO_ROOT }}/{{ BLUEACORNUI_DIR | default('blueacornui') }}"
-      tags:
-        - grunt
-
-  handlers:
-    - name: fix media permissions
-      shell: chmod -R 777 {{ APP_ROOT }}/media
+# run filesystem playbook to fix perms + setup NFS filesharing
+##############################################################
+- include: qa.util-filesystem.yml
 
 # run cacheclear playbook after deployment
 ##########################################
-- include: qa.util-cacheclear.yml
+- include: util-cacheclear.yml
+
+# local post-deploy steps
+########################
+- name: "term-container local post deployment"
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - include: tasks/deploy/local/post.yml

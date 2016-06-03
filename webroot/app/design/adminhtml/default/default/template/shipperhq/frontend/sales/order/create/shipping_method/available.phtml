@@ -39,10 +39,13 @@
     <?php if (!($_shippingRateGroups = $this->getShippingRates())): ?>
         <strong><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></strong>
     <?php $_noRates = true; ?>
+    <?php $singleCGId = ''; ?>
     <?php else: ?>
         <dl class="sp-methods">
             <?php $_sole = false; foreach ($_shippingRateGroups as $code => $_rates): ?>
-                <dt><?php echo $this->getCarrierName($code) ?>
+            <?php $singleCGId = $_rates[0]->getCarriergroupId(); ?>
+
+            <dt><?php echo $this->getCarrierName($code) ?>
                     <?php $showCarrierNotice = false; ?>
                     <?php if ($_showTooltip): ?>
                         <b class="helpcursor" title="<?php echo $this->getToolTipText() ?>">
@@ -126,7 +129,8 @@
                     </li>
                 </ul>
             </dd>
-        <?php endif; ?>
+            <input type=hidden name="carriergroup_id" id="carriergroup_id" value='<?php echo $singleCGId; ?>' />
+    <?php endif; ?>
     <?php endif; ?>
 <?php else: ?>
     <?php if (!($_carrierGroupRates = $this->getCarrierGroupRates())): ?>

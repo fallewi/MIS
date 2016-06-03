@@ -32,8 +32,8 @@
 <config>
     <modules>
         <Shipperhq_Shipper>
-            <version>0.0.30</version>
-            <extension_version>2.51</extension_version>
+            <version>0.0.31</version>
+            <extension_version>2.68</extension_version>
             <!-- implemented in module file -->
             <!--  <active>true</active>
               <codePool>community</codePool>
@@ -432,6 +432,7 @@
                         <package_type/>
                         <packing_section_name/>
                         <shipperhq_malleable_product/>
+                        <shipperhq_availability_date/>
                     </product_attributes>
                 </item>
             </quote>

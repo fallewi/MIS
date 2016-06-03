@@ -259,10 +259,10 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
                         $storeId = '';
                             //AUTO_REMOVE_ATTRIBUTE_OPTION
                         foreach($trackValues as $key => $option) {
-                            $numberAssigned = Mage::helper('shipperhq_shipper')->getProductsWithAttributeValue(
-                                $attribute->code,  $option['value'], $storeId, true, true);
+                            $isAssigned = Mage::helper('shipperhq_shipper')->getIsAttributeValueUsed(
+                                $attribute->code,  $option['value'], true);
                             $deleteFlag = self::AUTO_REMOVE_ATTRIBUTE_OPTION;
-                            if($numberAssigned > 0) {
+                            if($isAssigned) {
                                 $deleteFlag = self::REMOVE_ATTRIBUTE_OPTION;
                             }
 

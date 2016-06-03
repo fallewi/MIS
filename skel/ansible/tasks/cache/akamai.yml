@@ -1,0 +1,18 @@
+---
+
+- name: flush object cache
+  uri:
+    url: https://api.ccu.akamai.com/ccu/v2/queues/default
+    HEADER_Content-Type: application/json
+    body: " {{ AKAMAI_BODY | to_json }}"
+    user: "{{ AKAMAI_USER }}"
+    password: "{{ AKAMAI_PASS }}"
+  register: uri_result
+  tags:
+    - cache
+    - cache-cdn-only
+
+- debug: var=uri_result.json
+  tags:
+    - cache
+    - cache-cdn-only

@@ -4,7 +4,7 @@
 # default QA composition.
 #
 # variable defaults:
-#  SUBDOMAIN: MIS
+#  SUBDOMAIN: @CLIENT_CODE
 #             VTB
 #
 #  DOMAIN: @ENV.blueacorn.net
@@ -19,12 +19,13 @@
 nginx:
   container_name: ${ENV}-${CLIENT_CODE}-nginx
   restart: unless-stopped
-  image: registry.badevops.com/m1-nginx
+  image: registry.badevops.com/mage-nginx:m1
   links:
     - phpfpm
     - term
+    - smtp
   volumes:
-    - /docker-volumes/m1-qa/${CLIENT_CODE}/${ENV}-magento:/magento
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
 
   environment:
     VIRTUAL_HOST: "${SUBDOMAIN}.${DOMAIN}"
@@ -32,12 +33,13 @@ nginx:
 
 # nginx_deux:
 #   container_name: ${ENV}-${CLIENT_CODE}-nginx-deux
-#   image: registry.badevops.com/m1-nginx
+#   image: registry.badevops.com/mage-nginx:m1
 #   links:
 #     - phpfpm
 #     - term
+#     - smtp
 #   volumes:
-#     - /docker-volumes/m1-qa/${CLIENT_CODE}/${ENV}-magento:/magento
+#     - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
 #
 #   environment:
 #     VIRTUAL_HOST: "deux.${DOMAIN}"
@@ -47,41 +49,65 @@ nginx:
 phpfpm:
   container_name: ${ENV}-${CLIENT_CODE}-phpfpm
   restart: unless-stopped
-  image: registry.badevops.com/m1-phpfpm:5.5
+  image: registry.badevops.com/mage-phpfpm:m1
   links:
     - mysql
+    - smtp
   volumes:
-    - /docker-volumes/m1-qa/${CLIENT_CODE}/${ENV}-magento:/magento
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
 
 term:
   container_name: ${ENV}-${CLIENT_CODE}-term
   restart: unless-stopped
   build: ./
-  dockerfile: Dockerfile-term
+  dockerfile: Dockerfile-term.skel
   links:
+    - smtp
     - mysql
   volumes:
-    - /docker-volumes/m1-qa/${CLIENT_CODE}/${ENV}-magento:/magento
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-cron:/etc/periodic
     - /nfs:/nfs:ro
 
   environment:
-    CLIENT_CODE: ${CLIENT_CODE}
-    SNAPSHOT_BASE_ENV: ${SNAPSHOT_BASE_ENV}
     APP_URL: ${APP_URL}
+    APP_ROOT: ${APP_ROOT}
+    CLIENT_CODE: ${CLIENT_CODE}
     REPO_REMOTE: ${REPO_REMOTE}
     REPO_REF: ${REPO_REF}
+    SNAPSHOT_BASE_ENV: ${SNAPSHOT_BASE_ENV}
     MYSQL_USER: magento
     MYSQL_PASSWORD: magento
     MYSQL_DATABASE: magento
     OAUTH_DOMAIN: auth.blueacorn.net
     OAUTH_APP: ${CLIENT_CODE}-${ENV}
 
+cron:
+  container_name: ${ENV}-${CLIENT_CODE}-cron
+  restart: unless-stopped
+  log_driver: none
+  image: registry.badevops.com/mage-cron:m1
+  links:
+    - mysql
+    - smtp
+  volumes:
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-magento:/magento
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-cron:/etc/periodic
+
+  environment:
+    CRON_LOG_DIR: ${APP_ROOT}/var/log
+
+smtp:
+  container_name: ${ENV}-${CLIENT_CODE}-smtp
+  image: registry.badevops.com/mage-smtp
+  log_driver: none
+
 mysql:
   container_name: ${ENV}-${CLIENT_CODE}-mysql
   restart: unless-stopped
   image: mariadb:10
   volumes:
-    - /docker-volumes/m1-qa/${CLIENT_CODE}/${ENV}-mysql:/var/lib/mysql
+    - /docker-volumes/qa-envs/${CLIENT_CODE}-${ENV}-mysql:/var/lib/mysql
 
   environment:
     MYSQL_USER: magento

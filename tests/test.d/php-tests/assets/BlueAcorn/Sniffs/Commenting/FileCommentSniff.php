@@ -139,6 +139,7 @@ class BlueAcorn_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sn
                     }
                 }
             } else if ($name === '@copyright') {
+                date_default_timezone_set("America/New_York");
                 $year = date("Y");
                 if ($tokens[$string]['content'] !== "Copyright © {$year} Blue Acorn, Inc") {
                     $error = "Expected \"Copyright © {$year} Blue Acorn, Inc\" for copyright declaration";

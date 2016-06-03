@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+#
+# magento1 cron as shell script
+#  typically fired every minute from /etc/periodic/1min/magento-cron
+#  as the root user
+#
+
+! test -e {{ APP_ROOT }}/maintenance.flag && su {{ HTTPD_USER }} -s /bin/sh -c sh {{ APP_ROOT }}/cron.sh

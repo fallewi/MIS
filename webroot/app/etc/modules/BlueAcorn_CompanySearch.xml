@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_CompanySearch>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Levementum_AdminOrders/>
+            </depends>
+        </BlueAcorn_CompanySearch>
+    </modules>
+</config>

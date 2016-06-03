@@ -3,3 +3,5 @@ SKEL_RELEASE=m1
 SKEL_REMOTE_REF=release/m1
 SKEL_DIR=skel
 SKEL_BRANCH=develop
+TESTS_REPO_URL=git@github.com:BlueAcornInc/devops-functional-tests.git
+TESTS_REPO_REF=release/m1
