@@ -66,31 +66,29 @@ foreach ($children as $child) {
     if (!empty($_hasChildren) && $nextChildLevel <= 1) {
         $html .= '<div class="mm-wrapper">';
         $html .= '<div class="mm-inner-wrapper">';
-        $html .= '<ul class="level'. $childLevel .'">';
-        $html .=     '<li class="level'. $nextChildLevel .' category-name">';
-        $html .=        '<h4>';
-        $html .=             $this->escapeHtml($this->__($child->getName()));
-        $html .=        '</h4>';
-        $html .=     '</li>';
-        $html .=     $this->render($child, $childrenWrapClass);
-        $html .=     '<li class="level'. $nextChildLevel .' view-all">';
-        $html .=         '<a class="level'. $nextChildLevel .' nav-shop-all" href="'. $child->getUrl() .'">';
-        $html .=             $this->__('Shop All');
-        $html .=         '</a>';
-        $html .=     '</li>';
-        $html .= '</ul>';
+
         if($blockTwo){
             $html .= '<div class="block-two">';
             $cmsBlock = Mage::getModel('cms/block')->load($blockTwo);
             $html .= $this->getLayout()->createBlock('cms/block')->setBlockId($cmsBlock->getIdentifier())->toHtml();
             $html .= '</div>';
         }
-        if($blockOne){
-            $html .= '<div class="block-one">';
-            $cmsBlock = Mage::getModel('cms/block')->load($blockOne);
-            $html .= $this->getLayout()->createBlock('cms/block')->setBlockId($cmsBlock->getIdentifier())->toHtml();
-            $html .= '</div>';
-        }
+
+        $html .= '<ul class="level'. $childLevel .'">';
+        $html .=     $this->render($child, $childrenWrapClass);
+        $html .=     '<li class="level'. $nextChildLevel .' view-all-mobile">';
+        $html .=         '<a class="level'. $nextChildLevel .' nav-shop-all" href="'. $child->getUrl() .'">';
+        $html .=             $this->__('Shop All');
+        $html .=         '</a>';
+        $html .=     '</li>';
+        $html .= '</ul>';
+
+        $html .= '<div class="view-all">';
+        $html .=     '<a class="nav-shop-all" href="'. $child->getUrl() .'">';
+        $html .=         $this->__('Shop All');
+        $html .=     '</a>';
+        $html .= '</div>';
+
         $html .= '</div>';
         $html .= '</div>';
 

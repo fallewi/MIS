@@ -16,9 +16,7 @@
             width:20%;
             max-width:180px;
             float: left;
-            h2{
-                display:none;
-            }
+
             .product-image-thumbs {
                 a:hover {border-color: transparent;}
                 img {
@@ -29,11 +27,38 @@
                     }
                 }
             }
+
+            &.videos {
+                a {
+                    position: relative;
+                    display: inline-block;
+                    
+                    &:hover {
+                        cursor: pointer;
+                        i {
+                            color: #00247B;
+                        }
+                    }
+
+                    i {
+                        position: absolute;
+                        top: 20px;
+                        color: #000;
+                        left: 23px;
+                        text-shadow: 0 1px 8px rgba(255, 255, 255, 0.71);
+                    }
+                }
+            }
         }
     }
 }
 .zoomContainer{
     display:none;
+}
+
+#overlay_modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
 }
 
 @include bp(max-width, $bp-medium){

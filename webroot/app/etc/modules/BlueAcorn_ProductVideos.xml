@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BlueAcorn_ProductVideos extension
+ * 
+ *
+ * @category       BlueAcorn
+ * @package        BlueAcorn_ProductVideos
+ * @author         Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright      Copyright © 2014 Blue Acorn, Inc.
+ */
+-->
+<config>
+    <modules>
+        <BlueAcorn_ProductVideos>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Catalog />
+             </depends>
+        </BlueAcorn_ProductVideos>
+    </modules>
+</config>

@@ -54,10 +54,10 @@
         <?php $i++; endforeach; ?>
     </div>
 </div>
+<?php echo $this->getChildHtml('video.block'); ?>
 
 <?php if (count($this->getGalleryImages()) > 0): ?>
 <div class="more-views">
-    <h2><?php echo $this->__('More Views') ?></h2>
     <ul class="product-image-thumbs">
     <?php $i=0; foreach ($this->getGalleryImages() as $_image): ?>
         <?php if ($this->isGalleryImageVisible($_image)): ?>
