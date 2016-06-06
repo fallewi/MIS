@@ -2,6 +2,9 @@
 
 class BlueAcorn_Southware_Model_Order_Ebridge
 {
+    /**
+     * Gets list of all new documents from eBridge
+     */
     public function getDocumentList()
     {
         $soapUrl = Mage::getStoreConfig('blueacorn_southware/api_settings/api_url');
@@ -16,7 +19,7 @@ class BlueAcorn_Southware_Model_Order_Ebridge
                                 <GetDocumentList xmlns="eBridge.WebServices">
                                   <login>'.$soapUser.'</login>
                                   <password>'.$soapPassword.'</password>
-                                  <status>NEW</status>
+                                  <status>New</status>
                                   <docType>ORDERS</docType>
                                   <partner>Mission Restaurant Supply</partner>
                                   <fromDate>2016-05-12</fromDate>
@@ -32,7 +35,7 @@ class BlueAcorn_Southware_Model_Order_Ebridge
                 "Pragma: no-cache",
                 "SOAPAction: eBridge.WebServices/GetDocumentList",
                 "Content-length: ".strlen($xml_post_string),
-            ); //SOAPAction: your op URL
+            ); //SOAPAction
 
             $url = $soapUrl . '?GetDocumentList';
 
@@ -52,26 +55,32 @@ class BlueAcorn_Southware_Model_Order_Ebridge
             curl_close($ch);
 
             $debugData['result'] = $response;
+            // decode xml entities
             $xmlRespone = html_entity_decode($response, ENT_XML1);
 
             $p = xml_parser_create();
+            // turn xml into an array
             xml_parse_into_struct($p, $xmlRespone, $vals, $index);
             xml_parser_free($p);
 
-            foreach ($index['_X0023_TEMP_LIST'] as $key => $value)
-            {
-                if(isset($vals[$value]['attributes']))
+            if( isset($index['_X0023_TEMP_LIST'])){
+                foreach ($index['_X0023_TEMP_LIST'] as $key => $value)
                 {
-                    $this->getDocument($vals[$value]['attributes']);
+                    if(isset($vals[$value]['attributes']))
+                    {
+                        $this->getDocument($vals[$value]['attributes']);
+                    }
                 }
             }
-
         }
         catch (Exception $e) {
             Mage::logException($e);
         }
     }
 
+    /**
+     * Gets documents from Document List
+     */
     public function getDocument($data)
     {
         $soapUrl = Mage::getStoreConfig('blueacorn_southware/api_settings/api_url');
@@ -86,11 +95,13 @@ class BlueAcorn_Southware_Model_Order_Ebridge
             $jsonOrderData = json_encode($xmlString);
             $orderDataArray = json_decode($jsonOrderData, true);
             $southwareOrderId = $orderDataArray['OrderHeader']['OrderNumber']['SellerOrderNumber'];
+            $southwareCustomerId = $orderDataArray['OrderHeader']['OrderParty']['BuyerParty']['ListOfIdentifier']['Identifier']['Ident'];
 
             foreach ($orderDataArray['OrderHeader']['ListOfNameValueSet']['NameValueSet']['ListOfNameValuePair']['NameValuePair'] as $item)
             {
-                if($item['Name'] === "MagentoIncrementId")
-                    $this->setSouthwareOrderId($southwareOrderId, $item['value']);
+                if($item['Name'] === "MagentoIncrementId") {
+                    $this->setSouthwareId($southwareOrderId, $item['Value'], $southwareCustomerId);
+                }
             }
         }
         catch (Exception $e) {
@@ -98,11 +109,41 @@ class BlueAcorn_Southware_Model_Order_Ebridge
         }
     }
 
-    public function setSouthwareOrderId($southwareOrderId, $incrementId)
+    /**
+     * Sets the southware order ID in Magento
+     *
+     * @param $southwareOrderId
+     * @param $incrementId
+     * @param           $southwareCustomerId
+     */
+    public function setSouthwareId($southwareOrderId, $incrementId, $southwareCustomerId)
     {
         $order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
         $orderId = $order->getId();
+        $customerEmail = $order->getCustomerEmail();
+
+        if($customerEmail !== null){
+            $this->setSouthwareCustomerId($customerEmail, $southwareCustomerId);
+        }
 
         Mage::getResourceModel('sales/order')->setSouthWareOrderId($orderId, $southwareOrderId);
+    }
+
+    /**
+     * Function that sets the Southware Customer ID of a customer based on the email supplied by Southware
+     *
+     * @param $customerEmail
+     * @param $southwareCustomerId
+     */
+    public function setSouthwareCustomerId($customerEmail, $southwareCustomerId)
+    {
+        $defaultStoreId = Mage::app()->getDefaultStoreView()->getId();
+        $customer = Mage::getModel("customer/customer");
+
+        $customer->setWebsiteId($defaultStoreId);
+        $customer->loadByEmail($customerEmail);
+        $customer->setSouthwareCustomerId($southwareCustomerId);
+
+        $customer->save();
     }
 }
