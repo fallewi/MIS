@@ -22,12 +22,12 @@ class BlueAcorn_Southware_Model_Order_Ebridge
                                   <status>New</status>
                                   <docType>ORDERS</docType>
                                   <partner>Mission Restaurant Supply</partner>
-                                  <fromDate>'.Mage::getModel('core/date')->date('Y-m-d H:i:s').'</fromDate>
+                                  <fromDate>'.Mage::getModel('core/date')->date('Y-m-d').'</fromDate>
                                   <toDate>'.Mage::getModel('core/date')->date('Y-m-d',time()+86400).'</toDate>
                                 </GetDocumentList>
                               </soap:Body>
                             </soap:Envelope>';   // data from the form, e.g. some ID number
-
+Mage::log($xml_post_string);
             $headers = array(
                 "Content-type: text/xml;charset=\"utf-8\"",
                 "Accept: text/xml",
