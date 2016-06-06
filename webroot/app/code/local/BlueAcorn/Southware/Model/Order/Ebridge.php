@@ -27,7 +27,6 @@ class BlueAcorn_Southware_Model_Order_Ebridge
                                 </GetDocumentList>
                               </soap:Body>
                             </soap:Envelope>';   // data from the form, e.g. some ID number
-Mage::log($xml_post_string);
             $headers = array(
                 "Content-type: text/xml;charset=\"utf-8\"",
                 "Accept: text/xml",
