@@ -22,8 +22,8 @@ class BlueAcorn_Southware_Model_Order_Ebridge
                                   <status>New</status>
                                   <docType>ORDERS</docType>
                                   <partner>Mission Restaurant Supply</partner>
-                                  <fromDate>2016-05-12</fromDate>
-                                  <toDate>'.date('Y-m-d',time()+86400).'</toDate>
+                                  <fromDate>'.Mage::getModel('core/date')->date('Y-m-d H:i:s').'</fromDate>
+                                  <toDate>'.Mage::getModel('core/date')->date('Y-m-d',time()+86400).'</toDate>
                                 </GetDocumentList>
                               </soap:Body>
                             </soap:Envelope>';   // data from the form, e.g. some ID number
