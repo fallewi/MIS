@@ -32,6 +32,8 @@
       vars:
         SKIP_DEPS: True
 
+    # no blueacornui? set SKIP_BLUEACORNUI in appvars, group_vars, or envars
+    # multiple blueacornui dirs? adjust with_items
     - name: start local build tasks (blueacornui compilation)
       include: "tasks/build/blueacornui-compile.yml"
       vars:
@@ -39,6 +41,7 @@
         FORCE_BUILD_PATH: "{{ REPO_ROOT }}"
       with_items:
         - blueacornui
+      when: SKIP_BLUEACORNUI is not defined or not SKIP_BLUEACORNUI
 
 # remote post-deploy steps
 ##########################
@@ -52,21 +55,21 @@
       include: tasks/deploy/remote/post.yml
 
     # @TODO use UFS mount or dumbnail module. for now, copy media
+    # @TODO if copying media, lets use rsync 
     - name: copy media from NFS
-      shell: cp -dR /nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/media {{ APP_ROOT }}/media
+      shell: cp -dR /nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/media {{ APP_ROOT }}/
       args:
-        creates: "{{ APP_ROOT }}/pub"
-      notify: fix permissions
+        creates: "{{ APP_ROOT }}/media/catalog"
       tags:
         - filesystem
 
 # run filesystem playbook to fix perms + setup NFS filesharing
 ##############################################################
-- include: qa.util-filesystem.yml
+- include: dockerized.util-filesystem.yml
 
 # run cacheclear playbook after deployment
 ##########################################
-- include: util-cacheclear.yml
+- include: dockerized.util-cacheclear.yml
 
 # local post-deploy steps
 ########################

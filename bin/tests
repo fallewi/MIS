@@ -160,6 +160,8 @@ pull_tests() {
 #########
 
 runstr="display_help"
+fail_in_groundcontrol "bin/tests"
+
 [ $# -eq 0 ] && display_help 1
 
 while [ $# -ne 0 ]; do

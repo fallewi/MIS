@@ -15,7 +15,7 @@
 - name: perform database snapshot
   shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun db:dump \
     --strip='{{ N98_DB_STRIP_STRING | default('@basnapshots') }}' \
-    --stdout | gzip -c > \
+    --compression='gzip' \
     {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz"
   args:
     chdir: "{{ APP_ROOT }}"

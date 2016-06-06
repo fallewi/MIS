@@ -3,7 +3,6 @@
 # see /docs/ENVIRONMENTS.md for definitions
 #
 
-REPO_ROOT="@REPO_ROOT"
 REPO_REF="HEAD"
 
 APP_ROOT="${REPO_ROOT}/webroot"
