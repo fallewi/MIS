@@ -1,0 +1,35 @@
+---
+
+# filesystem -- also called by deploy playbook.
+
+#
+# enforces proper permissions and symlink/NFS sharing on webnodes
+#
+#  !! be sure to double-check file paths
+#  !! if you want to disable shares, comment out SHARE_ROOT or set to empty
+#
+
+- name: "@CLIENT_CODE:@ENV filesystem"
+  hosts: term-container
+  gather_facts: False
+  any_errors_fatal: yes
+  tags: filesystem
+  vars:
+    HTTPD_USER: www-data
+
+  tasks:
+    - name: ensure HTTPD_USER has write access to WRITABLE_PATHS
+      file:
+        path: "{{ item }}"
+        group: "{{ HTTPD_USER }}"
+        mode: g+rwx
+        state: directory
+        recurse: yes
+      become: True
+      ignore_errors: yes
+      tags:
+        - filesystem-perms-only
+      with_items:
+        - "{{ APP_ROOT }}/var"
+        - "{{ APP_ROOT }}/includes"
+        - "{{ APP_ROOT }}/media"

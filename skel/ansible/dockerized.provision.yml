@@ -1,0 +1,125 @@
+---
+#
+# best to avoid customizations on these while we iron it out.
+#
+
+- name: "localhost - dockerized environment provisioning"
+  hosts: localhost
+  tasks:
+    - name: ensure containers are running on docker-machine
+      local_action: shell ./bin/env up {{ ENV }}
+      args:
+        chdir: "{{ LOCAL_ROOT }}"
+      run_once: True
+      tags:
+        - start-containers
+
+    - name: sleeping 10s while containers come online...
+      pause: seconds=10
+
+# placeholder for running commands against the docker-machine
+#  useful for UFS/volume setup.
+
+# - name: "docker-machine - qa environment provisioning"
+#   hosts: docker-machine
+#   tasks:
+#
+#     - name: copy SQL_FILE to docker-machine if SQL_FILE extravar has been passed.
+#       copy:
+#         src: "{{ SQL_FILE }}"
+#         dest: "/tmp/${ENV}-${CLIENT_CODE}-{{ SQL_FILE | basename }}"
+#       when: SQL_FILE is definied
+#       tags:
+#         - db
+
+- name: "docker-machine - ensure /nfs is populated with SNAPSHOT_BASE_ENV"
+  hosts: docker-machine
+  vars:
+    # force import will overwrite existing db
+    FORCE_DB_IMPORT: false
+    FORCE_MEDIA_IMPORT: false
+    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}"
+    SNAPSHOT_PATH_DB: "{{ SNAPSHOT_PATH }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+    SNAPSHOT_PATH_MEDIA: "{{ SNAPSHOT_PATH }}/media/"
+  tags:
+    - synchronize
+
+  tasks:
+    - name: ensure /nfs exists and contains SNAPSHOT_BASE_ENV target
+      file:
+        state: directory
+        path: "{{ SNAPSHOT_PATH }}"
+      tags:
+        - synchronize-database-only
+        - synchronize-media-only
+
+    - name: register presence of SNAPSHOT_BASE_ENV database
+      stat: path={{ SNAPSHOT_PATH_DB }}
+      register: database_result
+      tags:
+        - synchronize-database-only
+
+    - name: register presence of SNAPSHOT_BASE_ENV media
+      stat: path={{ SNAPSHOT_PATH_MEDIA }}
+      register: media_result
+      tags:
+        - synchronize-media-only
+
+    - name: "synchronize database from {{ SNAPSHOT_PATH_DB }}"
+      synchronize:
+        src: "{{ SNAPSHOT_PATH_DB }}"
+        dest: "{{ SNAPSHOT_PATH_DB }}"
+      when: not database_result.stat.exists or FORCE_DB_IMPORT
+      tags:
+        - synchronize-database-only
+
+    - name: "synchronize media from {{ SNAPSHOT_PATH_MEDIA }}"
+      synchronize:
+        src: "{{ SNAPSHOT_PATH_MEDIA }}"
+        dest: "{{ SNAPSHOT_PATH_MEDIA }}"
+        copy_links: yes
+        archive: no
+        recursive: yes
+        delete: yes
+      when: not media_result.stat.exists or FORCE_MEDIA_IMPORT
+      tags:
+        - synchronize-media-only
+
+
+- name: "term-container - database import"
+  hosts: term-container
+  vars:
+    # force import will overwrite existing db
+    FORCE_DB_IMPORT: false
+    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}"
+    SNAPSHOT_PATH_DB: "{{ SNAPSHOT_PATH }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+  tags:
+    - db-import
+
+  tasks:
+    - name: check for presence of core_config_data table
+      shell: echo "SELECT COUNT(1) FROM core_config_data;" | mysql
+      register: result
+      ignore_errors: True
+
+    - name: copy SQL_FILE if SQL_FILE extravar has been passed. It must be gzipped compressed .sql.gz!!!
+      copy:
+        src: "{{ SQL_FILE }}"
+        dest: "/tmp/sql.gz"
+      when: SQL_FILE is defined
+
+    - set_fact:
+        SNAPSHOT_PATH_DB: "/tmp/sql.gz"
+      when: SQL_FILE is defined
+
+    - name: import database - uncompress to /tmp/db.sql
+      shell: zcat {{ SNAPSHOT_PATH_DB }} > /tmp/db.sql
+      when: result|failed or FORCE_DB_IMPORT
+
+    - name: import database - source /tmp/db.sql into mysql
+      shell: mysql -e "SET autocommit=0; SET unique_checks=0; SET foreign_key_checks=0; source /tmp/db.sql; COMMIT; SET unique_checks=1; SET foreign_key_checks=1;"
+      when: result|failed or FORCE_DB_IMPORT
+
+    - name: import mysql database - remove /tmp/db.sql
+      file: state=absent path=/tmp/db.sql
+      when: result|failed or FORCE_DB_IMPORT

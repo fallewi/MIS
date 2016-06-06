@@ -20,3 +20,7 @@ var
 /data/*.csv
 /downloader/pearlib/cache/
 /downloader/*.cfg
+
+# skel
+/.htaccess.skel
+/app/etc/local.xml.skel
