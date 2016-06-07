@@ -37,7 +37,6 @@ jQuery(document).ready(function ($) {
 
             var self = this;
 
-            this.imageSlider();
             this.setDescriptionContainerMaxHeight();
             this.setupAccordion();
             this.moveAddToCartButton();
@@ -49,6 +48,7 @@ jQuery(document).ready(function ($) {
             $(window).resize(function(){
                 self.setDescriptionContainerMaxHeight();
             });
+            this.imageSlider();
         },
 
         dynamicHeaderText: function() {
