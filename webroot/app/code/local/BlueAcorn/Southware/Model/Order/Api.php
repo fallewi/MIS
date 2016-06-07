@@ -9,20 +9,6 @@
 class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
 {
     /**
-     * Sets Southware Order ID on Order provided by Southware
-     *
-     * @param $orderNumber
-     * @param $southwareOrderId
-     */
-    public function setSouthwareOrderId($orderNumber, $southwareOrderId)
-    {
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderNumber);
-        $orderId = $order->getId();
-
-        Mage::getResourceModel('sales/order')->setSouthWareOrderId($orderId, $southwareOrderId);
-    }
-
-    /**
      * Override of Mage_Sales_Model_Order_Api::info()
      *
      * @param string $orderIncrementId

@@ -27,4 +27,14 @@
             </southware>
         </helpers>
     </global>
+    <crontab>
+        <jobs>
+            <blueacorn_southware>
+                <schedule><cron_expr>*/15 * * * *</cron_expr></schedule>
+                <run>
+                    <model>southware/order_ebridge::getDocumentList</model>
+                </run>
+            </blueacorn_southware>
+        </jobs>
+    </crontab>
 </config>
