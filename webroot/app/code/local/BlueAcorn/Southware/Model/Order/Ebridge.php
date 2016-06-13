@@ -113,7 +113,7 @@ class BlueAcorn_Southware_Model_Order_Ebridge
      *
      * @param $southwareOrderId
      * @param $incrementId
-     * @param           $southwareCustomerId
+     * @param $southwareCustomerId
      */
     public function setSouthwareId($southwareOrderId, $incrementId, $southwareCustomerId)
     {
@@ -121,7 +121,7 @@ class BlueAcorn_Southware_Model_Order_Ebridge
         $orderId = $order->getId();
         $customerEmail = $order->getCustomerEmail();
 
-        if($customerEmail !== null){
+        if(!$order->getCustomerIsGuest()){
             $this->setSouthwareCustomerId($customerEmail, $southwareCustomerId);
         }
 
