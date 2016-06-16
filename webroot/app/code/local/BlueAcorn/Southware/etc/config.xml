@@ -37,4 +37,13 @@
             </blueacorn_southware>
         </jobs>
     </crontab>
+    <default>
+        <blueacorn_southware>
+            <api_settings>
+                <api_url>https://www.ebridgeservices.com/eportalservice.asmx</api_url>
+                <api_user>MAPI21029</api_user>
+                <api_password>932369</api_password>
+            </api_settings>
+        </blueacorn_southware>
+    </default>
 </config>
