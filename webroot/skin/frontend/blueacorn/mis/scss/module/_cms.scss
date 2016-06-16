@@ -41,8 +41,8 @@
 
         h1 {
             border-bottom: none;
-            font-family: "gesta", Verdana, Arial, sans-serif;
-            font-size: 47px;
+            font-family: $f-stack-sans;
+            font-size: 36px;
             color: $c-h1;
             font-weight: normal;
             letter-spacing: 1px;
@@ -51,7 +51,7 @@
             @media only screen and (max-width: 770px) {
                 text-align: center;
                 font-size: 28px;
-                line-height: 40px;
+                line-height: 34px;
             }
         }
 
@@ -68,9 +68,8 @@
 
         p {
             color: $c-text;
-            font-family: $f-stack-serif;
+            font-family: $f-stack-sans;
             font-size: 14px;
-            font-style: italic;
             line-height: 24px;
         }
 
@@ -79,14 +78,20 @@
         }
 
         h2 {
-            color: $c-h2;
+            color: $c-blue;
+            font-size: 18px;
+            line-height: 22px;
+            letter-spacing: 1px;
+            margin:1em 0 .1em;
+            &.top{
+                margin:0 0 .1em;
+            }
         }
 
         li {
             color: $c-text;
-            font-family: $f-stack-serif;
+            font-family: $f-stack-sans;
             font-size: $f-size;
-            font-style: italic;
             line-height: 24px;
         }
     }
@@ -96,6 +101,21 @@
             @include clearfix;
         }
     }
+    .gmap{
+        border:0;
+        height:300px;
+        width:100%;
+    }
+    .side{
+        background-color: $brand-light;
+        color:#666;
+        margin-bottom:1.5em;
+        h4{
+            color:#666;
+            margin:1em 0 0;
+        }
+    }
+    .side .content, .padded{padding:.5em 1em;}
 }
 
 .cms-no-route {
@@ -175,7 +195,6 @@
 }
 
 #contactForm {
-    padding-left: 40px;
 
     h2 {
         display: none;
@@ -188,11 +207,15 @@
     .fieldset .legend + .required {
         margin: 0;
     }
-}
 
-@include bp(max-width, $bp-medium) {
-
-    #contactForm {
-        padding-left: 0;
+    label{
+        font-size: $f-size;
+        font-family: $f-stack-sans;
+        font-weight: normal;
+        margin:.5em 0 0;
+    }
+    textarea{
+        width:100%;
+        max-width:100%;
     }
 }
