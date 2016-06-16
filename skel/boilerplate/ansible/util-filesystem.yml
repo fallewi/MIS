@@ -22,10 +22,11 @@
     #  set become: false and ensure ansible_ssh_user == HTTPD_USER
     - name: ensure HTTPD_USER has write access to WRITABLE_PATHS
       file:
-        path: "{{ APP_ROOT }}/{{ item }}"
+        path: "{{ item }}"
         group: "{{ HTTPD_USER }}"
         mode: g+rwx
         state: directory
+        recurse: yes
       become: True
       ignore_errors: yes
       tags:

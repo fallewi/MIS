@@ -12,14 +12,12 @@ display_help() {
 
   Commands:
     set <envname>        set the current environment
-                         (environment must be set per machine)
+                         this will symlink configuration into webroot
 
     get                  Print the current environment
 
     list                 Print the available environments
                          (directories under env/)
-
-    make qa              Generates qa environments (currently qa-1, qa-2)
 
     make <envname>       Generates a new environment from skel templates
 
@@ -32,23 +30,44 @@ display_help() {
     test                 Tests that an environment is set and its configuration
                          matches that in the authoritative skel branch
 
+  Dockerized Environment Commands:
+    ( dockerized environments must have DOCKER_MACHINE specified in their envars
+      as well as an accompaying docker-compose file )
+
+    up                   start a dockerized environment
+                         (always updates to latest mage- images)
+
+    down                 stop a dockerized environment
+
+    status [name]        print dockerized environment or container name status
+
+    logs [name]          print dockerized environment or container name logs
+
+
   Options:
     --help               Display help
 
-    --quiet | -q         semantic output
+    -q | --quiet         semantic output
 
-    --force | -f         Overwrite when linking files
+    -np | --no-prompt    Avoids prompts (skips existing files) when linking
 
-    --no-prompt | -np    Avoids prompts (skips existing files) when linking
+    -f | --force         Overwrite when linking files
+                         (when setting an environment)
 
     --only-ansible       Only create Ansible Playbooks when making an environemt
-                         (make command only)
+                         (when making an environment)
 
     --skip-ansible       Skip Ansible Playbooks when making an environment
-                         (make command only)
+                         (when making an environment)
 
     --base-env <env>     Base environment to use when making an environment
-                         (make command only - prompts you by default)
+                         (when making an environment, prompted by default)
+
+    -v | --volumes       create or delete dockerized environment volumes
+                         (when toggling a dockerized environment)
+
+    -l | --local         skips activating the docker-machine, e.g. run locally
+                         (when toggling a dockerized environment)
 
 
 EOF
@@ -78,6 +97,9 @@ FORCE_OVERWRITE=false
 SKIP_PROMPTS=false
 SKIP_ENV=false
 SKIP_ANSIBLE=false
+SKIP_VOLUMES=true
+SKIP_MACHINE=false
+COMPOSE_FILE="docker-compose.skel.yml"
 
 
 # run functions
@@ -108,10 +130,6 @@ set_env(){
   echo
 
   if [ "$ENV" = "local" ]; then
-    # if the local environment doesn't yet exist, copy it from boilerplate
-    #  (lazy provisioning allows local/ to remain untracked in .gitignore)
-    [ -d "$ENV_DIR/local" ] || cp -a $BOILERPLATE_DIR/env/local $ENV_DIR/
-
     run_task "env_local" "local-only steps"
   fi
 
@@ -169,7 +187,8 @@ print_var(){
 
   [ -e $ENV_DIR/$ENV/envars ] && . $ENV_DIR/$ENV/envars
 
-  printf ${!REQUESTED_VAR}
+  printf ${!REQUESTED_VAR} 2>/dev/null
+  exit $?
 }
 
 
@@ -197,7 +216,9 @@ env_conf() {
     elif [ ! -d $(dirname $DEST) ]; then
       mkdir -p $(dirname $DEST)
     fi
-    ln -s $REPO_ROOT/$SRC $DEST
+
+    RELATIVE_SRC="$(realpath --relative-to=$(dirname $DEST) $(dirname $SRC))/$(basename $SRC)"
+    ln -s $RELATIVE_SRC $DEST
   done
 
 }
@@ -260,15 +281,7 @@ env_make() {
 
   [ -z "$ENV" ] && read -p "environment name to generate: " ENV
 
-  if [ "$ENV" = "qa" ]; then
-    BASE_ENV="qa"
-    BASE_DIR="$BOILERPLATE_DIR/env/$BASE_ENV"
-    SKIP_ANSIBLE=true
-
-    env_make_arg "qa-1"
-    env_make_arg "qa-2"
-
-  elif [ ! -z "$BASE_ENV" ]; then
+  if [ ! -z "$BASE_ENV" ]; then
     BASE_DIR="$ENV_DIR/$BASE_ENV"
 
     if [ -d "$BASE_DIR" ]; then
@@ -321,6 +334,8 @@ env_make() {
 env_make_arg() {
 
   printf "\ncreating \033[35m%s\033[0m...\n" "$1"
+
+  [ "$BASE_ENV" = "dockerized" ] && SKIP_ANSIBLE=true
 
   cd $ENV_DIR
   local SED_REPLACE="s|@ENV|$1|g;s|@CLIENT_CODE|$CLIENT_CODE|g;s|@REPO_REMOTE|$REPO_REMOTE|g;s|@DOMAIN|$DOMAIN|g"
@@ -432,6 +447,127 @@ env_onset(){
   done
 }
 
+docker_bootstrap(){
+  [ -z "$ENV" ] && print_list && read -p "dockerized environment to '$1': " ENV
+  echo
+
+  [ -e $ENV_DIR/$ENV/envars ] || error \
+    "missing $ENV_DIR/$ENV/envars" "is $ENV a valid environment?"
+
+  # copy deploy key (used for git checkouts)
+  cp $REPO_ROOT/$SKEL_DIR/deploy.key $ENV_DIR/$ENV/deploy.key || error \
+    "failed copying deploy.key to environment" "have you initialized the skel?"
+
+  # copy skel version of docker-compose
+  cp $ENV_DIR/docker-compose.skel.yml $ENV_DIR/$ENV/
+  cp $ENV_DIR/Dockerfile-term.skel $ENV_DIR/$ENV/
+
+  # export vars
+  export ENV=$ENV
+  case $ENV in
+    node-* ) export NFS_MODE=ro ;;
+    *) export NFS_MODE=rw ;;
+  esac
+
+  set -a
+  . $ENV_DIR/appvars || error "unable to source appvars"
+  . $ENV_DIR/$ENV/envars || error "unable to source envars"
+  set +a
+
+  [ -z "$DOCKER_MACHINE" ] && error \
+    "DOCKER_MACHINE must be set for dockerized environments"
+
+  [ -z "$CLIENT_CODE" ] && error \
+    "CLIENT_CODE must be set for dockerized environments."
+
+  [ -z "$REPO_REMOTE" ] && error \
+    "REPO_REMOTE must be set for dockerized environments."
+
+  [ -z "$SNAPSHOT_BASE_ENV" ] && error \
+    "SNAPSHOT_BASE_ENV must be set for dockerized environments."
+
+  [ ${CLIENT_CODE:0:1} = "@" ] && error \
+      "placeholder value detected for CLIENT_CODE" "has skel been initialized?"
+
+  [ ${REPO_REMOTE:0:1} = "@" ] && error \
+      "placeholder value detected for REPO_REMOTE" "has skel been initialized?"
+
+  [ -e $ENV_DIR/$ENV/docker-compose.yml ] && COMPOSE_FILE="docker-compose.yml"
+  COMPOSE_FLAGS="-f $COMPOSE_FILE -p ${ENV}-${CLIENT_CODE}"
+
+  [ -e $ENV_DIR/$ENV/$COMPOSE_FILE ] || error \
+    "environment lacks a docker-compose file"
+
+  $SKIP_MACHINE || configure_docker_machine $DOCKER_MACHINE
+
+  cd $ENV_DIR/$ENV || error "unable to enter environment"
+}
+
+docker_make_volumes(){
+  echo
+  echo "========================================"
+  echo "creating $ENV volumes  containers..."
+  echo "========================================"
+  echo
+  #@TODO? named volume making
+  echo "... not yet supported."
+}
+
+docker_up(){
+  docker_bootstrap "start"
+
+  echo
+  echo "========================================"
+  echo "build & pull $ENV environment containers..."
+  echo "========================================"
+  echo
+
+  docker-compose $COMPOSE_FLAGS stop
+  docker-compose $COMPOSE_FLAGS pull
+  docker-compose $COMPOSE_FLAGS build
+
+  echo
+  echo "========================================"
+  echo "starting $ENV environment containers..."
+  echo "========================================"
+  echo
+
+  docker-compose $COMPOSE_FLAGS up -d
+}
+
+
+docker_down(){
+
+  docker_bootstrap "stop"
+
+  if $SKIP_VOLUMES; then
+    echo
+    echo "========================================"
+    echo "stopping $ENV environment containers..."
+    echo "========================================"
+    echo
+    docker-compose $COMPOSE_FLAGS stop
+
+  else
+    echo
+    echo "========================================"
+    echo "removing $ENV containers and volumes..."
+    echo "========================================"
+    echo
+    docker-compose $COMPOSE_FLAGS down -v
+  fi
+}
+
+docker_status(){
+  docker_bootstrap "print status"
+  docker-compose $COMPOSE_FLAGS ps $DOCKER_CONTAINER_NAME
+}
+
+docker_logs(){
+  docker_bootstrap "print logs"
+  docker-compose $COMPOSE_FLAGS logs $DOCKER_CONTAINER_NAME
+}
+
 
 # runtime
 #########
@@ -444,25 +580,53 @@ else
   while [ $# -ne 0 ]; do
     case $1 in
       -h|--help|help)    display_help ;;
-      --force|-f)        FORCE_OVERWRITE=true ;;
-      --no-prompt|-np)   SKIP_PROMPTS=true ;;
-      --quiet|-q)        QUIET=true ;;
+      -f|--force)        FORCE_OVERWRITE=true ;;
+      -np|--no-prompt)   SKIP_PROMPTS=true ;;
+      -q|--quiet)        QUIET=true ;;
+      -v|--volumes)      SKIP_VOLUMES=false ;;
+      -l|--local)        SKIP_MACHINE=true ;;
       --only-ansible)    SKIP_ENV=true ;;
       --skip-ansible)    SKIP_ANSIBLE=true ;;
       --base-env)        BASE_ENV="$2" ; shift ;;
       list)              runstr="print_list" ;;
-      test)              runstr="env_test" ;;
+      test)              runstr="env_test" ; fail_in_groundcontrol ;;
       make)              runstr="env_make" ;
                          if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
                            ENV="$2" ; shift ;
                          fi
                          ;;
-      set)               runstr="set_env" ;
+      set)               runstr="set_env" ; fail_in_groundcontrol
                          if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
                            ENV="$2" ; shift ;
                          fi
                          ;;
-      get)               runstr="print_env" ;;
+      get)               runstr="print_env" ; fail_in_groundcontrol ;;
+      up)                runstr="docker_up" ;
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           ENV="$2" ; shift ;
+                         fi
+                         ;;
+      down)              runstr="docker_down" ;
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           ENV="$2" ; shift ;
+                         fi
+                         ;;
+      status)            runstr="docker_status" ;
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           ENV="$2" ; shift ;
+                         fi
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           DOCKER_CONTAINER_NAME="$2" ; shift ;
+                         fi
+                         ;;
+      logs)              runstr="docker_logs" ;
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           ENV="$2" ; shift ;
+                         fi
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           DOCKER_CONTAINER_NAME="$2" ; shift ;
+                         fi
+                         ;;
       vars)              runstr="print_vars"
                          if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
                            ENV="$2" ; shift ;
@@ -482,6 +646,5 @@ else
   done
 
   $runstr
-  echo
   exit $?
 fi

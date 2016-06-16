@@ -19,6 +19,10 @@ FORCE_ENVIRONMENT_PLAYBOOK=true
 #########
 
 . $CWD/.functions.sh || error "unable to load shared functions"
+
+# @TODO only fail if deployment requires local compilation -- how to determine??
+fail_in_groundcontrol "bin/deploy"
+
 ansible_command $@
 
 exit $?

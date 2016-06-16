@@ -11,6 +11,9 @@ type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
 
 . $CWD/.functions.sh || error "unable to load shared functions"
 
+# limit execution from groundcontrol
+fail_in_groundcontrol "bin/release"
+
 DOWNLOAD_URL="https://get.blueacorn.net/bin/release_linux-amd64_latest"
 DOWNLOAD_HASH="https://get.blueacorn.net/bin/release_linux-amd64_latest.md5"
 if [[ $OSTYPE == darwin* ]]; then
