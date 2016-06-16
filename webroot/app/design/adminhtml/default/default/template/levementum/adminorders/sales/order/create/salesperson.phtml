@@ -20,7 +20,10 @@ if($customerId) {
 }
 ?>
 <?php if ($isSalesperson || $isAdmin): ?>
-    <?php $assignedSalespersonName = Mage::helper('adminorders')->getAssignedSalespersonName() ?>
+    <?php
+        $assignedSalespersonName = Mage::helper('adminorders')->getAssignedSalespersonName();
+        $assignedSalesperson = Mage::helper('adminorders')->getAssignedSalesperson()
+    ?>
     <div class="entry-edit">
         <div class="entry-edit-head">
             <h4 class="icon-head fieldset-legend"><?php echo $this->__('Salesperson') ?></h4>
@@ -35,21 +38,26 @@ if($customerId) {
                                     <select id="group_id" name="order[admin_id]" class="select">
                                         <option></option>
                                         <?php foreach ($salespeople->toArray() as $userId => $username): ?>
-                                            <option value="<?php echo $userId ?>"<?php if ($userId == $user->getId()): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
+                                            <?php $userUserName = $user->getUsername; ?>
+                                            <?php if($assignedSalesperson) : ?>
+                                                <option value="<?php echo $userId ?>"<?php if ($userId == $assignedSalesperson): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
+                                            <?php else: ?>
+                                                <option value="<?php echo $userId ?>"<?php if ($userId == $user->getUsername()): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label"><label><?php echo $this->__('Customer Assigned Salesperson') ?></label></td>
-                                <td class="label">
+                                <td class="value">
                                     <?php if($assignedSalespersonName) : ?>
                                     <label><?php echo $assignedSalespersonName ?></label>
                                     <?php else: ?>
                                     <select id="assigned_salesperson" name="order[account][assigned_salesperson]" class="select">
                                         <option></option>
                                         <?php foreach ($salespeople->toArray() as $userId => $username): ?>
-                                            <option value="<?php echo $userId ?>"<?php if ($userId == $user->getId()): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
+                                            <option value="<?php echo $userId ?>"<?php if ($userId == $user->getUsername()): ?> selected="selected"<?php endif; ?>><?php echo $username; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                     <?php endif; ?>
