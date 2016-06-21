@@ -22,20 +22,20 @@ if($customerId) {
 <?php if ($isSalesperson || $isAdmin): ?>
     <?php
         $assignedSalespersonName = Mage::helper('adminorders')->getAssignedSalespersonName();
-        $assignedSalesperson = Mage::helper('adminorders')->getAssignedSalesperson()
+        $assignedSalesperson = Mage::helper('adminorders')->getAssignedSalesperson();
     ?>
     <div class="entry-edit">
         <div class="entry-edit-head">
             <h4 class="icon-head fieldset-legend"><?php echo $this->__('Salesperson') ?></h4>
         </div>
-        <div id="salesperson_select_fields"><div class="fieldset " id="main">
+        <div id="salesperson_select_fields"><div class="fieldset " id="salesperson_select">
                 <div class="hor-scroll">
                     <table cellspacing="0" class="form-list">
                         <tbody>
                             <tr>
                                 <td class="label"><label for="group_id"><?php echo $this->__('Salesperson') ?></label></td>
                                 <td class="value">
-                                    <select id="group_id" name="order[admin_id]" class="select">
+                                    <select id="admin_id" name="order[admin_id]" class="select">
                                         <option></option>
                                         <?php foreach ($salespeople->toArray() as $userId => $username): ?>
                                             <?php $userUserName = $user->getUsername; ?>

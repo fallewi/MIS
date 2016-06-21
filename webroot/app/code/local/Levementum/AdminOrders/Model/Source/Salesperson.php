@@ -36,6 +36,7 @@ class Levementum_AdminOrders_Model_Source_Salesperson {
             $collection->addFieldToFilter('is_active',"1");
             $collection->setOrder('firstname', 'ASC');
             $collection->setOrder('lastname', 'ASC');
+            $collection->setOrder('username', 'ASC');
 
             $this->_options = array();
             foreach ($collection as $item) {

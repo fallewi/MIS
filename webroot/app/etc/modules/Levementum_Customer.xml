@@ -2,9 +2,9 @@
 <config>
   <modules>
     <Levementum_Customer>
-      <active>false</active>
+      <active>true</active>
       <codePool>local</codePool>
-      <version>0.1.0</version>
+      <version>0.1.1</version>
     </Levementum_Customer>
   </modules>
 </config>

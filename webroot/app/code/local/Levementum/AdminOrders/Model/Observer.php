@@ -15,10 +15,6 @@ class Levementum_AdminOrders_Model_Observer {
         /** @var Mage_Sales_Model_Order $order */
         $order = $observer->getOrder();
 
-       /* if (!Mage::helper('levcore')->isAdmin()) {
-            return;
-        }*/
-
         $postData = Mage::app()->getRequest()->getPost('order');
         if (!isset($postData['admin_id'])) {
             return;
