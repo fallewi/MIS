@@ -19,7 +19,7 @@ class Levementum_AdminOrders_Block_Adminhtml_Sales_Order_Create_Search_Grid_Rend
             } else{
                 $imageUrl = Mage::getModel('catalog/product')->getSmallImageUrl(70);
             }
-            $imageHtml = '<img src="'.$imageUrl.'" class="" width="70" />';
+            $imageHtml = '<img src="'.$imageUrl.'" class="" width="70" alt="product" />';
 
             return $imageHtml;
 
