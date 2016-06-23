@@ -196,11 +196,10 @@ class MissionRS_TacoReport_Block_Adminhtml_Report extends Mage_Adminhtml_Block_T
         $collection = Mage::getResourceModel('admin/user_collection');
         $collection->join(array('role' => 'admin/role'),'main_table.user_id=role.user_id');
         $collection->join(array('role2' => 'admin/role'),'role.parent_id=role2.role_id',array('role_group' => 'role_name', 'role_group_id' => 'role_id'));
-        // $collection->addFieldToFilter('role2.role_id',Mage::helper('adminorders')->getSalespersonRoleId());
 
         $options = array();
         foreach ($collection as $item) {
-            $options[$item->getId()] = $item;
+            $options[$item->getUsername()] = $item;
         }
 
         return $options;

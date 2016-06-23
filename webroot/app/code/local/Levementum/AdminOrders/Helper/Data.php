@@ -69,14 +69,11 @@ class Levementum_AdminOrders_Helper_Data extends Mage_Core_Helper_Abstract
      * @return string
      */
     public function getAssignedSalespersonName() {
+        $assigned_salesperson = $this->getAssignedSalesperson();
 
-        $customerId = Mage::getSingleton('adminhtml/session_quote')->getCustomerId();
-
-        if($customerId) {
-            $customer = Mage::getModel('customer/customer')->load($customerId);
-            if($customer) {
-                return $customer->getResource()->getAttribute('assigned_salesperson')->getFrontend()->getValue($customer);
-            }
+        if($assigned_salesperson){
+            $user_data = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username',$assigned_salesperson)->getData()[0];
+            return $user_data['firstname']." ".$user_data["lastname"];
         }
         return '';
     }

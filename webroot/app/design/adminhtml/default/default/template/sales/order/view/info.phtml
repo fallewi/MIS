@@ -67,8 +67,8 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
                 <?php
                     $adminId = $_order->getAdminId();
                     if($adminId != null){
-                        $adminUser = Mage::getModel('admin/user')->load($adminId);
-                        $adminName = $adminUser->getFirstname().' '.$adminUser->getLastname();
+                        $adminUser = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username',$adminId)->getData()[0];
+                        $adminName = $adminUser['firstname'].' '.$adminUser['lastname'];
                         echo '<td class="value"><strong><span id="assigned_salesperson">'.$adminName.'</span></strong></td>';
                     }
                 else{
