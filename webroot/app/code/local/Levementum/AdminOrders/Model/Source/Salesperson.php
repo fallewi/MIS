@@ -25,16 +25,22 @@ class Levementum_AdminOrders_Model_Source_Salesperson {
                 array(
                     'role2.role_name',
                     'role2.role_name',
+                    'role2.role_name'
                 ),
                 array(
                     array('eq'=>Mage::helper('adminorders')->getSalespersonRoleName()),
                     array('eq'=>"Super User"),
+                    array('eq'=>"Administrators")
                 )
             );
+            $collection->addFieldToFilter('is_active',"1");
+            $collection->setOrder('firstname', 'ASC');
+            $collection->setOrder('lastname', 'ASC');
+            $collection->setOrder('username', 'ASC');
 
             $this->_options = array();
             foreach ($collection as $item) {
-                $this->_options[$item->getId()] = $item->getFirstname().' '.$item->getLastname();
+                $this->_options[$item->getUsername()] = $item->getFirstname().' '.$item->getLastname();
             }
         }
         return $this->_options;

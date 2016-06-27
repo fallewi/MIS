@@ -9,9 +9,12 @@ error(){
 ##########
 
 REPO_ROOT=${REPO_ROOT:-"$(git rev-parse --show-toplevel)"}
+WEBROOT_DIR=${WEBROOT_DIR:-webroot}
 WORKING_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-SKELVARS="$REPO_ROOT/.skelvars"
-source $SKELVARS || error "unable to source skelvars. has skel been attached?"
+SKEL_IN_GROUNDCONTROL=false
+
+source "$REPO_ROOT/.skelvars" || error \
+  "unable to source skelvars. has skel been attached?"
 
 [ -z "$WORKING_BRANCH" ] && error "unable to determine WORKING_BRANCH"
 [ -z "$SKEL_DIR" ] && error "SKEL_DIR not defined" "has skel been attached?"
@@ -127,11 +130,19 @@ find_latest_squash()
 
 configure_docker_machine(){
   local SHELL=${SHELL:-"sh"}
+  echo "activing docker-machine $1..."
   eval $(docker-machine env $1 --shell $SHELL)
   [ "$(docker-machine active)" = "$1" ] || error "unable to configure $1 machine"
   docker info || error "unable to communicate with $1 machine"
 }
 
+fail_in_groundcontrol(){
+  if $SKEL_IN_GROUNDCONTROL; then
+    local errmsg="you cannot run this from groundcontrol"
+    [ -z "$@" ] || errmsg="you cannot run '$@' from groundcontrol"
+    error "$errmsg" "it probably requres WEBROOT_DIR!"
+  fi
+}
 
 env_bootstrap(){
 
@@ -144,18 +155,15 @@ env_bootstrap(){
 
   [ -d "$ENV_DIR/$ENV" ] || error "$ENV environment not found"
 
-  if [[ $ENV == qa-* ]]; then
-    ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/qa_hosts.py
+  DOCKER_MACHINE=$($REPO_ROOT/bin/env var DOCKER_MACHINE $ENV)
+
+  if [ ! -z "$DOCKER_MACHINE" ]; then
+    ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/dockerized_hosts.py
     FORCE_ENVIRONMENT_PLAYBOOK=false
-    ANSIBLE_PLAYBOOK="qa.$ANSIBLE_PLAYBOOK"
+    ANSIBLE_PLAYBOOK="dockerized.$ANSIBLE_PLAYBOOK"
 
     # force activation of configured machine
-    case $ENV in
-      qa-1) configure_docker_machine node-a ;;
-      qa-2) configure_docker_machine node-b ;;
-      qa-3) configure_docker_machine node-z ;;
-      *)    error "no docker-machine has been configured for $ENV" ;;
-    esac
+    configure_docker_machine $DOCKER_MACHINE
 
   else
     [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"

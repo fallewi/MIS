@@ -153,15 +153,14 @@ $previousMonthTotal != 0 ? $percentageOfTotal = round($monthTotal / $previousMon
         </tr>
         <?php $i = 1 ?>
         <?php foreach ($orders as $order): ?>
-            <?php ?>
+            <?php $orderUrl = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $order->getId())); ?>
             <tr class="<?php echo($i % 2 == 0 ? 'even' : 'odd') ?>">
-                <td><?php echo $order->getIncrementId() ?></td>
+                <td><?php echo "<a href=\"{$orderUrl}\">". $order->getIncrementId()."</a>"; ?></td>
                 <?php // <td><?php echo date($orderTimeFormat,Mage::getModel('core/date')->timestamp($order->getCreatedAt())) </td> ?>
                 <td><?php echo $order->getCustomerName() ?></td>
                 <td><?php echo $order->getBillingAddress()->getCompany() ?></td>
                 <td <?php echo ($order->getAdminId() ? 'class="red"' : '' ); ?> ><?php echo Mage::helper('core')->formatCurrency($order->getGrandTotal()) ?></td>
-                <?php // <td><?php echo $order->getStatus()</td>?>
-                <td><?php echo ($order->getAdminId() ? $salespeople[$order->getAdminId()]->getUsername() : '') ; ?></td>
+                <td><?php echo ($order->getAdminId() ? $order->getAdminId() : '') ; ?></td>
             </tr>
             <?php $i++ ?>
         <?php endforeach ?>

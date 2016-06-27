@@ -106,6 +106,7 @@ env_sync() {
 #########
 
 runstr="sync_env"
+fail_in_groundcontrol "bin/sync"
 
 while [ $# -ne 0 ]; do
   case $1 in

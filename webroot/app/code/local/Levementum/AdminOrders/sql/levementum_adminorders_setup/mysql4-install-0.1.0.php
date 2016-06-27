@@ -5,14 +5,14 @@
  * @file        ${FILE_NAME}
  * @auther      afabian@levementum.com
  * @date        10/15/13 2:33 PM
- * @brief       
- * @details     
- */ 
+ * @brief
+ * @details
+ */
 /* @var $installer Mage_Core_Model_Resource_Setup */
 $installer = $this;
 
 $installer->startSetup();
- 
+
 $installer->addAttribute('order', 'admin_id', array('type' => 'int', 'default' => null, 'visible' => false, 'required' => false, 'nullable' => true, 'unsigned' => true));
 
 $installer->endSetup();

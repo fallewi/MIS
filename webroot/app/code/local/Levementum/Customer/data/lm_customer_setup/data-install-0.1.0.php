@@ -16,7 +16,6 @@ $installer->addAttribute('customer', 'assigned_salesperson', array(
     'label'                        => 'Assigned Salesperson',
     'input'                        => 'select',
     'source'                       => 'levementum_customer/customer_attribute_source_salesperson',
-    /*'backend'                      => 'levementum_customer/customer_attribute_backend_salesperson', */
     'visible_on_front'             => 0,
     'required' => 0,
     'user_defined' => 1,

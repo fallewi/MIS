@@ -88,7 +88,10 @@ SKIP_GP=false
 run_task() {
   cd $REPO_ROOT || error "error switching to REPO_ROOT"
   local SKIP_CHECK=${3:-false}
+
   if ! $SKIP_CHECK; then
+    [ -z "$SKEL_BRANCH" ] && error "SKEL_BRANCH not defined" "has skel been attached?"
+
     [ "$WORKING_BRANCH" = "$SKEL_BRANCH" ] || error \
       "You must run $1 from the $SKEL_BRANCH (currently on $WORKING_BRANCH)" \
       "please checkout $SKEL_BRANCH and try again"
@@ -102,8 +105,11 @@ repo_init(){
 
   REPO_HEAD="$(git rev-parse --short HEAD)"
 
+  run_task "init_rerere" "initializing git rerere cache"
   run_task "init_boilerplate" "merge $SKEL_DIR/ boilerplate"
   run_task "init_localize" "localize boilerplate"
+  run_task "init_rerere_restore" "restoring pre-init rerere cache"
+
   repo_deploykey
   run_task "init_blueacornui" "modman init + green-pistachio/blueacornui"
 
@@ -152,6 +158,31 @@ repo_deploykey(){
 # initialization fns
 ####################
 
+init_rerere(){
+  git config rerere.enabled true
+
+  [ -d .git/rr-cache ] && mv -f .git/rr-cache .git/rr-cache.pre-skel-init
+
+  # distribute rerere cache
+  if [ ! -d $SKEL_DIR/.rr-cache ]; then
+    mkdir $SKEL_DIR/.rr-cache
+    touch $SKEL_DIR/.rr-cache/.gitkeep
+
+    [ -d .git/rr-cache.pre-skel-init ] && \
+      cp -R .git/rr-cache.pre-skel-init/. $SKEL_DIR/.rr-cache/
+  fi
+
+  ln -sfn $REPO_ROOT/$SKEL_DIR/.rr-cache .git/rr-cache || error \
+    "error linking rerere cache to $SKEL_DIR/.rr-cache"
+}
+
+init_rerere_restore(){
+  git add $SKEL_DIR/.rr-cache
+  [ -d .git/rr-cache.pre-skel-init ] && \
+    unlink .git/rr-cache && \
+    mv -f .git/rr-cache.pre-skel-init .git/rr-cache
+}
+
 init_boilerplate(){
   [ -z "$(git status -uno --porcelain)" ] || error \
     "index contains uncommited changes" \
@@ -174,17 +205,14 @@ init_boilerplate(){
     return
   fi
 
-  # @TODO distribute the rerere cache, at least in groundcontrol where we plan
-  # to automatically update/downstream all skels
-  git config rerere.enabled true
-
   git merge --rerere-autoupdate \
     -m "applied boilerplate/REPO_ROOT/ changes from $(git rev-parse --short $LAST_SQUASH)" $MERGE_TREE
 
   # merges where rerere resolves _all_ conflicts still exit as 1.
   #  we workaround by checking if conflicts persist (rerere diff !empty)
   [ -z "$(git rerere diff)" ] || error "error applying $MERGE_TREE boilerplate tree" \
-    "please resolve conflicts and then ** re-initialize **" "that means git mergetool && bin/skel/init again"
+    "please resolve conflicts and then ** re-initialize **" \
+    "this means 'git mergetool', then 'bin/skel init' once more"
 
   git commit --no-edit
 }
@@ -362,12 +390,12 @@ else
       --client-code)     CLIENT_CODE="$2" ; shift ;;
       --repo-remote)     REPO_REMOTE="$2" ; shift ;;
       --domain)          DOMAIN="$2" ; shift ;;
-      init)              runstr="repo_init" ;;
-      push)              runstr="repo_push" ;;
-      pull)              runstr="repo_pull" ;;
+      init)              runstr="repo_init" ; fail_in_groundcontrol ;;
+      push)              runstr="repo_push" ; fail_in_groundcontrol ;;
+      pull)              runstr="repo_pull" ; fail_in_groundcontrol ;;
       localize)          runstr="repo_localize" ;;
       deploykey)         runstr="repo_deploykey" ;;
-      downstream)        runstr="skel_downstream" ;;
+      downstream)        runstr="skel_downstream" ; fail_in_groundcontrol ;;
       *)                 echo "invalid option: $1" ; display_help 1 ;;
     esac
     shift

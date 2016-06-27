@@ -4,12 +4,12 @@
 BlueAcorn external inventory script
 ===================================
 
-Generates Ansible inventory for QA environments. Requires ansible 2.0
+Generates Ansible inventory for dockerized environments. Requires ansible 2.0
 
-host "docker-machine" will point to docker-machine (ssh connection), e.g.
-  qa-1 : node-a
-  qa-2 : node-b
-  qa-3 : node-c
+host "docker-machine" will point to DOCKER_MACHINE defined by envars, e.g.
+  ocean : ocean-SIG
+  qa-1  : node-a
+  qa-2  : node-b
 
 host "term-container" will point to the terminal container (docker connection)
 
@@ -47,11 +47,6 @@ class BlueAcornInventory(object):
 
     def __init__(self):
         ''' Main execution path '''
-        self.node_map = {
-          "qa-1": "node-a",
-          "qa-2": "node-b",
-          "qa-3": "node-z"
-        }
         self.hostgroup = 'all'
         self.envars_files = None
 
@@ -104,10 +99,11 @@ class BlueAcornInventory(object):
             'ansible_connection'
           ])
 
+        if 'DOCKER_MACHINE' not in vars:
+            print "DOCKER_MACHINE is not exported in envars"
+            exit()
 
-        # @TODO blow up if hostgroup not provided or in node_map
-        # hostgroup is "qa-(1|2|3)"
-        machine_name = self.node_map[self.hostgroup]
+        machine_name = vars["DOCKER_MACHINE"]
         storepath = dminspect("{{.Driver.StorePath}}", machine_name)
 
         self.inventory[self.hostgroup]["hosts"].append("docker-machine")

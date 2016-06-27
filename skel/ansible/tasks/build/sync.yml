@@ -7,7 +7,7 @@
     - grunt
     - grunt-sync-only
 
-- name: syncing {{ BUILD_PATH }} build artificts
+- name: syncing {{ BUILD_PATH }} build artifacts
   synchronize:
     src: "{{ LOCAL_ROOT }}/{{ BUILD_PATH }}/{{ item }}/"
     dest: "{{ REPO_ROOT }}/{{ BUILD_PATH }}/{{ item }}/"

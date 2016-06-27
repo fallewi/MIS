@@ -23,16 +23,22 @@ public function getSalesPersons() {
         array(
             'role2.role_name',
             'role2.role_name',
+            'role2.role_name'
         ),
         array(
             array('eq'=>Mage::helper('adminorders')->getSalespersonRoleName()),
             array('eq'=>"Super User"),
+            array('eq'=>"Administrators")
         )
     );
+    $collection->addFieldToFilter('is_active',"1");
+    $collection->setOrder('firstname', 'ASC');
+    $collection->setOrder('lastname', 'ASC');
+    $collection->setOrder('username', 'ASC');
     $sps = array();
 
     foreach ($collection as $item) {
-        $sps[$item->getId()] = $item->getFirstname().' '.$item->getLastname();
+        $sps[$item->getUsername()] = $item->getFirstname().' '.$item->getLastname();
     }
 
     return $sps;
