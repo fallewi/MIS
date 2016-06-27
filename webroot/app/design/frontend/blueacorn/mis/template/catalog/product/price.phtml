@@ -205,7 +205,7 @@ $_msrpPrice = $_taxHelper->getPrice($_product, $_product->getMsrp());
                 </span>
             <?php else: ?>
                 <span class="regular-price three" id="product-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
-                    <?php if (!IS_NULL($_msrpPrice)): ?>
+                    <?php if (!IS_NULL($_msrpPrice) && !Mage::getSingleton('customer/session')->isLoggedIn()): ?>
                         <?php echo $_coreHelper->formatPrice($_msrpPrice, true) ?>
                     <?php else: ?>
                         <?php if ($_finalPrice == $_price): ?>
