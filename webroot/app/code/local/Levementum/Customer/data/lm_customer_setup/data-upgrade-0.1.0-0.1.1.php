@@ -16,7 +16,7 @@ $idAttributeOldSelect = $installer->getAttribute($entityTypeId,'assigned_salespe
 
 $installer->updateAttribute($entityTypeId, $idAttributeOldSelect, array(
     'type'                         => 'varchar',
-    'length'                       => 40
+    'length'                       => '40'
 ));
 
 $installer->run("DELETE FROM `customer_entity_int` where `attribute_id` = {$idAttributeOldSelect}");
