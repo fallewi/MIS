@@ -30,9 +30,9 @@ for N98_BIN in $N98_TESTS; do
   $N98_BIN config:set web/unsecure/base_media_url "{{unsecure_base_url}}media/"
   $N98_BIN config:set web/unsecure/base_js_url "{{unsecure_base_url}}js/"
   $N98_BIN config:set web/secure/base_link_url "{{secure_base_url}}"
-  $N98_BIN config:set web/secure/base_skin_url "{{unsecure_base_url}}skin/"
+  $N98_BIN config:set web/secure/base_skin_url "{{secure_base_url}}skin/"
   $N98_BIN config:set web/secure/base_media_url "{{secure_base_url}}media/"
-  $N98_BIN config:set web/secure/base_js_url "{{unsecure_base_url}}js/"
+  $N98_BIN config:set web/secure/base_js_url "{{secure_base_url}}js/"
 
   # This will remove any admin url configurations in the db so it will work natively from the settings in app/etc/local.xml
   $N98_BIN config:delete admin/url/custom
