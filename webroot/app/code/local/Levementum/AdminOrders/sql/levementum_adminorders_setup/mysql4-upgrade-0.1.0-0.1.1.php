@@ -15,7 +15,7 @@ $installer->startSetup();
 
 $installer->updateAttribute('order', 'admin_id', array(
     'type' => 'varchar',
-    'length' => 40,
+    'length' => '40',
     'default' => null,
     'visible' => false,
     'required' => false,
