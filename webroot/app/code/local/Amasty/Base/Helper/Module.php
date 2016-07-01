@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Base
  */  
 class Amasty_Base_Helper_Module extends Mage_Core_Helper_Abstract
@@ -24,6 +24,8 @@ class Amasty_Base_Helper_Module extends Mage_Core_Helper_Abstract
     
     function init($controllerModule)
     {
+        $segments = explode('_', $controllerModule);
+        $controllerModule = implode('_', array_slice($segments, 0, 2));
         $this->_controllerModule = $controllerModule;
         return $this;
     }
@@ -106,7 +108,7 @@ class Amasty_Base_Helper_Module extends Mage_Core_Helper_Abstract
             
             if (isset($allExtensions[$this->_controllerModule])) 
             {
-                $this->_extension = $allExtensions[$this->_controllerModule];
+                $this->_extension = array_pop($allExtensions[$this->_controllerModule]);
             }
         }
         return $this->_extension;
