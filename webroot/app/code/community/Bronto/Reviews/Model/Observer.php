@@ -28,11 +28,14 @@ class Bronto_Reviews_Model_Observer
     public function processPostOrders($observer)
     {
         if ($observer->getOrder()) {
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($observer->getOrder()->getStoreId(), 'frontend');
             try {
                 $this->_processOrder($observer->getOrder());
             } catch (Exception $e) {
                 $this->_helper->writeError("Failed to examine order: {$e->getMessage()}");
             }
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
         }
     }
 
@@ -97,7 +100,7 @@ class Bronto_Reviews_Model_Observer
                     if (isset($processTypes[$post->getPostType()])) {
                         $processed[$post->getPostType()] = true;
                         $days = $this->_helper->getDefaultPostPeriod($post, $storeId);
-                        if ($post->getPostType() == Bronto_Reviews_Model_Post_Purchase::TYPE_REORDER) {
+                        if ($post->getPostType() == Bronto_Reviews_Model_Post_Purchase::TYPE_REORDER && $this->_helper->getDefaultMultiplier($post, $storeId)) {
                             $days *= ($item->getQtyOrdered() * 1);
                         }
                         $days += $this->_helper->getDefaultAdjustment($post, $storeId);
@@ -122,7 +125,7 @@ class Bronto_Reviews_Model_Observer
                     $productUrl = $productHelper->getProductAttribute($product, 'url', $storeId) . $urlSuffix;
                     $reviewUrl = $this->_helper->getReviewsUrl($product, $storeId) . $urlSuffix;
                     $reviewMessage->addDeliveryField("reviewUrl_{$index}", $reviewUrl);
-                    $reviewMessage->addDeliveryField("productUrl_{$index}", $reviewUrl);
+                    $reviewMessage->addDeliveryField("productUrl_{$index}", $productUrl);
                 }
                 $index++;
             }
@@ -217,8 +220,27 @@ class Bronto_Reviews_Model_Observer
             $this->_helper->isPostEnabled($postType, 'store', $storeId) &&
             $this->_helper->getPostTrigger($postType, 'store', $storeId) == $status &&
             $context->isSendingUnlocked() &&
+            !$this->_alreadyScheduledForOrder($context) &&
             $this->_passSendLimitCheck($context)
         );
+    }
+
+    /**
+     * Check to see if a delivery is scheduled for this post type and order
+     *
+     * @param Bronto_Reviews_Model_Process_Context $context
+     * @return boolean
+     */
+    protected function _alreadyScheduledForOrder($context)
+    {
+        $orderId = $context->getOrder()->getId();
+        $postId = null;
+        if ($context->hasPost()) {
+            $postId = $context->getPost()->getId();
+        }
+        $log = Mage::getModel('bronto_reviews/log')
+            ->loadByOrderAndPost($orderId, $postId);
+        return $log->isQueued() || $log->isCancelable();
     }
 
     /**
@@ -284,8 +306,8 @@ class Bronto_Reviews_Model_Observer
             );
         }
 
-        $message = new Bronto_Api_Message_Row();
-        $message->id = $this->_helper->getDefaultMessage($context->getPost(), $storeId);
+        $message = new Bronto_Api_Model_Message();
+        $message->withId($this->_helper->getDefaultMessage($context->getPost(), $storeId));
         $filterData = array('order' => $order) + $context->getExtra();
         if ($context->hasPost()) {
             unset($filterData['order']);
@@ -399,7 +421,9 @@ class Bronto_Reviews_Model_Observer
             'active',
             'period',
             'content',
+            'adjustment',
             'message',
+            'multiply_by_qty',
             'period_type',
             'send_limit'
         );
