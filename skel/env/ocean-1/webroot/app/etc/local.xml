@@ -5,7 +5,7 @@
       <date><![CDATA[Tue, 25 Nov 2014 23:05:41 +0000]]></date>
     </install>
     <crypt>
-      <key><![CDATA[2937611d4c669ec2891b0b805d22080e]]></key>
+      <key><![CDATA[change_me_to_environment_local_xml_crypt_key]]></key>
     </crypt>
     <disable_local_modules>false</disable_local_modules>
     <resources>

@@ -17,7 +17,7 @@ SNAPSHOT_BASE_ENV="www"
 ##
 #
 # shouldn't need to modify much below
-DOMAIN="badevops."
+DOMAIN="badevops.com"
 SUBDOMAIN="ocean-mis-1"
 
 # path to codebase checkout on remote servers
