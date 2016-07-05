@@ -40,8 +40,10 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
             $attributes = array_merge($this->_getAttributes($item, 'order_item'), $this->getUom($item),$this->getStock($item));
             $result['items'][] = $attributes;
         }
-        // BlueAcorn rewrite adding customer comments
+        // BlueAcorn rewrite adding customer comments and SW Customer ID
         $result['customer_comments'] = $this->getCustomerComments($orderIncrementId);
+        $result['sw_customer_id'] = $this->getSwCustomerId($order->getCustomerId());
+
         $result['payment'] = $this->_getAttributes($order->getPayment(), 'order_payment');
 
         $result['status_history'] = array();
@@ -105,5 +107,26 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
         $stockTextArray['stock'] = $product->getAttributeText('stock');
 
         return $stockTextArray;
+    }
+
+    /**
+     * Returns customer's SouthWare ID if customer has one
+     *
+     * @param $customerId
+     * @return string
+     */
+    public function getSwCustomerId($customerId)
+    {
+        $swCustomerId = "";
+
+        if($customerId){
+            $customer = Mage::getModel('customer/customer')->load($customerId);
+            $swCustomerId = $customer->getSouthwareCustomerId();
+        }
+        if($swCustomerId === null){
+            $swCustomerId = "";
+        }
+
+        return $swCustomerId;
     }
 }
