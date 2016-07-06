@@ -37,13 +37,16 @@ See the [docs/ENVIRONMENTS.md](docs/ENVIRONMENTS.md) to learn more.
 
 ## syncing .gitignored files
 
-To track assets in .gitignored directories (e.g.  media/ and var/), add them
-to the `skel/sync/` directory.
-  * e.g. track WYSIWYG images by placing them in `skel/sync/media/`
+The `bin/sync` command copies assets from /sync to `webroot`. It is used to
+track assets in .gitignored directories (such as media/ and var/).
+  * e.g. track WYSIWYG images by placing them in `/sync/media/`
 
-The `bin/env sync` command copies these assets into the base `webroot`, and
-automatically runs whenever an environment is set or deployment made.
+Sync is run...
 
+* whenever an environment is set
+* whenever a deployment is made
+
+... to ensure your assets become part of the application. 
 
 # Development Process
 
