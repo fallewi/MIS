@@ -26,6 +26,9 @@ display_help() {
 
     localize             Runs string replacements on boilerplate
 
+    changes [ref]        Detect and print changes to reference/boilerplate files
+                         since last commit, or since [ref] if specified.
+
   Options:
     --help               Display help
 
@@ -148,6 +151,17 @@ repo_pull(){
 
 }
 
+repo_downstream(){
+  run_task "init_rerere" "initializing git rerere cache"
+  run_task "skel_downstream" "downstream from $SKEL_REMOTE ($SKEL_REMOTE_REF)"
+
+  # we don't use run_task, as we want to be silent and not interfere with
+  # the `skel changes` output our downstreamer evokes.
+  cd $REPO_ROOT
+  init_rerere_restore
+}
+
+
 repo_deploykey(){
   KEYFILE="$REPO_ROOT/$SKEL_DIR/deploy.key"
   run_task "deploykey_make" "generate deployment key"
@@ -164,6 +178,11 @@ init_rerere(){
   [ -d .git/rr-cache ] && mv -f .git/rr-cache .git/rr-cache.pre-skel-init
 
   # distribute rerere cache
+  #########################
+
+  # skip rerere if skel is not yet attached
+  [ ! -d $SKEL_DIR ] && return
+
   if [ ! -d $SKEL_DIR/.rr-cache ]; then
     mkdir $SKEL_DIR/.rr-cache
     touch $SKEL_DIR/.rr-cache/.gitkeep
@@ -177,10 +196,10 @@ init_rerere(){
 }
 
 init_rerere_restore(){
-  git add $SKEL_DIR/.rr-cache
+  git add $SKEL_DIR/.rr-cache 2>/dev/null
   [ -d .git/rr-cache.pre-skel-init ] && \
-    unlink .git/rr-cache && \
-    mv -f .git/rr-cache.pre-skel-init .git/rr-cache
+    unlink .git/rr-cache 2>/dev/null && \
+    mv -f .git/rr-cache.pre-skel-init .git/rr-cache 2>/dev/null
 }
 
 init_boilerplate(){
@@ -340,6 +359,47 @@ skel_pull(){
   git checkout --theirs $REPO_REMOTE_NAME/$SKEL_BRANCH -- $SKEL_DIR/ || error "error updating skel"
 }
 
+skel_changes(){
+  # print the boilerplate/reference changes since last skel downstream
+
+  # attempt to use .skel-head from downstreamer...
+  [ -e $REPO_ROOT/.git/.skel-head ] && \
+    SKEL_CHANGES_REF="$(cat $REPO_ROOT/.git/.skel-head)" && \
+    rm $REPO_ROOT/.git/.skel-head
+
+  SKEL_CHANGES=false
+  SKEL_CHANGES_REF=${SKEL_CHANGES_REF:-"HEAD^"}
+
+  skel_changes_fn "ansible/*.yml" \
+    "Base ansible playbooks changed." \
+    "Bring any per-environment playbooks/modifications up to date."
+
+  skel_changes_fn "docker/**skel**" \
+    "Docker 'skel' reference files changed." \
+    "Bring any customizations (base or per-environment) up to date."
+
+  skel_changes_fn "boilerplate/ansible/*.yml" \
+    "Reference ansible playbooks changed." \
+    "Bring all environment playbooks up to date."
+
+  skel_changes_fn "boilerplate/env/" \
+    "Reference environment changes found!" \
+    "Bring matching environment files up to date."
+
+  $SKEL_CHANGES && printf "\n\n\033[35m%s\033[0m\n\n%s\n\n" \
+    "  !!! REFERENCE CHANGES DETECTED. TAKE APPROPRIATE ACTION !!!" \
+    "  - to see again, run: \"bin/skel changes $SKEL_CHANGES_REF\""
+}
+
+skel_changes_fn(){
+  if ! git diff --quiet --exit-code $SKEL_CHANGES_REF HEAD -- $SKEL_DIR/$1; then
+
+    SKEL_CHANGES=true
+    printf "\n* %s\n  + %s\n  + %s\n" \
+      "$2" "$3" "git diff $SKEL_CHANGES_REF HEAD -- $SKEL_DIR/$1"
+  fi
+}
+
 deploykey_make(){
 
   $FORCE_OVERWRITE && rm $KEYFILE
@@ -395,7 +455,12 @@ else
       pull)              runstr="repo_pull" ; fail_in_groundcontrol ;;
       localize)          runstr="repo_localize" ;;
       deploykey)         runstr="repo_deploykey" ;;
-      downstream)        runstr="skel_downstream" ; fail_in_groundcontrol ;;
+      downstream)        runstr="repo_downstream" ; fail_in_groundcontrol ;;
+      changes)           runstr="skel_changes" ;
+                         if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
+                           SKEL_CHANGES_REF="$2" ; shift ;
+                         fi
+                         ;;
       *)                 echo "invalid option: $1" ; display_help 1 ;;
     esac
     shift

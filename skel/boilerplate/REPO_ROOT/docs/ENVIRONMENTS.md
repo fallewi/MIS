@@ -7,6 +7,7 @@ tasks that define where a site runs.  think of environments as
   * host definitions in ssh_config format
   * variable definitions in shell var format (such as APP_URL and CLIENT_CODE)
   * versioned configuration files (such as local.xml, robots.txt)
+  * a versioned shell file for application-specific configuration (setting urls, configuration, etc)
   * ansible playbooks used for automated tasks (such as cache clearing and deployment)
 
 _architects are responsible for definining and maintaining environments,
@@ -95,6 +96,22 @@ MAGE_ADMIN_FIRSTNAME | admin first name | Blue
 MAGE_ADMIN_LASTNAME | admin last name | Acorn
 MAGE_ADMIN_EMAIL | admin email | noreply@blueacorn.com
 
+#### the local environment
+
+
+the "local" environment is the only environment shipped with skel located at `skel/env/local`. The purpose
+of this environment is to store and reuse the application-specific configuration
+of each site when developing locally.
+
+_for example, client "X" requires turning off module "Y", disabling Google
+Analytics, and setting the base url to xyz.dev_
+
+The envars of the "local" environment contains an ONSET_ACTIVE flag (defaults to true)
+that determines whether or not the onset.sh script will be executed when
+setting an environment (`bin/env set <env>`)
+
+The onset.sh script contains application-specific configuration using
+the N98 cli tool.
 
 #### tmuxp.yml
 

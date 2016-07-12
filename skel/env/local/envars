@@ -6,7 +6,7 @@
 REPO_REF="HEAD"
 
 APP_ROOT="${REPO_ROOT}/webroot"
-APP_URL="http://localhost/$CLIENT_CODE"
+APP_URL="http://$CLIENT_CODE.dev/"
 
 # evaluate onset.sh when setting this environment.
 #  prefer skel/env/@ENV/onset.sh. defaults to skel/env/onset.sh

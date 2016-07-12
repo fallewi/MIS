@@ -99,8 +99,6 @@ SKIP_ENV=false
 SKIP_ANSIBLE=false
 SKIP_VOLUMES=true
 SKIP_MACHINE=false
-COMPOSE_FILE="docker-compose.skel.yml"
-
 
 # run functions
 ###############
@@ -216,9 +214,7 @@ env_conf() {
     elif [ ! -d $(dirname $DEST) ]; then
       mkdir -p $(dirname $DEST)
     fi
-
-    RELATIVE_SRC="$(realpath --relative-to=$(dirname $DEST) $(dirname $SRC))/$(basename $SRC)"
-    ln -s $RELATIVE_SRC $DEST
+    ln -s $REPO_ROOT/$SRC $DEST
   done
 
 }
@@ -455,14 +451,29 @@ docker_bootstrap(){
     "missing $ENV_DIR/$ENV/envars" "is $ENV a valid environment?"
 
   # copy deploy key (used for git checkouts)
-  cp $REPO_ROOT/$SKEL_DIR/deploy.key $ENV_DIR/$ENV/deploy.key || error \
-    "failed copying deploy.key to environment" "have you initialized the skel?"
+  cp $REPO_ROOT/$SKEL_DIR/deploy.key $DOCKER_DIR/dockerized/ || error \
+    "failed copying deploy.key to dockerized dir" \
+    "have you initialized the skel?"
 
-  # copy skel version of docker-compose
-  cp $ENV_DIR/docker-compose.skel.yml $ENV_DIR/$ENV/
-  cp $ENV_DIR/Dockerfile-term.skel $ENV_DIR/$ENV/
+  cd $DOCKER_DIR/dockerized || error "unable to enter dockerized directory"
+
+  if [ -e $ENV_DIR/$ENV/docker-compose.yml ]; then
+    cd $ENV_DIR/$ENV || error "unable to enter environment"
+
+    cp $REPO_ROOT/$SKEL_DIR/deploy.key $ENV_DIR/$ENV/ || error \
+      "failed copying deploy.key to environment"
+  fi
+
+  COMPOSE_FILE="docker-compose.skel.yml"
+  [ -e "docker-compose.yml" ] && COMPOSE_FILE="docker-compose.yml"
+  [ -e "$COMPOSE_FILE" ] || error "missing $(pwd)/$COMPOSE_FILE"
+
+  echo
+  echo "  [X] USING $(pwd)/$COMPOSE_FILE"
+  echo
 
   # export vars
+  COMPOSE_FLAGS="-f $COMPOSE_FILE -p ${ENV}-${CLIENT_CODE}"
   export ENV=$ENV
   case $ENV in
     node-* ) export NFS_MODE=ro ;;
@@ -492,15 +503,7 @@ docker_bootstrap(){
   [ ${REPO_REMOTE:0:1} = "@" ] && error \
       "placeholder value detected for REPO_REMOTE" "has skel been initialized?"
 
-  [ -e $ENV_DIR/$ENV/docker-compose.yml ] && COMPOSE_FILE="docker-compose.yml"
-  COMPOSE_FLAGS="-f $COMPOSE_FILE -p ${ENV}-${CLIENT_CODE}"
-
-  [ -e $ENV_DIR/$ENV/$COMPOSE_FILE ] || error \
-    "environment lacks a docker-compose file"
-
   $SKIP_MACHINE || configure_docker_machine $DOCKER_MACHINE
-
-  cd $ENV_DIR/$ENV || error "unable to enter environment"
 }
 
 docker_make_volumes(){
