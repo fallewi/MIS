@@ -1777,9 +1777,13 @@ body.catalog-product-view {
         }
     }
 
-    .top-product-details,
-    .catalog-product-view .product-view .product-img-box .more-views {
+    .top-product-details {
         display: none !important;
+    }
+
+    .catalog-product-view .product-view .product-img-box .more-views.videos {
+        float: left;
+        margin-right: 10px;
     }
 
     .product-view .product-img-box .product-name h1 {
