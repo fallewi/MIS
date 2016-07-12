@@ -20,7 +20,7 @@ class BlueAcorn_ProductVideos_Helper_Product extends BlueAcorn_ProductVideos_Hel
     const VIMEO = 'vimeo';
     const YOUTUBE = 'youtube';
     const VIMEO_IFRAME = '<iframe id="video-player" src="http://player.vimeo.com/video/VIDEO_ID?api=1" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-    const YOUTUBE_IFRAME = '<iframe id="video-player" src="http://www.youtube.com/embed/VIDEO_ID?feature=player_detailpage" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+    const YOUTUBE_IFRAME = '<iframe id="video-player" src="http://www.youtube.com/embed/VIDEO_ID?SUGGESTED_VIDEOSfeature=player_detailpage" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     const VIMEO_XML_URL = 'http://vimeo.com/api/v2/video/VIDEO_ID.xml';
     const YOUTUBE_XML_URL = 'http://img.youtube.com/vi/VIDEO_ID/sddefault.jpg';
     const DEFAULT_DEFAULT_IMAGE = "default_default.png";
@@ -81,15 +81,31 @@ class BlueAcorn_ProductVideos_Helper_Product extends BlueAcorn_ProductVideos_Hel
     }
 
     /**
-     * Returns template ready iframe based on provided url. Also replaces the height/width with the config. settings.
+     * Returns template ready iframe based on provided url. 
      * @param $videoObject
      * @return mixed
      */
     public function getVideoIFrameProper($videoObject){
         $videoId = $this->getVideoId($videoObject);
         $iframeVideoHtml = str_replace('VIDEO_ID', $videoId, ($this->videoType == self::YOUTUBE) ? self::YOUTUBE_IFRAME : self::VIMEO_IFRAME);
-        // $iframeVideoHtml = str_replace('VIDEO_WIDTH', 100%, $iframeVideoHtml);
-        // $iframeVideoHtml = str_replace('VIDEO_HEIGHT', 100%, $iframeVideoHtml);
+
+        // If 'use HTTPS' is enabled replace http with https for YouTube videos
+        if(Mage::getStoreConfig('blueacorn_productvideos/video/use_https') && $this->videoType == self::YOUTUBE){
+            $iframeVideoHtml = str_replace('http', 'https', $iframeVideoHtml);
+        }
+
+        // if show suggested videos is enabled remove SUGGESTED_VIDEOS else replace with url parameter that removes suggested videos for YouTube videos
+        if (Mage::getStoreConfig('blueacorn_productvideos/video/show_suggested') && $this->videoType == self::YOUTUBE){
+            $iframeVideoHtml = str_replace('SUGGESTED_VIDEOS', '', $iframeVideoHtml);
+        } else {
+            $iframeVideoHtml = str_replace('SUGGESTED_VIDEOS', 'rel=0&', $iframeVideoHtml);
+        }
+
+        // if privacy enhanced mode is enabled change url to www.youtube-nocookie.com for YouTube videos
+        if (Mage::getStoreConfig('blueacorn_productvideos/video/privacy_enhanced') && $this->videoType == self::YOUTUBE){
+            $iframeVideoHtml = str_replace('www.youtube.com', 'www.youtube-nocookie.com', $iframeVideoHtml);
+        }
+
         return $iframeVideoHtml;
     }
 

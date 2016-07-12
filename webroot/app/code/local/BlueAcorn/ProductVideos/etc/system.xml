@@ -56,30 +56,36 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </thumb_default>
-                        <video_width>
-                            <label>Video Width</label>
-                            <frontend_type>text</frontend_type>
-                            <comment>
-                                <![CDATA[<span class="notice">***Input in pixels.</span>]]>
-                            </comment>
-                            <validate>validate-zero-or-greater</validate>
-                            <sort_order>5</sort_order>
+                        <use_https>
+                            <label>use HTTPS</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Use secure url</comment>
+                            <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </video_width>
-                        <video_height>
-                            <label>Video Height</label>
-                            <frontend_type>text</frontend_type>
-                            <comment>
-                                <![CDATA[<span class="notice">***Input in pixels.</span>]]>
-                            </comment>
-                            <sort_order>6</sort_order>
-                            <validate>validate-zero-or-greater</validate>
+                        </use_https>
+                        <show_suggested>
+                            <label>Show Suggested Videos</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Enable or disable suggested videos after playing</comment>
+                            <sort_order>8</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </video_height>
+                        </show_suggested>
+                        <privacy_enhanced>
+                            <label>Enable privacy-enhanced mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>When enabled YouTube doesn´t store information about your web page visitors until they play the video.</comment>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </privacy_enhanced>
                     </fields>
                 </video>
             </groups>
