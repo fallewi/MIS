@@ -6,7 +6,6 @@
  */
 class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
 {
-
     /**
      * @var array
      */
@@ -92,7 +91,7 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
         }
 
         if (!is_object($product) || !($product instanceOf Mage_Catalog_Model_Product)) {
-            return false;
+            return Mage::getModel('catalog/product');
         } else {
             $productId = $product->getId();
         }
@@ -103,7 +102,18 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Gets the configurable product isf the product is a simple/configurable
+     * Is this product visible individually?
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return boolean
+     */
+    public function isVisibleInidividually($product)
+    {
+        return $product->getVisibility() != Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE;
+    }
+
+    /**
+     * Gets the configurable product if the product is a simple/configurable
      *
      * @param Mage_Catalog_Model_Product $product
      * @return Mage_Catalog_Model_Product
@@ -112,6 +122,23 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
     {
         if ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
+            if (isset($parentIds[0])) {
+                return $this->getProduct($parentIds[0], $product->getStoreId());
+            }
+        }
+        return $product;
+    }
+
+    /**
+     * Gets the grouped product parent if this simple product belongs to a group
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return Mage_Catalog_Model_Product
+     */
+    public function getGroupedProduct($product)
+    {
+        if ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            $parentIds = Mage::getModel('catalog/product_type_grouped')->getParentIdsByChild($product->getId());
             if (isset($parentIds[0])) {
                 return $this->getProduct($parentIds[0], $product->getStoreId());
             }
@@ -138,6 +165,9 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
                         return Mage::helper('bronto_common')->getProductImageUrl($product);
                         // return $product->getSmallImageUrl();
                     case 'url':
+                        if (!$this->isVisibleInidividually($product)) {
+                            $product = $this->getGroupedProduct($product);
+                        }
                         return Mage::helper('catalog/product')->getProductUrl($product);
                 }
 
@@ -168,5 +198,4 @@ class Bronto_Common_Helper_Product extends Mage_Core_Helper_Abstract
 
         return false;
     }
-
 }

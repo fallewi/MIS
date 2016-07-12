@@ -53,6 +53,12 @@ class Bronto_Common_Helper_Data
     const XML_PATH_COUPON_SITE_HASH = 'bronto_coupon/settings/site_hash';
 
     /**
+     * Cart Recovery
+     */
+    const XML_PATH_CART_RECOVERY_CODE = 'bronto_cartrecovery/settings/code';
+    const XML_PATH_CART_RECOVERY_OTHER = 'bronto_cartrecovery/settings/other';
+
+    /**
      * Module Human Readable Name
      */
     protected $_name = 'Bronto Extension for Magento';
@@ -130,6 +136,26 @@ class Bronto_Common_Helper_Data
     public function getCouponSiteHash()
     {
         return $this->getAdminScopedConfig(self::XML_PATH_COUPON_SITE_HASH);
+    }
+
+    /**
+     * Get the Cart Recovery code for the account
+     *
+     * @return string
+     */
+    public function getCartRecoveryCode()
+    {
+        return $this->getAdminScopedConfig(self::XML_PATH_CART_RECOVERY_CODE);
+    }
+
+    /**
+     * Get the Cart Recovery other line item attribute code
+     *
+     * @return string
+     */
+    public function getLineItemAttributeCode()
+    {
+        return $this->getAdminScopedConfig(self::XML_PATH_CART_RECOVERY_OTHER);
     }
 
     /**
@@ -328,9 +354,6 @@ class Bronto_Common_Helper_Data
             }
         }
 
-        Mage::getConfig()->reinit();
-        Mage::app()->reinitStores();
-
         return $this;
     }
 
@@ -448,6 +471,7 @@ class Bronto_Common_Helper_Data
         }
 
         return Mage::getModel('bronto_common/api')
+            ->load($token)
             ->setToken($token)
             ->getClient();
     }
@@ -498,9 +522,9 @@ class Bronto_Common_Helper_Data
 
         try {
             $api = $this->getApi($token, $scope, $scopeId);
-            $tokenRow = $api->getTokenInfo();
+            $tokenRow = $api->transferApiToken()->getById($token);
 
-            return $tokenRow->hasPermissions(7);
+            return $tokenRow->getPermissions() == 7;
         } catch (Exception $e) {
             $helper = Mage::helper('bronto_common/api');
             if (
@@ -880,19 +904,21 @@ class Bronto_Common_Helper_Data
         );
 
         // Update Scope based on what has been set
-        if ($scopeParams['store'] !== false) {
+        if (!empty($scopeParams['store'])) {
             $store = Mage::app()->getStore($scopeParams['store']);
             if ($store->getId()) {
                 $scopeParams['store_id'] = $store->getId();
+            } else {
+                $scopeParams['store_id'] = Mage::app()->getStore()->getId();
             }
             $scopeParams['scope'] = 'store';
-        } elseif ($scopeParams['website'] !== false) {
+        } elseif (!empty($scopeParams['website'])) {
             $website = Mage::app()->getWebsite($scopeParams['website']);
             if ($website->getId()) {
                 $scopeParams['website_id'] = $website->getId();
             }
             $scopeParams['scope'] = 'website';
-        } elseif ($scopeParams['group'] !== false) {
+        } elseif (!empty($scopeParams['group'])) {
             $group = Mage::app()->getGroup($scopeParams['group']);
             if ($group->getId()) {
                 $scopeParams['group_id'] = $group->getId();

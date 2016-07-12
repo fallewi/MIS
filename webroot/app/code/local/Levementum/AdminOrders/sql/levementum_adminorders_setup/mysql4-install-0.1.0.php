@@ -13,6 +13,13 @@ $installer = $this;
 
 $installer->startSetup();
 
-$installer->addAttribute('order', 'admin_id', array('type' => 'int', 'default' => null, 'visible' => false, 'required' => false, 'nullable' => true, 'unsigned' => true));
+$installer->addAttribute('order', 'admin_id', array(
+    'type' => 'varchar',
+    'length' => '40',
+    'default' => null,
+    'visible' => false,
+    'required' => false,
+    'nullable' => true
+));
 
 $installer->endSetup();
