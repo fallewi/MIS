@@ -16,7 +16,7 @@
 <config>
     <modules>
         <GoMage_Feed>
-            <active>true</active>
+            <active>false</active>
             <codePool>local</codePool>
         </GoMage_Feed>
 	</modules>

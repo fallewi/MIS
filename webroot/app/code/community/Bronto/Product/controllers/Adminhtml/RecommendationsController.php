@@ -7,6 +7,15 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
     protected $_helper;
 
     /**
+     * Override for ACL permissions
+     */
+    protected function _isAllowed()
+    {
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('admin/promo/bronto_product');
+    }
+
+    /**
      * Gets the product helper related to this module
      *
      * @return Bronto_Product_Helper_Data
@@ -395,15 +404,16 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
                 throw new RuntimeException('Please select a message ID.');
             }
 
+            $api = Mage::helper('bronto_common')->getApi(null, 'store', $storeId);
+
             $contact = Mage::helper('bronto_common/contact')->getContactByEmail($emailAddress, 'Magento Test Delivery', $storeId);
-            if (empty($contact->id)) {
-                $contact->status = Bronto_Api_Contact::STATUS_ONBOARDING;
-                $contact->save();
+            if (!$contact->hasId()) {
+                $contact->status = Bronto_Api_Model_Contact::STATUS_ONBOARDING;
+                $api->transferContact()->save($contact);
             }
 
-            $api = Mage::helper('bronto_common')->getApi(null, 'store', $storeId);
-            $deliveryObject = $api->getDeliveryObject();
-            $delivery = $deliveryObject->createRow();
+            $deliveryObject = $api->transferDelivery();
+            $delivery = $deliveryObject->createObject();
             $delivery->messageId = $messageId;
             $delivery->fromEmail = $emailAddress;
             $delivery->fromName = 'Product Recommendation';
@@ -417,12 +427,15 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
                     'deliveryType' => 'selected'
             ));
 
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($storeId);
             Mage::helper('bronto_product')->collectAndSetFields(
                 $grid->getSelectedRecommendation(),
                 $grid->getOptionalProducts(),
                 $delivery,
-                $this->getRequest()->getParam('store', 0));
-            $deliveryObject->add($delivery);
+                $storeId);
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
+            $deliveryObject->add()->addDelivery($delivery)->first();
             $json['success'] = true;
             $json['message'] = Mage::getBlockSingleton('core/messages')
                 ->addSuccess($this->__('Test message successfully send to ' . $emailAddress . '.'))
@@ -434,6 +447,12 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
                     ->addError($e->getMessage())
                     ->getGroupedHtml() :
                 $e->getMessage();
+        }
+
+        if ($api) {
+            Mage::helper('bronto_product')->writeVerboseDebug("===== Test Send =====", "bronto_product_api.log");
+            Mage::helper('bronto_product')->writeVerboseDebug(var_export($api->getLastRequest(), true), "bronto_product_api.log");
+            Mage::helper('bronto_product')->writeVerboseDebug(var_export($api->getLastResponse(), true), "bronto_product_api.log");
         }
 
         $this->getResponse()
@@ -461,7 +480,10 @@ class Bronto_Product_Adminhtml_RecommendationsController extends Mage_Adminhtml_
                 ->addError('Content does not appear to be formatted correctly.')
                 ->getGroupedHtml();
         } else {
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $emulatedInfo = $appEmulation->startEnvironmentEmulation($model->getStoreId());
             $html = $this->getHelper()->processTagContent($model, $model->getStoreId());
+            $appEmulation->stopEnvironmentEmulation($emulatedInfo);
         }
         $this->getResponse()->setBody($html);
     }
