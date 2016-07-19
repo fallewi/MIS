@@ -19,9 +19,9 @@ Host ADMIN_HOST
   HostName 104.130.59.34
   User blueacorn
 
-#Host SNAPSHOT_HOST
-#  HostName 192.168.0.100
-#  User blueacorn
+Host SNAPSHOT_HOST
+  HostName 104.130.59.34
+  User blueacorn
 
 #Host CRON_HOST
 #  HostName 192.168.0.100
