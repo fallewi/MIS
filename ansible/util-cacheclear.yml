@@ -28,10 +28,9 @@
 
 - name: "@CLIENT_CODE:common clear redis cache"
   hosts: ADMIN_HOST
-  gather_facts: False
+  gather_facts: no
   tasks:
     - include: tasks/cache/redis.yml
-      when: REDIS_HOST is defined and REDIS_HOST
 
 
 # EXAMPLE:
@@ -40,8 +39,9 @@
 #
 
 #- name: "@CLIENT_CODE:@ENV clear cdn caches"
-#  hosts: localhost
-#  gather_facts: False
+#  hosts: 127.0.0.1
+#  connection: local
+#  gather_facts: no
 #  tasks:
 #    - include: tasks/cache/akamai.yml
 #      vars:

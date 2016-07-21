@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <global>
+    <install>
+      <date><![CDATA[Wed, 06 May 2015 14:49:08 +0000]]></date>
+    </install>
+    <crypt>
+      <key><![CDATA[LOCAL_CRYPT_KEY]]></key>
+    </crypt>
+    <disable_local_modules>false</disable_local_modules>
+    <resources>
+      <db>
+        <table_prefix />
+      </db>
+      <default_setup>
+        <connection>
+          <host><![CDATA[mysql]]></host>
+          <dbname><![CDATA[magento]]></dbname>
+          <username><![CDATA[magento]]></username>
+          <password><![CDATA[magento]]></password>
+          <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
+          <model><![CDATA[mysql4]]></model>
+          <type><![CDATA[pdo_mysql]]></type>
+          <pdoType />
+          <active>1</active>
+        </connection>
+      </default_setup>
+    </resources>
+    <admin>
+      <routers>
+        <adminhtml>
+          <args>
+            <frontName><![CDATA[admin]]></frontName>
+          </args>
+        </adminhtml>
+      </routers>
+    </admin>
+
+    <!-- CONFIGURE FOR CACHES AND SESSIONS IN FILESYSTEM -->
+    <session_save>files</session_save>
+
+  </global>
+</config>

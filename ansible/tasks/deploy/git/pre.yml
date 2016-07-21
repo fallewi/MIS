@@ -1,19 +1,19 @@
 ---
 
-- name: ensure clean working copy (excludes skel/ directory)
+- name: ensure clean working copy (excludes skel/ directory). pass SKIP_GIT_CHECKS=true as extravar to skip.
   command: git status -uno --porcelain | grep -v -E "^[A-Z]?\s*{{ SKEL_DIR | default('skel') }}/.*"
   args:
     chdir: "{{ REPO_ROOT }}"
   register: command_result
   changed_when: False
   failed_when: "command_result.stdout"
-  when: (SKIP_CHECKS is not defined or not SKIP_CHECKS) and repo_root.stat.exists
+  when: repo_root.stat.exists and (SKIP_GIT_CHECKS is not defined or not SKIP_GIT_CHECKS) and (SKIP_ALL_CHECKS is not defined or not SKIP_ALL_CHECKS)
   always_run: yes
 
-- name: ensure working HEAD matches deployment log. pass SKIP_CHECKS=true as an extra var to skip.
+- name: ensure working HEAD matches deployment log. pass SKIP_GIT_CHECKS=true as an extravar to skip.
   shell: if [ -e "{{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log" ]; then [ "$(tail -n 1 {{ BLUEACORN_DIR }}/log/{{ ENV }}.deploy.log | awk '{ print $1 }')" = "$(git rev-parse --short HEAD)" ] && exit 0 ; exit 1 ; fi
   args:
     chdir: "{{ REPO_ROOT }}"
   always_run: yes
   changed_when: false
-  when: repo_root.stat.exists and (SKIP_CHECKS is not defined or not SKIP_CHECKS)
+  when: repo_root.stat.exists and (SKIP_GIT_CHECKS is not defined or not SKIP_GIT_CHECKS) and (SKIP_ALL_CHECKS is not defined or not SKIP_ALL_CHECKS)

@@ -54,7 +54,22 @@ for N98_BIN in $N98_TESTS; do
   # this will set the domain for all cookies Magento generate, a lot of times this is set. It usually works fine
   # if it's an empty string
   $N98_BIN config:set web/cookie/cookie_domain ""
-  
+
+  # Turn off solr
+  $N98_BIN config:set catalog/search/engine catalogsearch/fulltext_engine
+
+  # Add admin user
+  $N98_BIN admin:user:delete admin
+  $N98_BIN admin:user:create admin admin@blueacorn.com pass4admin Admin Admin
+
+  # Add customer
+  $N98_BIN customer:delete customer@blueacorn.com
+  $N98_BIN customer:create customer@blueacorn.com pass4customer Customer Doe
+
+  # clear cache because you probably changed important stuff
+  $N98_BIN cache:clean
+  $N98_BIN cache:flush
+
   # break loop, no need to continue n98 tests
   break
 done
