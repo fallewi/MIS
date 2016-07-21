@@ -3,6 +3,9 @@
 # @TODO : Notify hipchat of database snapshot
 
 - debug: msg="*** writing database to {{ BLUEACORN_DIR }}/tmp/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz and copying to {{ SNAPSHOT_BASE }}/{{ CLIENT_CODE }}-{{ ENV }}.database.sql.gz ***"
+  tags:
+    - snapshot
+    - snapshot-database-only
 
 - name: remove existing database snapshot
   file:

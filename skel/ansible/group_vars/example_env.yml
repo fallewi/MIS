@@ -11,13 +11,27 @@ HTTPD_USER: www-data
 
 
 ################################################################################
-# REDIS_HOST - IP/Hostname of Redis Server. Leave non-truthy if not using redis.
-#REDIS_HOST: 172.16.0.77
-REDIS_FPC_PORT: 6382
-REDIS_FPC_DB: 0
-REDIS_OBJ_PORT: 6381
-REDIS_OBJ_DB: 0
+# REDIS_CACHES: definition of redis caches to clear. define an empty dict if
+#               not using redis.
+# REDIS_CACHES: {}
+REDIS_CACHES:
+  # default:
+  #   host: 127.0.0.1
+  #   port: 6379
+  #   db: 0
+  #   cmd: flushdb
 
+  fpc:
+    host: 5.5.5.5
+    port: 6382
+    # db: 0
+    # cmd: flushdb
+
+  obj:
+    host: 5.5.5.5
+    port: 6381
+    # db: 0
+    # cmd: flushdb
 
 ################################################################################
 # playbook behavior configurations, generally safe to leave as-is

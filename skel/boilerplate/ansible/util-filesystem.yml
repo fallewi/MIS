@@ -22,7 +22,7 @@
     #  set become: false and ensure ansible_ssh_user == HTTPD_USER
     - name: ensure HTTPD_USER has write access to WRITABLE_PATHS
       file:
-        path: "{{ item }}"
+        path: "{{ APP_ROOT }}/{{ item }}"
         group: "{{ HTTPD_USER }}"
         mode: g+rwx
         state: directory
@@ -33,10 +33,10 @@
         - filesystem-perms-only
       # !! triple check these
       with_items:
-        - "{{ APP_ROOT }}/var"
-        - "{{ APP_ROOT }}/includes"
+        - "var"
+        - "includes"
         # media is commented out as it's typically shared
-        #- "{{ APP_ROOT }}/media"
+        #- "media"
 
     - name: ensure shared paths
       file:

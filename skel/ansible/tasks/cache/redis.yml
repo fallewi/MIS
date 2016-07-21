@@ -1,14 +1,28 @@
 ---
 
-- name: flush object cache
+- name: test redis task
+  shell: redis-cli -h {{ item.value.host | default('127.0.0.1') }} -p {{ item.value.port | default(6379) }} -n {{ item.value.db | default(0) }} {{ item.value.cmd | default('flushdb') }}
+  with_dict: "{{ REDIS_CACHES | default({}) }}"
+  when: REDIS_CACHES is defined and REDIS_CACHES
+  tags:
+    - cache
+
+- name: complain if REDIS_CACHES is not defined
+  debug: msg="REDIS_CACHES is not defined! Please define. If not using redis caches, define as empty dict."
+  when: REDIS_CACHES is not defined or not REDIS_CACHES
+
+
+#@TODO deprecate below in skel > 2.8 ? we should all be using REDIS_CACHES by then
+
+- name: LEGACY - flush redis cache
   shell: redis-cli -h {{ REDIS_HOST }} -p {{ REDIS_OBJ_PORT }} -n {{ REDIS_OBJ_DB }} flushdb
   tags:
     - cache
-    - cache-obj-only
+  when: REDIS_CACHES is not defined or not REDIS_CACHES
 
 
-- name: flush FPC
+- name: LEGACY - flush FPC
   shell: redis-cli -h {{ REDIS_HOST }} -p {{ REDIS_FPC_PORT }} -n {{ REDIS_FPC_DB }} flushdb
   tags:
     - cache
-    - cache-fpc-only
+  when: REDIS_CACHES is not defined or not REDIS_CACHES

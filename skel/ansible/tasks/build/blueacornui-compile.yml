@@ -1,10 +1,10 @@
 ---
 
-- name: "before compiling, ensure the local HEAD matches the {{ REPO_REMOTE_NAME }}/REPO_REF that will be deployed to remotes"
+- name: "before compiling, ensure the local HEAD matches the {{ REPO_REMOTE_NAME }}/REPO_REF that will be deployed to remotes. pass SKIP_REF_CHECK=true as extravar to skip."
   assert:
     that:
       - "'{{ lookup('pipe', 'git rev-parse HEAD') }}' == '{{ lookup('pipe', 'git rev-parse {{ REPO_REMOTE_NAME }}/{{ REPO_REF }}') }}'"
-  when: (SKIP_ALL_CHECKS is not defined or not SKIP_ALL_CHECKS) and (SKIP_BUILD_CHECKS is not defined or not SKIP_BUILD_CHECKS)
+  when: (SKIP_REF_CHECK is not defined or not SKIP_REF_CHECK) and (SKIP_ALL_CHECKS is not defined or not SKIP_ALL_CHECKS)
   run_once: true
   delegate_to: 127.0.0.1
   tags:

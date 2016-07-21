@@ -12,6 +12,10 @@
     HTTPD_USER: www-data
   tasks:
 
+    - name: fail on local environments
+      fail: msg="not supported on local environments"
+      when: DOCKER_MACHINE == 'local'
+
     #
     # periodic targets are:
     #  1min 15min hourly daily weekly monthly

@@ -1,0 +1,72 @@
+---
+#
+# best to avoid customizations on these while we iron it out.
+#
+
+- name: "term-container - seed database snapshot"
+  hosts: term-container
+  gather_facts: no
+  vars:
+    FORCE_DB_IMPORT: false
+    SNAPSHOT_DB_URL: "http://snapshots.badevops.com/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+
+  tags:
+    - db-import
+
+  tasks:
+    - name: check for presence of core_config_data table
+      shell: echo "SELECT COUNT(1) FROM core_config_data;" | mysql
+      register: result
+      ignore_errors: True
+
+    - name: import database - uncompress to /tmp/db.sql
+      shell: curl {{ SNAPSHOT_DB_URL }} | gunzip - > /tmp/db.sql
+      when: result|failed or FORCE_DB_IMPORT
+
+    - name: import database - source /tmp/db.sql into mysql
+      shell: mysql -e "SET autocommit=0; SET unique_checks=0; SET foreign_key_checks=0; source /tmp/db.sql; COMMIT; SET unique_checks=1; SET foreign_key_checks=1;"
+      when: result|failed or FORCE_DB_IMPORT
+
+    - name: import mysql database - remove /tmp/db.sql
+      file: state=absent path=/tmp/db.sql
+      when: result|failed or FORCE_DB_IMPORT
+
+
+- name: "term-container - seed media"
+  hosts: term-container
+  gather_facts: no
+  vars:
+    FORCE_MEDIA_IMPORT: false
+    SNAPSHOT_MEDIA_URL: "http://snapshots.badevops.com/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.media.tar.gz"
+
+  tags:
+    - media-import
+
+  tasks:
+    - name: check for presence of media/catalog/
+      shell: "[ -e {{ APP_ROOT }}/media/catalog ] && exit 127"
+      register: result
+      ignore_errors: True
+
+    - name: import media if media/catalog/ missing
+      shell: curl {{ SNAPSHOT_MEDIA_URL }} | tar xz -C {{ APP_ROOT }} --overwrite
+      when: result|failed or FORCE_MEDIA_IMPORT
+
+
+- name: "term-container - post provisioning"
+  hosts: term-container
+  gather_facts: no
+
+  tags:
+    - onset
+
+  tasks:
+    - name: ensure environment is set and onset.sh runs if active.
+      shell: bin/env set {{ ENV }} --no-prompt
+      args:
+        chdir: "{{ REPO_ROOT }}"
+
+
+# run filesystem playbook to fix perms + setup NFS filesharing
+##############################################################
+- include: dockerized.util-filesystem.yml

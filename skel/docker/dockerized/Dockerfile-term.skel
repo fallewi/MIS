@@ -1,6 +1,5 @@
 FROM registry.badevops.com/mage-term:m1
 
-COPY deploy.key /root/.ssh/id_rsa
-RUN chmod 0600 /root/.ssh/id_rsa
-
-RUN ssh-keyscan -H github.com > /root/.ssh/known_hosts
+COPY deploy.key /home/blueacorn/.ssh/id_rsa
+RUN sudo chown blueacorn /home/blueacorn/.ssh/id_rsa && \
+    chmod 0600 /home/blueacorn/.ssh/id_rsa
