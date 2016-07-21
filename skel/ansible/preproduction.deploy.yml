@@ -3,7 +3,8 @@
 # local pre-deploy steps
 ########################
 - name: "MIS:preproduction local pre-deployment"
-  hosts: localhost
+  hosts: 127.0.0.1
+  connection: local
   gather_facts: False
   tasks:
 
@@ -70,7 +71,8 @@
 # local post-deploy steps
 ########################
 - name: "MIS:preproduction local post deployment"
-  hosts: localhost
+  hosts: 127.0.0.1
+  connection: local
   gather_facts: False
   tasks:
     - include: tasks/deploy/local/post.yml
