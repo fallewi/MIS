@@ -12,7 +12,8 @@ $installer = $this;
 $installer->startSetup();
 
 $installer->addAttribute('customer', 'assigned_salesperson', array(
-    'type'                         => 'int',
+    'type'                         => 'varchar',
+    'length'                       => '40',
     'label'                        => 'Assigned Salesperson',
     'input'                        => 'select',
     'source'                       => 'levementum_customer/customer_attribute_source_salesperson',
@@ -31,6 +32,3 @@ $attribute->setData('used_in_forms' , array(
 $attribute->save();
 
 $installer->endSetup();
-
-
-?>

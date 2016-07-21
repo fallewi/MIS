@@ -25,7 +25,7 @@ class Bronto_Email_Block_Adminhtml_System_Email_Template_Grid extends Mage_Admin
         if (Mage::helper('bronto_common')->isVersionMatch(Mage::getVersionInfo(), 1, array(4, 5, array('edition' => 'Professional', 'major' => 9), 10))) {
             $collection->getSelect()->joinLeft(
                 $brontoTable,
-                "`{$templateTable}`.`template_id` = `{$brontoTable}`.`core_template_id`"
+                "{$templateTable}.template_id = {$brontoTable}.core_template_id"
             );
         }
 

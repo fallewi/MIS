@@ -10,7 +10,7 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
 {
     /**
      * Override of Mage_Sales_Model_Order_Api::info()
-     *t
+     *
      * @param string $orderIncrementId
      * @return Mage_Sales_Model_Api_Resource
      */
