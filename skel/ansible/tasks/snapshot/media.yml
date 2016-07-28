@@ -2,6 +2,9 @@
 
 # @TODO : Notify hipchat of media snapshot
 - debug: msg="*** syncing {{ MEDIA_DIR }} to {{ SNAPSHOT_BASE }}/media ***"
+  tags:
+    - snapshot
+    - snapshot-media-only
 
 - name: ensure media directory exists on remote host
   shell: "[ -d {{ MEDIA_DIR }} ] || exit -1"

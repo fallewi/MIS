@@ -54,20 +54,11 @@ class BlueAcornInventory(object):
         self.read_environment()
         self.read_cli_args()
 
-        self.inventory = {
-          self.hostgroup: {
-            "hosts": [],
-            "vars": {}
-          },
-          "_meta": {
-            "hostvars": {}
-          }
-        }
-
         # Read passed envars files
         ##########################
+        vars = {}
         if self.envars_files:
-          vars = {}
+
           cmd = "env -i bash".split()
           input = "set -a"
 
@@ -86,38 +77,54 @@ class BlueAcornInventory(object):
               if match and match.group(1) not in ignores:
                 vars[match.group(1)] = match.group(2)
 
-            self.inventory[self.hostgroup]['vars'] = vars
-
         # generate inventory
         ####################
 
-        # provide localhost host
-        self.inventory[self.hostgroup]["hosts"].append("localhost")
-        self.inventory["_meta"]["hostvars"]["localhost"] = self.transmorg([
-            'local'
-          ], [
-            'ansible_connection'
-          ])
+        self.inventory = {
+          self.hostgroup: {
+            "hosts": [],
+            "vars": vars
+          },
+          "_meta": {
+            "hostvars": {}
+          }
+        }
+
+        # export vars to all groups as well
+        if self.hostgroup != 'all':
+            self.inventory['all'] = {'vars': vars}
+
 
         if 'DOCKER_MACHINE' not in vars:
             print "DOCKER_MACHINE is not exported in envars"
             exit()
 
         machine_name = vars["DOCKER_MACHINE"]
-        storepath = dminspect("{{.Driver.StorePath}}", machine_name)
 
-        self.inventory[self.hostgroup]["hosts"].append("docker-machine")
-        self.inventory["_meta"]["hostvars"]["docker-machine"] = self.transmorg([
-            dminspect("{{.Driver.IPAddress}}", machine_name),
-            dminspect("{{.Driver.SSHUser}}", machine_name, 'root'),
-            dminspect("{{.Driver.SSHPort}}", machine_name, '22'),
-            dminspect("{{.Driver.SSHKeyPath}}", machine_name, "%s/machines/%s/id_rsa" % (storepath, machine_name))
-          ], [
-            'ansible_ssh_host',
-            'ansible_ssh_user',
-            'ansible_ssh_port',
-            'ansible_ssh_private_key_file'
-          ])
+        if machine_name == 'local':
+            self.inventory[self.hostgroup]["hosts"].append("docker-machine")
+            self.inventory["_meta"]["hostvars"]["docker-machine"] = self.transmorg([
+                'local',
+                '127.0.0.1'
+              ], [
+                'ansible_connection',
+                'ansible_host'
+              ])
+        else:
+            storepath = dminspect("{{.Driver.StorePath}}", machine_name)
+
+            self.inventory[self.hostgroup]["hosts"].append("docker-machine")
+            self.inventory["_meta"]["hostvars"]["docker-machine"] = self.transmorg([
+                dminspect("{{.Driver.IPAddress}}", machine_name),
+                dminspect("{{.Driver.SSHUser}}", machine_name, 'root'),
+                dminspect("{{.Driver.SSHPort}}", machine_name, '22'),
+                dminspect("{{.Driver.SSHKeyPath}}", machine_name, "%s/machines/%s/id_rsa" % (storepath, machine_name))
+              ], [
+                'ansible_ssh_host',
+                'ansible_ssh_user',
+                'ansible_ssh_port',
+                'ansible_ssh_private_key_file'
+              ])
 
         # @TODO blow up if CLIENT_CODE not provided
         container_name = "%s-%s-term" % (self.hostgroup, \

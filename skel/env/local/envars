@@ -3,10 +3,22 @@
 # see /docs/ENVIRONMENTS.md for definitions
 #
 
-REPO_REF="HEAD"
+DOCKER_MACHINE="local"
+SNAPSHOT_BASE_ENV="sample-data"
 
-APP_ROOT="${REPO_ROOT}/webroot"
+# application url
+SUBDOMAIN="$CLIENT_CODE"
+DOMAIN=".dev"
 APP_URL="http://$CLIENT_CODE.dev/"
+
+# host port mappings (localhost=>container)
+MAGE_NGINX_PORT=80
+#MAGE_MYSQL_PORT=3306
+
+# path to codebase (in containers or on remotes)
+REPO_ROOT="/magento"
+APP_ROOT="${REPO_ROOT}/webroot"
+
 
 # evaluate onset.sh when setting this environment.
 #  prefer skel/env/@ENV/onset.sh. defaults to skel/env/onset.sh

@@ -4,8 +4,15 @@
 #
 
 - name: "localhost - dockerized environment provisioning"
-  hosts: localhost
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
   tasks:
+
+    - name: fail to provision on local environments - use alternative palybook
+      fail: msg="not supported on local environments - use alt local playbook"
+      when: DOCKER_MACHINE == 'local'
+
     - name: ensure containers are running on docker-machine
       local_action: shell ./bin/env up {{ ENV }}
       args:

@@ -36,8 +36,8 @@ nginx:
     APP_ROOT: ${APP_ROOT}
 
     # disable HTTP basic auth by providing empty ("") values
-    AUTH_BASIC_USER: "blueacorn"
-    AUTH_BASIC_PASS: "pass4blueacorn"
+    AUTH_BASIC_USER: ""
+    AUTH_BASIC_PASS: ""
 
 # nginx_deux:
 #   container_name: ${ENV}-${CLIENT_CODE}-nginx-deux

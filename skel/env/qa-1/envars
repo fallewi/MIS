@@ -21,7 +21,7 @@ DOMAIN="qa-1.blueacorn.net"
 SUBDOMAIN="MIS"
 
 # path to codebase checkout on remote servers
-REPO_ROOT="/magento"
+REPO_ROOT="/home/blueacorn/magento"
 
 APP_ROOT="${REPO_ROOT}/webroot"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
