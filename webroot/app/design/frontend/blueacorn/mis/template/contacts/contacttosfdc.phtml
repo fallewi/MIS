@@ -59,10 +59,12 @@ else
         }
         $kv[] = "subject=Contact Us | " . $request_type . $orderID;
         $kv[] = "name=" . $_POST["first_name"] . " " . $_POST["last_name"];
+        $kv[] = "type=" . $request_type;
         $orderID = "";
         if(isset($_POST["orderid"]))
         {
             $orderID = $_POST["orderid"];
+            $kv[] = "00NA000000A7Y10=".$orderID;
         }
         $salesforce_post_url = "https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8"; // web to case post url
     }
