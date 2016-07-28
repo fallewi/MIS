@@ -2010,6 +2010,10 @@ body.catalog-product-view {
         }
     }
 
+    .fancybox-opened {
+        width: auto !important;
+    }
+
     .fancybox-inner {
         @include bp(max-width, $bp-medium) {
             max-width: 665px;
