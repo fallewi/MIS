@@ -53,20 +53,19 @@ class Amasty_Feed_Model_Observer
         
         return $this;
     }
-    
-    protected function _validateTime($feed){
+
+    protected function _validateTime($feed)
+    {
         $validate = true;
         $cronTime = $feed->getCronTime();
-        
-        if (!empty($cronTime)){
-            $mageTime = Mage::getModel('core/date')->timestamp(time());
 
+        if (!empty($cronTime)){
+            $currentDate = Mage::app()->getLocale()->date();
             $validate = false;
-            
             $times = explode(",", $cronTime);
-            
-            $now = (date("H", $mageTime) * 60) + date("i", $mageTime);
-            
+            $now = ( $currentDate->get(Zend_Date::HOUR)  * 60) +
+                $currentDate->get(Zend_Date::MINUTE);
+
             foreach($times as $time){
                 if ($now >= $time && $now < $time + 30){
                     $validate = true;

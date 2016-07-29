@@ -166,10 +166,6 @@ class Amasty_Feed_Model_Google extends Varien_Object
             )
         );
 
-
-//        print_r(unserialize('a:3:{i:1;a:3:{s:9:"condition";a:4:{s:4:"type";a:1:{i:0;s:9:"attribute";}s:9:"attribute";a:1:{i:0;s:12:"apparel_type";}s:8:"operator";a:1:{i:0;s:10:"isnotempty";}s:5:"value";a:1:{i:0;s:0:"";}}s:6:"output";a:1:{i:0;a:1:{s:6:"static";s:4:"TRUE";}}s:12:"modification";a:1:{s:5:"value";s:0:"";}}i:2;a:3:{s:9:"condition";a:4:{s:4:"type";a:1:{i:0;s:9:"attribute";}s:9:"attribute";a:1:{i:0;s:12:"apparel_type";}s:8:"operator";a:1:{i:0;s:10:"isnotempty";}s:5:"value";a:1:{i:0;s:0:"";}}s:6:"output";a:1:{i:0;a:1:{s:6:"static";s:4:"TRUE";}}s:12:"modification";a:1:{s:5:"value";s:0:"";}}i:3;a:2:{s:6:"output";a:1:{i:0;a:1:{s:6:"static";s:5:"FALSE";}}s:12:"modification";a:1:{s:5:"value";s:0:"";}}}'));
-//        exit;
-
         $identifierExists->setConditionSerialized(serialize($condition));
         $identifierExists->save();
     }
@@ -440,5 +436,25 @@ class Amasty_Feed_Model_Google extends Varien_Object
         }
 
         return $attributes;
+    }
+
+    public function getCurrency()
+    {
+        $currency = null;
+        $sessionData = $this->_getSessionData();
+        if (is_array($sessionData) && array_key_exists('currency', $sessionData)){
+            $currency = $sessionData['currency'];
+        }
+        return $currency;
+    }
+
+    public function getStoreId()
+    {
+        $storeId = Mage::app()->getStore(true)->getId();
+        $sessionData = $this->_getSessionData();
+        if (is_array($sessionData) && array_key_exists('store_id', $sessionData)){
+            $storeId = $sessionData['store_id'];
+        }
+        return $storeId;
     }
 }
