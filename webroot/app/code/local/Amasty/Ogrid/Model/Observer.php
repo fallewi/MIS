@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Model_Observer 
@@ -31,7 +31,9 @@ class Amasty_Ogrid_Model_Observer
             
             $permissibleActions = array('index', 'grid', 'exportCsv', 'exportExcel');
             
-            if ( false === strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order') || 
+            $noneSalesOrder = !(strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order') !== false ||
+                strpos(Mage::app()->getRequest()->getControllerName(), 'adminhtml_order') !== false);
+            if ($noneSalesOrder  ||
                  !in_array(Mage::app()->getRequest()->getActionName(), $permissibleActions) ){
 
                 return;
@@ -42,7 +44,9 @@ class Amasty_Ogrid_Model_Observer
 
             if (!$grid) {
                 foreach($layout->getAllBlocks() as $block){
-                    if ($block instanceof  Mage_Adminhtml_Block_Sales_Order_Grid ){
+//                    var_dump(get_class($block));
+                    if ($block instanceof  Mage_Adminhtml_Block_Sales_Order_Grid ||
+                        $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid){
                         $grid = $block;
                         break;
                     }
@@ -70,8 +74,11 @@ class Amasty_Ogrid_Model_Observer
     public function modifyOrderGridAfterBlockGenerate($observer){    
         $permissibleActions = array('index', 'grid', 'exportCsv', 'exportExcel');
         $exportActions = array('exportCsv', 'exportExcel');
-        
-        if ( !(Mage::app()->getRequest()->getControllerName() == 'sales_order' ||
+//        var_dump(Mage::app()->getRequest()->getControllerName(), Mage::app()->getRequest()->getControllerName());
+//        exit;
+        if ( !(
+                Mage::app()->getRequest()->getControllerName() == 'adminhtml_order' ||
+                Mage::app()->getRequest()->getControllerName() == 'sales_order' ||
                 Mage::app()->getRequest()->getControllerName() == 'adminhtml_sales_order') ||
                 
              !in_array(Mage::app()->getRequest()->getActionName(), $permissibleActions) ){
@@ -84,7 +91,7 @@ class Amasty_Ogrid_Model_Observer
         
         $block = $observer->getBlock();
 
-        if ($block instanceof Mage_Adminhtml_Block_Widget_Grid){
+        if ($block instanceof Mage_Adminhtml_Block_Widget_Grid || $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid){
             
             self::$_grid = $block;
             $columns = Mage::helper("amogrid/columns");
