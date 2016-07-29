@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Adminhtml_AmorderattrorderController extends Mage_Adminhtml_Controller_Action
@@ -63,6 +63,69 @@ class Amasty_Orderattr_Adminhtml_AmorderattrorderController extends Mage_Adminht
     	        }
                 $orderAttributes->setData($key, $val);
     	    }
+
+			/**
+			 * Deleting
+			 */
+			$toDelete = Mage::app()->getRequest()->getPost('amorderattr_delete');
+			if ($toDelete)
+			{
+				foreach ($toDelete as $attrCode => $value)
+				{
+					if ($value == "1")
+					{
+						$url = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' .
+								$orderAttributes->getData($attrCode);
+						@unlink($url);
+						$orderAttributes->setData($attrCode, '');
+
+					}
+				}
+			}
+
+			/**
+			 * Uploading files
+			 */
+			if (isset($_FILES['amorderattr']) && isset($_FILES['amorderattr']['error']))
+			{
+				foreach ($_FILES['amorderattr']['error'] as $attrCode => $errorCode)
+				{
+					if (UPLOAD_ERR_OK == $errorCode)
+					{
+						// check file size
+						/*if ($filesRestrictions[$attributeCode]['size']
+								&& ($filesRestrictions[$attributeCode]['size']
+										< $_FILES['amorderattr']['size'][$attrCode])
+						) {
+							$this->_getSession()->addError(
+								$this->__(
+									'File size restriction: %d bytes',
+									$filesRestrictions[$attrCode]['size']
+								)
+							);
+						}*/
+						try {
+							if(class_exists("Mage_Core_Model_File_Uploader")){
+								$uploader = new Mage_Core_Model_File_Uploader('amorderattr[' . $attrCode . ']');
+							}
+							else{
+								$uploader = new Varien_File_Uploader('amorderattr[' . $attrCode . ']');
+							}
+
+							$uploader->setAllowRenameFiles(true);
+							$uploader->setFilesDispersion(true);
+							$result = $uploader->save(
+							    $uploadDir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original'  . DS
+							);
+							$orderAttributes->setData($attrCode, $result['file']);
+
+						} catch (Exception $e) {
+							$this->_getSession()->addError($e->getMessage());
+						}
+					}
+				}
+			}
+
     		try {
     			$orderAttributes->save();
     			$this->_getSession()->addSuccess(Mage::helper('sales')->__('The order attributes have been updated.'));

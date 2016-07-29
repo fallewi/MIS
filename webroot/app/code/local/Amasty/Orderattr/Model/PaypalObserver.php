@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_PaypalObserver
@@ -63,6 +63,31 @@ class Amasty_Orderattr_Model_PaypalObserver
                     }
                     if ('radios' == $attribute->getFrontend()->getInputType()){
                         $orderAttributes[$attribute->getAttributeCode()] = $orderAttributes[$attribute->getAttributeCode()][0];
+                    }
+                    if ('file' == $attribute->getFrontend()->getInputType()
+                        && array_key_exists($attribute->getAttributeCode(), $orderAttributes)
+                    ){
+                        $fileName =  $orderAttributes[$attribute->getAttributeCode()];
+                        $dir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'tmp';
+                        $file = $dir . $fileName;
+                        if ( file_exists($file) && $fileName ) {
+                            try {
+                                $newPath = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $fileName;
+                                $pos = strrpos($newPath, "/");
+                                if ($pos) {
+                                    $destinationDir = substr($newPath, 0, $pos);
+                                    if (!is_dir($destinationDir)) {
+                                        mkdir($destinationDir, 0755, true);
+                                    }
+                                }
+                                $result = rename(
+                                    $file, $newPath
+                                );
+                            }
+                            catch(Exception $ex){
+                                $orderAttributes[$attribute->getAttributeCode()] = '';
+                            }
+                        }
                     }
                 }
                 $attributes->addData($orderAttributes);  

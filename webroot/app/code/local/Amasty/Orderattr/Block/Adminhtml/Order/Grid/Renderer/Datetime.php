@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Grid_Renderer_Datetime extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Datetime
@@ -10,7 +10,10 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Grid_Renderer_Datetime extends Mage
     {
         if ($data = $this->_getValue($row)) {
             if ($data === '0000-00-00' ||
-                $data === '0000-00-00 00:00:00') {
+                $data === '0000-00-00 00:00:00' ||
+                $data === '1970-01-01' ||
+                $data === '1970-01-01 00:00:00'
+            ) {
                 return '';
             }
             $format = $this->_getFormat();

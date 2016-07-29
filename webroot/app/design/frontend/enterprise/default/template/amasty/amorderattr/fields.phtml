@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 ?>
@@ -58,7 +58,7 @@
             return checkboxGroupChecked;
         }],
         
-        ['validate-length', 'Please use the value with length less or equal than 25 characters', function(v) {
+        ['validate-length-less-25', 'Please use the value with length less or equal than 25 characters', function(v) {
             return v.length <= 25;
         }]
     ]);

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Block_Template
@@ -110,6 +110,13 @@ class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Bl
                             break;
                         case 'textarea':
                             $value = nl2br($orderAttributes[$attribute->getAttributeCode()]);
+                            break;
+                        case 'file':
+                            $value = $orderAttributes[$attribute->getAttributeCode()];
+                            $pos = strrpos ( $value, "/" );
+                            if ($pos) {
+                                $value = substr($value, $pos + 1, strlen($value));
+                            }
                             break;
 	                    default:
 	                        $value = $orderAttributes[$attribute->getAttributeCode()];
