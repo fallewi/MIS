@@ -63,11 +63,9 @@ class Shipperhq_Shipper_Model_Sales_Quote_Address_Rate extends Mage_Sales_Model_
                 ->setFreightRate($rate->getFreightRate())
                 ->setCustomDescription($rate->getCustomDescription())
                 ->setCarrierId($rate->getCarrierId())
-                ->setCustomDuties($rate->getCustomDuties());
-
-            ;
+                ->setCustomDuties($rate->getCustomDuties())
+                ->setTooltip($rate->getTooltip());
         }
         return $this;
     }
-
 }

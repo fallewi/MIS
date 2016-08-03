@@ -55,6 +55,7 @@ class Shipperhq_Calendar_Helper_Date {
 
         $dateOptions = array();
         $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
+        $zendDateFormat = Mage::helper('shipperhq_shipper')->getZendDateFormat();
         $startDate = $calendarDetails['start'];
 
         $arrBlackoutDates = array();
@@ -63,6 +64,7 @@ class Shipperhq_Calendar_Helper_Date {
             $arrBlackoutDates[] = date($dateFormat, strtotime($blackoutDate));
         };
         $arrBlackoutDays = array();
+
         foreach($calendarDetails['blackoutDays'] as $dayOfWeek)
         {
             //Java Sunday = 7, Monday = 1. PHP Monday = 1, Saturday = 6, Sunday = 0
@@ -71,14 +73,24 @@ class Shipperhq_Calendar_Helper_Date {
             }
             $arrBlackoutDays[] = $dayOfWeek;
         }
+
         if(count($arrBlackoutDays) == 7 ) {
             if(Mage::helper('shipperhq_shipper')->isDebug()) {
                 Mage::helper('wsalogger/log')->postWarning('Shipperhq Calendar', 'No date options available ', 'All days of week are set as black out days for carrier');
             }
             return $dateOptions;
         }
-       while(count($dateOptions) < $numPickupDays) {
-            $nextDay = date($dateFormat, $startDate);
+
+        $localDT = Mage::app()->getLocale()->date(now(), null, null, true)->toString('r');
+
+        Mage::helper('wsalogger/log')->postInfo('Shipperhq Calendar',
+                                                 'Current Date & Time According to Magento Time Zone',
+                                                 $localDT);
+
+        while(count($dateOptions) < $numPickupDays) {
+              //
+              //$nextDay1 = date($dateFormat, $startDate);
+              $nextDay = Mage::app()->getLocale()->date($startDate, null, null, true)->toString($zendDateFormat);
 
             // Blackout day or date...get next available
             if(in_array($nextDay, $arrBlackoutDates) ||

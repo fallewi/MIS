@@ -247,7 +247,7 @@
             var carrierCodeInsert = '_' + carrierCode;
 
             if (data == false) {
-                <?php $errorMessage = $this->__('Sorry, no quotes are available for this order at this time.'); ?>
+                <?php $errorMessage = $this->getStandardErrorMessage(); ?>
                 $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML='<ul class="messages"><li class="error-msg"><ul><li><?php echo preg_replace("!\s+!"," ",$errorMessage); ?></li></ul></li></ul>';
             } else {
                 var existingRadios = document.getElementsByName('shipping_method'+carriergroupInsert);

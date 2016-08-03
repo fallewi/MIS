@@ -53,7 +53,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
     protected static $ecommerceType = 'magento';
     protected static $_stdAttributeNames = array(
         'shipperhq_shipping_group', 'shipperhq_post_shipping_group',
-        'shipperhq_warehouse', 'shipperhq_royal_mail_group', 'shipperhq_shipping_qty', 'shipperhq_availability_date',
+        'shipperhq_location', 'shipperhq_warehouse', 'shipperhq_royal_mail_group', 'shipperhq_shipping_qty', 'shipperhq_availability_date',
         'shipperhq_shipping_fee','shipperhq_additional_price','freight_class',
         'shipperhq_nmfc_class', 'shipperhq_nmfc_sub', 'shipperhq_handling_fee','shipperhq_carrier_code',
         'shipperhq_volume_weight', 'shipperhq_declared_value', 'ship_separately','shipperhq_malleable_product',

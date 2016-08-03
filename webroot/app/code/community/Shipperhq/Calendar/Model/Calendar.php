@@ -77,6 +77,7 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
         $updatedRates = array();
         $dateOnRate = '';
         $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
+        $tooltipImgUrl = Mage::getModel ('core/design_package')->getSkinUrl('images/shipperhq/tooltip.jpg');
         foreach ($this->_rates as $code => $rates) {
             if ($code == $carrierCode) {
                 foreach ($rates as $rate) {
@@ -101,13 +102,18 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
                     {
                         $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
                     }
+                    if ($rate->getTooltip()) {
+                        $label .= '<span style="float:right;" class="helpcursor" title="'.$rate->getTooltip().'">
+                                       <img src="'.$tooltipImgUrl.'">
+                                   </span>';
+                    }
                     $updatedRates[$rate->getCode()] = array(
-                        //  'code' 			=> ,
                         'price' 				=> $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), false),
-                        //	'method_title' 			=> $rate->getMethodTitle(),
                         'method_description' 	=> $rate->getMethodTitle(),
-                        'label'                  => $label
+                        'label'                 => $label,
+                        'tooltip'               => $rate->getTooltip(),
                     );
+
                     if($rate->getErrorMessage()) {
                         $updatedRates[$rate->getCode()]['error'] = $rate->getErrorMessage();
                         $this->_getAddress()->setShippingMethod('');
@@ -266,12 +272,7 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
 
     protected function getMethodTitle($methodTitle, $methodDescription, $includeContainer)
     {
-        $title = $methodTitle;
-        if($includeContainer) {
-            $truncatedTitle = str_replace($methodDescription, '', $methodTitle);
-            $title = '<span class="method-title">'.$truncatedTitle.'</span> <span class="method-extra">'.$methodDescription.'</span>';
-        }
-        return $title;
+       return Mage::helper('shipperhq_shipper')->getMethodTitle($methodTitle, $methodDescription, $includeContainer);
     }
 
     protected function _getShippingPrice($price, $flag,  $includeContainer = true)
