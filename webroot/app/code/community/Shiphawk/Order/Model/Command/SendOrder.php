@@ -7,7 +7,9 @@ class Shiphawk_Order_Model_Command_SendOrder
         Mage::log('building order object for Shiphawk');
         $url = Mage::getStoreConfig('shiphawk/order/gateway_url');
         $key = Mage::getStoreConfig('shiphawk/order/api_key');
-        $client = new Zend_Http_Client($url . 'orders?api_key=' . $key);
+        $client = new Zend_Http_Client($url . 'orders');
+        $client->setHeaders('X-Api-Key', $key);
+
 
         $itemsRequest = [];
         $shippingRateId = '';
@@ -26,19 +28,7 @@ class Shiphawk_Order_Model_Command_SendOrder
         foreach ($order->getAllItems() as $item) {
             /** @var Mage_Sales_Model_Order_Item $item */
             $itemsRequest[] = array(
-                'source_system_id' => $item->getProductId(),
-                'name' => $item->getName(),
-                'sku' => $item->getSku(),
-                'quantity' => $item->getQtyOrdered(),
-                'value' => $item->getPrice(),
-                'length' => $item->getLength(),
-                'width' => $item->getWidth(),
-                'height' => $item->getHeight(),
-                'weight' => $item->getWeight(),
-                'item_type' => $item->getProductType(),
-                'unpacked_item_type_id' => 0,
-                'handling_unit_type' => '',
-                'hs_code' => '',
+                'sku' => $item->getSku()
             );
         }
 
