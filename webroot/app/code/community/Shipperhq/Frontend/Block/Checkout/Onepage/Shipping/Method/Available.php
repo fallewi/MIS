@@ -30,14 +30,14 @@
 
 /**
  * Provides proxy methods for helper block
- * 
- * Supplies helper block with render information 
+ *
+ * Supplies helper block with render information
  */
 class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extends Mage_Checkout_Block_Onepage_Shipping_Method_Available
 {
     /**
      * Returns a helper block, that is used to retrieve all data
-     * 
+     *
      * @return Shipperhq_Frontend_Block_Checkout_Helper
      */
     public function getHelperBlock()
@@ -47,7 +47,7 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
                 'shipperhq_frontend/checkout_helper',
                 sprintf('%s.helper', $this->getNameInLayout())
             );
-            
+
             $this->_helperBlock->init(array(
                 'calendar_block' => 'shipperhq_calendar/checkout_onepage_shipping_method_calendar',
                 'calendar_template' => 'shipperhq/calendar/checkout/onepage/shipping_method/calendar.phtml',
@@ -55,12 +55,14 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
                 'pickup_template' => 'shipperhq/pickup/checkout/onepage/shipping_method/storepickup.phtml',
                 'accessorials_block' => 'shipperhq_freight/checkout_onepage_shipping_method_accessorials',
                 'accessorials_template' => 'shipperhq/freight/checkout/onepage/shipping_method/accessorials.phtml',
+                'delivery_comments_block' => 'shipperhq_frontend/checkout_onepage_shipping_method_comments',
+                'delivery_comments_template' => 'shipperhq/checkout/onepage/shipping_method/comments.phtml',
                 'quote' => $this->getQuote(),
                 'address' => $this->getAddress()
             ));
         }
-        
-        
+
+
         return $this->_helperBlock;
     }
 
@@ -91,7 +93,7 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
         return $this->getHelperBlock()->getShippingMethodsSelect($name, $id, $value, $rates, $sole);
     }
 
-    
+
     public function isShippingMethodSelected($rates)
     {
         return $this->getHelperBlock()->isShippingMethodSelected($rates);
@@ -135,7 +137,7 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
     {
         return $this->getHelperBlock()->getStorepickupHtml($carrierCode, $carrierType, $carriergroup);
     }
-    
+
     public function getCalendarHtml($carriergroup, $code, $soleMethod = false)
     {
         return $this->getHelperBlock()->getCalendarHtml($carriergroup, $code, $soleMethod);
@@ -154,5 +156,15 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
     public function getFreightAccessorialsHtml($carrierCode, $carrierType, $carrerigroup = '')
     {
         return $this->getHelperBlock()->getFreightAccessorialsHtml($carrerigroup, $carrierCode, $carrierType);
+    }
+
+    public function showDeliveryComments()
+    {
+        return $this->getHelperBlock()->showDeliveryComments();
+    }
+
+    public function getDeliveryCommentsHtml()
+    {
+        return $this->getHelperBlock()->getDeliveryCommentsHtml();
     }
 }

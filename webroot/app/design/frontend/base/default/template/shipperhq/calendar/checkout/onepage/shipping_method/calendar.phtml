@@ -282,7 +282,7 @@ deferredShipperHQCode(function () {
                     selectedShipMethodSingle.hidden = true;
                 }
                 if(!errorMessage) {
-                    errorMessage = '<?php echo $this->__("Sorry, no quotes are available for this order at this time."); ?>';
+                    errorMessage = "<?php echo $this->getStandardErrorMessage(); ?>";
                 }
 
                 var radioChoices = $('radio_choices'+carriergroupInsert + "_" + carrierCode);
@@ -374,7 +374,7 @@ deferredShipperHQCode(function () {
         }
         else if(is_multi) {
             if (data == false) {
-                <?php $errorMessage = $this->__('Sorry, no quotes are available for this order at this time.'); ?>
+                <?php $errorMessage = $this->getStandardErrorMessage(); ?>
                 $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML='<ul class="messages"><li class="error-msg"><ul><li><?php echo preg_replace("!\s+!"," ",$errorMessage); ?></li></ul></li></ul>';
             } else {
                 var addressId = carriergroupInsert.replace('_ma', '');
@@ -426,7 +426,7 @@ deferredShipperHQCode(function () {
             }
             if (data == false || errorMessage) {
                 if(!errorMessage) {
-                    errorMessage = '<?php echo $this->__("Sorry, no quotes are available for this order at this time."); ?>';
+                    errorMessage = "<?php echo $this->getStandardErrorMessage(); ?>";
                 }
                 $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML='<ul class="messages"><li class="error-msg"><ul><li>' + errorMessage + '</li></ul></li></ul>';
             } else {

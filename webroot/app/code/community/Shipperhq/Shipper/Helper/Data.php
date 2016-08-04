@@ -65,6 +65,9 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     CONST DELIVERY_DATE_OPTION = 'delivery_date';
     CONST TIME_IN_TRANSIT = 'time_in_transit';
     CONST SHIPPERHQ_SHIPPER_CARRIERGROUP_DESC_PATH = 'carriers/shipper/carriergroup_describer';
+    CONST SHIPPERHQ_SHIPPER_ALLOWED_METHODS_PATH = 'carriers/shipper/allowed_methods';
+    CONST SHIPPERHQ_LAST_SYNC = 'carriers/shipper/last_sync';
+
 
     /**
      * Check is module exists and enabled in global config.
@@ -206,13 +209,14 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         $carrierGroupDetail['carrierName'] = $carrierRate['carrierName'];
         $shippingAddress = $this->getQuote()->getShippingAddress();
 
+        $cgId = array_key_exists('carrierGroupId', $carrierGroupDetail) ? $carrierGroupDetail['carrierGroupId'] : null;
+        $this->cleanUpPackages($shippingAddress->getAddressId(),$cgId, $carrierRate['carrierCode']);
+
         //store packages
         if(array_key_exists('shipments', $carrierRate) && $carrierRate['shipments'] != null) {
             if(!$this->getQuote()->getShippingAddress()->getAddressId()) {
                 return;
             }
-            $cgId = array_key_exists('carrierGroupId', $carrierGroupDetail) ? $carrierGroupDetail['carrierGroupId'] : null;
-            $this->cleanUpPackages($shippingAddress->getAddressId(),$cgId, $carrierRate['carrierCode']);
             $mapping = $this->getPackagesMapping();
             $standardData = array('address_id' => $shippingAddress->getAddressId(),
                                 'carrier_group_id' => $cgId,
@@ -236,11 +240,14 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 if(!isset($rate->shipments)) {
                     continue;
                 }
-                foreach($rate->shipments as $shipment) {
-                    $data = array_merge($standardData, Mage::helper('shipperhq_shipper/mapper')->map($mapping,(array)$shipment));
-                    $package = Mage::getModel('shipperhq_shipper/quote_packages');
-                    $package->setData($data);
-                    $package->save();
+                if(!is_null($standardData['address_id'])) {
+                    foreach($rate->shipments as $shipment) {
+                        $data = array_merge($standardData, Mage::helper('shipperhq_shipper/mapper')->map($mapping,(array)$shipment));
+                        $package = Mage::getModel('shipperhq_shipper/quote_packages');
+                        $package->setData($data);
+                        $package->save();
+
+                    }
                 }
             }
         }
@@ -293,9 +300,12 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
     }
 
-    public function getPackageBreakdownText($packages) {
+    public function getPackageBreakdownText($packages, $carrierGroupName = false) {
         $boxText = '';
         $count = 1;
+        if($carrierGroupName) {
+            $boxText .= $carrierGroupName .': ';
+        }
         foreach ($packages as $key=>$box)
         {
             $boxText .= Mage::helper('shipperhq_shipper')->__('Package').' #'.($count++);
@@ -534,8 +544,8 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
         if (self::$_wsTimeout==NULL) {
             $timeout =  Mage::getStoreConfig('carriers/shipper/ws_timeout');
-            if(!is_numeric($timeout) || $timeout < 120) {
-                $timeout = 120;
+            if(!is_numeric($timeout) || $timeout < 30) {
+                $timeout = 30;
             }
             self::$_wsTimeout = $timeout;
         }
@@ -561,11 +571,13 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int $scopeId
      * @return $this
      */
-    public function saveConfig($path, $value, $scope = 'default', $scopeId = 0)
+    public function saveConfig($path, $value, $scope = 'default', $scopeId = 0, $refreshRequired = true)
     {
         if (Mage::getStoreConfig($path) != $value) {
             Mage::getConfig()->saveConfig(rtrim($path, '/'), $value, $scope, $scopeId);
-            Mage::helper('shipperhq_shipper')->getQuoteStorage()->setConfigUpdated(true);
+            if($refreshRequired) {
+                Mage::helper('shipperhq_shipper')->getQuoteStorage()->setConfigUpdated(true);
+            }
         }
     }
 
@@ -576,7 +588,11 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function decodeShippingDetails($shippingDetailsEnc)
     {
-        return Zend_Json::decode($shippingDetailsEnc);
+        $decoded = array();
+        if(!is_null($shippingDetailsEnc) && $shippingDetailsEnc != '') {
+            $decoded = Zend_Json::decode($shippingDetailsEnc);
+        }
+        return $decoded;
     }
 
     /**
@@ -607,11 +623,6 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $this->_quote = $quote;
         return $this;
-    }
-
-    public function isSortOnPrice()
-    {
-        return $this->getGlobalSetting('sortBasedPrice');
     }
 
     public function getGlobalSetting($code)
@@ -807,6 +818,17 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Freight');
     }
+
+    public function getMethodTitle($methodTitle, $methodDescription, $includeContainer)
+    {
+        $title = $methodTitle;
+        if($includeContainer) {
+            $truncatedTitle = str_replace($methodDescription, '', $methodTitle);
+            $title = '<span class="method-title">'.$truncatedTitle.'</span> <span class="method-extra">'.$methodDescription.'</span>';
+        }
+        return $title;
+    }
+
     /**
      *
      * @return array
@@ -904,7 +926,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getCarriergroupShippingHtml($encodedDetails)
     {
-        $decodedDetails = Mage::helper('shipperhq_shipper')->decodeShippingDetails($encodedDetails);
+        $decodedDetails = $this->decodeShippingDetails($encodedDetails);
         $htmlText='<br/>';
         foreach ($decodedDetails as $shipLine) {
 
@@ -1033,8 +1055,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             $this->saveConfig('carriers/'.$carrierCode.'/active', 0);
         }
         $this->saveCarrierTitle($carrierCode, $carrierTitle);
-
-        if($sortOrder) {
+        if(!is_null($sortOrder)) {
             $this->saveConfig('carriers/'.$carrierCode.'/sort_order', $sortOrder);
         }
 

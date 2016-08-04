@@ -10,11 +10,12 @@ class Shipperhq_Frontend_Block_Checkout_Helper
     protected $_calendar;
     protected $_rates;
     protected $_accessorial;
+    protected $_deliveryComments;
 
 
     /**
      * Calendar block name
-     * 
+     *
      * @var string
      */
     protected $_calendarBlockType;
@@ -28,7 +29,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     /**
      * Store pickup block name
-     * 
+     *
      * @var string
      */
     protected $_storePickupBlockType;
@@ -55,6 +56,20 @@ class Shipperhq_Frontend_Block_Checkout_Helper
     protected $_freightAccessorialsBlockTemplate;
 
     /**
+     * comments block name
+     *
+     * @var string
+     */
+    protected $_deliveryCommentsBlockType;
+
+    /*
+     * comments block template
+     *
+     * @var string
+     */
+    protected $_deliveryCommentsBlockTemplate;
+
+    /**
      * Sets debug flag
      */
     protected function _construct() {
@@ -66,7 +81,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     /**
      * Sets up block properties
-     * 
+     *
      * @param array $options
      * @return $this
      */
@@ -90,13 +105,19 @@ class Shipperhq_Frontend_Block_Checkout_Helper
         if (isset($options['accessorials_template'])) {
             $this->setFreightAccessorialsBlockTemplate($options['accessorials_template']);
         }
+        if (isset($options['delivery_comments_block'])) {
+            $this->setDeliveryCommentsBlockType($options['delivery_comments_block']);
+        }
+        if (isset($options['delivery_comments_template'])) {
+            $this->setDeliveryCommentsBlockTemplate($options['delivery_comments_template']);
+        }
         if (isset($options['quote'])) {
             $this->setQuote($options['quote']);
-        } 
+        }
         if (isset($options['address'])) {
             $this->setAddress($options['address']);
         }
-        
+
         return $this;
     }
 
@@ -333,12 +354,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     public function getMethodTitle($methodTitle, $methodDescription, $includeContainer)
     {
-        $title = $methodTitle;
-        if($includeContainer) {
-            $truncatedTitle = str_replace($methodDescription, '', $methodTitle);
-            $title = '<span class="method-title">'.$truncatedTitle.'</span> <span class="method-extra">'.$methodDescription.'</span>';
-        }
-        return $title;
+        return Mage::helper('shipperhq_shipper')->getMethodTitle($methodTitle, $methodDescription, $includeContainer);
     }
 
     public function showToolTips() {
@@ -478,6 +494,14 @@ class Shipperhq_Frontend_Block_Checkout_Helper
             ->toHtml();
     }
 
+    public function getDeliveryCommentsHtml()
+    {
+        return $this->_getDeliveryComments()
+            ->setName('delivery_comments')
+            ->setTemplate($this->getDeliveryCommentsBlockTemplate())
+            ->toHtml();
+    }
+
     public function isPickupCarrier($rate)
     {
         if(!Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup')) {
@@ -525,6 +549,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
         return $this->_getAccessorial('freight_'.$carrierCode)
             ->setCarriergroupId($carrierGroup)
             ->setCarrierCode($carrierCode)
+            ->setCarrierType($carrierType)
             ->setName('accessorial_'.$carrierCode)
             ->setTemplate($this->getFreightAccessorialsBlockTemplate())
             ->toHtml();
@@ -560,9 +585,20 @@ class Shipperhq_Frontend_Block_Checkout_Helper
         return $this->_accessorial;
     }
 
+    protected function _getDeliveryComments($name = '')
+    {
+        if (!$this->_deliveryComments) {
+            $this->_deliveryComments = $this->getLayout()->createBlock($this->getDeliveryCommentsBlockType(), $name);
+            $this->_deliveryComments->setQuote($this->getQuote());
+            $this->_deliveryComments->setAddress($this->getAddress());
+        }
+
+        return $this->_deliveryComments;
+    }
+
     /**
      * Returns a block type, that should be used for a calendar
-     * 
+     *
      * @return string
      */
     public function getStorePickUpBlockType()
@@ -572,7 +608,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     /**
      * Sets store pickup block type
-     * 
+     *
      * @param $blockType
      * @return $this
      */
@@ -584,7 +620,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     /**
      * Returns calendar block type
-     * 
+     *
      * @return string
      */
     public function getCalendarBlockType()
@@ -594,13 +630,58 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     /**
      * Sets calendar block type
-     * 
+     *
      * @param string $blockType
      * @return $this
      */
     public function setCalendarBlockType($blockType)
     {
         $this->_calendarBlockType = $blockType;
+        return $this;
+    }
+
+    /**
+     * Returns comments block type
+     *
+     * @return string
+     */
+    public function getDeliveryCommentsBlockType()
+    {
+        return $this->_deliveryCommentsBlockType;
+    }
+
+    /**
+     * Sets comments block type
+     *
+     * @param string $blockType
+     * @return $this
+     */
+    public function setDeliveryCommentsBlockType($blockType)
+    {
+        $this->_deliveryCommentsBlockType = $blockType;
+        return $this;
+    }
+
+    /**
+     * Returns a block type, that should be used for a comments
+     *
+     * @return string
+     */
+    public function getDeliveryCommentsBlockTemplate()
+    {
+        return $this->_deliveryCommentsBlockTemplate;
+    }
+
+
+    /**
+     * Sets calendar block type
+     *
+     * @param string $blockType
+     * @return $this
+     */
+    public function setDeliveryCommentsBlockTemplate($template)
+    {
+        $this->_deliveryCommentsBlockTemplate = $template;
         return $this;
     }
 
@@ -679,20 +760,23 @@ class Shipperhq_Frontend_Block_Checkout_Helper
     {
         return $this->_freightAccessorialsBlockType;
     }
-    
-    
 
     public function getCarrierName($carrierCode)
     {
         if ($name = Mage::getStoreConfig('carriers/'.$carrierCode.'/title', $this->getQuote()->getStoreId())) {
             return $name;
         }
-        
+
         return $carrierCode;
     }
 
     public function getAddressShippingMethod()
     {
         return $this->getAddress()->getShippingMethod();
+    }
+
+    public function showDeliveryComments()
+    {
+        return Mage::getStoreConfig('carriers/shipper/delivery_comments');
     }
 }
