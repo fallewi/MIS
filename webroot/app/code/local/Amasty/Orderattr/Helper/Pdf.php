@@ -1,24 +1,28 @@
 <?php
+
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
 {
+    /**
+     * @param Zend_Pdf_Page $page
+     * @param $obj
+     * @param $control
+     */
     public function addAttrbutes(&$page, $obj, $control)
     {
         /* checking settings */
-        
-        if ($control instanceof Mage_Sales_Model_Order_Pdf_Invoice && !Mage::getStoreConfig('amorderattr/pdf/invoice'))
-        {
-            return ;
+
+        if ($control instanceof Mage_Sales_Model_Order_Pdf_Invoice && !Mage::getStoreConfig('amorderattr/pdf/invoice')) {
+            return;
         }
-        if ($control instanceof Mage_Sales_Model_Order_Pdf_Shipment && !Mage::getStoreConfig('amorderattr/pdf/shipment'))
-        {
-            return ;
+        if ($control instanceof Mage_Sales_Model_Order_Pdf_Shipment && !Mage::getStoreConfig('amorderattr/pdf/shipment')) {
+            return;
         }
-        
+
         if ($obj instanceof Mage_Sales_Model_Order) {
             $shipment = null;
             $order = $obj;
@@ -26,73 +30,67 @@ class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
             $shipment = $obj;
             $order = $shipment->getOrder();
         }
-        
-    	/* loading attributes */
+
+        /* loading attributes */
         $attributes = Mage::getModel('eav/entity_attribute')->getCollection();
         $attributes->addFieldToFilter('entity_type_id', Mage::getModel('eav/entity')->setType('order')->getTypeId());
         $attributes->addFieldToFilter('include_pdf', 1);
         $attributes->getSelect()->order('checkout_step');
         $attributes->getSelect()->order('sorting_order');
-        
-        if (!$attributes->getSize())
-        {
-            return ;
+
+        if (!$attributes->getSize()) {
+            return;
         }
-        
+
         $orderAttributes = Mage::getModel('amorderattr/attribute')->load($order->getId(), 'order_id');
-        
+
         $list = array();
-        foreach ($attributes as $attribute)
-        {
+        foreach ($attributes as $attribute) {
             $currentStore = $order->getStoreId();
             $storeIds = explode(',', $attribute->getData('store_ids'));
-            if (!in_array($currentStore, $storeIds) && !in_array(0, $storeIds))
-            {
+            if (!in_array($currentStore, $storeIds) && !in_array(0, $storeIds)) {
                 continue;
             }
-            
+
             $value = '';
-            
-            switch ($attribute->getFrontendInput())
-            {
+
+            switch ($attribute->getFrontendInput()) {
                 case 'select':
                 case 'radios':
                     $options = $attribute->getSource()->getAllOptions(true, true);
-                    foreach ($options as $option)
-                    {
-                        if ($option['value'] == $orderAttributes->getData($attribute->getAttributeCode()))
-                        {
+                    foreach ($options as $option) {
+                        if ($option['value'] == $orderAttributes->getData($attribute->getAttributeCode())) {
                             $value = $option['label'];
                             break;
                         }
                     }
-                     
+
                     break;
                 case 'date':
-                	$value = $orderAttributes->getData($attribute->getAttributeCode());
-                	$format = Mage::app()->getLocale()->getDateTimeFormat(
-                        Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
-                    );
-                	if ('time' == $attribute->getNote())
-                	{
-                		$value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
-                	} else 
-                	{
-                		$format = trim(str_replace(array('m', 'a', 'H', ':', 'h', 's'), '', $format));
-                		$value = Mage::app()->getLocale()->date($value, Varien_Date::DATE_INTERNAL_FORMAT, null, false)->toString($format);
-                	}
-                	break;
+                    $value = $orderAttributes->getData($attribute->getAttributeCode());
+                    if ($value != '0000-00-00' && $value != '0000-00-00 00:00:00' && $value != '1970-01-01' && $value != '1970-01-01 00:00:00') {
+                        $format = Mage::app()->getLocale()->getDateTimeFormat(
+                            Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
+                        );
+                        if ('time' == $attribute->getNote()) {
+                            $value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
+                        } else {
+                            $format = trim(str_replace(array('m', 'a', 'H', ':', 'h', 's'), '', $format));
+                            $value = Mage::app()->getLocale()->date($value, Varien_Date::DATE_INTERNAL_FORMAT, null, false)->toString($format);
+                        }
+                    } else {
+                        $value = null;
+                    }
+                    break;
                 case 'checkboxes':
                     $options = $attribute->getSource()->getAllOptions(true, true);
-                    $checkboxValues = explode(',',$orderAttributes->getData($attribute->getAttributeCode()));
-                    foreach ($options as $option)
-                    {
-                        if (in_array($option['value'], $checkboxValues) )
-                        {
+                    $checkboxValues = explode(',', $orderAttributes->getData($attribute->getAttributeCode()));
+                    foreach ($options as $option) {
+                        if (in_array($option['value'], $checkboxValues)) {
                             $value[] = $option['label'];
                         }
                     }
-                    $value = implode(', ',$value);
+                    $value = implode(', ', $value);
                     break;
                 case 'boolean':
                     $value = $orderAttributes->getData($attribute->getAttributeCode()) ? 'Yes' : 'No';
@@ -121,22 +119,21 @@ class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
                 $list[$attribute->getFrontendLabel()] = str_replace('$', '\$', $value);
             }
         }
-        
-        if (empty($list))
-        {
-            return ;
+
+        if (empty($list)) {
+            return;
         }
-        
+
         $page->setFillColor(new Zend_Pdf_Color_RGB(0.93, 0.92, 0.92));
         $page->setLineColor(new Zend_Pdf_Color_GrayScale(0.5));
         $page->setLineWidth(0.5);
-        
-        $page->drawRectangle(25, $control->y, 570, $control->y -15);
+
+        $page->drawRectangle(25, $control->y, 570, $control->y - 15);
         $control->y -= 10;
         $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
         $page->drawText($this->__('Order Attributes'), 35, $control->y, 'UTF-8');
         $control->y -= 15;
-        
+
         foreach ($list as $label => $value) {
             if (is_array($value)) {
                 $page->drawText($label . ': ', 35, $control->y, 'UTF-8');
@@ -146,12 +143,32 @@ class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
                 }
             } else {
                 $page->drawText($label . ': ', 35, $control->y, 'UTF-8');
-                $page->drawText($value, 120, $control->y, 'UTF-8');
+                $labelWidth = $this->widthForStringUsingFontSize($label, $page->getFont(), $page->getFontSize());
+                $pageWidth = $page->getWidth();
+                $valueWidth = $this->widthForStringUsingFontSize($value, $page->getFont(), $page->getFontSize());
+                if (($valueWidth + 45 + $labelWidth) > $pageWidth) {
+                    $control->y -= 10;
+                    $labelWidth = 0;
+                }
+                $page->drawText($value, $labelWidth + 45, $control->y, 'UTF-8');
                 $control->y -= 10;
             }
         }
-        
+
         $control->y -= 10;
-        
+
+    }
+
+    function widthForStringUsingFontSize($string, $font, $fontSize)
+    {
+        $drawingString = iconv('UTF-8', 'UTF-16BE//IGNORE', $string);
+        $characters = array();
+        for ($i = 0; $i < strlen($drawingString); $i++) {
+            $characters[] = (ord($drawingString[$i++]) << 8 ) | ord($drawingString[$i]);
+        }
+        $glyphs = $font->glyphNumbersForCharacters($characters);
+        $widths = $font->widthsForGlyphs($glyphs);
+        $stringWidth = (array_sum($widths) / $font->getUnitsPerEm()) * $fontSize;
+        return $stringWidth;
     }
 }
