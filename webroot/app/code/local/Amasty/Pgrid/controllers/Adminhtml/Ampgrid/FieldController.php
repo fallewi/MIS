@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Controller_Action
@@ -13,12 +13,17 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
     protected $_product = null;
     protected $_colProp = null;
     
-    protected function _initProduct($productId, $field)
+    protected function _initProduct($productId, $field, $useStore = false)
     {
-        $productId = $productId;
-        $product = Mage::getModel('catalog/product')->load($productId);
+        $storeId = $this->_getStore()->getId();
+        $product = Mage::getModel('catalog/product');
 
-        if ($field !== 'url_key' && $this->_getStore()->getId() != 0) {
+        if ($useStore && $storeId != 0) {
+            $product->setStoreId($storeId);
+        }
+        $product->load($productId);
+
+        if ($field !== 'url_key' && $storeId != 0) {
             $product->setUrlKey(false);
         }
 
@@ -122,13 +127,14 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
         if ($this->_product) {
             $result  = array();
 
+            $store = $this->_getStore();
             switch($field) {
                 case 'custom_name':
                     $field = 'name';
                     break;
+                case 'name':
+                $store =Mage::app()->getStore(0);
             }
-
-            $store = $this->_getStore();
 
             $columnProps = $this->_getColumnProperties();
             $obj = $this->_product;
@@ -214,7 +220,7 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
                     $obj->setData('tax_class_id', $obj->getOrigData('tax_class_id'));
 
                     if (get_class($obj) === get_class($this->_product)) {
-                        if ('name' == $field) {
+                        if ('sku' == $field || $columnProps[$field]['type'] == 'multiselect') {
                             // name field should always be saved with no store loaded
                             $this->_product->save();
                         } else {
@@ -224,21 +230,27 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
                             );
                         }
                     } else {
+
                         $obj->save();
                     }
-                    $this->_initProduct($productId, $field);
+                    $this->_initProduct($productId, $field, true);
                     $obj = $this->_getObject($columnProps[$field]);
                 }
             }
 
+            $this->_product->setDataChanges(true);
+            $this->_product->save();
+
             $indexer = Mage::getSingleton('index/indexer');
-            
+
             if ($indexer) {
                 $indexer->processEntityAction(
                     $this->_product, Mage_Catalog_Model_Product::ENTITY, Mage_Index_Model_Event::TYPE_SAVE
                 );
                 $indexer->processEntityAction($this->_product->getStockItem(), Mage_CatalogInventory_Model_Stock_Item::ENTITY, Mage_Index_Model_Event::TYPE_SAVE);
             }
+
+
             
             if (!isset($result['error'])) {
                 $outputValue  = $obj->getData($columnProps[$field]['col']);
