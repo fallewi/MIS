@@ -748,6 +748,8 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                 $gallery = Mage::getResourceModel("amfeed/gallery");
 
                  foreach($gallery->loadGallery($attribute->getId(), $this->getStoreId(), $this->getProductCollection()) as $image){
+                     if (array_key_exists('disabled', $image) && $image['disabled'])
+                         continue;
                  
                      if (!isset($this->_productGallery[$image["product_id"]])){
                          $this->_productGallery[$image["product_id"]] = array(0 => null);
@@ -757,6 +759,9 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                  }
                  
                  foreach($gallery->loadGallery($attribute->getId(), $this->getStoreId(), $this->getProductParentCollection()) as $image){
+
+                     if (array_key_exists('disabled', $image) && $image['disabled'])
+                         continue;
                  
                      if (!isset($this->_productGallery[$image["product_id"]])){
                          $this->_productGallery[$image["product_id"]] = array(0 => null);
@@ -908,7 +913,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         if ('/' != substr($remotePath, -1, 1) && '\\' != substr($remotePath, -1, 1)) {
             $remotePath .= '/';
         }
-        $remoteFileName = basename($this->getMainPath());
+        $remoteFileName = $this->getFilename() . $this->getFileExt();
         $remotePath .= $remoteFileName;
         
         return $remotePath;
@@ -1063,7 +1068,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         
         $sendTo = $this->getSendTo();
         if (!empty($sendTo)){
-            $downloadUrl = Mage::getUrl('amfeed/main/download', array('file' => $this->getFilename() . $this->getFileExt()));
+            $downloadUrl = Mage::getUrl('amfeed/main/get', array('file' => $this->getFilename()));
             
             ini_set('SMTP', Mage::getStoreConfig('system/smtp/host'));
             ini_set('smtp_port', Mage::getStoreConfig('system/smtp/port'));
@@ -1101,7 +1106,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     
     public function getMainPath()
     {
-        return Mage::helper('amfeed')->getDownloadPath('feeds', $this->getFilename() . $this->getFileExt());
+        return Mage::helper('amfeed')->getDownloadPath('feeds', $this->getRealFilename());
     } 
     
     public function getUrl()
@@ -1113,14 +1118,14 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     {
         if ($id = $this->getId()) {
             $temp = Mage::getModel('amfeed/profile')->load($id);
-            $tempPath = Mage::helper('amfeed')->getDownloadPath('feeds', $temp->getFilename() . $this->getFileExt($temp));
+            $tempPath = Mage::helper('amfeed')->getDownloadPath('feeds', $temp->getRealFilename());
             if (file_exists($tempPath)) {
                 $deleted = false;
                 if (($temp->getType() != $this->getType())) {
                     Mage::helper('amfeed')->deleteFile($tempPath);
                     $deleted = true;
                 }
-                if (!$deleted && ($temp->getFilename() != $this->getFilename())) {
+                if (!$deleted && ($temp->getRealFilename() != $this->getRealFilename())) {
                     rename($tempPath, $this->getMainPath());
                 }
             }
@@ -1275,11 +1280,16 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 
         $store = Mage::app()->getStore($defaultStoreId);
 
-        $downloadUrl = $store->getUrl('amfeed/main/download', array(
-            'file' => $this->getFilename() . $this->getFileExt()
+        $downloadUrl = $store->getUrl('amfeed/main/get', array(
+            'file' => $this->getFilename()
         ));
 
         return $downloadUrl;
+    }
+
+    public function getRealFilename()
+    {
+        return 'export_' . $this->getId();
     }
 
     public function getStore()
