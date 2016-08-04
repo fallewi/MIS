@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
 class Amasty_File_Model_Mysql4_Import extends Mage_Core_Model_Mysql4_Abstract
@@ -177,8 +177,7 @@ class Amasty_File_Model_Mysql4_Import extends Mage_Core_Model_Mysql4_Abstract
 
 	protected function _readCSVLine($resource, $delimiter)
 	{
-		$line = fgets($resource);
-		return ($line === false) ? $line : explode($delimiter, $line);
+		return fgetcsv($resource, 0, $delimiter);
 	}
 
 }

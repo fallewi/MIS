@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 
@@ -36,7 +36,7 @@ if ($hasData):
                     <td style="padding: 5px; border-right: 1px solid #EAEAEA;">
                         <?php
                             if ($value) {
-                                echo nl2br(htmlentities(preg_replace('/\$/','\\\$', $value), ENT_COMPAT, "UTF-8"));
+                                echo $value;
                             } else {
                                 echo $this->__('--no value--');
                             }

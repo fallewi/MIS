@@ -113,7 +113,6 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
      */
     protected $_modName = 'Shipperhq_Shipper';
 
-
     /**
      *  Retrieve sort order of current carrier
      *
@@ -215,7 +214,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
 
     public function refreshCarriers()
     {
-        $allowedMethods =  $this->getAllowedMethods();
+        $allowedMethods =  $this->getAllShippingMethods();
         if(count($allowedMethods) == 0 ) {
             if (Mage::helper('shipperhq_shipper')->isDebug()) {
                 Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'refresh carriers',
@@ -234,7 +233,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
      *
      * @return array
      */
-    public function getAllowedMethods()
+    public function getAllShippingMethods()
     {
         $ourCarrierCode = $this->getId();
         $result = array();
@@ -242,9 +241,16 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
         $allowedMethodUrl = Mage::helper('shipperhq_shipper')->getAllowedMethodGatewayUrl();
         $timeout = Mage::helper('shipperhq_shipper')->getWebserviceTimeout();
         $shipperMapper = Mage::getSingleton('Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper');
-        $resultSet = $this->_getShipperInstance()->sendAndReceive(
-            $shipperMapper->getCredentialsTranslation(), $allowedMethodUrl, $timeout);
-
+        $allMethodsRequest =  $shipperMapper->getCredentialsTranslation();
+        $requestString = serialize($allMethodsRequest);
+        $resultSet = $this->_getCachedQuotes($requestString);
+        $timeout = Mage::helper('shipperhq_shipper')->getWebserviceTimeout();
+        if (!$resultSet) {
+            $resultSet = $this->_getShipperInstance()->sendAndReceive($allMethodsRequest, $allowedMethodUrl, $timeout);
+            if(is_object($resultSet['result'])) {
+                $this->_setCachedQuotes($requestString, $resultSet);
+            }
+        }
         $allowedMethodResponse = $resultSet['result'];
 
         if (Mage::helper('shipperhq_shipper')->isDebug()) {
@@ -293,27 +299,27 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
             return $result;
         }
 
-        $returnedMethods = $allowedMethodResponse->carrierMethods;
+        $carriers = $allowedMethodResponse->carrierMethods;
 
         $carrierConfig = array();
 
-        foreach ($returnedMethods as $carrierMethod) {
+        foreach ($carriers as $carrierMethod) {
 
-            $rateMethods = $carrierMethod->methods;
-
-            foreach ($rateMethods as $method) {
+            $methodList = $carrierMethod->methods;
+            $methodCodeArray = array();
+            foreach ($methodList as $method) {
                 if(!is_null($ourCarrierCode) && $carrierMethod->carrierCode != $ourCarrierCode) {
                     continue;
                 }
 
-                $allowedMethodCode = /*$carrierMethod->carrierCode . '_' .*/ $method->methodCode;
+                $allowedMethodCode = /*$carrierMethod->carrierCode . '==' .*/ $method->methodCode;
                 $allowedMethodCode = preg_replace('/&|;| /', "_", $allowedMethodCode);
 
                 if (!array_key_exists($allowedMethodCode, $allowedMethods)) {
-                    $allowedMethods[$allowedMethodCode] = $carrierMethod->title . '(' . $method->name . ')';
+                    $methodCodeArray[$allowedMethodCode] = $method->name;
                 }
             }
-
+            $allowedMethods[$carrierMethod->carrierCode] = $methodCodeArray;
             $carrierConfig[$carrierMethod->carrierCode]['title'] = $carrierMethod->title;
             if(isset($carrierMethod->sortOrder)) {
                 $carrierConfig[$carrierMethod->carrierCode]['sortOrder'] = $carrierMethod->sortOrder;
@@ -325,8 +331,47 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
         }
         // go set carrier titles
         $this->setCarrierConfig($carrierConfig);
-
+        $this->saveAllowedMethods($allowedMethods);
         return $allowedMethods;
+    }
+
+    /**
+     * Get allowed shipping methods
+     *
+     * @return array
+     */
+    public function getAllowedMethods($requestedCode = null)
+    {
+        $arr = array();
+        $allowedConfigValue = Mage::getStoreConfig(Shipperhq_Shipper_Helper_Data::SHIPPERHQ_SHIPPER_ALLOWED_METHODS_PATH);
+        $allowed = json_decode($allowedConfigValue);
+        if(is_null($allowed)) {
+            if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                Mage::helper('wsalogger/log')->postWarning('Shipperhq_Shipper', 'Allowed methods config is empty',
+                    'Please refresh your carriers from the System > Configuration > Shipping Methods > ShipperHQ screen using Refresh Carriers button');
+            }
+            return $arr;
+        }
+        foreach ($allowed as $carrierCode => $allowedMethodArray) {
+            if(is_null($requestedCode) || $carrierCode == $requestedCode) {
+                foreach($allowedMethodArray as $methodCode => $allowedMethod) {
+                    $arr[$methodCode] = $allowedMethod;
+                }
+            }
+        }
+        if (count($arr) < 1 && Mage::helper('shipperhq_shipper')->isDebug()
+            && Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Shipper', 'carriers/shipper/active')) {
+            Mage::helper('wsalogger/log')->postDebug('Shipperhq_Shipper', 'No saved allowed methods for ' .$requestedCode,
+                'Please refresh your carriers from the System > Configuration > Shipping Methods > ShipperHQ screen using Refresh Carriers button');
+        }
+        return $arr;
+    }
+
+    public function saveAllowedMethods($allowedMethodsArray)
+    {
+        $carriersCodesString = json_encode($allowedMethodsArray);
+        Mage::helper('shipperhq_shipper')->saveConfig(Shipperhq_Shipper_Helper_Data::SHIPPERHQ_SHIPPER_ALLOWED_METHODS_PATH,
+            $carriersCodesString);
     }
 
     public function createMergedRate($ratesToAdd)
@@ -387,13 +432,16 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
         }
         $customDescription = isset($carrierRate->customDescription) ?
             Mage::helper('shipperhq_shipper')->__($carrierRate->customDescription) : false;
-        $freightRate = isset($carrierRate->availableOptions) && !empty($carrierRate->availableOptions);
+        $freightRate = isset($carrierRate->availableOptions) && !empty($carrierRate->availableOptions) || $carrierRate->carrierType == 'customerAccount';
         $baseRate = 1;
         $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrency()->getCode();
         $dateFormat = isset($carrierRate->deliveryDateFormat) ?
            $this->getCldrDateFormat($locale, $carrierRate->deliveryDateFormat) : Mage::helper('shipperhq_shipper')->getDateFormat();
 
         foreach($carrierRate->rates as $oneRate) {
+            //SHQ16-1118 reset so not carried over from previous rates
+            $carrierGroupDetail['delivery_date'] = '';
+            $carrierGroupDetail['dispatch_date'] = '';
             $methodDescription = false;
             $title = Mage::helper('shipperhq_shipper')->isTransactionIdEnabled() ?
                 Mage::helper('shipperhq_shipper')->__($oneRate->name).' (' .$carrierGroupDetail['transaction'] .')'
@@ -449,6 +497,10 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
             }
             if($carrierRate->carrierType == 'shqshared') {
                 $carrierType = $carrierRate->carrierType .'_' .$oneRate->carrierType;
+                $carrierGroupDetail['carrierType'] = $carrierType;
+                if(isset($oneRate->carrierTitle)) {
+                    $carrierGroupDetail['carrierTitle'] = $oneRate->carrierTitle;
+                }
             }
             else {
                 $carrierType = $oneRate->carrierType;
@@ -494,6 +546,10 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
 
             if($customDescription) {
                 $rateToAdd['custom_description'] = $customDescription;
+            }
+
+            if(!empty($oneRate->description) && $oneRate->description != "" && $oneRate->carrierType == "custom") {
+                $rateToAdd['tooltip'] = $oneRate->description;
             }
 
             $thisCarriersRates[] = $rateToAdd;
@@ -639,6 +695,9 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                 $resultSet);
         }
         **/
+        if (Mage::helper('shipperhq_shipper')->isDebug()) {
+            Mage::helper('wsalogger/log')->postDebug('Shipperhq_Shipper', 'Rate request and result', $resultSet['debug']);
+        }
         return $this->_parseShipperResponse($resultSet['result']);
 
     }
@@ -662,12 +721,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
             Mage::helper('shipperhq_shipper')->getQuoteStorage()->setShipperGlobal($globals);
         }
 
-        if(Mage::helper('shipperhq_shipper')->isSortOnPrice()) {
-            $result = Mage::getModel('shipping/rate_result');
-        }
-        else {
-            $result = Mage::getModel('shipperhq_shipper/rate_result');
-        }
+        $result = Mage::getModel('shipperhq_shipper/rate_result');
         // If no rates are found return error message
         if (!is_object($shipperResponse)) {
             if (Mage::helper('shipperhq_shipper')->isDebug()) {
@@ -793,14 +847,15 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                         $rate->setCustomDescription($rateDetails['custom_description']);
                     }
 
+                    if(array_key_exists('tooltip', $rateDetails)) {
+                        $rate->setTooltip($rateDetails['tooltip']);
+                    }
+
                     $result->append($rate);
                 }
             }
         }
 
-        if (Mage::helper('shipperhq_shipper')->isDebug()) {
-            Mage::helper('wsalogger/log')->postDebug('Shipperhq_Shipper', 'Rate request and result', $debugData);
-        }
         return $result;
 
     }
@@ -870,10 +925,16 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                 if($item->getSku() == $sku && (!$itemId || $item->getId() == $itemId)) {
                     $item->setCarriergroupId($carriergroupDetails['carrierGroupId']);
                     $item->setCarriergroup($carriergroupDetails['name']);
+
                     if($parentItem = $item->getParentItem()) {
                         $parentItem->setCarriergroupId($carriergroupDetails['carrierGroupId']);
                         $parentItem->setCarriergroup($carriergroupDetails['name']);
 
+                    } else if ($childItems = $item->getChildren()) {
+                        foreach ($childItems as $child) {
+                            $child->setCarriergroupId($carriergroupDetails['carrierGroupId']);
+                            $child->setCarriergroup($carriergroupDetails['name']);
+                        }
                     }
                 }
             }
@@ -883,9 +944,15 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                 if($quoteItem->getSku() == $sku && (!$itemId || $quoteItem->getQuoteItemId() == $itemId)) {
                     $quoteItem->setCarriergroupId($carriergroupDetails['carrierGroupId']);
                     $quoteItem->setCarriergroup($carriergroupDetails['name']);
+
                     if($parentItem = $quoteItem->getParentItem()) {
                         $parentItem->setCarriergroupId($carriergroupDetails['carrierGroupId']);
                         $parentItem->setCarriergroup($carriergroupDetails['name']);
+                    } else if ($childItems = $item->getChildren()) {
+                        foreach ($childItems as $child) {
+                            $child->setCarriergroupId($carriergroupDetails['carrierGroupId']);
+                            $child->setCarriergroup($carriergroupDetails['name']);
+                        }
                     }
                 }
             }
@@ -914,7 +981,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
         $error->setCarrier($this->_code);
         $error->setCarrierTitle($this->getConfigData('title'));
         $error->setCarriergroupId('');
-        if($message && Mage::helper('shipperhq_shipper')->isDebug()) {
+        if($message && Mage::helper('wsalogger')->isDebugError()) {
             $error->setErrorMessage($message);
         }
         else {

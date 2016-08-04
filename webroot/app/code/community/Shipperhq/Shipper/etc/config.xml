@@ -32,8 +32,8 @@
 <config>
     <modules>
         <Shipperhq_Shipper>
-            <version>0.0.31</version>
-            <extension_version>2.68</extension_version>
+            <version>0.0.34</version>
+            <extension_version>2.97</extension_version>
             <!-- implemented in module file -->
             <!--  <active>true</active>
               <codePool>community</codePool>
@@ -97,6 +97,11 @@
                     <quote_address_rate>Shipperhq_Shipper_Model_Sales_Quote_Address_Rate</quote_address_rate>
                 </rewrite>
             </sales>
+            <adminhtml>
+                <rewrite>
+                    <system_config_source_shipping_allmethods>Shipperhq_Shipper_Model_Adminhtml_System_Config_Source_Shipping_Allmethods</system_config_source_shipping_allmethods>
+                </rewrite>
+            </adminhtml>
         </models>
         <resources>
             <shipperhq_shipper_setup>
@@ -339,6 +344,9 @@
                 <carriergroup_shipping_html>
                     <to_order>*</to_order>
                 </carriergroup_shipping_html>
+                <shq_delivery_comments>
+                    <to_order>*</to_order>
+                </shq_delivery_comments>
             </sales_convert_quote_address>
             <sales_convert_order>
                 <dispatch_date>
@@ -362,6 +370,9 @@
                 <carriergroup_shipping_html>
                     <to_quote_address_shipping>*</to_quote_address_shipping>
                 </carriergroup_shipping_html>
+                <shq_delivery_comments>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </shq_delivery_comments>
             </sales_convert_order>
             <sales_convert_quote_item>
                 <carriergroup>
@@ -508,11 +519,15 @@
                 <sallowspecific>0</sallowspecific>
                 <showerrors>0</showerrors>
                 <showmethod>1</showmethod>
+                <allowed_methods></allowed_methods>
+                <allowed_methods_carriers></allowed_methods_carriers>
                 <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this
                     shipping method, please contact us.
                 </specificerrmsg>
-                <ws_timeout>120</ws_timeout>
+                <ws_timeout>30</ws_timeout>
                 <is_enterprise>0</is_enterprise>
+                <delivery_comments>0</delivery_comments>
+                <delivery_comments_text>Enter your delivery comments here...</delivery_comments_text>
             </shipper>
             <shipperadmin>
                 <active>1</active>

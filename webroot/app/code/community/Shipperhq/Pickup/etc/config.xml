@@ -32,7 +32,7 @@
 <config>
     <modules>
         <Shipperhq_Pickup>
-            <version>0.0.6</version>
+            <version>0.0.7</version>
             <!-- implemented in module file -->
             <!--<active>true</active>
             <codePool>community</codePool>
@@ -169,6 +169,9 @@
                 <pickup_longitude>
                     <to_order>*</to_order>
                 </pickup_longitude>
+                <pickup_location_id>
+                    <to_order>*</to_order>
+                </pickup_location_id>
             </sales_convert_quote_address>
             <sales_convert_order>
                 <time_slot>
@@ -186,6 +189,9 @@
                 <pickup_longitude>
                     <to_quote_address_shipping>*</to_quote_address_shipping>
                 </pickup_longitude>
+                <pickup_location_id>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </pickup_location_id>
             </sales_convert_order>
             <sales_convert_quote_item>
                 <pickup_chosen>

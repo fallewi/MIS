@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Adminhtml_AmoactionimportController extends Mage_Adminhtml_Controller_Action
@@ -80,8 +80,10 @@ class Amasty_Oaction_Adminhtml_AmoactionimportController extends Mage_Adminhtml_
 
                 try {
                     $command = Amasty_Oaction_Model_Command_Abstract::factory('ship');
+                    
+                    $notify = (int)Mage::getStoreConfig('amoaction/ship/notify');
 
-                    $success = $command->execute($id, true);
+                    $success = $command->execute($id, $notify);
 
                     if ($success) {
                         Mage::log($success, null, 'Import_Tracks.log', true);

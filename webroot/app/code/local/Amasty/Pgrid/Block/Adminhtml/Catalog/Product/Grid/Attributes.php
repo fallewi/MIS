@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 
@@ -10,6 +10,7 @@
  *
  * @method string getChangeGroupUrl
  * @method array getStandardColumns
+ * @method string getAttributesKey
  */
 class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Attributes extends Mage_Adminhtml_Block_Template
 {
@@ -49,7 +50,8 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Attributes extends Mage_
     {
         $this->setChild('grid_template_switcher',
             $this->getLayout()->createBlock(
-                'ampgrid/adminhtml_catalog_product_grid_template_switcher'
+                'ampgrid/adminhtml_catalog_product_grid_template_switcher','',
+                array('attributes_key'=>$this->getAttributesKey())
             )
         );
         return parent::_prepareLayout();

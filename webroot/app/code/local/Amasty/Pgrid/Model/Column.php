@@ -1,7 +1,7 @@
 <?php
  /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 
@@ -79,7 +79,7 @@ class Amasty_Pgrid_Model_Column extends Mage_Core_Model_Abstract
         $collection->getSelect()->joinLeft(
             array('gc' => $collection->getTable('grid_group_column')),
             sprintf('main_table.entity_id = gc.column_id AND gc.group_id = %d', $groupId),
-            "gc.*, IF(gc.column_id IS NULL, main_table.visible, gc.is_visible) as visibility"
+            array("gc.*", "IF(gc.column_id IS NULL, main_table.visible, gc.is_visible) as visibility")
         );
         return $collection;
 

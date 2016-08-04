@@ -31,6 +31,8 @@ class Amasty_Feed_Block_Adminhtml_Google_Edit_Tab_Basic extends Mage_Adminhtml_B
 
         $hlp   = Mage::helper('amfeed');
 
+        $google = Mage::getModel('amfeed/google');
+
         $fldInfo = $form->addFieldset('amfeed_basic', array('legend'=> $hlp->__('Step 2: Basic Product Information')));
 
         $fldInfo->addField(
@@ -38,7 +40,7 @@ class Amasty_Feed_Block_Adminhtml_Google_Edit_Tab_Basic extends Mage_Adminhtml_B
             'text',
             array(
                 'name' => 'basic',
-                'value' => Mage::getModel('amfeed/google')->getBasicAttributes(),
+                'value' => $google->getBasicAttributes(),
                 'label' => $hlp->__('Content'),
                 'title' => $hlp->__('Content'),
                 'note' => 'Please select attributes to output in feed'
@@ -59,19 +61,21 @@ class Amasty_Feed_Block_Adminhtml_Google_Edit_Tab_Basic extends Mage_Adminhtml_B
                 'class'    => 'required-entry',
                 'required' => true,
                 'name'     => 'store_id',
+                'value' => $google->getStoreId(),
                 'values'   => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm()
             ));
         }
         else {
             $fldOptions->addField('store_id', 'hidden', array(
                 'name'  => 'store_id',
-                'value' => Mage::app()->getStore(true)->getId(),
+                'value' => $google->getStoreId()
             ));
         }
 
         $fldOptions->addField('currency', 'select', array(
             'label'     => $hlp->__('Price Currency'),
             'name'      => 'currency',
+            'value'     => $google->getCurrency(),
             'options'    => $this->getCurrencyList(),
         ));
 

@@ -12,6 +12,9 @@
             <active>true</active>
             <codePool>local</codePool>
             <edition>enterprise</edition>
+            <depends>
+                <Amasty_Base />
+            </depends>
         </Amasty_Feed>
     </modules>
 </config>
