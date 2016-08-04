@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
@@ -226,7 +226,36 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                 $paymentList[$code] = Mage::helper('payment')->getMethodInstance($code)->getConfigData('title', null);
             }
         }
+
         return $paymentList;
+    }
+
+    protected function _getShippingMethods(){
+        $methods = array();
+        $carriers = Mage::getSingleton('shipping/config')->getAllCarriers();
+        foreach ($carriers as $carrierCode=>$carrierModel) {
+//            if (!$carrierModel->isActive()) {
+//                continue;
+//            }
+            $carrierMethods = array();
+            try{
+                $carrierMethods = $carrierModel->getAllowedMethods();
+            } catch(Exception $e){
+
+            }
+
+            if (!$carrierMethods) {
+                continue;
+            }
+
+            $carrierTitle = Mage::getStoreConfig('carriers/'.$carrierCode.'/title');
+
+            foreach ($carrierMethods as $methodCode=>$methodTitle) {
+                $methods[$carrierTitle.' - '.$methodTitle] = $carrierTitle.' - '.$methodTitle;
+            }
+        }
+
+        return $methods;
     }
     
     protected function getCustomerGroupList(){
@@ -263,7 +292,9 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                     'header' => $this->__('Shipping Method'),
                     'index' => 'am_shipping_description',
                     'width' => 80,
-                    'filter_index' => 'order.shipping_description'
+                    'filter_index' => 'order.shipping_description',
+//                    'type'  => 'options',
+//                    'options' => $this->_getShippingMethods(),
                 
                 ),
                 'am_method' => array(
@@ -282,10 +313,10 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                     'width' => 80,
                     'sortable'  => false,
                     'filter_index' => 
-                            ' CONCAT(shipping_order_address.country_id, 
+                            new Zend_Db_Expr('CONCAT(shipping_order_address.country_id,
                             shipping_order_address.region,
                             shipping_order_address.city,
-                            shipping_order_address.street) ',
+                            shipping_order_address.street)'),
                     
                 ),
                 'am_shipping_country_id' => array(
@@ -344,10 +375,10 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                     'width' => 80,
                     'sortable'  => false,
                     'filter_index' => 
-                            ' CONCAT(billing_order_address.country_id, 
+                            new Zend_Db_Expr('CONCAT(billing_order_address.country_id,
                             billing_order_address.region,
                             billing_order_address.city,
-                            billing_order_address.street) ',
+                            billing_order_address.street)'),
                 ),
                 'am_billing_country_id' => array(
                     'header' => $this->__('Billing: Country'),
