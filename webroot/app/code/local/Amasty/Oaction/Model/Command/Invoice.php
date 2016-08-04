@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Model_Command_Invoice extends Amasty_Oaction_Model_Command_Abstract
@@ -42,19 +42,7 @@ class Amasty_Oaction_Model_Command_Invoice extends Amasty_Oaction_Model_Command_
                     
                 $status = Mage::getStoreConfig('amoaction/invoice/status', $order->getStoreId());
                 if ($status) {
-                    $notify = false;
-                    if (Mage::helper('core')->isModuleEnabled('Amasty_Orderstatus')) {
-                        $statusCollection = Mage::getResourceModel('amorderstatus/status_collection');
-                        $statusCollection->addFieldToFilter('is_system', array('eq' => 0));
-                        foreach ($statusCollection as $statusModel) {
-                            if ($statusModel->getAlias() == substr($status, strpos($status, '_') + 1)) {
-                                if ($statusModel->getNotifyByEmail()) {
-                                    $notify = true;
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    $notify = parent::orderUpdateNotify($status);
                     Mage::getModel('sales/order_api')->addComment($orderCode, $status, '', $notify);
                 }
 
@@ -71,7 +59,7 @@ class Amasty_Oaction_Model_Command_Invoice extends Amasty_Oaction_Model_Command_
                     }
                 }
                 
-                $print = Mage::getStoreConfig('amoaction/invoice/print', $order->getStoreId()); 
+                $print = Mage::getStoreConfig('amoaction/invoice/print', $order->getStoreId());
                 if ($invoiceCode && $print){
                     if (!$invoice){
                         $invoice = Mage::getModel('sales/order_invoice')
