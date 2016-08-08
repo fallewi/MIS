@@ -15,7 +15,7 @@
   any_errors_fatal: yes
   tags: filesystem
   vars:
-    SHARE_ROOT: "/path/to/nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}"
+#    SHARE_ROOT: "/path/to/nfs/{{ SUBDOMAIN }}.{{ DOMAIN }}"
   tasks:
 
     # on sudoless environments,

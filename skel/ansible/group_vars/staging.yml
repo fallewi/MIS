@@ -11,13 +11,27 @@ HTTPD_USER: missionrs
 
 
 ################################################################################
-# REDIS_HOST - IP/Hostname of Redis Server. Leave non-truthy if not using redis.
-REDIS_HOST: 10.136.244.35
-REDIS_FPC_PORT: 6391
-REDIS_FPC_DB: 0
-REDIS_OBJ_PORT: 6392
-REDIS_OBJ_DB: 0
+# REDIS_CACHES: definition of redis caches to clear. define an empty dict if
+#               not using redis.
+# REDIS_CACHES: {}
+REDIS_CACHES:
+   default:
+     host: 172.24.16.35
+     port: 6379
+     db: 0
+     cmd: flushdb
 
+   fpc:
+     host: 172.24.16.35
+     port: 6379
+     db: 1
+     cmd: flushdb
+
+   obj:
+     host: 172.24.16.35
+     port: 6379
+     db: 0
+     cmd: flushdb
 
 ################################################################################
 # playbook behavior configurations, generally safe to leave as-is
