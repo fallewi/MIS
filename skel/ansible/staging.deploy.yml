@@ -11,11 +11,13 @@
     - name: start local pre-deployment tasks
       include: tasks/deploy/local/pre.yml
 
-    # no blueacornui? comment out! multiple blueacornui dirs? adjust with_items
+    # no blueacornui? set SKIP_BLUEACORNUI in appvars, group_vars, or envars
+    # multiple blueacornui dirs? adjust with_items
     - name: start local build tasks (blueacornui compilation)
       include: "tasks/build/blueacornui-compile.yml"
       with_items:
         - blueacornui
+      when: SKIP_BLUEACORNUI is not defined or not SKIP_BLUEACORNUI
 
 # remote pre-deploy steps
 ########################
@@ -46,7 +48,8 @@
   tasks:
 
     # sync [blueacornui] build artifacts
-    # no blueacornui? comment out! multiple blueacornui dirs? adjust with_items
+    # no blueacornui? set SKIP_BLUEACORNUI in appvars, group_vars, or envars
+    # multiple blueacornui dirs? adjust with_items
     - name: start syncing build artifacts
       include: "tasks/build/sync.yml"
       vars:
@@ -54,7 +57,8 @@
           - "css"
           - "jsmin"
       with_items:
-        - "webroot/skin/frontend/blueacorn/mis"
+        - "webroot/skin/frontend/blueacorn/site"
+      when: SKIP_BLUEACORNUI is not defined or not SKIP_BLUEACORNUI
 
     - name: start remote post-deployment tasks
       include: tasks/deploy/remote/post.yml
