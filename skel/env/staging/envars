@@ -4,7 +4,7 @@
 #
 
 # The default tracking branch for this environment.
-REPO_REF="release/mobile_video"
+REPO_REF="develop"
 
 SUBDOMAIN="staging"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
@@ -15,4 +15,4 @@ APP_ROOT="${REPO_ROOT}/webroot"
 
 # evaluate onset.sh when setting this environment.
 #  prefer skel/env/staging/onset.sh. defaults to skel/env/onset.sh
-#ONSET_ACTIVE=true
+ONSET_ACTIVE=true
