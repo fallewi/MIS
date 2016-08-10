@@ -8,7 +8,6 @@ Host web-1
   HostName 173.203.138.86
   User blueacorn
 
-
 #
 # HOST ALIASES
 #  ADMIN_HOST: required. typically points to web-1 or web-admin
@@ -20,10 +19,10 @@ Host ADMIN_HOST
   HostName 173.203.138.86
   User blueacorn
 
-#Host SNAPSHOT_HOST
-#  HostName 192.168.0.100
-#  User blueacorn
+Host SNAPSHOT_HOST
+  HostName 173.203.138.86
+  User blueacorn
 
-#Host CRON_HOST
-#  HostName 192.168.0.100
-#  User blueacorn
+Host CRON_HOST
+  HostName 173.203.138.86
+  User blueacorn

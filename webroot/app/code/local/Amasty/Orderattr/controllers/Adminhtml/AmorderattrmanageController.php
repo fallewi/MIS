@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Adminhtml_AmorderattrmanageController extends Mage_Adminhtml_Controller_Action
@@ -205,27 +205,26 @@ class Amasty_Orderattr_Adminhtml_AmorderattrmanageController extends Mage_Adminh
                 $data['apply_to'] = array();
             }
 
-            if ('boolean' == $data['frontend_input'])
-            {
-                $data['frontend_input'] = 'boolean';
-                $data['source_model'] = 'eav/entity_attribute_source_boolean';
-
-            } 
-
-            if ('multiselect' == $data['frontend_input'])
-            {
-                $data['source_model'] = 'eav/entity_attribute_source_table';
-            }
-            
-            if ('checkboxes' == $data['frontend_input'])
-            {
-                $data['source_model'] = 'eav/entity_attribute_source_table';
-            }
-
-            if ('radios' == $data['frontend_input'])
-            {
-                $data['frontend_input'] = 'radios';
-                $data['source_model'] = 'eav/entity_attribute_source_table';
+            switch($data['frontend_input']){
+                case 'boolean':
+                    $data['frontend_input'] = 'boolean';
+                    $data['source_model'] = 'eav/entity_attribute_source_boolean';
+                    break;
+                case 'multiselect':
+                    $data['source_model'] = 'eav/entity_attribute_source_table';
+                    break;
+                case 'checkboxes':
+                    $data['source_model'] = 'eav/entity_attribute_source_table';
+                    break;
+                case 'radios':
+                    $data['frontend_input'] = 'radios';
+                    $data['source_model'] = 'eav/entity_attribute_source_table';
+                    break;
+                case 'file':
+                    $data['frontend_input'] = 'file';
+                    $data['type_internal'] = 'file';
+                    $data['backend_type'] = 'varchar';
+                    break;
             }
                 
             $data['store_ids'] = '0';

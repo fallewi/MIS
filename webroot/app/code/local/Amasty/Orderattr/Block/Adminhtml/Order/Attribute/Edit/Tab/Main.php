@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mage_Adminhtml_Block_Widget_Form
@@ -159,6 +159,10 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
                 'value' => 'radios',
                 'label' => Mage::helper('catalog')->__('Radio Buttons')
             ),
+            array(
+                'value' => 'file',
+                'label' => Mage::helper('catalog')->__('Single File Upload')
+            ),
             /*array(
                 'value' => 'price',
                 'label' => Mage::helper('catalog')->__('Price')
@@ -192,7 +196,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
         //Mage::register('attribute_type_disabled_types', $_disabledTypes);
 
 
-        $fieldset->addField('frontend_input', 'select', array(
+        $frontendInputField = $fieldset->addField('frontend_input', 'select', array(
             'name' => 'frontend_input',
             'label' => Mage::helper('catalog')->__('Catalog Input Type for Store Owner'),
             'title' => Mage::helper('catalog')->__('Catalog Input Type for Store Owner'),
@@ -260,7 +264,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
             'values' => $requiredValues,
         ));
 
-        $fieldset->addField('frontend_class', 'select', array(
+        $frontendClassField = $fieldset->addField('frontend_class', 'select', array(
             'name'  => 'frontend_class',
             'label' => Mage::helper('catalog')->__('Input Validation'),
             'title' => Mage::helper('catalog')->__('Input Validation'),
@@ -276,6 +280,10 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
                 array(
                     'value' => 'validate-digits',
                     'label' => Mage::helper('catalog')->__('Integer Number')
+                ),
+                array(
+                    'value' => 'validate-digits validate-length maximum-length-10 minimum-length-10',
+                    'label' => Mage::helper('catalog')->__('Integer Number 10')
                 ),
                 array(
                     'value' => 'validate-email',
@@ -294,11 +302,36 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
                     'label' => Mage::helper('catalog')->__('Letters(a-zA-Z) or Numbers(0-9)')
                 ),
                 array(
-                    'value' => 'validate-length',
+                    'value' => 'validate-length-less-25',
                     'label' => Mage::helper('catalog')->__('Length less or equal than 25 characters')
                 ),
             )
         ));
+
+        $fileSizeField = $fieldset->addField(
+            'file_size', 'text', array(
+                'name'  => 'file_size',
+                'label' => Mage::helper('amorderattr')->__('Max File Size'),
+                'title' => Mage::helper('amorderattr')->__(
+                    'Max File Size - in Mb'
+                ),
+                'note'  => Mage::helper('amorderattr')->__('In Mb'),
+            )
+        );
+
+        $fileTypesField = $fieldset->addField(
+            'file_types', 'text', array(
+                'name'  => 'file_types',
+                'label' => Mage::helper('amorderattr')->__('File Types'),
+                'title' => Mage::helper('amorderattr')->__(
+                    'File Types - list comma-separated file types with no spaces, like: png,txt,jpg'
+                ),
+                'note'  => Mage::helper('amorderattr')->__(
+                    'List comma-separated file types with no spaces, like: png,txt,jpg'
+                ),
+            )
+        );
+
 /*
         $fieldset->addField('use_in_super_product', 'select', array(
             'name' => 'use_in_super_product',
@@ -378,6 +411,43 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
             'title' => Mage::helper('amorderattr')->__('Show on Admin Grids'),
             'values' => $yesno,
         ));
+        $grid = Mage::app()->getLayout()->createBlock("adminhtml/sales_order_grid", 'grid');
+        $grid->toHtml();
+        $columnsGrid = $grid->getColumns();
+        $columns = array();
+        foreach($columnsGrid as $col){
+            $name = $col->getHeader();
+            if($name){
+                $id = $col->getId();
+                $tmp = array(
+                    'value'=>$id,
+                    'label'=>$name
+                );
+                $columns[] = $tmp;
+            }
+
+        }
+        $orderAttributes = Mage::getResourceModel('eav/entity_attribute_collection')
+            ->setEntityTypeFilter( Mage::getModel('eav/entity')->setType('order')->getTypeId() );
+        $orderAttributes->getSelect()
+            ->where('main_table.is_user_defined = ?', 1)
+            ->where('main_table.show_on_grid = ?', 1);
+        foreach($orderAttributes as $attr){
+            if($model->getAttributeCode() != $attr->getAttributeCode()){
+                $tmp = array(
+                    'value' => $attr->getAttributeCode(),
+                    'label' => $attr->getFrontendLabel()
+                );
+                $columns[] = $tmp;
+            }
+        }
+        $fieldset->addField('order_grid_after', 'select', array(
+            'name'  => 'order_grid_after',
+            'label' => Mage::helper('catalog')->__('Show in Grid after'),
+            'title' => Mage::helper('catalog')->__('Show in Grid after'),
+            'required' => false,
+            'values' => $columns
+        ));
 
         $fieldset->addField('include_html_print_order', 'select', array(
             'name'   => 'include_html_print_order',
@@ -439,10 +509,28 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
             // Customer Groups
             ->addFieldMap($groupEnabled->getHtmlId(), $groupEnabled->getName())
             ->addFieldMap($groups->getHtmlId(), $groups->getName())
+            ->addFieldMap('show_on_grid','on_grid')
+            ->addFieldMap('order_grid_after','grid_after')
             ->addFieldDependence(
                 $groups->getName(),
                 $groupEnabled->getName(),
                 '1'
+            )
+            ->addFieldDependence('grid_after','on_grid','1');
+
+        $dependencies->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
+            ->addFieldMap($fileSizeField->getHtmlId(),$fileSizeField->getName())
+            ->addFieldDependence($fileSizeField->getName(),$frontendInputField->getName(),'file');
+
+        $dependencies->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
+            ->addFieldMap($fileTypesField->getHtmlId(),$fileTypesField->getName())
+            ->addFieldDependence($fileTypesField->getName(),$frontendInputField->getName(),'file');
+
+        $dependencies->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
+            ->addFieldMap($frontendClassField->getHtmlId(),$frontendClassField->getName())
+            ->addFieldDependence($frontendClassField->getName(),
+                $frontendInputField->getName(),
+                array('textarea', 'text')
             );
 
         $this->setChild('form_after', $dependencies);

@@ -2,26 +2,26 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 -->
 <config>
     <modules>
         <Amasty_Ogrid>
-            <version>1.9.3</version>
+            <version>1.9.4</version>
         </Amasty_Ogrid>
     </modules>
     
     <admin>
         <routers>
             <adminhtml>
-				<args>
-					<modules>
-						<amogrid before="Mage_Adminhtml">Amasty_Ogrid_Adminhtml</amogrid>
-					</modules>
-				</args>
-			</adminhtml>
+                <args>
+                    <modules>
+                        <Amasty_Ogrid after="Mage_Adminhtml">Amasty_Ogrid_Adminhtml</Amasty_Ogrid>
+                    </modules>
+                </args>
+            </adminhtml>
         </routers>
     </admin>
     <frontend>
@@ -50,7 +50,7 @@
                 <children>
                     <ogrid_adminsetting translate="title">
                         <title>Amasty Extended Order Grid</title>
-                        <action>adminhtml/amogrid_settings</action>
+                        <action>adminhtml/amogrid_settings/index</action>
                         <sort_order>200</sort_order>
                     </ogrid_adminsetting>
                 </children>

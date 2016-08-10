@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_View_List extends Mage_Adminhtml_Block_Template
@@ -98,7 +98,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_View_List extends Mage_Ad
                         break;
                     case 'date':
                     	$value = $orderAttributes->getData($attribute->getAttributeCode());
-                        if ($value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
+                        if ($value === '0000-00-00' || $value === '0000-00-00 00:00:00' || $value === '1970-01-01 00:00:00' || $value === '1970-01-01') {
                             $value = '';
                             break;
                         }
@@ -144,10 +144,30 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_View_List extends Mage_Ad
                         }
                         $value=implode(', ', $valueAttribute);
                         break;
+                    case 'file':
+                        $value = $orderAttributes->getData($attribute->getAttributeCode());
+                        if ($value) {
+                            $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
+                            $url = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                            if (file_exists($path)) {
+                                $pos = strrpos($value, "/");
+                                if ($pos) {
+                                    $value = substr($value, $pos + 1, strlen($value));
+                                }
+                                $value = '<a href="' . $url . '" download target="_blank">' . $value . '</a>';
+                            } else {
+                                $value = '';
+                            }
+                        }
+                        break;
                     default:
                         $value = $orderAttributes->getData($attribute->getAttributeCode());
                         break;
                 }
+                if ( 'file' != $attribute->getFrontendInput()) {
+                    $value = nl2br(htmlentities(preg_replace('/\$/','\\\$', $value), ENT_COMPAT, "UTF-8"));
+                }
+
                 if ($attribute->getFrontendLabel() && $value) {
                     $list[$attribute->getFrontendLabel()] = str_replace('$', '\$', $value);
                 }

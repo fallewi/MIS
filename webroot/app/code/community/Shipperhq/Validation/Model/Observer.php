@@ -279,7 +279,7 @@ class Shipperhq_Validation_Model_Observer extends Mage_Core_Model_Abstract
                     return;
                 }
                 $candidateCount = count($results->getCandidates());
-                $name = $candidateCount > 0 ? 'dialog-billing' : 'nonedialog-billing';
+                $name = $candidateCount > 0 && $outcome != Shipperhq_Validation_Model_Validator_Result::INVALID ? 'dialog-billing' : 'nonedialog-billing';
                 $result['update_section'] = array(
                     'name' => $name, //'dialog-billing',
                     'html' => $validator->getJqueryHtml($name) .$display
@@ -396,7 +396,7 @@ class Shipperhq_Validation_Model_Observer extends Mage_Core_Model_Abstract
                     }
                     return;
                 }
-                $name = $candidateCount > 0 ? 'dialog-shipping' : 'nonedialog-shipping';
+                $name = $candidateCount > 0 && $outcome != Shipperhq_Validation_Model_Validator_Result::INVALID ? 'dialog-shipping' : 'nonedialog-shipping';
 
                 $result['update_section'] = array(
                     'name' => $name,

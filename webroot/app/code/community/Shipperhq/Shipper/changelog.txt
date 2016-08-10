@@ -92,3 +92,32 @@
 2.66 - Fixed issue with pickup address not saving to shipping address
 2.67 - Fixed issue with pickup address not saving to shipping address
 2.68 - SHQ16-825 persist carrier group id on custom admin rates
+2.69 - SHQ16-796 shipping method display with span tags
+2.70 - SHQ16-296 SQL update to fix warehouse attribute after update from WSA
+2.71 - Fixed issue with address validation dialog box on checkout.
+2.72 - SHQ16-950 altered allowed methods web service call logic
+2.73 - SHQ16-959 sync mechanism uses last synchronization date
+2.74 - SHQ16-906 Delivery comments at checkout
+2.75 - SHQ16-1008 Added shipperhq_location to variables being passed across
+2.76 - SHQ16-1026 modify display on order for single carrier list rates
+2.77 -  SHQ16-1078 Fixed issue with fatal error on multiaddress checkout when no rates returned
+2.78 - SHQ16-1041 Carrier group detail decoding, SHQ16-1088 remove price sorting
+2.79 - SHQ16-1113 Remove unsafe characters from shipping description on order item display, SHQ16-1121 Remove explicit size on datepicker widget
+2.80 - SHQ16-1118 Reset rate delivery date in carrier group details
+2.81 - SHQ16-994
+2.82 - SHQ16-994 tooltip on custom rates, SHQ16-1134 OSC index observer changes, SHQ16-1139 translation of error message in javascript, log json request
+2.83 - SHQ16-1098 Translate store pickup headings, SHQ16-1066 reformat getAllMethods for ShipperHQ carriers, SHQ16-1085 clean up cart in ShipperLib, SHQ16-1123 Resolve sort order of 0
+2.84 - SHQ16-1158 Fixed SQL upgrade script
+2.85 - SHQ16-1163 Fixed issue with configurable product rendering in admin sales order view
+2.86 - SHQ16-1146
+2.87 - SHQ16-1181 Add support for OneStepCheckout Comments and update OSC rewrite to OSC v4.5.5
+2.88 - SHQ16-1237 Resolved issue with blackout days shifting one day back
+2.89 - SHQ16-1237 Further work on blackout days. Resolves issues with blackout days being +/- one day
+2.90 - SHQ16-1263 Support for Customer Account Carrier type
+2.91 - SHQ16-1263 Support for Customer Account Carrier type - style updates
+2.92 - SHQ16-1299 Fixed issue with display of transaction ID and dim info
+2.93 - SHQ16-1263 Fixed issue with PHP Fatal Error
+2.94 - SHQ16-1328 Fixed issue in SQL install script
+2.95 - SHQ16-1327 Add required changes for compatibility with PVR
+2.96 - 2.96 release tag
+2.97 - SHQ16-1342 Remove null from UPS AP Location text

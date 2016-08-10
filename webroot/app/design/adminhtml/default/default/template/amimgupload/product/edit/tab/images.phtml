@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Imgupload
  */ 
 ?>
@@ -58,11 +58,11 @@ var imItemTemplate = '' +
             <div class="am_item <?php if (1 == $image['disabled']): ?>img-disabled<?php endif; ?>" id="am_images_grid_amitem_<?php echo $i; ?>" onmouseover="javascript: itemOver(this);" onmouseout="javascript: itemOut(this);">
                 <div class="moveable"></div>
                 <div class="am_image"><img src="<?php echo $image['url']; ?>" alt="" border="0" onload="javascript: resizeView(this);" /></div>
-                <div class="am_label"><input type="text" name="amimgupload[label][<?php echo $image['file'] ?>]" class="input-text" value="<?php echo $image['label']; ?>" /></div>
+                <div class="am_label"><input type="text" name="amimgupload[label][<?php echo $image['file'] ?>]" class="input-text" value="<?php echo htmlspecialchars($image['label']); ?>" /></div>
                 <div class="am_types">
                     <?php foreach ($this->getImageTypes() as $imageType): ?>
                         <div><input type="checkbox" name="product[<?php echo $imageType['field'] ?>]" value="<?php echo $image['file'] ?>"
-                                <?php if ($image['file'] == $_product->getData($imageType['field'])): ?>checked="checked"<?php endif; ?> /> <?php echo $imageType['label'] ?></div>
+                                <?php if ($image['file'] == $_product->getData($imageType['field'])): ?>checked="checked"<?php endif; ?> /> <?php echo htmlspecialchars($imageType['label']); ?></div>
                     <?php endforeach; ?>
                 </div>
                 <div class="actions" align="right">&nbsp;

@@ -59,7 +59,7 @@
                     <?php endif; ?>
                     <ul>
                         <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                            <div id="ship_options_<?php echo $code ?>"?>
+                            <div id="ship_options_<?php echo $code ?>">
                                 <div id="radio_choices_<?php echo $code ?>">
                         <?php endif ?>
                         <?php $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
@@ -79,10 +79,14 @@
                                         <strong>
                                             <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
                                             <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
-
                                             <?php echo $_excl; ?>
                                             <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
                                                 (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?>
+                                            <?php if ($_rate->getTooltip()): ?>
+                                                <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                    <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                                </span>
                                             <?php endif; ?>
                                         </strong>
                                     </label>
@@ -111,6 +115,11 @@
                 </dd>
             <?php endforeach; ?>
         </dl>
+        <?php if ($this->showDeliveryComments()): ?>
+            <dd>
+                <?php echo $this->getDeliveryCommentsHtml() ?>
+            </dd>
+        <?php endif ?>
     <?php endif; ?>
 <?php else: ?>
     <?php if (!($_carrierGroupRates = $this->getCarrierGroupRates())): ?>
@@ -180,6 +189,11 @@
                                                     <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
                                                         (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                                     <?php endif; ?>
+                                                    <?php if ($_rate->getTooltip()): ?>
+                                                        <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                            <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                                        </span>
+                                                    <?php endif; ?>
                                                 </strong>
                                             </label>
 
@@ -209,9 +223,12 @@
                 <?php endforeach; ?>
             </dl>
         <?php endforeach; ?>
-        <!--  <div class="dropship-text">
             <?php echo $this->getExplanationText(); ?>
-        </div> -->
+            <?php if ($this->showDeliveryComments()): ?>
+                <dd>
+                    <?php echo $this->getDeliveryCommentsHtml() ?>
+                </dd>
+            <?php endif ?>
     <?php endif; ?>
 <?php endif; ?>
 

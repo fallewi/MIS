@@ -88,6 +88,11 @@
                                                 (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                             <?php endif; ?>
                                         </strong>
+                                        <?php if ($_rate->getTooltip()): ?>
+                                            <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                        <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                    </span>
+                                        <?php endif; ?>
                                     </label>
                                 <?php endif ?>
                                 </dt>
@@ -142,6 +147,11 @@
                                     (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                 <?php endif; ?>
                                 </strong>
+                                <?php if ($_rate->getTooltip()): ?>
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                        <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                    </span>
+                                <?php endif; ?>
                             </label>
                         <?php endif ?>
                         </dt>
@@ -184,6 +194,11 @@
                                         (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                     <?php endif; ?>
                                 </strong>
+                                <?php if ($_rate->getTooltip()): ?>
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                        <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                    </span>
+                                <?php endif; ?>
                             </label>
                         <?php endif ?>
                         </dt>
