@@ -7,7 +7,7 @@
                         <children>
                             <config>
                                 <children>
-                                    <blueacorn_southware translate="title" module="blueacorn_southware">
+                                    <blueacorn_southware translate="title" module="southware">
                                         <title>eBridge Settings</title>
                                     </blueacorn_southware>
                                 </children>
