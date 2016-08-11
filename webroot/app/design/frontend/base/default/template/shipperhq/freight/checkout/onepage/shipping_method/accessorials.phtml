@@ -39,6 +39,7 @@
 <?php $quote = Mage::getSingleton('checkout/session')->getQuote(); ?>
 <?php $carrierCode = $this->getCarrierCode();?>
 <?php $carrierGroup = $this->getCarriergroupId();?>
+<?php $carrierType = $this->getCarrierType(); ?>
 <?php $carrierGroupInsert = $carrierGroup == '' ? '' : '_' . $carrierGroup; ?>
 <div class="inner-box">
     <ul>
@@ -75,6 +76,24 @@
                     <?php if ($this->helper('shipperhq_freight')->getLiftgateRequired($carrierGroup, $carrierCode)): ?> checked="checked"<?php endif; ?> />
                 <label id="liftgate_required_label_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
                        for="liftgate_required_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__('Liftgate Required?') ?></label>
+            </li>
+        <?php endif;?>
+
+        <?php if($this->helper('shipperhq_freight')->isCustomerAccountCarrier($carrierGroup, $carrierCode, $carrierType)): ?>
+            <li class="a-left input-box">
+                <label class="customer-account-label" id="customer_carrier_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
+                       for="customer_carrier_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__('Carrier Name') ?></label>
+                <input class="input-text customer-account-field" type="text" maxlength="255" title="Customer Carrier" value="" name="customer_carrier_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" id="customer_carrier_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>">
+            </li>
+            <li class="a-left input-box">
+                <label class="customer-account-label" id="customer_carrier_ph_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
+                       for="customer_carrier_ph_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__("Carrier Contact Number") ?></label>
+                <input class="input-text customer-account-field" type="text" maxlength="255" title="Customer Carrier Phone" value="" name="customer_carrier_ph_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" id="customer_carrier_ph_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>">
+            </li>
+            <li class="a-left input-box">
+                <label class="customer-account-label" id="customer_carrier_account_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
+                       for="customer_carrier_account_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__("Account Number") ?></label>
+                <input class="input-text customer-account-field" type="text" maxlength="255" title="Customer Carrier Account" value="" name="customer_carrier_account_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" id="customer_carrier_account_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>">
             </li>
         <?php endif;?>
     </ul>
@@ -249,7 +268,7 @@ FreightListener.prototype = {
         }
         var data = response.shipping_rates;
         if (data == false) {
-            <?php $errorMessage = $this->__('Sorry, no quotes are available for this order at this time.'); ?>
+            <?php $errorMessage = $this->getStandardErrorMessage(); ?>
             $('radio_choices' + carrierGroupInsert +  "_" + carrierCode ).innerHTML='<ul class="messages"><li class="error-msg"><ul><li><?php echo preg_replace("!\s+!"," ",$errorMessage); ?></li></ul></li></ul>';
         } else {
             var existingRadios = document.getElementsByName('shipping_method' + carrierGroupInsert);
@@ -327,7 +346,7 @@ FreightListener.prototype = {
                 selectedShipMethodSingle.hidden = true;
             }
             if(!errorMessage) {
-                errorMessage = '<?php echo $this->__("Sorry, no quotes are available for this order at this time."); ?>';
+                errorMessage = "<?php echo $this->getStandardErrorMessage(); ?>";
             }
 
             var radioChoices = $('radio_choices'+carrierGroupInsert + "_" + carrierCode);

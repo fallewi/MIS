@@ -12,3 +12,7 @@
     font-weight:bold;
 }
 
+.customer-account-label {
+    min-width: 200px !important;
+}
+

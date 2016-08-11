@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 -->
 <config>
     <modules>
         <Amasty_Orderattr>
-            <version>3.2.3</version>
+            <version>3.3.0</version>
         </Amasty_Orderattr>
     </modules>
     
@@ -26,6 +26,16 @@
     </admin>
     
     <frontend>
+        <routers>
+            <Amasty_Orderattr>
+                <use>standard</use>
+                <args>
+                    <module>Amasty_Orderattr</module>
+                    <frontName>amorderattr</frontName>
+                </args>
+            </Amasty_Orderattr>
+        </routers>
+
         <translate>
             <modules>
                 <Amasty_Orderattr>
@@ -323,6 +333,19 @@
             </core_block_abstract_to_html_after>
         </events>
     </global>
+
+    <crontab>
+        <jobs>
+            <amorderattr_remove_tmp>
+                <schedule>
+                    <cron_expr>* * */2 * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>amorderattr/observer::removeTmpFiles</model>
+                </run>
+            </amorderattr_remove_tmp>
+        </jobs>
+    </crontab>
     
     <default>
         <sales_email>

@@ -1,0 +1,87 @@
+---
+
+#
+# local environment composition.
+#  for running this site in docker containers locally.
+#
+# before running,
+#
+#  * ensure nothing is running on port 80
+#
+#  * ensure you have access to registry.badevops.com via:
+#    docker login registry.badevops.com   -- get l+p from your friend.
+#
+# Vars (exported via `bin/env up local`):
+#  ENV: local
+#  CLIENT_CODE: from env/appvars
+#  APP_ROOT:  typically /magento/webroot/ (on container filesystem)
+#  LOCAL_REPO_ROOT:  typically $(pwd) of local REPO_ROOT (on your filesystem)
+#  SNAPSHOT_BASE_ENV:  snapshots.lan snapshot to seed environment with
+#
+
+nginx:
+  container_name: ${ENV}-${CLIENT_CODE}-nginx
+  image: registry.badevops.com/mage-nginx:m1
+  links:
+    - phpfpm
+    - term
+    - smtp
+  volumes_from:
+    - phpfpm
+  ports:
+    - ${MAGE_NGINX_PORT}:80
+
+  environment:
+    APP_ROOT: "${APP_ROOT}"
+    AUTH_BASIC_USER: ""
+    AUTH_BASIC_PASS: ""
+
+phpfpm:
+  container_name: ${ENV}-${CLIENT_CODE}-phpfpm
+  image: registry.badevops.com/mage-phpfpm:m1
+  links:
+    - mysql
+    - smtp
+  volumes:
+    - ${LOCAL_REPO_ROOT}:/home/blueacorn/magento
+    - ${LOCAL_REPO_ROOT}/skel/env/${ENV}/webroot/app/etc/local.dockerized.xml:${APP_ROOT}/app/etc/local.xml
+
+term:
+  container_name: ${ENV}-${CLIENT_CODE}-term
+  image: registry.badevops.com/mage-term:m1
+  links:
+    - smtp
+    - mysql
+  volumes_from:
+    - phpfpm
+
+  environment:
+    APP_URL: ${APP_URL}
+    APP_ROOT: ${APP_ROOT}
+    CLIENT_CODE: ${CLIENT_CODE}
+    SNAPSHOT_BASE_ENV: ${SNAPSHOT_BASE_ENV}
+    MYSQL_USER: magento
+    MYSQL_PASSWORD: magento
+    MYSQL_DATABASE: magento
+    OAUTH_DOMAIN: auth.blueacorn.net
+    OAUTH_APP: ${CLIENT_CODE}-${ENV}
+
+smtp:
+  container_name: ${ENV}-${CLIENT_CODE}-smtp
+  image: registry.badevops.com/mage-smtp
+  log_driver: none
+
+mysql:
+  container_name: ${ENV}-${CLIENT_CODE}-mysql
+  restart: unless-stopped
+  image: mariadb:10
+  volumes:
+    - /var/lib/mysql
+  #ports:
+  #  - ${MAGE_MYSQL_PORT}:3306
+
+  environment:
+    MYSQL_USER: magento
+    MYSQL_PASSWORD: magento
+    MYSQL_DATABASE: magento
+    MYSQL_ROOT_PASSWORD: lowfi

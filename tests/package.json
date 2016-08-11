@@ -6,7 +6,9 @@
   "dependencies": {
     "jasmine": "*",
     "git-promise":"*",
-    "path" : "*"
+    "path" : "*",
+    "var": "*"
+
   },
   "devDependencies": {},
   "scripts": {

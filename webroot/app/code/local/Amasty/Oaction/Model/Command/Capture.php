@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Model_Command_Capture extends Amasty_Oaction_Model_Command_Abstract
@@ -78,19 +78,7 @@ class Amasty_Oaction_Model_Command_Capture extends Amasty_Oaction_Model_Command_
                 //update status    
                 $status = Mage::getStoreConfig('amoaction/capture/status', $order->getStoreId());    
                 if ($status) {
-                    $notify = false;
-                    if (Mage::helper('core')->isModuleEnabled('Amasty_Orderstatus')) {
-                        $statusCollection = Mage::getResourceModel('amorderstatus/status_collection');
-                        $statusCollection->addFieldToFilter('is_system', array('eq' => 0));
-                        foreach ($statusCollection as $statusModel) {
-                            if ($statusModel->getAlias() == substr($status, strpos($status, '_') + 1)) {
-                                if ($statusModel->getNotifyByEmail()) {
-                                    $notify = true;
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    $notify = parent::orderUpdateNotify($status);
                     Mage::getModel('sales/order_api')->addComment($orderCode, $status, '', $notify);
                 }
                 

@@ -29,16 +29,16 @@
  */
 
 
-class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo
-    extends Mage_Adminhtml_Block_Sales_Order_View_Info
+class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_Adminhtml_Block_Sales_Order_View_Info
 {
-
     public function getCarriergroupInfoHtml()
     {
+        $displayValues = array('destination_type', 'customer_carrier', 'customer_carrier_ph', 'customer_carrier_account');
 
         $order = $this->getOrder();
         $htmlOutput='';
         $cginfo = Mage::helper('shipperhq_shipper')->decodeShippingDetails($order->getCarriergroupShippingDetails());
+        $deliveryComments = $order->getShqDeliveryComments();
 
         if (!empty($cginfo)) {
             $carriergroupText='';
@@ -63,9 +63,9 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo
                     $carriergroupText .=  '<strong>: '.$cgrp['carrierTitle'];
                     $carriergroupText .= ' - '.$cgrp['methodTitle'];
                     $carriergroupText .= ' ' .$order->formatPrice($cgrp['price']).' </strong>';
-                    if((array_key_exists('carrierType', $cgrp) && $cgrp['carrierType'] != '')) {
+                    if((array_key_exists('carrierName', $cgrp) && $cgrp['carrierName'] != '')) {
                         $carriergroupText .= '</br> Carrier: ';
-                        $carriergroupText .= '' .strtoupper($cgrp['carrierType']);
+                        $carriergroupText .= '' .strtoupper($cgrp['carrierName']);
                     }
 
                     if((array_key_exists('pickup_date', $cgrp) && $cgrp['pickup_date'] != '')) {
@@ -118,7 +118,7 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo
                         }
                         if($value) {
                             $carriergroupText .= '</br>'. $name;
-                            if($code == 'destination_type') {
+                            if(in_array($code, $displayValues)) {
                                 $carriergroupText .=': '. $value;
                             }
                         }
@@ -135,8 +135,7 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo
             $htmlOutput.= '<h4 class="icon-head head-shipping-method">';
             if($desc = Mage::getStoreConfig(Shipperhq_Shipper_Helper_Data::SHIPPERHQ_SHIPPER_CARRIERGROUP_DESC_PATH)) {
                 $heading = $desc;
-            }
-            else {
+            } else {
                 $heading = $cgrp['mergedDescription'];
             }
             $heading = $heading .' ' .Mage::helper("shipperhq_postorder")->__("Shipping Information");
@@ -144,16 +143,22 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo
             $htmlOutput.= '</h4>';
             $htmlOutput.= '</div><fieldset>';
             $htmlOutput.= $carriergroupText;
-
-            /*  if($freightCommonInstalled) {
-                $htmlOutput.= Mage::helper('wsafreightcommon')->getFreightShippingInfo($order);
-            }*/
-
+            if(!empty($deliveryComments)){
+                $htmlOutput.= Mage::helper('shipperhq_shipper')->__('Delivery Comments') .' : ' . $order->getShqDeliveryComments();
+            }
             $htmlOutput.= '</fieldset> <div class="clear"/></div></div>';
 
-        }/* else if ($freightCommonInstalled) {
-            return Mage::helper('wsafreightcommon')->buildOrderViewHtml($order);
-        }*/
+        } else if (!empty($deliveryComments)) {
+            $htmlOutput = '<div class="box-right"><div class="clear"></div><div class="entry-edit">';
+            $htmlOutput.= '<div class="entry-edit-head">';
+            $htmlOutput.= '<h4 class="icon-head head-shipping-method">';
+            $heading = Mage::helper("shipperhq_postorder")->__("Shipping Information");
+            $htmlOutput.= $heading;
+            $htmlOutput.= '</h4>';
+            $htmlOutput.= '</div><fieldset>';
+            $htmlOutput .= Mage::helper('shipperhq_shipper')->__('Delivery Comments') .' : ' . $order->getShqDeliveryComments();
+            $htmlOutput.= '</fieldset> <div class="clear"/></div></div>';
+        }
 
         return "'".$htmlOutput."'";
     }

@@ -1,0 +1,124 @@
+<?php
+if(isset($_POST['g-recaptcha-response']))
+{
+    $captcha=$_POST['g-recaptcha-response'];
+}
+
+if(!$captcha)
+{
+    $strResponse = "<h2>Thank You For Trying to Contact Us</h2>";
+    $strResponse .= "<p>Unfortunately your form submission did not go through, please click back and try again. Pay special attention to the box just above the submit button.</p>";
+    $strResponse .= "<p>If you continue to have this problem, please call us toll free at <strong>1-800-319-0690</strong>.</p>";
+    echo $strResponse;
+    exit;
+}
+
+$secretKey = "6LeNFsUSAAAAAOqA-NrvC8MYaGSqJPTmUaKrNsVp";
+$ip = $_SERVER['REMOTE_ADDR'];
+$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretKey."&response=".$captcha."&remoteip=".$ip);
+$responseKeys = json_decode($response,true);
+
+if(intval($responseKeys["success"]) !== 1)
+{
+    echo '<h2>Something went wrong.</h2>';
+    exit;
+}
+else
+{
+    $post = $this->getRequest()->getPost();
+// Prepare and send to Salesforce
+//Initialize the $kv array for later use
+    $kv = array();
+    $request_type = "";
+    $salesforce_post_url = "";
+//For each POST variable as $name_of_input_field => $value_of_input_field
+    foreach ($_POST as $key => $value) {
+//Set array element for each POST variable (ie. first_name=Arsham)
+        $kv[] = stripslashes($key) . "=" . stripslashes($value);
+    }
+//Add additional parameters
+    if(isset($_POST["00NA000000AdkdG"]))
+    {
+        $request_type = $_POST["00NA000000AdkdG"];
+    }
+    if (!empty($request_type)
+        && ($request_type == "Product Information")
+        || ($request_type == "General Question or Comment")
+        || ($request_type == "Quote Request"))
+    {
+        $kv[] = "oid=00DA0000000gd0H";
+        $kv[] = "lead_source=Web";
+//$kv[] = "00NA000000A7XWq=" . $_COOKIE["mrsc01"]; // Campaign
+        $salesforce_post_url = "https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"; // web to lead post url
+    } else {
+        $kv[] = "orgid=00DA0000000gd0H";
+        $orderID = "";
+        if(isset($_POST["orderid"]))
+        {
+            $orderID = " # ".$_POST["orderid"];
+        }
+        $kv[] = "subject=Contact Us | " . $request_type . $orderID;
+        $kv[] = "name=" . $_POST["first_name"] . " " . $_POST["last_name"];
+        $kv[] = "type=" . $request_type;
+        $orderID = "";
+        if(isset($_POST["orderid"]))
+        {
+            $orderID = $_POST["orderid"];
+            $kv[] = "00NA000000A7Y10=".$orderID;
+        }
+        $salesforce_post_url = "https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8"; // web to case post url
+    }
+//$kv[] = "00NA000000A7mc9=ckell"; // MRS User
+// Debug options
+//$kv[] = "debug=1";
+//$kv[] = "debugEmail=victorc@missionrs.com";
+
+
+//Create a query string with join function separted by &
+    $query_string = join("&", $kv);
+
+
+//Check to see if cURL is installed ...
+    if (!function_exists('curl_init')) {
+        die('Sorry cURL is not installed!');
+    }
+
+//The original form action URL from Step 2 :)
+    $url = $salesforce_post_url;
+
+//Open cURL connection
+    $ch = curl_init();
+
+//Set the url, number of POST vars, POST data
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($kv));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query_string);
+
+//Set some settings that make it all work :)
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, FALSE);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+
+//Execute SalesForce web to lead PHP cURL
+    $result = curl_exec($ch);
+
+//close cURL connection
+    curl_close($ch);
+
+    if($result == 1)
+    {
+        $strResponse = "<h2>Thank You For Contacting Us</h2>";
+        $strResponse .= "<p>We love to hear from you.We will do our best to respond within 24 business hours.</p>";
+        $strResponse .= "<p>If you need a response sooner, please call us toll free at <strong>1-800-319-0690</strong>.</p>";
+        echo $strResponse;
+        exit;
+    }
+    else
+    {
+        $strResponse = "<h2>Thank You For Trying to Contact Us</h2>";
+        $strResponse .= "<p>Unfortunately your form submission did not go through, please click back and try again.</p>";
+        $strResponse .= "<p>If you continue to have this problem, please call us toll free at <strong>1-800-319-0690</strong>.</p>";
+        echo $strResponse;
+        exit;
+    }
+}

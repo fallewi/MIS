@@ -54,20 +54,10 @@ class BlueAcornInventory(object):
         self.read_environment()
         self.read_cli_args()
 
-        self.inventory = {
-          self.hostgroup: {
-            "hosts": [],
-            "vars": {}
-          },
-          "_meta": {
-            "hostvars": {}
-          }
-        }
-
         # Read passed envars files
         ##########################
+        vars = {}
         if self.envars_files:
-          vars = {}
           cmd = "env -i bash".split()
           input = "set -a"
 
@@ -86,10 +76,26 @@ class BlueAcornInventory(object):
               if match and match.group(1) not in ignores:
                 vars[match.group(1)] = match.group(2)
 
-            self.inventory[self.hostgroup]['vars'] = vars
+        # generate inventory
+        ####################
 
-        # create inventory from ssh config
+        self.inventory = {
+          self.hostgroup: {
+            "hosts": [],
+            "vars": vars
+          },
+          "_meta": {
+            "hostvars": {}
+          }
+        }
+
+        # export vars to all groups as well
+        if self.hostgroup != 'all':
+            self.inventory['all'] = {'vars': vars}
+
+        # read inventory from ssh config
         ##################################
+
         cfg = self.parse_config()
         for hostname, host in cfg.items():
           self.inventory[self.hostgroup]["hosts"].append(hostname)

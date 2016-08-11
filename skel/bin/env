@@ -149,9 +149,12 @@ print_env(){
 }
 
 print_list(){
+  local match="current"
+  $1 || match="current|local"
+
   if ! $QUIET; then echo "Available environments: "; fi
   cd $ENV_DIR || error "unable to enter $ENV_DIR"
-  ls -d */ 2>/dev/null | grep -v -E "current|local|boilerplate" | sed 's/\///'
+  ls -d */ 2>/dev/null | grep -v -E $match | sed 's/\///'
 }
 
 print_vars(){
@@ -444,7 +447,7 @@ env_onset(){
 }
 
 docker_bootstrap(){
-  [ -z "$ENV" ] && print_list && read -p "dockerized environment to '$1': " ENV
+  [ -z "$ENV" ] && print_list true && read -p "dockerized environment to execute against: " ENV
   echo
 
   [ -e $ENV_DIR/$ENV/envars ] || error \
@@ -475,6 +478,7 @@ docker_bootstrap(){
   # export vars
   COMPOSE_FLAGS="-f $COMPOSE_FILE -p ${ENV}-${CLIENT_CODE}"
   export ENV=$ENV
+  export LOCAL_REPO_ROOT=$REPO_ROOT
   case $ENV in
     node-* ) export NFS_MODE=ro ;;
     *) export NFS_MODE=rw ;;
@@ -503,7 +507,8 @@ docker_bootstrap(){
   [ ${REPO_REMOTE:0:1} = "@" ] && error \
       "placeholder value detected for REPO_REMOTE" "has skel been initialized?"
 
-  $SKIP_MACHINE || configure_docker_machine $DOCKER_MACHINE
+  $SKIP_MACHINE && DOCKER_MACHINE="local"
+  configure_docker_machine $DOCKER_MACHINE
 }
 
 docker_make_volumes(){
@@ -527,7 +532,8 @@ docker_up(){
 
   docker-compose $COMPOSE_FLAGS stop
   docker-compose $COMPOSE_FLAGS pull
-  docker-compose $COMPOSE_FLAGS build
+  docker-compose $COMPOSE_FLAGS build --pull || error \
+    "error builing containers..."
 
   echo
   echo "========================================"
@@ -568,7 +574,7 @@ docker_status(){
 
 docker_logs(){
   docker_bootstrap "print logs"
-  docker-compose $COMPOSE_FLAGS logs $DOCKER_CONTAINER_NAME
+  docker-compose $COMPOSE_FLAGS logs -f --tail=60 $DOCKER_CONTAINER_NAME
 }
 
 

@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Productmanagerbundle
  */
 -->
 <config>
     <modules>
         <Amasty_Productmanagerbundle>
-            <version>1.4.8</version>
+            <version>1.5.6</version>
         </Amasty_Productmanagerbundle>
     </modules>
 

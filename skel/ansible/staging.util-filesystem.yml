@@ -26,30 +26,31 @@
         group: "{{ HTTPD_USER }}"
         mode: g+rwx
         state: directory
+        recurse: yes
       become: True
       ignore_errors: yes
       tags:
         - filesystem-perms-only
       # !! triple check these
       with_items:
-        - "{{ APP_ROOT }}/var"
-        - "{{ APP_ROOT }}/includes"
-        - "{{ APP_ROOT }}/media"
+        - "var"
+        - "includes"
+        # media is commented out as it's typically shared
+        #- "media"
 
-# No NFS for MIS
-#    - name: ensure shared paths
-#      file:
-#        path: "{{ APP_ROOT }}/{{ item }}"
-#        src: "{{ SHARE_ROOT }}/{{ item }}"
-#        state: link
-#      ignore_errors: yes
-#      tags:
-#        - filesystem-shares-only
-#      when: SHARE_ROOT is defined and SHARE_ROOT
-#      # !! triple check these
-#      with_items:
-#        - "media"
-#        - "var/export"
-#        - "var/import"
-#        - "var/powerreviews"
-#        - "var/urapidflow"
+    - name: ensure shared paths
+      file:
+        path: "{{ APP_ROOT }}/{{ item }}"
+        src: "{{ SHARE_ROOT }}/{{ item }}"
+        state: link
+      ignore_errors: yes
+      tags:
+        - filesystem-shares-only
+      when: SHARE_ROOT is defined and SHARE_ROOT
+      # !! triple check these
+      with_items:
+        - "media"
+        - "var/export"
+        - "var/import"
+        - "var/powerreviews"
+        - "var/urapidflow"

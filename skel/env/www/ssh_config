@@ -1,8 +1,8 @@
 #
 # MIS:staging
 #
-# stick to web*, db*, cache* conventions for ansible host pattern matching
-# 
+# !! stick to web*, db*, cache* conventions for ansible host pattern matching
+#
 
 Host web-1
   HostName 104.130.59.34

@@ -1,0 +1,5 @@
+{
+    "require-dev": {
+        "magento-ecg/magniffer": "^1.0"
+    }
+}

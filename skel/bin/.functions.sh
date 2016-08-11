@@ -130,11 +130,19 @@ find_latest_squash()
 
 
 configure_docker_machine(){
-  local SHELL=${SHELL:-"sh"}
-  echo "activing docker-machine $1..."
-  eval $(docker-machine env $1 --shell $SHELL)
-  [ "$(docker-machine active)" = "$1" ] || error "unable to configure $1 machine"
-  docker info || error "unable to communicate with $1 machine"
+  if [ $1 = "local" ]; then
+    echo "local flag detected. de-activating docker-machine if set..."
+    # unset the current docker machine
+    for var in DOCKER_HOST DOCKER_CERT_PATH DOCKER_MACHINE_NAME DOCKER_TLS_VERIFY; do
+      unset $var 2>/dev/null
+    done
+  else
+    local SHELL=${SHELL:-"sh"}
+    echo "activing docker-machine $1..."
+    eval $(docker-machine env $1 --shell $SHELL)
+    [ "$(docker-machine active)" = "$1" ] || error "unable to configure $1 machine"
+    docker info || error "unable to communicate with $1 machine"
+  fi
 }
 
 fail_in_groundcontrol(){
@@ -149,24 +157,39 @@ env_bootstrap(){
 
   if [ -z "$ENV" ]; then
     printf "\nno environment passed! pass --help for a list of options.\n\n"
-    $REPO_ROOT/bin/env list || error "unable to lookup available environments"
+    $REPO_ROOT/$SKEL_DIR/bin/env list || error "unable to lookup available environments"
     read -p "Which Environment?  : " ENV
     echo
   fi
 
   [ -d "$ENV_DIR/$ENV" ] || error "$ENV environment not found"
 
-  DOCKER_MACHINE=$($REPO_ROOT/bin/env var DOCKER_MACHINE $ENV)
+  DOCKER_MACHINE=$($REPO_ROOT/$SKEL_DIR/bin/env var DOCKER_MACHINE $ENV)
 
   if [ ! -z "$DOCKER_MACHINE" ]; then
+
+    #
+    # dockerized environments
+    #
+
     ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/dockerized_hosts.py
     FORCE_ENVIRONMENT_PLAYBOOK=false
-    ANSIBLE_PLAYBOOK="dockerized.$ANSIBLE_PLAYBOOK"
+
+    if [ -e "${ANSIBLE_DIR}/${ENV}.${ANSIBLE_PLAYBOOK}" ]; then
+      ANSIBLE_PLAYBOOK="${ENV}.${ANSIBLE_PLAYBOOK}"
+    else
+      ANSIBLE_PLAYBOOK="dockerized.$ANSIBLE_PLAYBOOK"
+    fi
 
     # force activation of configured machine
     configure_docker_machine $DOCKER_MACHINE
 
   else
+
+    #
+    # legacy environments
+    #
+
     [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"
   fi
 
@@ -188,6 +211,12 @@ env_bootstrap_ansible(){
   export ANSIBLE_SSH_CONF_ENVARS="$REPO_ROOT/$SKEL_DIR/.skelvars,$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
   export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
 
+  if $DEBUG; then
+    echo export ANSIBLE_SSH_CONF_FILE="$ENV_DIR/$ENV/ssh_config"
+    echo export ANSIBLE_SSH_CONF_ENVARS="$REPO_ROOT/$SKEL_DIR/.skelvars,$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
+    echo export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
+  fi
+
   # cd to ansible playbook directory so we can use host_vars, group_vars
   #  http://docs.ansible.com/ansible/intro_inventory.html
   cd $ANSIBLE_DIR
@@ -207,6 +236,7 @@ env_bootstrap_ansible(){
 ansible_command(){
 
   PROMPT=true
+  DEBUG=false
   ANSIBLE_LIST_HOSTS=false
   ANSIBLE_LIST_TAGS=false
 
@@ -227,6 +257,7 @@ ansible_command(){
       --ask-pass|-p)      ANSIBLE_ASK_SSH_PASS="--ask-pass" ;;
       --ask-sudo|-sp)     ANSIBLE_ASK_SUDO_PASS="--ask-become-pass" ;;
       -vvv)               ANSIBLE_VERBOSITY="-vvvv" ;;
+      --debug)            DEBUG=true ;;
       *)                  if [[ $1 == -* ]]; then
                             echo "invalid option: $1" ; ansible_command_help 1
                           fi
@@ -246,6 +277,15 @@ ansible_command(){
   if $ANSIBLE_LIST_HOSTS ; then
     ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK --list-hosts
     exit 0
+  fi
+
+  if $DEBUG; then
+    echo "ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
+    $ANSIBLE_TAGS $ANSIBLE_LIMIT $ANSIBLE_VERBOSITY $ANSIBLE_CHECK \
+    $ANSIBLE_ASK_SSH_PASS $ANSIBLE_ASK_SUDO_PASS $ANSIBLE_STEP \
+    --extra-vars=\"ENV=$ENV LOCAL_ROOT=$REPO_ROOT REPO_REMOTE_NAME=$REPO_REMOTE_NAME $ANSIBLE_VARS\""
+    echo
+    prompt_confirm "DEBUG -- about to run above commands. continue?" || exit 0;
   fi
 
   if $PROMPT ; then

@@ -1,0 +1,19 @@
+---
+
+# setup scripts
+
+#
+#  !! if you want to disable remote setup scripts, comment out DISABLE_REMOTE_SETUP_SCRIPTS or set to empty
+#
+
+- name: "MIS:staging setup scripts"
+  hosts: ADMIN_HOST
+  gather_facts: False
+  any_errors_fatal: yes
+  tags: setup-scripts
+  vars:
+    DISABLE_REMOTE_SETUP_SCRIPTS: "true"
+  tasks:
+
+    - include: tasks/util/setupscripts.yml
+

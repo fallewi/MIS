@@ -32,7 +32,7 @@
 <config>
     <modules>
         <Shipperhq_Freight>
-            <version>0.0.8</version>
+            <version>0.0.9</version>
         </Shipperhq_Freight>
     </modules>
     <global>
@@ -86,10 +86,10 @@
             </checkout_controller_onepage_save_shipping_method>
            <adminhtml_sales_order_create_process_data>
                 <observers>
-                    <shipperhq_calendar_save_shipping_method_observer>
+                    <shipperhq_freight_save_shipping_method_admin_observer>
                         <class>shipperhq_freight/observer</class>
                         <method>saveOptionsSelectedInAdmin</method>
-                    </shipperhq_calendar_save_shipping_method_observer>
+                    </shipperhq_freight_save_shipping_method_admin_observer>
                 </observers>
             </adminhtml_sales_order_create_process_data>
            <!-- <checkout_controller_multishipping_shipping_post>
@@ -118,6 +118,15 @@
                 <destination_type>
                     <to_order>*</to_order>
                 </destination_type>
+                <customer_carrier>
+                    <to_order>*</to_order>
+                </customer_carrier>
+                <customer_carrier_ph>
+                    <to_order>*</to_order>
+                </customer_carrier_ph>
+                <customer_carrier_account>
+                    <to_order>*</to_order>
+                </customer_carrier_account>
             </sales_convert_quote_address>
             <sales_convert_order>
                 <freight_quote_id>
@@ -135,6 +144,15 @@
                 <destination_type>
                     <to_quote_address_shipping>*</to_quote_address_shipping>
                 </destination_type>
+                <customer_carrier>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </customer_carrier>
+                <customer_carrier_ph>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </customer_carrier_ph>
+                <customer_carrier_account>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </customer_carrier_account>
             </sales_convert_order>
         </fieldsets>
     </global>
