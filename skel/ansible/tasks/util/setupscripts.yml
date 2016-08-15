@@ -5,11 +5,10 @@
     chdir: "{{ REPO_ROOT }}"
   ignore_errors: yes
   shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun sys:setup:compare-versions"
-  when: DISABLE_REMOTE_SETUP_SCRIPTS is defined and DISABLE_REMOTE_SETUP_SCRIPTS
   register: setup_result
 
 - name: "run setup scripts"
   args:
     chdir: "{{ REPO_ROOT }}"
   shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun sys:setup:incremental -n"
-  when: DISABLE_REMOTE_SETUP_SCRIPTS is defined and DISABLE_REMOTE_SETUP_SCRIPTS and setup_result.rc > 0
+  when: setup_result|failed

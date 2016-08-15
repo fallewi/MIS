@@ -12,8 +12,9 @@
   any_errors_fatal: yes
   tags: setup-scripts
   vars:
-    DISABLE_REMOTE_SETUP_SCRIPTS: "true"
+    SKIP_SETUPSCRIPTS: "true"
   tasks:
 
     - include: tasks/util/setupscripts.yml
+      when: SKIP_SETUPSCRIPTS is defined and SKIP_SETUPSCRIPTS
 
