@@ -59,6 +59,10 @@
     - name: start remote post-deployment tasks
       include: tasks/deploy/remote/post.yml
 
+# run setup script playbook
+###########################
+- include: util-setupscripts.yml
+
 # run filesystem playbook to fix perms + setup NFS filesharing
 ##############################################################
 - include: preproduction.util-filesystem.yml
