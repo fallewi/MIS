@@ -48,7 +48,7 @@
 .data-table th {
     background: $c-table-background;
     text-transform: uppercase;
-    font-family: $f-stack-special;
+    font-family: $f-stack-sans;
     line-height: 1.4;
     white-space: nowrap;
 }
@@ -60,7 +60,7 @@
 
 .data-table tbody td,
 .data-table tfoot td {
-    font-family: $f-stack-serif;
+    font-family: $f-stack-sans;
 }
 
 .data-table tfoot tr {
@@ -188,9 +188,8 @@
     tbody td[data-rwd-label]:before {
         content: attr(data-rwd-label) ":";
         font-size: $f-size-xs;
-        font-family: $f-stack-special;
+        font-family: $f-stack-sans;
         padding-right: 5px;
-        text-transform: uppercase;
     }
 
     tfoot tr {
