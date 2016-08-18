@@ -3,7 +3,7 @@
 # setup scripts
 
 #
-#  !! if you want to disable remote setup scripts, comment out DISABLE_REMOTE_SETUP_SCRIPTS or set to empty
+#  !! if you want to disable remote setup scripts, comment out SKIP_SETUPSCRIPTS or set to empty
 #
 
 - name: "MIS:staging setup scripts"
@@ -12,9 +12,9 @@
   any_errors_fatal: yes
   tags: setup-scripts
   vars:
-    SKIP_SETUPSCRIPTS: "true"
+    SKIP_SETUPSCRIPTS: no
   tasks:
 
     - include: tasks/util/setupscripts.yml
-      when: SKIP_SETUPSCRIPTS is defined and SKIP_SETUPSCRIPTS
+      when: SKIP_SETUPSCRIPTS is not defined or not SKIP_SETUPSCRIPTS
 
