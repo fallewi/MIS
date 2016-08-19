@@ -74,8 +74,8 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
                 'productImage' => $product->getImageUrl()
             );
 
-            $sender_name = Mage::getStoreConfig('trans_email/ident_general/name');
-            $sender_email = Mage::getStoreConfig('trans_email/ident_general/email');
+            $sender_name = Mage::getStoreConfig('trans_email/ident_support/name');
+            $sender_email = Mage::getStoreConfig('trans_email/ident_support/email');
             $email_template->setSenderName($sender_name);
             $email_template->setSenderEmail($sender_email);
 
