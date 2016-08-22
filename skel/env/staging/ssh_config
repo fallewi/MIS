@@ -27,17 +27,6 @@ Host CRON_HOST
   HostName 173.203.138.86
   User blueacorn
 
-#
-# HOST ALIASES
-#  ADMIN_HOST: required. typically points to web-1 or web-admin
-#  SNAPSHOT_HOST: optional. enables snapshots for this environment. typically points to web-1 or least busy web node
-#  CRON_HOST: optional. enables cron for this environment. typically points to web-admin.
-#
-
-Host ADMIN_HOST
-  HostName 104.130.59.34
-  User blueacorn
-
 Host SNAPSHOT_HOST
   HostName 104.130.59.34
   User blueacorn

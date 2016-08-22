@@ -24,11 +24,19 @@ class Shiphawk_Order_Model_Command_SendOrder
             }
         }
 
-
+        $skuColumn = Mage::getStoreConfig('shiphawk/datamapping/sku_column');
         foreach ($order->getAllItems() as $item) {
             /** @var Mage_Sales_Model_Order_Item $item */
             $itemsRequest[] = array(
-                'sku' => $item->getSku()
+
+                'name' => $item->getName(),
+                'sku' => $item->getData($skuColumn),
+                'quantity' => $item->getQtyOrdered(),
+                'price' => $item->getPrice(),
+                'length' => $item->getLength(),
+                'width' => $item->getWidth(),
+                'height' => $item->getHeight(),
+                'weight' => $item->getWeight(),
             );
         }
 
@@ -37,7 +45,7 @@ class Shiphawk_Order_Model_Command_SendOrder
                 'order_number' => $order->getIncrementId(),
                 'source_system' => 'magento',
                 'source_system_id' => $order->getEntityId(),
-                'source_system_processed_at' => '',
+                'source_system_processed_at' => date('Y-m-d H:i:s'),
                 'requested_rate_id' => $shippingRateId,
                 'requested_shipping_details'=> $order->getShippingDescription(),
                 'origin_address' => $this->getOriginAddress(),
@@ -75,14 +83,15 @@ class Shiphawk_Order_Model_Command_SendOrder
             'state' => $address->getRegionCode(),
             'country' => $address->getCountryId(),
             'zip'  => $address->getPostcode(),
-            'email' => $address->getEmail(),
-            'code'  => $address->getAddressType(),
+            'email' => $address->getEmail()
         );
     }
 
     protected function getOriginAddress()
     {
         return array(
+            'name' => Mage::getStoreConfig('general/store_information/name'),
+            'phone_number' => Mage::getStoreConfig('general/store_information/phone'),
             'street1' => Mage::getStoreConfig('shipping/origin/street_line1'),
             'street2' => Mage::getStoreConfig('shipping/origin/street_line2'),
             'city' => Mage::getStoreConfig('shipping/origin/city'),

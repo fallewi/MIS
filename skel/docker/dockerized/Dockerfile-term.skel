@@ -1,0 +1,5 @@
+FROM registry.badevops.com/mage-term:m1
+
+COPY deploy.key /home/blueacorn/.ssh/id_rsa
+RUN sudo chown blueacorn /home/blueacorn/.ssh/id_rsa && \
+    chmod 0600 /home/blueacorn/.ssh/id_rsa
