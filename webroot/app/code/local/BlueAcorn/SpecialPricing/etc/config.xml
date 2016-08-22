@@ -113,4 +113,11 @@
             </adminhtml>
         </routers>
     </admin>
+    <default>
+        <blueacorn_specialpricing>
+            <general>
+                <email_address>support</email_address>
+            </general>
+        </blueacorn_specialpricing>
+    </default>
 </config>
