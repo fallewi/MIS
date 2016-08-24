@@ -1,0 +1,42 @@
+<config>
+    <modules>
+        <BlueAcorn_DisallowPO>
+            <version>0.1</version>
+        </BlueAcorn_DisallowPO>
+    </modules>
+
+    <global>
+        <blocks>
+            <ba_disallowPO>
+                <class>BlueAcorn_DisallowPO_Block</class>
+            </ba_disallowPO>
+        </blocks>
+
+        <helpers>
+            <ba_disallowPO>
+                <class>BlueAcorn_DisallowPO_Helper</class>
+            </ba_disallowPO>
+        </helpers>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <ba_disallowPO>
+                    <file>ba_disallowPO.xml</file>
+                </ba_disallowPO>
+            </updates>
+        </layout>
+    </frontend>
+
+    <default>
+        <ba_disallowPO>
+            <general>
+                <enabled>1</enabled>
+                <allowBilling>1</allowBilling>
+                <allowShipping>0</allowShipping>
+                <message>We are sorry but we can't ship to a P.O. Box. Please input a street address or contact Customer Service for other arrangements.</message>
+            </general>
+        </ba_disallowPO>
+    </default>
+</config>

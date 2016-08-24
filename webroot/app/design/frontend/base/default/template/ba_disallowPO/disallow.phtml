@@ -1,0 +1,72 @@
+<?php if (Mage::getStoreConfig('ba_disallowPO/general/enabled')): ?>
+    <script type="text/javascript">
+        document.observe('dom:loaded', function() {
+            function runValidation(v) {
+                var pattern = new RegExp('\\b[p]*(ost)*\\.*\\s*[o|0]*(ffice)*\\.*\\s*b[o|0]x\\b', 'i');
+                return !pattern.test(v);
+            }
+
+            var validateBilling = !<?php echo Mage::getStoreConfig('ba_disallowPO/general/allowBilling'); ?>;
+            var validateShipping = !<?php echo Mage::getStoreConfig('ba_disallowPO/general/allowShipping'); ?>;
+            var message = "<?php echo Mage::getStoreConfig('ba_disallowPO/general/message'); ?>";
+
+            var validateThese = [
+                $('billing:street1'),
+                $('billing:street2'),
+                $('shipping:street1'),
+                $('shipping:street2'),
+                $('billing-address-select'),
+                $('shipping-address-select')
+            ];
+
+            validateThese.each(function(e) {
+                if (e) {
+                    e.toggleClassName('validate-pobox');
+                }
+            });
+
+            Validation.add('validate-pobox', message, function(v, elm) {
+                    switch (elm.id) {
+                        case 'billing:street1':
+                        case 'billing:street2':
+                            if($('billing:use_for_shipping_yes')) {
+                                if (validateBilling || ($('billing:use_for_shipping_yes').checked && validateShipping)) {
+                                    return runValidation(v);
+                                }
+                            } else {
+                                if (validateBilling) {
+                                    return runValidation(v);
+                                }
+                            }
+                            break;
+                        case 'shipping:street1':
+                        case 'shipping:street2':
+                            if (validateShipping) {
+                                return runValidation(v);
+                            }
+                            break;
+                        case 'billing-address-select':
+                            if($('billing:use_for_shipping_yes')) {
+                                if (validateBilling || ($('billing:use_for_shipping_yes').checked && validateShipping)) {
+                                    return runValidation(elm.options[elm.selectedIndex].text);
+                                }
+                            } else {
+                                if (validateBilling) {
+                                    return runValidation(elm.options[elm.selectedIndex].text);
+                                }
+                            }
+                            break;
+                        case 'shipping-address-select':
+                            if (validateShipping) {
+                                return runValidation(elm.options[elm.selectedIndex].text);
+                            }
+                            break
+
+                    }
+
+                    return true;
+                }
+            );
+        });
+    </script>
+<?php endif ?>

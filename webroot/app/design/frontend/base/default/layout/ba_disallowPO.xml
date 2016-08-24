@@ -1,0 +1,7 @@
+<layout version="0.1.0">
+    <checkout_onepage_index>
+        <reference name="head">
+            <block type="ba_disallowPO/disallow" name="ba.disallowpo" as="ba_disallowPO" template="ba_disallowPO/disallow.phtml" />
+        </reference>
+    </checkout_onepage_index>
+</layout>
