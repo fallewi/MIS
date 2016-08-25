@@ -1,7 +1,7 @@
 <config>
     <modules>
         <BlueAcorn_DisallowPO>
-            <version>0.1</version>
+            <version>1.0</version>
         </BlueAcorn_DisallowPO>
     </modules>
 
