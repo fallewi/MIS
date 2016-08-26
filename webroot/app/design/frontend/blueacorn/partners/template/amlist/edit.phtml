@@ -8,10 +8,10 @@
 <?php $_list = $this->getList(); ?>
 <?php if ($this->getTitle()): ?>
 <div class="page-head button-level">
-    <h3><?php echo $this->getTitle() ?></h3>
+    <h3>Set/Update Guide Title</h3>
 </div>
 <?php endif; ?>
-<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
 <form action="<?php echo $this->getUrl('*/*/save', array('id'=>$_list->getId())) ?>" method="post" id="form-validate">
 <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
     <fieldset class="group-select">

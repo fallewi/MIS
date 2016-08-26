@@ -5,9 +5,12 @@
  * @package Amasty_List
  */
 ?>
-<p>&nbsp;</p>
+<?php $_list = $this->getList(); ?>
 <?php $items = $this->getList()->getItems(); ?>
 <?php $_hlp = Mage::helper('amlist'); ?>
+<?php $_coreHelper = $this->helper('core'); ?>
+<h3><?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php if (count($items)): ?>
 <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
 <input type="hidden" name="list_id" value="<?php echo $this->getList()->getId() ?>">
@@ -19,17 +22,17 @@
     </div>
     <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">
     <col width="30" />
-    <col width="130" />
     <col />
+    <col width="130" />
     <col />
     <col />
     <col width="120"/> 
         <thead>
             <tr>
-                <th>&nbsp;</th>
+                <th><input type="checkbox" id="ckbCheckAll" title="Check/Uncheck All" /></th>
+                <th><?php echo $this->__('Qty') ?></th>
                 <th><?php echo $this->__('Product') ?></th>
                 <th><?php echo $this->__('Details') ?></th>
-                <th><?php echo $this->__('Qty') ?></th>
                 <th><?php echo $this->__('Price') ?></th>
                 <th class="a-center">&nbsp;</th>
             </tr>
@@ -42,38 +45,33 @@
         <?php foreach ($items as $item): $id = $item->getId();?>
             <tr>
                 <td>
-                    <input type="checkbox" name="cb[]" value="<?php echo $id ?>" />
+                    <input type="checkbox" class="checkBoxClass" name="cb[]" value="<?php echo $id ?>" />
                 </td>
                 <td>
-                    <div>
+                    <input type="text" size="2" name="qty[<?php echo $id ?>]" value="<?php echo $item->getQty() ?>" class="input-text" />
+                </td>
+                <td>
                         <a href="<?php echo $this->getProductItemUrl($item) ?>">
                             <img src="<?php echo $this->getProductItemImage($item)  ?>"
                                  alt="<?php echo $this->htmlEscape($item->getProduct()->getName()) ?>" width="50" style="width:50px;" />
                         </a>
-                    </div>
                 </td>
                 <td>
-                    <div>
                         <a href="<?php echo $this->getProductItemUrl($item) ?>"
                            title="<?php echo $this->htmlEscape($item->getProduct()->getName()) ?>">
                             <?php echo $this->htmlEscape($item->getProduct()->getName()) ?>
                         </a><br />
                         Case Pack: <?php echo $item->getProduct()->getAttributeText('uom'); ?>
-                    </div>
                     <?php echo $item->getOptionsHtml() ?>
                     <?php if(!$item->getProduct()->isSaleable()){ ?> Not Saleable <?php } ?>
                 </td>
                 <td>
-                   <input type="text" size="2" name="qty[<?php echo $id ?>]" value="<?php echo $item->getQty() ?>" class="input-text" />
+                    <?php $price = $item->getPrice(); $total += ($price * $item->getQty());  echo $_coreHelper->formatPrice($price, true); ?>
                 </td>
                 <td>
-                    <?php $price = $item->getPrice(); $total += ($price * $item->getQty());  echo $price; ?>
-                </td>
-                <td>
-                <?php if ($allLists->getSize()): ?> 
-                <?php echo $this->__('Move to:')?><p>
+                <?php if ($allLists->getSize()): ?>
                 <select name="moveto[<?php echo $id ?>]">
-                    <option value="0"><?php echo $this->__('Select ...') ?></option>
+                    <option value="0">Move to &hellip;</option>
                     <?php foreach ($allLists as $l): ?>
                     <option value="<?php echo $l->getId()?>"><?php echo $this->htmlEscape($l->getTitle())?></option>
                     <?php endforeach ?>
@@ -87,7 +85,7 @@
         <?php if ($total): ?>
             <tr>
                 <td colspan="4" style="text-align:right"><strong><?php echo $this->__('Total:')?></strong></td>
-                <td colspan="2" style="text-align:left"><strong><?php echo sprintf('%.2f',$total) ?></strong></td>
+                <td colspan="2" style="text-align:left"><strong><?php echo $_coreHelper->formatPrice($total, true) ?></strong></td>
             </tr>        
         <?php endif ?>
         </tbody>
@@ -107,3 +105,10 @@
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
     </div>
 <?php endif ?>
+<script type="text/javascript">
+    $j(document).ready(function () {
+        $j("#ckbCheckAll").click(function () {
+            $j(".checkBoxClass").prop('checked', $j(this).prop('checked'));
+        });
+    });
+</script>
