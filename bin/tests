@@ -37,6 +37,9 @@ display_help() {
                            replace and overwrite existing tests/
                          When running,
                            force a rebuild of the test docker container
+                           
+    -b | --base-branch   Specify the base branch for the build. This will be used
+                         to determine the file diffs for your branch.
 
     -c | --cmd           When running, specifies the test docker container CMD
 
@@ -119,12 +122,12 @@ pull_tests() {
   [ -z $TESTS_REPO_URL ] && TESTS_REPO_URL="git@github.com:BlueAcornInc/devops-functional-tests.git"
   [ -z $TESTS_REPO_REF ] && TESTS_REPO_REF="release/$SKEL_RELEASE"
 
-  line_in_file $SKELVARS "^TESTS_REPO_URL=.*$" "TESTS_REPO_URL=$TESTS_REPO_URL"
-  line_in_file $SKELVARS "^TESTS_REPO_REF=.*$" "TESTS_REPO_REF=$TESTS_REPO_REF"
+  line_in_file .skelvars "^TESTS_REPO_URL=.*$" "TESTS_REPO_URL=$TESTS_REPO_URL"
+  line_in_file .skelvars "^TESTS_REPO_REF=.*$" "TESTS_REPO_REF=$TESTS_REPO_REF"
 
-  if [ ! -z "$(git status -uno --porcelain $SKELVARS)" ]; then
+  if [ ! -z "$(git status -uno --porcelain .skelvars)" ]; then
     printf "\n  !!! updating TESTS_REPO_URL and TESTS_REPO_REF in .skelvars\n\n"
-    git add $SKELVARS
+    git add .skelvars
     git commit -m "update TESTS_REPO_URL and TESTS_REPO_REF in .skelvars"
   fi
 
@@ -170,6 +173,7 @@ while [ $# -ne 0 ]; do
     --cmd|-c)            DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -i"
                          DOCKER_COMMAND="$2" ; shift ;;
     -f|--force)          FORCE=true ;;
+    -b|--base-branch)    DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -e BASE_BRANCH=$2"; shift ;;
     --repo-url)          TESTS_REPO_URL="$2" ; shift ;;
     --repo-ref)          TESTS_REPO_REF="$2" ; shift ;;
     --repo-root-match)   REPO_ROOT_MATCH="$2" ; shift ;;

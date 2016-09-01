@@ -29,6 +29,7 @@ nginx:
     - phpfpm
     - term
     - smtp
+    - phpdev
   volumes_from:
     - phpfpm
   environment:
@@ -66,6 +67,44 @@ phpfpm:
   volumes:
     - /docker-volumes/dockerized-envs/${CLIENT_CODE}-${ENV}-magento:/home/blueacorn/magento
 
+cron:
+  container_name: ${ENV}-${CLIENT_CODE}-cron
+  restart: unless-stopped
+  log_driver: none
+  image: registry.badevops.com/mage-cron:m1
+  links:
+    - mysql
+    - smtp
+  volumes_from:
+    - phpfpm
+  environment:
+    APP_ROOT: ${APP_ROOT}
+    CRON_LOG_DIR: ${APP_ROOT}/var/log
+
+mysql:
+  container_name: ${ENV}-${CLIENT_CODE}-mysql
+  restart: unless-stopped
+  image: mariadb:10
+  volumes:
+    - /docker-volumes/dockerized-envs/${CLIENT_CODE}-${ENV}-mysql:/var/lib/mysql
+
+  environment:
+    MYSQL_USER: magento
+    MYSQL_PASSWORD: magento
+    MYSQL_DATABASE: magento
+    MYSQL_ROOT_PASSWORD: lowfi
+
+#
+# /devops/ services
+#
+phpdev:
+  container_name: ${ENV}-${CLIENT_CODE}-phpdev
+  image: registry.badevops.com/mage-phpdev:latest
+  links:
+    - mysql
+  volumes_from:
+    - phpfpm
+
 term:
   container_name: ${ENV}-${CLIENT_CODE}-term
   restart: unless-stopped
@@ -93,34 +132,7 @@ term:
     OAUTH_DOMAIN: auth.blueacorn.net
     OAUTH_APP: ${CLIENT_CODE}-${ENV}
 
-cron:
-  container_name: ${ENV}-${CLIENT_CODE}-cron
-  restart: unless-stopped
-  log_driver: none
-  image: registry.badevops.com/mage-cron:m1
-  links:
-    - mysql
-    - smtp
-  volumes_from:
-    - phpfpm
-  environment:
-    APP_ROOT: ${APP_ROOT}
-    CRON_LOG_DIR: ${APP_ROOT}/var/log
-
 smtp:
   container_name: ${ENV}-${CLIENT_CODE}-smtp
   image: registry.badevops.com/mage-smtp
   log_driver: none
-
-mysql:
-  container_name: ${ENV}-${CLIENT_CODE}-mysql
-  restart: unless-stopped
-  image: mariadb:10
-  volumes:
-    - /docker-volumes/dockerized-envs/${CLIENT_CODE}-${ENV}-mysql:/var/lib/mysql
-
-  environment:
-    MYSQL_USER: magento
-    MYSQL_PASSWORD: magento
-    MYSQL_DATABASE: magento
-    MYSQL_ROOT_PASSWORD: lowfi

@@ -12,20 +12,12 @@
     - cache
     - cache-fpc-only
 
-- name: clear merged js (media/js)
-  shell: rm -rf {{ APP_ROOT }}/media/js/*
-  tags:
-    - cache
-    - cache-merged-only
-
-- name: clear merged css (media/css)
-  shell: rm -rf {{ APP_ROOT }}/media/css/*
-  tags:
-    - cache
-    - cache-merged-only
-
-- name: clear merged css_secure (media/css_secure)
-  shell: rm -rf {{ APP_ROOT }}/media/css_secure/*
+- name: clear merged assets 
+  shell: rm -rf {{ APP_ROOT }}/{{ item }}
+  with_items:
+    - media/css_secure/*
+    - media/css/*
+    - media/js/*
   tags:
     - cache
     - cache-merged-only
