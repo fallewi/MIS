@@ -54,6 +54,13 @@
             text-decoration: underline;
         }
     }
+    .grid-full {
+        .y-summary {
+           float: left;
+           width: 17em;
+           padding: 0 1em 0 0;
+        }
+    }
 }
 
 .product-view {
