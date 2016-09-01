@@ -27,17 +27,22 @@ class Shiphawk_Order_Model_Command_SendOrder
         $skuColumn = Mage::getStoreConfig('shiphawk/datamapping/sku_column');
         foreach ($order->getAllItems() as $item) {
             /** @var Mage_Sales_Model_Order_Item $item */
+            $product_id = $item->getProductId();
+            $product = Mage::getModel('catalog/product')->load($product_id);
             $itemsRequest[] = array(
-
-                'name' => $item->getName(),
-                'sku' => $item->getData($skuColumn),
-                'quantity' => $item->getQtyOrdered(),
-                'price' => $item->getPrice(),
-                'length' => $item->getLength(),
-                'width' => $item->getWidth(),
-                'height' => $item->getHeight(),
-                'weight' => $item->getWeight(),
+                'name'               => $item->getName(),
+                'sku'                => $product->getData($skuColumn),
+                'quantity'           => $item->getQtyOrdered(),
+                'price'              => $item->getPrice(),
+                'length'             => $item->getLength(),
+                'width'              => $item->getWidth(),
+                'height'             => $item->getHeight(),
+                'weight'             => $item->getWeight(),
+                'can_ship_parcel'    => true,
+                'item_type'          => $item->getWeight()  <= 70 ? 'parcel' : 'handling_unit',
+                'handling_unit_type' => $item->getWeight()  <= 70 ? '' : 'box'
             );
+
         }
 
         $orderRequest = json_encode(
@@ -45,7 +50,7 @@ class Shiphawk_Order_Model_Command_SendOrder
                 'order_number' => $order->getIncrementId(),
                 'source_system' => 'magento',
                 'source_system_id' => $order->getEntityId(),
-                'source_system_processed_at' => date('Y-m-d H:i:s'),
+                'source_system_processed_at' => $order->getCreatedAt(),
                 'requested_rate_id' => $shippingRateId,
                 'requested_shipping_details'=> $order->getShippingDescription(),
                 'origin_address' => $this->getOriginAddress(),
@@ -55,7 +60,7 @@ class Shiphawk_Order_Model_Command_SendOrder
                 'shipping_price' => $order->getShippingAmount(),
                 'tax_price' => $order->getTaxAmount(),
                 'items_price' => $order->getSubtotal(),
-                'status' => Mage::getSingleton('shiphawk_order/statusMapper')->map($order->getStatus()),
+                'status' => 'new',
             )
         );
 
@@ -72,18 +77,19 @@ class Shiphawk_Order_Model_Command_SendOrder
     protected function prepareAddress(Mage_Sales_Model_Order_Address $address)
     {
         return array(
-            'name' => $address->getFirstname() . ' '
+            'name'              => $address->getFirstname() . ' '
                 . $address->getMiddlename() . ' '
                 . $address->getLastname(),
-            'company' => $address->getCompany(),
-            'street1' => $address->getStreet1(),
-            'street2' => $address->getStreet2(),
-            'phone_number' => $address->getTelephone(),
-            'city' => $address->getCity(),
-            'state' => $address->getRegionCode(),
-            'country' => $address->getCountryId(),
-            'zip'  => $address->getPostcode(),
-            'email' => $address->getEmail()
+            'company'           => $address->getCompany(),
+            'street1'           => $address->getStreet1(),
+            'street2'           => $address->getStreet2(),
+            'phone_number'      => $address->getTelephone(),
+            'city'              => $address->getCity(),
+            'state'             => $address->getRegionCode(),
+            'country'           => $address->getCountryId(),
+            'zip'               => $address->getPostcode(),
+            'email'             => $address->getEmail(),
+            'is_residential'    =>  'true'
         );
     }
 
