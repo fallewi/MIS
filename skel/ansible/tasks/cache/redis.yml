@@ -7,22 +7,11 @@
   tags:
     - cache
 
+
 - name: complain if REDIS_CACHES is not defined
   debug: msg="REDIS_CACHES is not defined! Please define. If not using redis caches, define as empty dict."
   when: REDIS_CACHES is not defined or not REDIS_CACHES
 
-
-#@TODO deprecate below in skel > 2.8 ? we should all be using REDIS_CACHES by then
-
-- name: LEGACY - flush redis cache
-  shell: redis-cli -h {{ REDIS_HOST }} -p {{ REDIS_OBJ_PORT }} -n {{ REDIS_OBJ_DB }} flushdb
-  tags:
-    - cache
-  when: REDIS_CACHES is not defined or not REDIS_CACHES
-
-
-- name: LEGACY - flush FPC
-  shell: redis-cli -h {{ REDIS_HOST }} -p {{ REDIS_FPC_PORT }} -n {{ REDIS_FPC_DB }} flushdb
-  tags:
-    - cache
-  when: REDIS_CACHES is not defined or not REDIS_CACHES
+- name: complain about deprecated features
+  debug: msg="REDIS_HOST is defined, which means you are probably using an old group_vars config. Update config as above, check example."
+  when: REDIS_HOST is defined

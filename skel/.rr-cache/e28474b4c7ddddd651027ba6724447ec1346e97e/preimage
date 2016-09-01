@@ -136,3 +136,19 @@ smtp:
   container_name: ${ENV}-${CLIENT_CODE}-smtp
   image: registry.badevops.com/mage-smtp
   log_driver: none
+<<<<<<<
+=======
+
+mysql:
+  container_name: ${ENV}-${CLIENT_CODE}-mysql
+  restart: unless-stopped
+  image: mariadb:10
+  volumes:
+    - /docker-volumes/dockerized-envs/${CLIENT_CODE}-${ENV}-mysql:/var/lib/mysql
+
+  environment:
+    MYSQL_USER: magento
+    MYSQL_PASSWORD: magento
+    MYSQL_DATABASE: magento
+    MYSQL_ROOT_PASSWORD: lowfi
+>>>>>>>
