@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 
@@ -20,7 +20,7 @@ $attributes = $this->getAttributes();
                             <?php echo $label; ?>:
                         </td>
                         <td style="padding-left: 0;">
-                            <?php echo nl2br(htmlentities(preg_replace('/\$/','\\\$', $value), ENT_COMPAT, "UTF-8")); ?>
+                            <?php echo $value; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>

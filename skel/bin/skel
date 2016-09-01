@@ -355,6 +355,9 @@ skel_pull(){
     return 0
   fi
 
+  # before pulling, ensure we're up to date
+  git fetch $REPO_REMOTE_NAME $SKEL_BRANCH || error "error fetching SKEL_BRANCH"
+
   git rm -rf $SKEL_DIR
   git checkout --theirs $REPO_REMOTE_NAME/$SKEL_BRANCH -- $SKEL_DIR/ || error "error updating skel"
 }

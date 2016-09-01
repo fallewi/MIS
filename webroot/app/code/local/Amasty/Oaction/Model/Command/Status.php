@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Model_Command_Status extends Amasty_Oaction_Model_Command_Abstract
@@ -38,6 +38,18 @@ class Amasty_Oaction_Model_Command_Status extends Amasty_Oaction_Model_Command_A
                     ->getCollection()
                     ->addStateFilter($state)
                     ->toOptionHash();
+                if (Mage::helper('core')->isModuleEnabled('Amasty_Orderstatus')) {
+                    $customStatuses = Mage::getModel('amorderstatus/status')->getCollection();
+                    $customStatuses->getSelect()
+                        ->where('parent_state LIKE ?', '' . $state . ',%')
+                        ->orWhere('parent_state LIKE ?', '%,' . $state . ',%')
+                        ->orWhere('parent_state LIKE ?', '%,' . $state . '');
+                    
+                    foreach ($customStatuses as $customStatus) {
+                        $statuses[$state . '_' .$customStatus->getAlias()] = $customStatus->getStatus();
+                    }
+                }
+                
                 if (!array_key_exists($val, $statuses)) {
                     $err = $hlp->__('Selected status does not correspond to the state of order.');
                     $this->_errors[] = $hlp->__(
@@ -47,7 +59,11 @@ class Amasty_Oaction_Model_Command_Status extends Amasty_Oaction_Model_Command_A
             }
 
             try {
-                Mage::getModel('sales/order_api')->addComment($orderCode, $val, '', false);
+                $notify = Mage::getStoreConfig('amoaction/status/notify', $order->getStoreId());
+                if (!$notify) {
+                    $notify = parent::orderUpdateNotify($val);
+                }
+                Mage::getModel('sales/order_api')->addComment($orderCode, $val, '', $notify);
                 ++$numAffectedOrders;          
             }
             catch (Exception $e) {

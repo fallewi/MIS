@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Model_Sold_Indexer extends Mage_Index_Model_Indexer_Abstract
@@ -59,16 +59,12 @@ class Amasty_Pgrid_Model_Sold_Indexer extends Mage_Index_Model_Indexer_Abstract
 
     public function revertProductsSale($orderData)
     {
-        $resource = Mage::getSingleton('core/resource');
-        $connection = $resource->getConnection('core_write');
-        $qtySoldTable = $resource->getTableName('am_pgrid_qty_sold');
         foreach ($orderData as $productId => $data) {
             $orderItemId = $data['order_item_id'];
             $itemId = $this->_getItemId($orderItemId);
             if ($itemId) {
                 $qty = $data['qty'];
                 $this->_updateItemId($productId, $qty);
-                $connection->query("update $qtySoldTable set qty_sold = qty_sold - $qty where product_id=$productId");
             }
         }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 class Amasty_Paction_Model_Command_Abstract
@@ -63,7 +63,10 @@ class Amasty_Paction_Model_Command_Abstract
     {
         $enhanced = 0;
         if ('TBT_Enhancedgrid' == $block->getParentBlock()->getModuleName()) {
-            $enhanced = 1;
+            $currentVer = Mage::getConfig()->getModuleConfig('TBT_Enhancedgrid')->version;
+            if (version_compare($currentVer, '1.3.4.3', '<')) {
+                $enhanced = 1;
+            }
         }
         $hlp = Mage::helper('ampaction');
         $storeId = intVal(Mage::app()->getRequest()->getParam('store'));

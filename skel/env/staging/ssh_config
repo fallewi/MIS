@@ -5,7 +5,7 @@
 #
 
 Host web-1
-  HostName 104.130.59.34
+  HostName 173.203.138.86
   User blueacorn
 
 #
@@ -16,7 +16,15 @@ Host web-1
 #
 
 Host ADMIN_HOST
-  HostName 104.130.59.34
+  HostName 173.203.138.86
+  User blueacorn
+
+Host SNAPSHOT_HOST
+  HostName 173.203.138.86
+  User blueacorn
+
+Host CRON_HOST
+  HostName 173.203.138.86
   User blueacorn
 
 Host SNAPSHOT_HOST

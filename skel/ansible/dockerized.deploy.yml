@@ -41,7 +41,7 @@
     - name: start local build tasks (blueacornui compilation)
       include: "tasks/build/blueacornui-compile.yml"
       vars:
-        SKIP_BUILD_CHECKS: True
+        SKIP_REF_CHECK: True
         FORCE_BUILD_PATH: "{{ REPO_ROOT }}"
       with_items:
         - blueacornui
@@ -79,7 +79,7 @@
 ########################
 - name: "term-container local post deployment"
   hosts: 127.0.0.1
-  
+
   gather_facts: False
   tasks:
     - include: tasks/deploy/local/post.yml

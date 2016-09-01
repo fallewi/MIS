@@ -7,7 +7,9 @@ class Shiphawk_Order_Model_Command_SendOrder
         Mage::log('building order object for Shiphawk');
         $url = Mage::getStoreConfig('shiphawk/order/gateway_url');
         $key = Mage::getStoreConfig('shiphawk/order/api_key');
-        $client = new Zend_Http_Client($url . 'orders?api_key=' . $key);
+        $client = new Zend_Http_Client($url . 'orders');
+        $client->setHeaders('X-Api-Key', $key);
+
 
         $itemsRequest = [];
         $shippingRateId = '';
@@ -22,23 +24,19 @@ class Shiphawk_Order_Model_Command_SendOrder
             }
         }
 
-
+        $skuColumn = Mage::getStoreConfig('shiphawk/datamapping/sku_column');
         foreach ($order->getAllItems() as $item) {
             /** @var Mage_Sales_Model_Order_Item $item */
             $itemsRequest[] = array(
-                'source_system_id' => $item->getProductId(),
+
                 'name' => $item->getName(),
-                'sku' => $item->getSku(),
+                'sku' => $item->getData($skuColumn),
                 'quantity' => $item->getQtyOrdered(),
-                'value' => $item->getPrice(),
+                'price' => $item->getPrice(),
                 'length' => $item->getLength(),
                 'width' => $item->getWidth(),
                 'height' => $item->getHeight(),
                 'weight' => $item->getWeight(),
-                'item_type' => $item->getProductType(),
-                'unpacked_item_type_id' => 0,
-                'handling_unit_type' => '',
-                'hs_code' => '',
             );
         }
 
@@ -47,7 +45,7 @@ class Shiphawk_Order_Model_Command_SendOrder
                 'order_number' => $order->getIncrementId(),
                 'source_system' => 'magento',
                 'source_system_id' => $order->getEntityId(),
-                'source_system_processed_at' => '',
+                'source_system_processed_at' => date('Y-m-d H:i:s'),
                 'requested_rate_id' => $shippingRateId,
                 'requested_shipping_details'=> $order->getShippingDescription(),
                 'origin_address' => $this->getOriginAddress(),
@@ -85,14 +83,15 @@ class Shiphawk_Order_Model_Command_SendOrder
             'state' => $address->getRegionCode(),
             'country' => $address->getCountryId(),
             'zip'  => $address->getPostcode(),
-            'email' => $address->getEmail(),
-            'code'  => $address->getAddressType(),
+            'email' => $address->getEmail()
         );
     }
 
     protected function getOriginAddress()
     {
         return array(
+            'name' => Mage::getStoreConfig('general/store_information/name'),
+            'phone_number' => Mage::getStoreConfig('general/store_information/phone'),
             'street1' => Mage::getStoreConfig('shipping/origin/street_line1'),
             'street2' => Mage::getStoreConfig('shipping/origin/street_line2'),
             'city' => Mage::getStoreConfig('shipping/origin/city'),

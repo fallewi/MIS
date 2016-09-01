@@ -73,6 +73,9 @@
             <?php $isSplit = count($carrierGroupRates) > 1; ?>
             <?php $cgCount = 1; ?>
             <?php $totalCarrierGroups = count($carrierGroupRates); ?>
+            <?php if (!($carrierGroupRates) || count($carrierGroupRates) < 1): ?>
+                <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
+            <?php endif ?>
             <?php foreach($carrierGroupRates as $cgkey => $_ratesAndShipInfo): ?>
                 <?php $additionalPrefix = 'ma'.$_address->getId(); ?>
                 <?php $shippingPrefix = $_address->getId(); ?>
@@ -144,6 +147,11 @@
                                                                     <?php echo $_excl; ?>
                                                                     <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
                                                                         (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                                                    <?php endif; ?>
+                                                                    <?php if ($_rate->getTooltip()): ?>
+                                                                        <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                                            <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                                                        </span>
                                                                     <?php endif; ?>
                                                                 </label>
                                                             <?php endif ?>

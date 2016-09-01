@@ -1,11 +1,15 @@
 {
-  "spec_dir": "test.d",
-  "spec_files": [
-    "**/*.js"
-  ],
-  "helpers": [
-    "helpers/**/*.js"
-  ],
+  "spec_dir": "test.d/spec",
+  "spec_files": {
+    "default": [
+      "**/*.js"
+    ]
+  },
+  "helpers": {
+    "default" : [
+      "helpers/**/*.js"
+    ]
+  },
   "stopSpecOnExpectationFailure": false,
   "random": false
 }

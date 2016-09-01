@@ -1,0 +1,53 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_List
+ */
+?>
+<?php $_product = $this->getProduct() ?>
+<ul class="add-to-links">
+<?php if ($this->helper('wishlist')->isAllow()) : ?>
+    <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>"><?php echo $this->__('Add to Wishlist') ?></a></li>
+<?php endif; ?>
+<?php if ($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
+    <li><span class="pipe">|</span> <a href="<?php echo $_compareUrl ?>"><?php echo $this->__('Add to Compare') ?></a></li>
+<?php endif; ?>
+<?php if ($_listUrl = $this->helper('amlist')->getAddUrl($_product)): ?>
+    <li><span class="pipe">|</span> <a href="<?php echo $_listUrl?>" class="amlist" onclick="return am_add_to_list(this.href)"><?php echo $this->helper('amlist')->__('Add to List') ?></a></li>
+<?php endif; ?>
+</ul>
+<input type="hidden" name="list_next" value="<?php echo $this->getRequest()->getParam('list_next')?>"> 
+<script> 
+function am_add_to_list(lnk){
+	var block = $('product_addtocart_form')
+    
+	if(block) {
+		var validator = new Validation(block);
+		if (validator.validate()) {
+			var	data = jQuery('#product_addtocart_form').serializeArray();
+			var   form = document.createElement("form"),
+			node = document.createElement("input");
+
+			form.action  = lnk;
+						
+			data.each(function(item) {
+				node.name  = item.name;
+				node.value = item.value;
+				form.appendChild(node.cloneNode());
+			});
+			
+			form.style.display = "none";
+            form.setAttribute("method", "POST");
+			document.body.appendChild(form);
+			
+			form.submit();
+			document.body.removeChild(form);
+		}
+    }
+    else
+        document.location.href = lnk;
+        
+    return false;
+}
+</script> 

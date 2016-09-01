@@ -55,7 +55,6 @@ class Shipperhq_Pickup_Helper_Date {
     public function getDateOptions($location)
     {
         $numPickupDays = array_key_exists('maxDays', $location['calendarDetails']) ? $location['calendarDetails']['maxDays'] : 10;
-
         //Convert java linux timestamps (milliseconds) into php linux timestamps (seconds)
 
         $dateOptions = array();
@@ -77,8 +76,16 @@ class Shipperhq_Pickup_Helper_Date {
             $arrBlackoutDays[] = $dayOfWeek;
         }
 
+        $localDT = Mage::app()->getLocale()->date(now(), null, null, true)->toString('r');
+
+        Mage::helper('wsalogger/log')->postInfo('Shipperhq Pickup',
+                                                 'Current Date & Time According to Magento Time Zone',
+                                                 $localDT);
+
         while(count($dateOptions) < $numPickupDays) {
-            $nextDay =  date($dateFormat, $startDate);
+            //$nextDay =  date($dateFormat, $startDate); This isn't using the timezone. Resulted in wrong date
+            $nextDay = Mage::app()->getLocale()->date($startDate, null, null, true)->toString('dd-MM-Y');
+
             // Blackout day or date...get next available
             if(in_array($nextDay, $arrBlackoutDates) ||
                 in_array(Mage::app()->getLocale()->date($startDate, null, null, true)->toString('e'), $arrBlackoutDays)) {

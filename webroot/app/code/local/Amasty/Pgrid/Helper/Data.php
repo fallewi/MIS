@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Helper_Data extends Mage_Core_Helper_Abstract
@@ -479,19 +479,7 @@ class Amasty_Pgrid_Helper_Data extends Mage_Core_Helper_Abstract
         $userId = $userId ? $userId : Mage::getSingleton('admin/session')->getUser()->getId();
 
         if(!Mage::getStoreConfig('ampgrid/additional/share_attribute_templates')) {
-            $groupIds = array();
-            $groupIds[] = Mage::getStoreConfig('ampgrid/attributes/ongrid');
-            if(!empty($groupIds)) {
-                $groups->addFieldToFilter(
-                    array('is_default', 'user_id', 'entity_id'),
-                    array(1, $userId, array('in' => $groupIds))
-                );
-            } else {
-                $groups->addFieldToFilter(
-                    array('is_default', 'user_id'),
-                    array(1, $userId)
-                );
-            }
+            $groups->addFieldToFilter('user_id', $userId);
         }
 
         return $groups;
