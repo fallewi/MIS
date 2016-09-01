@@ -14,7 +14,7 @@ class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
         $fileName = $this->_sanitizeFileName($this->getRequest()->getParam('file'));
         try
         {
-            $file = str_replace(['.csv', '.xml', '.txt'], '', $fileName);
+            $file = str_replace(array('.csv', '.xml', '.txt'), '', $fileName);
             $this->_download($file);
         } catch (Exception $e) {
             try
