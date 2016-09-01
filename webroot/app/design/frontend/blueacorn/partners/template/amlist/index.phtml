@@ -29,10 +29,8 @@
                     <td><input type="radio" name="is_default" <?php if ($row->getIsDefault()) echo "checked" ?> onclick="setLocation('<?php echo $this->getUrl('*/*/default', array('id'=>$row->getId()))?>')"/></td>
                     <td><a href="<?php echo $this->getUrl('*/*/edit', array('id'=>$row->getId()))?>"><?php echo $this->htmlEscape($row->getTitle()) ?></a></td>
                     <td class="last a-center">
-                        <a href="<?php echo $this->getUrl('*/*/edit', array('id'=>$row->getId()))?>"><?php echo $this->__('Edit') ?></a>
-                        |
-                        <a href="<?php echo $this->getUrl('*/*/cart', array('list_id'=>$row->getId()))?>"><?php echo $this->__('Add to Cart') ?></a>
-                        |
+                        <a href="<?php echo $this->getUrl('*/*/edit', array('id'=>$row->getId()))?>"><?php echo $this->__('Edit') ?></a><br />
+                        <a href="<?php echo $this->getUrl('*/*/cart', array('list_id'=>$row->getId()))?>"><?php echo $this->__('Add to Cart') ?></a><br />
                         <a class="link-remove" href="<?php echo $this->getUrl('*/*/remove', array('id'=>$row->getId()))?>"  onclick="return confirm('<?php echo $this->__('Are you sure?') ?>')" ><?php echo $this->__('Remove') ?></a>
                     </td>
                 </tr>
