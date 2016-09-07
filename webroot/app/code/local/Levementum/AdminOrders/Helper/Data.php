@@ -39,7 +39,7 @@ class Levementum_AdminOrders_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        return (Mage::getModel('admin/session')->getUser()->getRole()->getRoleName() == "Super User");
+        return (Mage::getModel('admin/session')->getUser()->getRole()->getRoleName() == "Administrators");
     }
 
 

@@ -42,10 +42,12 @@
             <action method="addJs">
                 <name>amasty/amfeed/amfeed.js</name> 
             </action>
-<action method="addJs">
+            <action method="addJs">
                 <name>amasty/amfeed/filter.js</name> 
             </action>
-            
+            <action method="addJs">
+                <name>amasty/amfeed/xmledit.js</name>
+            </action>
         </reference>    
         <reference name="content">            
             <block type="amfeed/adminhtml_popup" template="amasty/amfeed/feed/popup.phtml" name="amfeed_overlay" />
@@ -66,10 +68,12 @@
             <action method="addJs">
                 <name>amasty/amfeed/amfeed.js</name> 
             </action>
-<action method="addJs">
+            <action method="addJs">
                 <name>amasty/amfeed/filter.js</name> 
             </action>
-            
+            <action method="addJs">
+                <name>amasty/amfeed/xmledit.js</name>
+            </action>
         </reference>    
         <reference name="content">            
             <block type="amfeed/adminhtml_popup" template="amasty/amfeed/feed/popup.phtml" name="amfeed_overlay" />
