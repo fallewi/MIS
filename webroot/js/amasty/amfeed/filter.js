@@ -343,11 +343,12 @@ var amFeedFilter = Class.create({
                     }
                         
                     
-                    if (empty && empty == 1){
+                    if (empty && empty == 1) {
                         var $ch = $conditionRow.down("[rel=advanced_condition_empty]");
-                        $ch.setAttribute('checked', true);
-                        this.changeValueEmpty($ch);
-                        
+                        if ($ch && 'undefined' !== $ch) {
+                            $ch.setAttribute('checked', true);
+                            this.changeValueEmpty($ch);
+                        }
                     }
 
                 }
