@@ -4,7 +4,7 @@
 #
 
 # The default tracking branch for this environment.
-REPO_REF="develop"
+REPO_REF="release/styled_maintenance_page"
 
 SUBDOMAIN="staging"
 APP_URL="http://${SUBDOMAIN}.${DOMAIN}/"
