@@ -360,7 +360,6 @@ amPgrid.prototype = {
         
         element.addClassName('progressing');
         element.removeClassName('editable');
-
         var displayValue;
         var saveValue;
         switch (element.type)
@@ -385,8 +384,11 @@ amPgrid.prototype = {
                 displayValue = element.value;
             break;
         }
-
         var tdValue = this.values[td.identify()] == '&nbsp;' ? '' : this.values[td.identify()];
+        if (field.col == 'qty') {
+            tdValue = tdValue.replace(/\+$/, '');
+            displayValue = displayValue.replace(/\+$/, '');
+        }
         if (displayValue != tdValue)
         {
             productId     = this.productIds[td.identify()];

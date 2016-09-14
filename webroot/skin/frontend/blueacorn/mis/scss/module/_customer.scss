@@ -263,8 +263,7 @@ body.customer-account {
 
         td {
             a {
-                font-family: $f-stack-special;
-                text-transform: uppercase;
+                font-family: $f-stack-sans;
                 font-style: normal;
                 font-size: $f-size-s;
             }
@@ -464,7 +463,7 @@ body.customer-account {
 
                     strong {
                         float: left;
-                        font-family: $f-stack-special;
+                        font-family: $f-stack-sans;
                         font-size: $f-size-s;
                         margin-right: 5px;
                     }
@@ -560,8 +559,7 @@ body.customer-account {
 }
 
 .order-date {
-    font-family: $f-stack-special;
-    text-transform: uppercase;
+    font-family: $f-stack-sans;
 }
 
 .order-info-box {
@@ -596,7 +594,7 @@ body.customer-account {
 
         h2 {
             font-size: $f-size;
-            font-family: $f-stack-special;
+            font-family: $f-stack-sans;
             font-weight: bold;
             line-height: 1.5;
 
@@ -612,7 +610,7 @@ body.customer-account {
 
         td,
         th {
-            font-family: $f-stack-serif;
+            font-family: $f-stack-sans;
             line-height: 1.3;
         }
 
@@ -625,9 +623,8 @@ body.customer-account {
         }
 
         strong {
-            font-family: $f-stack-special;
+            font-family: $f-stack-sans;
             font-weight: normal;
-            text-transform: uppercase;
         }
     }
 }
@@ -800,7 +797,7 @@ ol#cart-sidebar-reorder {
         }
 
         .welcome-msg {
-            font-family: $f-stack-serif;
+            font-family: $f-stack-sans;
 
             .hello {
                 font-style: italic;

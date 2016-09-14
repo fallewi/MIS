@@ -50,7 +50,7 @@ class Shipperhq_Shipper_Adminhtml_ShqajaxController extends Mage_Adminhtml_Contr
             $success = 2;
         }
         else {
-            $message = Mage::helper('shipperhq_shipper')->__('%s shipping methods have been updated from ShipperHQ', count($refreshResult));
+            $message = Mage::helper('shipperhq_shipper')->__('%s carriers have been updated from ShipperHQ', count($refreshResult));
             $session->addSuccess($message);
         }
 

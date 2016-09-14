@@ -1,5 +1,9 @@
 ---
 
+# include application remote post-deployment
+- name: start remote [application-specific] post-deployment tasks
+  include: app/post.yml
+
 # remote post-deployment tasks
 ##############################
 
@@ -29,7 +33,3 @@
   tags:
     - env
     - env-sync-only
-
-# include application remote post-deployment
-- name: start remote [application-specific] post-deployment tasks
-  include: app/post.yml

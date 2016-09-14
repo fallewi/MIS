@@ -130,7 +130,7 @@ class Shipperhq_Pickup_Block_Storepickup
             foreach ($closestLocations[$carriergroupId][$carrierCode] as $location) {
                 $label = array_key_exists('pickupFullName', $location) ? $location['pickupFullName']: $location['pickupName'];
                 if($longMeasurement && $location['distance'] != '6371') {
-                    $label .=' (Distance '.
+                    $label .=' ('. Mage::helper('shipperhq_shipper')->__('Distance') .' '.
                         number_format($location['distance']).' '.$longMeasurement.')';
                 }
                 $options[] = array(

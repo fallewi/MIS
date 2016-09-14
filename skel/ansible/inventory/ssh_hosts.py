@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 '''
 BlueAcorn external inventory script
@@ -109,6 +109,14 @@ class BlueAcornInventory(object):
             'ansible_ssh_user',
             'ansible_ssh_port',
             'ansible_ssh_private_key_file'
+          ])
+
+        # provide localhost host
+        self.inventory[self.hostgroup]["hosts"].append("localhost")
+        self.inventory["_meta"]["hostvars"]["localhost"] = self.transmorg([
+            'local'
+          ], [
+            'ansible_connection'
           ])
 
         if self.args.host:

@@ -20,9 +20,9 @@ class Amasty_Feed_Block_Adminhtml_Category_Edit_Tab_Mapping
     public function getCategoriesList($node = null)
     {
         $list = array();
-
-        if ($this->getRoot()->hasChildren()) {
-            foreach($this->getRoot()->getChildren() as $node){
+        $root = $this->getRoot(null, 10);
+        if ($root->hasChildren()) {
+            foreach($root->getChildren() as $node){
                 $this->_getChildCategories($list, $node);
             }
         }

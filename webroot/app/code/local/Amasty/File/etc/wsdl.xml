@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
 -->
@@ -30,7 +30,7 @@
             <complexType name="amastyFileAttachmentEntityArray">
                 <complexContent>
                     <restriction base="soapenc:Array">
-                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:amastyFileAttachmentEntityArray"/>
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:amastyFileAttachmentEntity[]"/>
                     </restriction>
                 </complexContent>
             </complexType>
@@ -44,7 +44,7 @@
         <part name="readFile" type="xsd:boolean"/>
     </message>
     <message name="amastyFileGetAttachmentsResponse">
-        <part name="result" type="typens:Array"/>
+        <part name="result" type="typens:amastyFileAttachmentEntityArray"/>
     </message>
     <message name="amastyFileAddAttachmentsRequest">
         <part name="sessionId" type="xsd:string"/>

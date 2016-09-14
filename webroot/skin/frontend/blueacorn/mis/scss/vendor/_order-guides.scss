@@ -1,0 +1,25 @@
+/* ============================================ *
+ * Amasty Favorite Products / Order Guides Styles
+ * ============================================ */
+#amlist-table{
+  .custom-shiv{
+    color:inherit;
+    font-weight: normal;
+    height: 2em;
+    line-height: 2em;
+    padding: 0 .5em;
+  }
+  input {
+    height:2em;
+    width:3em;
+  }
+  input[type="checkbox"]{
+    width:1.2em;
+  }
+  tr{
+    border-bottom: 1px solid #C0C0C0;
+  }
+  td{
+    border-bottom:none;
+  }
+}

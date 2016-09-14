@@ -385,8 +385,9 @@ env_make_arg() {
 
 env_test() {
 
-  [ ! -e $ENV_DIR/current ] && echo "environment has not been set" && exit 127
-  [ -d $ENV_DIR/current/webroot ] || error "environment has no configuration"
+  [ ! -e $ENV_DIR/current ] && \
+    echo "environment has not been set" && \
+    exit 127
 
   [ -z "$REPO_REMOTE_NAME" ] && error "REPO_REMOTE_NAME not defined" \
     "has REPO_REMOTE been defined in appvars?"
@@ -399,9 +400,17 @@ env_test() {
   ENV=$(print_env)
   [ -z "$ENV" ] && error "unable to detect environment"
 
+  [ ! -d $SKEL_DIR/env/$ENV/webroot/ ] && \
+    echo  "environment has no linked configuration" && \
+    exit 127
+
   for file in $(find $SKEL_DIR/env/$ENV/webroot/ -type f); do
     dest=${file//$SKEL_DIR\/env\/$ENV\/webroot\//}
     if [ -L $WEBROOT_DIR/$dest ]; then
+      # NOTE: git exits with 128 if it blows up, 1 if there's a differnce.
+      #  e.g. if a file has been removed from $SKEL_BRANCH/env/webroot
+      #       git exits with 128 -- fatal bad revision 'origin/develop:<file>'
+      #       we could potentially ignore these by handling 128 explicitly.
       git diff -w --exit-code $REPO_REMOTE_NAME/$SKEL_BRANCH:$file -- $(readlink $WEBROOT_DIR/$dest) || \
         ERRORS=$(printf "$ERRORS\n$dest\t does not match -$SKEL_BRANCH\n")
     else

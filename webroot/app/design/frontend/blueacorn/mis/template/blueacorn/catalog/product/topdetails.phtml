@@ -36,22 +36,22 @@
     <div class="product-name">
         <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
     </div>
-
     <div class="details">
         <?php if($_product->getAttributeText('manufacturer')): ?>
-            <span class="manufacturer"><?php echo $this->__("Manufacturer: ") ?><?php echo $_product->getAttributeText('manufacturer') ?> <span class="spacer">/</span></span>
+            <span class="manufacturer"><?php echo $this->__("Manufacturer: ") ?><?php echo $_product->getAttributeText('manufacturer'); ?> <span class="spacer">/</span></span>
         <?php endif ?>
 
-        <?php if($_product->getMpnNumber()): ?>
-            <span class="mpn-number"><?php echo $this->__("MPN : ") ?><?php echo $_helper->productAttribute($_product, $_product->getMpnNumber(), 'mpn_number') ?> <span class="spacer">/</span></span>
+        <?php if($_product->getMpn()): ?>
+            <span class="mpn-number"><?php echo $this->__("MPN : ") ?><?php echo $_product->getMpn(); ?> <span class="spacer">/</span></span>
         <?php endif ?>
 
-        <?php if($_product->getItemNumber()): ?>
-            <span class="item-number"><?php echo $this->__("Item #: ") ?><?php echo $_helper->productAttribute($_product, $_product->getItemNumber(), 'item_number') ?> <span class="spacer">/</span></span>
+        <?php if($_product->getSku()): ?>
+            <span class="item-number"><?php echo $this->__("Item #: ") ?><?php echo $_product->getSku(); ?> <span class="spacer">/</span></span>
         <?php endif ?>
     </div>
-
-    <?php $this->helper('yotpo')->showBottomline($this, $_product); ?>
-
+    <div class="grid-full">
+        <div class="y-summary"><?php $this->helper('yotpo')->showBottomline($this, $_product); ?></div>
+        <div class="y-summary"><?php $this->helper('yotpo')->showQABottomline($this, $_product); ?></div>
+    </div>
 </div>
 

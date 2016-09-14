@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
@@ -37,7 +37,8 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
         $attributes->getSelect()->order('sorting_order');
         $orderData =  $orderAttributes->getData();
         $currentStore = $this->_getStoreId();
-        
+        $formHasFileAttribute = false;
+
         foreach ($attributes as $attribute)
         {
             $storeIds = explode(',', $attribute->getData('store_ids'));
@@ -62,16 +63,20 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
                 {
                     $attributeLabel = $attribute->getFrontend()->getLabel();
                 }
-                $elementOptions=  array(
-                        'name'      => $attribute->getAttributeCode(),
-                        'label'     => $attributeLabel,
-                        'class'     => $attribute->getFrontend()->getClass(),
-                        'required'  => $attribute->getIsRequired(),
-                    );
+                $elementOptions =  array(
+                    'name'      => $attribute->getAttributeCode(),
+                    'label'     => $attributeLabel,
+                    'class'     => $attribute->getFrontend()->getClass(),
+                    'required'  => $attribute->getIsRequired(),
+                );
+
                 if ('date' == $inputType) {
                     $elementOptions['readonly'] = 1;
                     if ($orderData[$attribute->getAttributeCode()] === '0000-00-00' ||
-                        $orderData[$attribute->getAttributeCode()] === '0000-00-00 00:00:00') {
+                        $orderData[$attribute->getAttributeCode()] === '0000-00-00 00:00:00' ||
+                        $orderData[$attribute->getAttributeCode()] === '1970-01-01' ||
+                        $orderData[$attribute->getAttributeCode()] === '1970-01-01 00:00:00'
+                    ) {
                         $orderData[$attribute->getAttributeCode()] = '';
                     }
                 }
@@ -84,12 +89,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
                     $elementOptions['values'] = $attribute->getSource()->getAllOptions(false, true );
                 }
 
-                $formElementType = $fieldType;
-                if ('date' == $formElementType)
-                {
-                	$formElementType = 'text';
-                }
-                $element = $fieldset->addField($attribute->getAttributeCode(), $fieldType,$elementOptions)
+                $element = $fieldset->addField($attribute->getAttributeCode(), $fieldType, $elementOptions)
                                     ->setEntityAttribute($attribute);
                  
                 
@@ -125,8 +125,38 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
                     $element->setFormat(Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT) . ' HH:mm');
                     $element->setTime(true);
                 }
+                if ('file' == $inputType) {
+                    $formHasFileAttribute = true;
+                    $value = $orderData[$attribute->getAttributeCode()];
+
+                    if ($value) {
+                        $afterElementHtml = $this->__('Uploaded file: ');
+                        $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
+                        $url = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                        if (file_exists($path)) {
+                            $pos = strrpos($value, "/");
+                            if ($pos) {
+                                $value = substr($value, $pos + 1, strlen($value));
+                            }
+                            $value = '<a href="' . $url . '" download target="_blank">' . $value . '</a>' .
+                                '<span style="padding-left: 20px">' . $this->__('Delete') . ' </span>' .
+                                '<input type="checkbox" value="1" name="amorderattr_delete[' . $element->getName() . ']">';
+                        } else {
+                            $value = $this->__('none.');
+                        }
+
+                        $afterElementHtml .= $value;
+                        $element->setAfterElementHtml($afterElementHtml);
+                    }
+
+                    $element->setName('amorderattr[' . $element->getName() . ']');
+                }
         	}
         }
+
+       if ($formHasFileAttribute) {
+           $form->setData('enctype', "multipart/form-data");
+       }
        $form->setValues($orderData);
        $this->setForm($form);
        parent::_prepareForm();

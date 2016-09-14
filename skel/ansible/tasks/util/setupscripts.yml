@@ -1,0 +1,27 @@
+---
+
+#  !! if you want to disable these tasks, comment out SKIP_SETUPSCRIPTS or set to empty in util-setupscripts.yml
+
+- name: "confirm setup scripts are disabled on remote host"
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  ignore_errors: yes
+  shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun config:dump | grep '<skip_process_modules_updates>1</skip_process_modules_updates>'"
+  register: config_result
+  failed_when: no
+
+- debug: msg="Warning - You should disable setup scripts on remote hosts by adding <skip_process_modules_updates> to your configuration XML"
+  when: config_result.rc > 0
+
+- name: "check for available setup scripts"
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  ignore_errors: yes
+  shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun sys:setup:compare-versions"
+  register: setup_result
+
+- name: "run setup scripts"
+  args:
+    chdir: "{{ REPO_ROOT }}"
+  shell: "{{ BLUEACORN_DIR }}/bin/n98-magerun sys:setup:incremental -n"
+  when: setup_result|failed

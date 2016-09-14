@@ -5,11 +5,11 @@
  * @package Amasty_Feed
  */
 
-    class Amasty_Feed_Model_Attribute_Compound_Stockavailability extends Amasty_Feed_Model_Attribute_Compound_Abstract
+    class Amasty_Feed_Model_Attribute_Compound_Stockavailability extends Amasty_Feed_Model_Attribute_Compound_Isinstock
     {
         protected $_values = array(
-            "No" => 0,
-            "Yes" => 1
+            0 => "No",
+            1 => "Yes"
         );
         
         function prepareCollection($collection){
@@ -17,10 +17,9 @@
         }
         
         function getCompoundData($productData){
-            $hlr = Mage::helper("amfeed");
-            
-            return isset($this->_values[$productData['is_in_stock']]) ? 
-                $this->_values[$productData['is_in_stock']] : 
+            $isInStock = $this->_getIsInStock($productData);
+            return isset($this->_values[$isInStock]) ?
+                $this->_values[$isInStock] :
                 NULL;
                 
         }

@@ -452,7 +452,7 @@ function maplocation(transport) {
             }
             address = address + '<ul>';
             if(showAddress == 'inline') {
-                address = address + '<strong>Address:</strong><br/>';
+                address = address + '<strong>' +locationDetails.addressText + '</strong><br/>';
             }
             address = address + locationDetails.name + '<br/>' + street
                  + locationDetails.city + ', ' + locationDetails.region + ' ' + locationDetails.zip +
@@ -481,7 +481,7 @@ function maplocation(transport) {
     $('location-address' + carrierCodeInsert + carriergroupInsert).innerHTML = address;
     if (locationDetails.open_hours != null) {
         var open_hours_display = locationDetails.open_hours.replace(/;/g,"</br>");
-        var inHtml = '<strong>Hours:</strong><br />' +
+        var inHtml = '<strong>' + locationDetails.hoursText + '</strong><br />' +
             open_hours_display + '<br />' ;
         $('location-hours' + carrierCodeInsert + carriergroupInsert).innerHTML = inHtml;
     }
@@ -588,7 +588,7 @@ function getDateFromString(dateString, format)
                     selectedShipMethodSingle.hidden = true;
                 }
                 if(!errorMessage) {
-                    errorMessage = '<?php echo $this->__("Sorry, no quotes are available for this order at this time."); ?>';
+                    errorMessage = "<?php echo $this->getStandardErrorMessage(); ?>";
                 }
 
                 var radioChoices = $('radio_choices'+carriergroupInsert + "_" + carrierCode);
@@ -677,7 +677,7 @@ function getDateFromString(dateString, format)
         }
         else if(is_multi) {
             if (data == false) {
-                <?php $errorMessage = $this->__('Sorry, no quotes are available for this order at this time.'); ?>
+                <?php $errorMessage = $this->getStandardErrorMessage(); ?>
                 $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML='<ul class="messages"><li class="error-msg"><ul><li><?php echo preg_replace("!\s+!"," ",$errorMessage); ?></li></ul></li></ul>';
             } else {
                 var addressId = carriergroupInsert.replace('_ma', '');
@@ -721,7 +721,7 @@ function getDateFromString(dateString, format)
         }
         else {
             if (data == false) {
-                <?php $errorMessage = $this->__('Sorry, no quotes are available for this order at this time.'); ?>
+                <?php $errorMessage = $this->getStandardErrorMessage(); ?>
                 $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML='<ul class="messages"><li class="error-msg"><ul><li><?php echo preg_replace("!\s+!"," ",$errorMessage); ?></li></ul></li></ul>';
             } else {
                 var existingRadios = document.getElementsByName('shipping_method'+carriergroupInsert);

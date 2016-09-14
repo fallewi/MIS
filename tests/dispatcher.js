@@ -4,7 +4,12 @@ var jasmine = new Jasmine();
 global.REPO_ROOT = require("path").resolve(__dirname + '/../');
 global.APP_ROOT = REPO_ROOT + '/webroot';
 
-jasmine.loadConfigFile('jasmine.json');
+// read configuration from jasmine.json, export to specVars
+process.env.ENV_VAR_CONFIG_FILE = 'jasmine.json';
+specVars = require('var');
+
+jasmine.loadConfig(specVars);
+
 jasmine.configureDefaultReporter({
     showColors: true
 });

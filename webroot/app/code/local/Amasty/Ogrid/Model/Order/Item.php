@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Model_Order_Item extends Mage_Core_Model_Abstract
@@ -171,7 +171,7 @@ class Amasty_Ogrid_Model_Order_Item extends Mage_Core_Model_Abstract
                     case "boolean":
                         $valuesCollection = Mage::getResourceModel('eav/entity_attribute_option_collection')
                                 ->setAttributeFilter($attribute->getId())
-                                ->setStoreFilter($store_id, false)
+                                ->setStoreFilter($store_id, true)
                                 ->load();
 
                         if ($valuesCollection->getSize() > 0)

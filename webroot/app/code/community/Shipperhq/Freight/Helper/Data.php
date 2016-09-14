@@ -38,12 +38,18 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_genericAccessorials;
     protected $_accessorials;
 
-    protected $_allOptions = array('liftgate_required', 'inside_delivery', 'destination_type', 'notify_required');
+    protected $_allOptions = array('liftgate_required', 'inside_delivery', 'destination_type', 'notify_required',
+                                    'customer_carrier', 'customer_carrier_ph', 'customer_carrier_account');
     protected $_allNamedOptions = array(
         'liftgate_required' => 'Liftgate Required',
         'inside_delivery' => 'Inside Delivery',
         'destination_type' => 'Destination Type',
-        'notify_required' => 'Notify Required');
+        'notify_required' => 'Notify Required',
+        'customer_carrier' => 'Customer Carrier',
+        'customer_carrier_ph' => 'Customer Carrier Phone',
+        'customer_carrier_account' => 'Customer Carrier Account Number');
+
+    protected static $CUSTOMERACCOUNTCARRIERTYPE = 'customerAccount';
 
     /**
      * Retrieve debug configuration
@@ -137,6 +143,11 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
     public function getInsideDelivery($carrierGroupId = null, $carrierCode = null)
     {
         return $this->getOptionValue('inside_delivery', $carrierGroupId, $carrierCode);
+    }
+
+    public function isCustomerAccountCarrier($carrierGroupId = null, $carrierCode = null, $carrierType = null)
+    {
+        return $carrierType == self::$CUSTOMERACCOUNTCARRIERTYPE;
     }
 
     public function isAccessorialEnabled($accessorialCode, $carrierGroupId = null, $carrierCode = null)

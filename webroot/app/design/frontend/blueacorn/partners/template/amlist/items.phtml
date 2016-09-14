@@ -1,0 +1,114 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_List
+ */
+?>
+<?php $_list = $this->getList(); ?>
+<?php $items = $this->getList()->getItems(); ?>
+<?php $_hlp = Mage::helper('amlist'); ?>
+<?php $_coreHelper = $this->helper('core'); ?>
+<h3><?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if (count($items)): ?>
+<form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
+<input type="hidden" name="list_id" value="<?php echo $this->getList()->getId() ?>">
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+    <div class="buttons-set">
+        <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
+        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
+        <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/cart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
+    </div>
+    <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">
+    <col width="30" />
+    <col />
+    <col width="130" />
+    <col />
+    <col />
+    <col width="120"/> 
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="ckbCheckAll" title="Check/Uncheck All" /></th>
+                <th><?php echo $this->__('Qty') ?></th>
+                <th><?php echo $this->__('Product') ?></th>
+                <th><?php echo $this->__('Details') ?></th>
+                <th><?php echo $this->__('Price') ?></th>
+                <th class="a-center">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php 
+            $allLists = $this->getAllLists($this->getList()->getId()); 
+            $total    = 0;
+        ?>
+        <?php foreach ($items as $item): $id = $item->getId();?>
+            <tr>
+                <td>
+                    <input type="checkbox" class="checkBoxClass" name="cb[]" value="<?php echo $id ?>" />
+                </td>
+                <td>
+                    <input type="text" size="2" name="qty[<?php echo $id ?>]" value="<?php echo $item->getQty() ?>" class="input-text" />
+                </td>
+                <td>
+                        <a href="<?php echo $this->getProductItemUrl($item) ?>">
+                            <img src="<?php echo $this->getProductItemImage($item)  ?>"
+                                 alt="<?php echo $this->htmlEscape($item->getProduct()->getName()) ?>" width="50" style="width:50px;" />
+                        </a>
+                </td>
+                <td>
+                        <a href="<?php echo $this->getProductItemUrl($item) ?>"
+                           title="<?php echo $this->htmlEscape($item->getProduct()->getName()) ?>">
+                            <?php echo $this->htmlEscape($item->getProduct()->getName()) ?>
+                        </a><br />
+                        Case Pack: <?php echo $item->getProduct()->getAttributeText('uom'); ?>
+                    <?php echo $item->getOptionsHtml() ?>
+                    <?php if(!$item->getProduct()->isSaleable()){ ?> Not Saleable <?php } ?>
+                </td>
+                <td>
+                    <?php $price = $item->getPrice(); $total += ($price * $item->getQty());  echo $_coreHelper->formatPrice($price, true); ?>
+                </td>
+                <td>
+                <?php if ($allLists->getSize()): ?>
+                <select name="moveto[<?php echo $id ?>]">
+                    <option value="0">Move to &hellip;</option>
+                    <?php foreach ($allLists as $l): ?>
+                    <option value="<?php echo $l->getId()?>"><?php echo $this->htmlEscape($l->getTitle())?></option>
+                    <?php endforeach ?>
+                </select>
+                </p>
+                <?php endif; ?>
+                    <a href="<?php echo $this->getUrl('*/*/removeItem', array('id'=>$id))?>" onclick="return confirm('<?php echo $this->__('Are you sure?') ?>')" class="link-remove" ><?php echo $this->__('Remove') ?></a>
+                </td>
+            </tr>
+        <?php endforeach ?>
+        <?php if ($total): ?>
+            <tr>
+                <td colspan="4" style="text-align:right"><strong><?php echo $this->__('Total:')?></strong></td>
+                <td colspan="2" style="text-align:left"><strong><?php echo $_coreHelper->formatPrice($total, true) ?></strong></td>
+            </tr>        
+        <?php endif ?>
+        </tbody>
+    </table>
+    <div class="buttons-set">
+        <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
+        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
+        <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/cart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
+    </div>
+</form>
+<script type="text/javascript">decorateTable('amlist-table')</script>
+<?php else: ?>
+    <?php if ($this->getList()->getId()): ?>
+    <p><?php echo $this->__('Start adding items from the <a href=""%s"">catalog</a> to your favorites right now!', Mage::getBaseUrl())?></p>
+    <?php endif; ?>
+    <div class="button-set">
+        <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
+    </div>
+<?php endif ?>
+<script type="text/javascript">
+    $j(document).ready(function () {
+        $j("#ckbCheckAll").click(function () {
+            $j(".checkBoxClass").prop('checked', $j(this).prop('checked'));
+        });
+    });
+</script>

@@ -212,14 +212,15 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
     }
     
     public function joinIsInStock(){
-        if (!$this->_checkJoin('is_in_stock')){
-            $this->joinField('is_in_stock',
-                    'cataloginventory/stock_item',
-//                    new Zend_Db_Expr('`at_is_in_stock`.`is_in_stock`'),
-                    'is_in_stock',
+        if (!$this->_checkJoin('amfeed_is_in_stock')){
+            $this->joinTable(
+                array('at_amfeed_is_in_stock' => 'cataloginventory/stock_item'),
                     'product_id=entity_id',
-                    null,
-                    'left');
+                array(
+                    'is_in_stock', 'manage_stock', 'use_config_manage_stock'
+                ),
+                null, 'left'
+            );
         }
     }
     
@@ -408,8 +409,8 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
 
     public function getUrlData($storeId, $useCategory)
     {
-
-        if (version_compare(Mage::getVersion(), '1.9.0.0', '<=')) {
+        if (version_compare(Mage::getVersion(), '1.9.0.0', '<=')
+            || !class_exists('Mage_Catalog_Model_Factory')) {
             return $this->getUrlDataL17($storeId, $useCategory);
         }
 
@@ -420,9 +421,6 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
         $ids = "select DISTINCT entity_id from (" . $this->getSelect()->__toString() . ") as tmp";
 
         $store = Mage::app()->getStore($this->getStoreId());
-
-
-
 
         $select = $this->getConnection()->select()
             ->from(array('main_table' => $this->getTable('catalog/product')), array('entity_id'))

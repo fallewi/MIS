@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template        
@@ -291,6 +291,26 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
                     $element->setTime(true);
                 }
 
+                if ( 'file' == $inputType ) {
+                    $url = $this->getUrl('amorderattr/file/upload');
+                    if (isset($_SERVER['HTTPS']) && 'off' != $_SERVER['HTTPS'])
+                    {
+                        $url = str_replace('http:', 'https:', $url);
+                    }
+                    $afterElementHtml .= '<script type="text/javascript">
+                        var amFileUploaderObject = new amFileUploader(
+                        ' . Mage::helper('core')->jsonEncode(
+                                array(
+                                    'url'       => $url,
+                                    'extension' => $attribute->getData('file_types'),
+                                    'size'      => $attribute->getData('file_size'),
+                                    'name'      => $attribute->getdata('attribute_code')
+                                )
+                            ) . '
+                        );
+                        </script>';
+                }
+
                 $element->setAfterElementHtml($afterElementHtml);
             }
         }
@@ -311,6 +331,7 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
         {
             $jsSrc = '<script type="text/javascript" src="' . Mage::getBaseUrl('js') . 'amasty/amorderattr/payment.js">' . '</script>
                 <script type="text/javascript" src="' . Mage::getBaseUrl('js') . 'amasty/amorderattr/conditions.js">' . '</script>
+                <script type="text/javascript" src="' . Mage::getBaseUrl('js') . 'amasty/amorderattr/file-uploader.js">' . '</script>
             ';
             $html = $jsSrc . $html;
             Mage::register('amorderattr_js_added', true);
@@ -322,6 +343,8 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
                  $replacement = '${1} class="validate-checkboxgroup-required"';
                  $html = preg_replace($pattern, $replacement, $html);
         }
+
+        $html = str_replace('type="file"', 'type="file" onchange="amFileUploaderObject.sendFileWithAjax(this)"', $html);
 
         return $html;
     }

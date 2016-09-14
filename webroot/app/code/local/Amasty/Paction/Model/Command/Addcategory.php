@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 class Amasty_Paction_Model_Command_Addcategory extends Amasty_Paction_Model_Command_Abstract 
@@ -163,12 +163,14 @@ class Amasty_Paction_Model_Command_Addcategory extends Amasty_Paction_Model_Comm
 
         $tree = array();
         foreach ($categoriesArray as $categoryId => $category) {
-            $path = explode('/', $category['path']);
-            $tree[] = array(
-                'label' => str_repeat('--', $category['level']) . $category['name'], // in case with broken levels can use count($path) instead $category['level']
-                'value' => $categoryId,
-                'path'  => $path,
-            );
+            if (array_key_exists('name', $category) && $category['name']) {
+                $path = explode('/', $category['path']);
+                $tree[] = array(
+                    'label' => str_repeat('--', $category['level']) . $category['name'], // in case with broken levels can use count($path) instead $category['level']
+                    'value' => $categoryId,
+                    'path'  => $path,
+                );
+            }
         }*/
         // END: Alternative Algorithm
         

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_Observer
@@ -72,6 +72,29 @@ class Amasty_Orderattr_Model_Observer
                     if ('radios' == $attribute->getFrontend()->getInputType()){
                         $orderAttributes[$attribute->getAttributeCode()] = $orderAttributes[$attribute->getAttributeCode()][0];
                     }
+                    if ('file' == $attribute->getFrontend()->getInputType()){
+                        $fileName =  $orderAttributes[$attribute->getAttributeCode()];
+                        $dir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'tmp';
+                        $file = $dir . $fileName;
+                        if ( file_exists($file) && $fileName ) {
+                            try {
+                                $newPath = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $fileName;
+                                $pos = strrpos($newPath, "/");
+                                if ($pos) {
+                                    $destinationDir = substr($newPath, 0, $pos);
+                                    if (!is_dir($destinationDir)) {
+                                        mkdir($destinationDir, 0755, true);
+                                    }
+                                }
+                                $result = rename(
+                                    $file, $newPath
+                                );
+                            }
+                            catch(Exception $ex){
+                                $orderAttributes[$attribute->getAttributeCode()] = '';
+                            }
+                        }
+                    }
                 }
                 $attributes->addData($orderAttributes);  
             }
@@ -117,7 +140,7 @@ class Amasty_Orderattr_Model_Observer
                     if ($val)
                     {
                         if (is_array($val)){
-                           $val=implode(', ',$val);
+                           $val = implode(', ',$val);
                         }
                         $attributes->setData($key, $val);
                     }
@@ -328,7 +351,19 @@ class Amasty_Orderattr_Model_Observer
                             'filter_index' => 'custom_attributes.'.$attribute->getAttributeCode()
                         );
                         break;
+                    case 'file':
+                        $column = array(
+                            'header'       => Mage::helper('amorderattr')->__($attribute->getFrontend()->getLabel()),
+                            'index'        => $attribute->getAttributeCode(),
+                            'filter_index' => 'custom_attributes.'.$attribute->getAttributeCode(),
+                            'filter'       => 'adminhtml/widget_grid_column_filter_text',
+                            'sortable'     => true,
+                            'renderer'     => 'amorderattr/adminhtml_order_grid_renderer_file',
+                        );
+                        break;
                 }
+                $columnAfter = $attribute->getOrderGridAfter();
+                $after = $columnAfter ? $columnAfter : $after;
                 $grid->addColumnAfter($column['index'], $column, $after);
                 $after = $column['index'];
             }
@@ -543,5 +578,36 @@ class Amasty_Orderattr_Model_Observer
         }
         
         $transport->setHtml($html);
+    }
+
+    public function removeTmpFiles(){
+        try {
+            $dir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'tmp';
+            $this->_rrmdir($dir);
+        }catch(Exception $ex) {
+            Mage::logException($ex);
+        }
+    }
+
+    protected function _rrmdir($dir)
+    {
+        $now = time();
+        if (is_dir($dir)) {
+            $children = scandir($dir);
+            foreach ($children as $child) {
+                if ($child != "." && $child != "..") {
+                    if (is_dir($dir."/".$child)) {
+                        $this->_rrmdir($dir . "/" . $child);
+                    } else {
+                        $fileName = $dir . "/" . $child;
+                        $fileTime = filemtime($fileName);
+                        if ( ($now - $fileTime)/24/60/60 > 1) {
+                            unlink($fileName);
+                        }
+                    }
+                }
+            }
+            //rmdir($dir);
+        }
     }
 }

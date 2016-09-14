@@ -5,7 +5,7 @@ $installer = $this;
 
 $installer->startSetup();
 
-/* ------ shipperhq_warehouse -------- */
+/* ------ shipperhq_location -------- */
 $installer->addAttribute('catalog_product', 'shipperhq_location', array(
     'type'                     => 'text',
     'backend'                  => 'eav/entity_attribute_backend_array',

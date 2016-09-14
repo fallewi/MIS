@@ -54,6 +54,13 @@
             text-decoration: underline;
         }
     }
+    .grid-full {
+        .y-summary {
+           float: left;
+           width: 17em;
+           padding: 0 1em 0 0;
+        }
+    }
 }
 
 .product-view {
@@ -1777,9 +1784,13 @@ body.catalog-product-view {
         }
     }
 
-    .top-product-details,
-    .catalog-product-view .product-view .product-img-box .more-views {
+    .top-product-details {
         display: none !important;
+    }
+
+    .catalog-product-view .product-view .product-img-box .more-views.videos {
+        float: left;
+        margin-right: 10px;
     }
 
     .product-view .product-img-box .product-name h1 {
@@ -1994,6 +2005,46 @@ body.catalog-product-view {
     }
 }
 
+
+/*================================================
+=             Mobile Product Videos              =
+================================================*/
+
+.catalog-product-view {
+    .fancybox-wrap.fancybox-desktop.fancybox-type-html.fancybox-opened {
+        @include bp(max-width, $bp-medium) {
+            width: auto !important;
+        }
+    }
+
+    .fancybox-opened {
+        width: auto !important;
+    }
+
+    .fancybox-inner {
+        @include bp(max-width, $bp-medium) {
+            max-width: 665px;
+            max-height: 370px;
+        }
+
+        @include bp(max-width, 670px) {
+            max-width: 570px;
+            max-height: 330px;
+        }
+
+        @include bp(max-width, $bp-small) {
+            max-width: 494px;
+            max-height: 275px;
+        }
+
+        @include bp(max-width, $bp-xsmall) {
+            max-width: 250px;
+            height: auto !important;
+        }
+    }
+}
+
+/*-----  End of Mobile Product Videos ------*/
 
 // IE8 Fixes
 
