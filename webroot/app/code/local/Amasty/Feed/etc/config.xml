@@ -9,7 +9,7 @@
 <config>
     <modules>
         <Amasty_Feed>
-            <version>3.3.6</version>
+            <version>3.4.0</version>
         </Amasty_Feed>
     </modules>
     

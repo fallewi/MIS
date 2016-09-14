@@ -36,6 +36,7 @@ class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Control
                 $total = $feed->getInfoTotal();
                     
                 if ($hasGenerated) {
+                    $feed->compress();
                     $message = $this->__('The feed has been generated');
                     if (($feed->getDeliveryType() == Amasty_Feed_Model_Profile::DELIVERY_TYPE_FTP || $feed->getDeliveryType() == Amasty_Feed_Model_Profile::DELIVERY_TYPE_SFTP) && $feed->getDelivered()) {
                         $message .= $this->__(' and uploaded to '.($feed->getDeliveryType() == Amasty_Feed_Model_Profile::DELIVERY_TYPE_SFTP ? 'SFTP' : "FTP").' server');
@@ -252,6 +253,8 @@ class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Control
                         $currentFeed->save();
                     }
                 }
+
+                $currentFeed->compress();
             }
             Mage::getSingleton('adminhtml/session')->addSuccess(
                 Mage::helper('adminhtml')->__(
