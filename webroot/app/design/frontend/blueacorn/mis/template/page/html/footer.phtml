@@ -35,8 +35,10 @@ $youtubeUrl = Mage::getStoreConfig('ba_footer/social/youtube_url');
 <div class="footer-container">
     <div class="footer">
     	<div class="about-us-container">
+            <?php if(!empty($aboutTitle)): ?>
     		<h5 class="block-title"><?php echo $aboutTitle ?></h5>
-    		<p><?php echo $aboutText ?></p>
+            <?php endif; ?>
+    		<?php echo $aboutText ?>
     	</div>
         <div class="links-container">
             <?php echo $this->getChildHtml('cms_footer_links') ?>

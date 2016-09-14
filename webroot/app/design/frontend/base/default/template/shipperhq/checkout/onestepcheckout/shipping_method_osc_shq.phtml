@@ -62,7 +62,13 @@
                             <?php if($_rates[0]->getCarrierNotice() && !$showCarrierNotice): ?>
                                 <?php $showCarrierNotice = $_rates[0]->getCarrierNotice(); ?>
                             <?php endif ?>
-                            <label for="s_method<?php echo $carriergroupInsert ?>_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?></label>
+                            <label for="s_method<?php echo $carriergroupInsert ?>_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?>
+                                <?php if ($_rate->getTooltip()): ?>
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                        <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                    </span>
+                                <?php endif; ?>
+                            </label>
                             <?php echo $this->getShippingMethodsSelect("shipping_method_dropdown".$carriergroupInsert, "s_method_dropdown".$carriergroupInsert."_".$code, $this->getAddressShippingMethod(), $_rates, $_sole) ?>
                             <?php if($_rates[0]->getCustomDescription()): ?>
                                 <p class="disclaimer" id="disclaimer_<?php echo $_carriergroupId ?>_<?php echo $code ?>" hidden="" name="disclaimer_<?php echo $_carriergroupId ?>"><?php echo $_rates[0]->getCustomDescription(); ?></p>
@@ -123,6 +129,11 @@
                                         (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                     <?php endif; ?>
                                 </strong>
+                                <?php if ($_rate->getTooltip()): ?>
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                        <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                    </span>
+                                <?php endif; ?>
                             </label>
                         <?php endif ?>
                         </dt>
@@ -143,7 +154,13 @@
                         <?php if($_rates[0]->getCarrierNotice() && !$showCarrierNotice): ?>
                             <?php $showCarrierNotice = $_rates[0]->getCarrierNotice(); ?>
                         <?php endif ?>
-                        <label for="s_method_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?></label>
+                        <label for="s_method_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?>
+                            <?php if ($_rate->getTooltip()): ?>
+                                <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
+                                            </span>
+                            <?php endif; ?>
+                        </label>
                         <?php echo $this->getShippingMethodsSelect("shipping_method_dropdown", "s_method_dropdown_".$code, $this->getAddressShippingMethod(), $_rates, $_sole) ?>
                         <?php if($_rates[0]->getCustomDescription()): ?>
                             <p class="disclaimer" id="disclaimer_<?php echo $code ?>" hidden="" name="disclaimer"><?php echo $_rates[0]->getCustomDescription(); ?></p>

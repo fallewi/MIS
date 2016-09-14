@@ -177,12 +177,7 @@ class Shipperhq_Freight_Model_Service_Accessorials
 
     protected function getMethodTitle($methodTitle, $methodDescription, $includeContainer)
     {
-        $title = $methodTitle;
-        if($includeContainer) {
-            $truncatedTitle = str_replace($methodDescription, '', $methodTitle);
-            $title = '<span class="method-title">'.$truncatedTitle.'</span> <span class="method-extra">'.$methodDescription.'</span>';
-        }
-        return $title;
+        return Mage::helper('shipperhq_shipper')->getMethodTitle($methodTitle, $methodDescription, $includeContainer);
     }
 
     protected function getShippingRates($address)

@@ -65,7 +65,7 @@
 
 # run setup script playbook
 ###########################
-- include: staging.util-setupscripts.yml
+- include: util-setupscripts.yml
 
 # run filesystem playbook to fix perms + setup NFS filesharing
 ##############################################################

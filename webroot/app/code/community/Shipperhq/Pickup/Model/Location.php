@@ -153,11 +153,7 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
 
     protected function getMethodTitle($methodTitle, $methodDescription, $includeContainer)
     {
-        $title = $methodTitle . ' ' .$methodDescription;
-        if($includeContainer) {
-            $title = '<span class="method-title">'.$methodTitle.'</span> <span class="method-extra">'.$methodDescription.'</span>';
-        }
-        return $title;
+        return Mage::helper('shipperhq_shipper')->getMethodTitle($methodTitle, $methodDescription, $includeContainer);
     }
 
     protected function _getShippingPrice($price, $flag,  $includeContainer = true)
@@ -304,6 +300,8 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
         $pickupDisplay = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getPickupDisplayConfig();
         $resultSet = array_merge($pickupDisplay, $resultSet);
         $resultSet['showTime'] = false;
+        $resultSet['addressText'] = Mage::helper('shipperhq_shipper')->__('Address') .':';
+        $resultSet['hoursText'] =  Mage::helper('shipperhq_shipper')->__('Hours') .':';
         
         // Map result set of location api to a result set
         $resultSet += Mage::helper('shipperhq_shipper/mapper')->map(

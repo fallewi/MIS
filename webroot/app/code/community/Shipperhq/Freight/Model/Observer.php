@@ -70,7 +70,6 @@ class Shipperhq_Freight_Model_Observer extends Mage_Core_Model_Abstract
 
         $shippingAddress = $observer->getEvent()->getQuote()->getShippingAddress();
         $params = $observer->getEvent()->getRequest()->getParams();
-
         $options = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
         $carrierCodeSplit = explode('_', $shippingmethod);
         $carrierCode = $carrierCodeSplit[0];

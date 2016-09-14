@@ -252,7 +252,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_OrderMapper extends Shipperhq_Ship
     {
         $carrierGroupDetail = $order->getCarriergroupShippingDetails();
         if($carrierGroupDetail) {
-            $cgDetail = json_decode($carrierGroupDetail);
+            $cgDetail = Mage::helper('shipperhq_shipper')->decodeShippingDetails($carrierGroupDetail);
             foreach($cgDetail as $carrierGroup) {
                 if(!is_array($carrierGroup)) {
                     $carrierGroup = (array)$carrierGroup;

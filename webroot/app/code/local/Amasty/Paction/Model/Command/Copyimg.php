@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 class Amasty_Paction_Model_Command_Copyimg extends Amasty_Paction_Model_Command_Abstract 
@@ -180,7 +180,8 @@ class Amasty_Paction_Model_Command_Copyimg extends Amasty_Paction_Model_Command_
                 'entity_id = ?'    => $newProductId
             );
             $update = $db->update($varcharTable, $data, $where);
-            if (!$update){
+            if (!$update
+                && $entityTypeId[$i]) {
                 $datainsert = array(
                     'attribute_id'   => $attributePic[$i]->getId(),
                     'entity_id'      => $newProductId,

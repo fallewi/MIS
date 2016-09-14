@@ -18,12 +18,12 @@ for N98_BIN in $N98_TESTS; do
   ##############
 
   cd $APP_ROOT
-  
+
   # We should probably consider sites with multiple storeviews, all these values can be storeview specific
-  
+
   $N98_BIN config:set web/unsecure/base_url $APP_URL_LOWER
   $N98_BIN config:set web/secure/base_url $APP_URL_LOWER
-  
+
   # If they have a CDN configured, the following URLs could be different and break things. Best to assert their values
   $N98_BIN config:set web/unsecure/base_link_url "{{unsecure_base_url}}"
   $N98_BIN config:set web/unsecure/base_skin_url "{{unsecure_base_url}}skin/"
@@ -38,12 +38,38 @@ for N98_BIN in $N98_TESTS; do
   $N98_BIN config:delete admin/url/custom
   $N98_BIN config:set admin/url/use_custom 0
   $N98_BIN config:set admin/url/use_custom_path 0
-        
-  
-  # this will set the domain for all cookies Magento generate, a lot of times this is set. It usually works fine 
+
+  # Relaxing security
+  $N98_BIN config:set admin/security/session_cookie_lifetime 86400
+  $N98_BIN config:set admin/security/password_is_forced 0
+  $N98_BIN config:set admin/security/password_lifetime 1000
+
+  # Turn on symlinks
+  $N98_BIN config:set dev/template/allow_symlink 1
+
+  # Turn off merging
+  $N98_BIN config:set dev/js/merge_files 0
+  $N98_BIN config:set dev/css/merge_files 0
+
+  # this will set the domain for all cookies Magento generate, a lot of times this is set. It usually works fine
   # if it's an empty string
-  $N98_BIN config:set web/cookie/cookie_domain "" 
-  
+  $N98_BIN config:set web/cookie/cookie_domain ""
+
+  # Turn off solr
+  $N98_BIN config:set catalog/search/engine catalogsearch/fulltext_engine
+
+  # Add admin user
+  $N98_BIN admin:user:delete --force admin
+  $N98_BIN admin:user:create admin admin@blueacorn.com pass4admin Admin Admin
+
+  # Add customer
+  $N98_BIN customer:delete --force customer@blueacorn.com 
+  $N98_BIN customer:create customer@blueacorn.com pass4customer Customer Doe
+
+  # clear cache because you probably changed important stuff
+  $N98_BIN cache:clean
+  $N98_BIN cache:flush
+
   # break loop, no need to continue n98 tests
   break
 done

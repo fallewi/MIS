@@ -246,6 +246,7 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             $shippingAddress->setPickupEmail($pickupLocation['email']);
             $shippingAddress->setPickupContact($pickupLocation['contactName']);
             $shippingAddress->setPickupEmailOption($pickupLocation['emailOption']);
+            $shippingAddress->setPickupLocationId($pickupLocation['publicId']);
             $pickupText = $pickupLocation['pickupName']. ' ' .$pickupDate ;
             if($pickupSlot != '') {
                 $pickupSlot = str_replace('_', ' - ', $pickupSlot);
@@ -289,6 +290,7 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
         foreach($carrierGroupShippingDetail as $key => $shipDetail) {
             if($shippingAddress->getPickupLocation() != '') {
                 $shipDetail['location_name'] = $shippingAddress->getPickupLocation();
+                $shipDetail['location_id'] = $shippingAddress->getPickupLocationId();
                 if($shippingAddress->getPickupDate() != '') {
                     $shipDetail['pickup_date'] = $shippingAddress->getPickupDate();
                 }

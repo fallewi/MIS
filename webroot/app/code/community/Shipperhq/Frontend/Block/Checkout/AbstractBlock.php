@@ -48,5 +48,12 @@ abstract class Shipperhq_Frontend_Block_Checkout_AbstractBlock
     {
         return $this->_quote;
     }
+
+    public function getStandardErrorMessage()
+    {
+        $errorString = $this->__("Sorry, no quotes are available for this order at this time.");
+        $error = str_replace("'", '&apos;',$errorString);
+        return $error;
+    }
     
 }

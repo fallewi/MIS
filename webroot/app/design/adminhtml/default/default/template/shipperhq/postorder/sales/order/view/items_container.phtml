@@ -33,6 +33,16 @@
 
 <?php echo $this->getChildHtml('order_items_orig') ?>
 
+<!--SHQ16-1181-->
+<?php if (Mage::helper('shipperhq_shipper')->isModuleEnabled('Idev_OneStepCheckout', 'onestepcheckout/general/rewrite_checkout_links')): ?>
+    <?php $oscCommentBlock = $this->getLayout()->getBlockSingleton('Idev_OneStepCheckout_Block_Adminhtml_Sales_Order_View_Comment'); ?>
+    <?php if(method_exists($oscCommentBlock, 'getCommentHtml')
+        && is_callable(array($oscCommentBlock, 'getCommentHtml'))): ?>
+        <?php $commentHtml = $oscCommentBlock->getCommentHtml(); ?>
+        <?php echo $commentHtml; ?>
+    <?php endif; ?>
+<?php endif; ?>
+
 <script type="text/javascript">
     //<![CDATA[
     <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
@@ -51,5 +61,6 @@
     row.insertCell(1);
     row.insertCell(2);
     <?php endif; ?>
+
     //]]>
 </script>

@@ -239,6 +239,7 @@ ansible_command(){
   DEBUG=false
   ANSIBLE_LIST_HOSTS=false
   ANSIBLE_LIST_TAGS=false
+  ANSIBLE_VARS=""
 
   while [ $# -ne 0 ]; do
     case $1 in
@@ -248,7 +249,7 @@ ansible_command(){
       --list-hosts)       ANSIBLE_LIST_HOSTS=true ;;
       --tags|-t)          ANSIBLE_TAGS="--tags=$2" ; shift ;;
       --list-tags)        ANSIBLE_LIST_TAGS=true ;;
-      --extra-vars|-e)    ANSIBLE_VARS="$2" ; shift ;;
+      --extra-vars|-e)    ANSIBLE_VARS="$ANSIBLE_VARS $2" ; shift ;;
       --inventory-script) ANSIBLE_INV_SCRIPT="$2" ; shift ;;
       --step|-s)          ANSIBLE_STEP="--step" ;;
       --private-key)      ANSIBLE_KEY="--private-key=$2" ; shift ;;

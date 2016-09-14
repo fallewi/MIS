@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 
@@ -25,13 +25,13 @@ extends Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Renderer_Abstract
     public function render(Varien_Object $row)
     {
 
-        $storeId = (int) Mage::app()->getRequest()->getParam('store', 0);
-        $url = Mage::getModel('catalog/product')->setStoreId($storeId)->load($row["entity_id"])->getProductUrl();
-//        var_dump($row->debug());
-//       $product = Mage::helper('catalog/product')->getProduct($row["entity_id"], $storeId);
-//       $product = Mage::getModel('catalog/product')->load($row["entity_id"]);
+        $storeId = (int)Mage::app()->getRequest()->getParam(
+            'store', Mage::app()->getDefaultStoreView()->getId()
+        );
+        $url = Mage::getModel('catalog/product')->setStoreId($storeId)->load(
+            $row["entity_id"]
+        )->getProductUrl();
 
-//       $url = Mage::getUrl($product->getUrlPath());
        $imageUrl = Mage::getDesign()->getSkinUrl('images/ampgrid/ico-amasty-product.png');
        return "<a href='$url' target='blank'><img src=".$imageUrl."></a>";
     }
