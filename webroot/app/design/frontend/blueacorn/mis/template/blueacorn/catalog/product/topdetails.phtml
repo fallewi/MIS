@@ -31,14 +31,24 @@
 ?>
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
-
+<?php
+$categoryurl = "";
+$category = Mage::getModel('catalog/category')->loadByAttribute('name',$_product->getAttributeText('manufacturer'));
+if (is_object($category))
+{
+    $categoryurl = $category->getUrl();
+}
+?>
 <div class="top-product-details">
     <div class="product-name">
         <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
     </div>
     <div class="details">
         <?php if($_product->getAttributeText('manufacturer')): ?>
-            <span class="manufacturer"><?php echo $this->__("Manufacturer: ") ?><?php echo $_product->getAttributeText('manufacturer'); ?> <span class="spacer">/</span></span>
+            <span class="manufacturer"><?php echo $this->__("Manufacturer: ") ?>
+            <?php if(!empty($categoryurl)): ?><a href="<?php echo $categoryurl ?>"><?php echo $_product->getAttributeText('manufacturer'); ?></a>
+            <?php else : ?><?php echo $_product->getAttributeText('manufacturer'); ?> <span class="spacer">/</span></span>
+            <?php endif ?><span class="spacer">/</span></span>
         <?php endif ?>
 
         <?php if($_product->getMpn()): ?>
