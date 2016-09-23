@@ -265,14 +265,16 @@
                         <p>
                             <?php switch ($_product->getAttributeText('stock')):
                                 case "Stock Item":
+                                    echo "This item ships from our warehouse";
+                                    break;
                                 case "Factory Stock Item":
-                                    echo $this->__('This item ships in ' . $strLeadTime . ".");
+                                    echo "This item ships from the manufacturer";
                                     break;
                                 case "Made to Order":
-                                    echo $this->__('This item is custom made and ships in ' . $strLeadTime . ".");
+                                    echo "This item is custom made and ships from the manufacturer";
                                     break;
                             endswitch;
-                            ?>
+                            ?>; departs in  <?php echo $strLeadTime ?>.
                         </p>
                     <?php else: ?>
                         <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
