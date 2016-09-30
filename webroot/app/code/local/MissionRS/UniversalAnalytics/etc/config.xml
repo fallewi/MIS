@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <default>
+        <baua>
+            <translation>
+                <addImpression>
+                    <id>sku</id>
+                </addImpression>
+                <addProduct>
+                    <id>sku</id>
+                </addProduct>
+                <removeproduct>
+                    <sku>id</sku>
+                </removeproduct>
+                <capturetransaction>
+                    <sku>id</sku>
+                </capturetransaction>
+                <capturetransactionitems>
+                    <sku>id</sku>
+                </capturetransactionitems>
+                <transaction>
+                    <increment_id>id</increment_id>
+                </transaction>
+            </translation>
+        </baua>
+    </default>
+</config>

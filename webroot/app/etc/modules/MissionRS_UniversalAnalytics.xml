@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_UniversalAnalytics>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                BlueAcorn_UniversalAnalytics
+            </depends>
+        </MissionRS_UniversalAnalytics>
+    </modules>
+</config>
