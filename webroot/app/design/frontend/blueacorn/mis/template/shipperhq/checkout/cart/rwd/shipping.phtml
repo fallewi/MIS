@@ -26,12 +26,12 @@
 ?>
 <?php /** @var $this Mage_Checkout_Block_Cart_Shipping */ ?>
 <div class="shipping">
-    <h2><?php echo $this->__('Estimate Shipping and Tax') ?></h2>
-    <div class="shipping-form">
+    <a id="estimateshipping"><?php echo $this->__('Estimate Shipping and Tax') ?></a>
+    <div class="shipping-form" style="display: none;">
         <form action="<?php echo $this->getUrl('checkout/cart/estimatePost') ?>" method="post" id="shipping-zip-form">
             <p class="shipping-desc"><?php echo $this->__('Enter your destination to get a shipping estimate.') ?></p>
             <ul class="form-list">
-                <li class="shipping-country">
+                <li class="shipping-country" style="display:none;">
                     <label for="country" class="required"><em>*</em><?php echo $this->__('Country') ?></label>
                     <div class="input-box">
                         <?php echo Mage::getBlockSingleton('directory/data')->getCountryHtmlSelect($this->getEstimateCountryId()) ?>
@@ -196,3 +196,28 @@
         </script>
     </div>
 </div>
+<script type="text/javascript">
+    $j(document).ready(function(){
+        if (localStorage.userClickExpiration) {
+            if (Date.now() > parseInt(localStorage.userClickExpiration)) {
+                // Time expired, reset the localStorage and show the element
+                localStorage.removeItem('userClickExpiration');
+                $j(".shipping-form").hide();
+            } else {
+                $j(".shipping-form").show();
+            }
+        }
+
+        $j("#estimateshipping").click(function(){
+            // Store the time when the auto hide will be expired, now + 1 day in milliseconds
+            localStorage.userClickExpiration = Date.now() + (24 * 60 * 60 * 1000);
+
+            $j(".shipping-form").toggle();
+            var visible = $j(".shipping-form").is(":hidden");
+            if(visible) {
+                localStorage.removeItem('userClickExpiration');
+            }
+        });
+
+    });
+</script>
