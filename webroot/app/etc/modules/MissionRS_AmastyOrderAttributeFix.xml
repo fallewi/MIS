@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <MissionrsRS_AmastyOrderAttributeFix>
+        <MissionRS_AmastyOrderAttributeFix>
             <active>true</active>
             <codePool>local</codePool>
             <depends>
                 <Amasty_Orderattr />
             </depends>
-        </MissionrsRS_AmastyOrderAttributeFix>
+        </MissionRS_AmastyOrderAttributeFix>
     </modules>
 </config>
