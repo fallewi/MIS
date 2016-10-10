@@ -40,7 +40,7 @@
             </db>
             <default_setup>
                 <connection>
-                    <host><![CDATA[172.24.16.35]]></host>
+                    <host><![CDATA[10.136.244.38]]></host>
                     <username><![CDATA[prod_mission]]></username>
                     <password><![CDATA[493WNzTFuEYw]]></password>
                     <dbname><![CDATA[prod_mission]]></dbname>
@@ -57,7 +57,7 @@
         <full_page_cache>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
-                <server>10.136.244.35</server>
+                <server>10.136.244.38</server>
                 <port>6381</port>
                 <database>0</database>
                 <force_standalone>0</force_standalone>
@@ -68,7 +68,7 @@
         <cache>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
-                <server>10.136.244.35</server>
+                <server>10.136.244.38</server>
                 <port>6382</port>
                 <database>0</database>
                 <force_standalone>0</force_standalone>
