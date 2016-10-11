@@ -99,6 +99,7 @@ mysql:
 #
 phpdev:
   container_name: ${ENV}-${CLIENT_CODE}-phpdev
+  restart: unless-stopped
   image: registry.badevops.com/mage-phpdev:latest
   links:
     - mysql
