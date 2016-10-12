@@ -41,6 +41,9 @@ display_help() {
     -b | --base-branch   Specify the base branch for the build. This will be used
                          to determine the file diffs for your branch.
 
+    -r | --ref           Specify the ref to test. By default, it will use the
+                         current HEAD
+
     -c | --cmd           When running, specifies the test docker container CMD
 
     --repo-url           Tests repository URL to use when pulling.
@@ -174,6 +177,7 @@ while [ $# -ne 0 ]; do
                          DOCKER_COMMAND="$2" ; shift ;;
     -f|--force)          FORCE=true ;;
     -b|--base-branch)    DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -e BASE_BRANCH=$2"; shift ;;
+    -r|--ref)            DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -e COMMIT_HASH=$2"; shift ;;
     --repo-url)          TESTS_REPO_URL="$2" ; shift ;;
     --repo-ref)          TESTS_REPO_REF="$2" ; shift ;;
     --repo-root-match)   REPO_ROOT_MATCH="$2" ; shift ;;
