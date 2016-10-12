@@ -1,0 +1,19 @@
+{
+  "spec_dir": "test.d/spec",
+  "spec_files": {
+    "default": [
+      "**/*.js"
+    ]
+  },
+  "helpers": {
+    "default" : [
+      "helpers/**/*.js"
+    ]
+  },
+  "stopSpecOnExpectationFailure": false,
+  "random": false,
+  "CHECK_DIRS": "app/code/local/BlueAcorn,app/code/community/BlueAcorn",
+  "BLACKLIST_DIRS": "",
+  "CHECK_FILE_EXTS": "php",
+  "DIFF_BRANCH": "origin/develop"
+}
