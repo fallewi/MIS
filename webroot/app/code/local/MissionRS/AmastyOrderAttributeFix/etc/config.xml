@@ -8,15 +8,10 @@
     <global>
         <blocks>
             <amorderattr>
-                <class>MissionRS_AmastyOrderAttributeFix_Block</class>
-            </amorderattr>
-            <!--
-            <adminhtml>
                 <rewrite>
-                    <sales_order_create_form_accounts>MissionRS_AmastyOrderAttributeFix_Block_Adminhtml_Order_Create_Form_Account</sales_order_create_form_accounts>id>
+                    <adminhtml_order_create_form_attributes>MissionRS_AmastyOrderAttributeFix_Block_Adminhtml_Order_Create_Form_Attributes</adminhtml_order_create_form_attributes>
                 </rewrite>
-            </adminhtml>
-            -->
+            </amorderattr>
         </blocks>
         <models>
             <amorderattr>
