@@ -27,12 +27,12 @@
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @author ShipperHQ Team sales@shipperhq.com
  */
-/**
- * @see Shipperhq_Shipper_Block_Adminhtml_Synchronize_Notify
- */
-?>
-<div class="notification-global notification-global-notice">
-    <strong><?php echo $this->helper('adminhtml')->__('You may need to synchronize with ShipperHQ') ?></strong>
-    <?php echo $this->helper('index')->__('Click here to go to <a href="%s">ShipperHQ Synchronization</a>.', $this->getSynchUrl());?>
-</div>
 
+
+class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Items extends Mage_Adminhtml_Block_Sales_Order_View_Items
+{
+    public function _toHtml(){
+        $html = parent::_toHtml();
+        return $html;
+    }
+}

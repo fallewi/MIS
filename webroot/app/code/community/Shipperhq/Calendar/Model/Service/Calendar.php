@@ -46,6 +46,7 @@ class Shipperhq_Calendar_Model_Service_Calendar
         $dateSelected = $parameters['date_selected'];
         $loadOnly = $parameters['load_only'];
         $osc = array_key_exists('is_osc', $parameters) ? $parameters['is_osc'] == 'true' : false;
+        $methodName = $parameters['method_name'];
         $passedInCarriergroupId = $carriergroupId;
 
 
@@ -55,7 +56,8 @@ class Shipperhq_Calendar_Model_Service_Calendar
 
         if(Mage::helper('shipperhq_shipper')->isDebug()) {
             Mage::helper('wsalogger/log')->postDebug('Shipperhq Calendar', 'Get rates for selected date ',
-                array('carrierCode' =>$carrierCode, 'carriergroup' => $carriergroupId, 'date selected' =>$dateSelected, 'load only ' => $loadOnly));
+                array('carrierCode' =>$carrierCode, 'carriergroup' => $carriergroupId, 'date selected' =>$dateSelected, 'load only ' => $loadOnly,
+                    'method name' => $methodName));
         }
         $resultSet = array();
         $resultSet['date_selected'] = $dateSelected;
@@ -65,14 +67,14 @@ class Shipperhq_Calendar_Model_Service_Calendar
         $calendar = Mage::getModel('shipperhq_calendar/calendar');
         $calendar->getCalendarResults(
             $quote,$carriergroupId, $carrierCode,
-            $dateSelected, $loadOnly, $addressId, $resultSet, $osc
+            $dateSelected, $loadOnly, $addressId, $resultSet, $osc, $methodName
         );
 
         if(Mage::helper('shipperhq_shipper')->isDebug()) {
             Mage::helper('wsalogger/log')->postDebug('Shipperhq Calendar', 'Returning rates to checkout ',$resultSet);
         }
         $resultSet['carriergroup_id']=$passedInCarriergroupId;
-        
+
         Mage::helper('shipperhq_shipper')
             ->getQuoteStorage($quote)
             ->setSelectedDeliveryArray(null);

@@ -309,12 +309,12 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
             $location
         );
 
+
+        
+        $resultSet = $this->_getLocationTimeSlots($location, $resultSet);
         if (self::$_debug) {
             Mage::helper('wsalogger/log')->postDebug('ShipperHQ Pickup', 'Result Set from Ajax Callback', $resultSet);
         }
-        
-        $resultSet = $this->_getLocationTimeSlots($location, $resultSet);
-            
         return true;
     }
 

@@ -60,7 +60,13 @@ class Shipperhq_Pickup_Helper_Date {
         $dateOptions = array();
         $calendarDetails = $location['calendarDetails'];
         $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
+        $zendDateFormat = Mage::helper('shipperhq_shipper')->getZendDateFormat();
+
         $startDate = $calendarDetails['start'];
+        $endDate = isset($calendarDetails['calendarEndDate']) ?
+            Mage::app()->getLocale()->date($calendarDetails['calendarEndDate']/1000, null, null, true)->getTimestamp()
+            : false;
+
         $arrBlackoutDates = array();
         foreach($calendarDetails['blackoutDates'] as $blackoutDate)
         {
@@ -83,12 +89,16 @@ class Shipperhq_Pickup_Helper_Date {
                                                  $localDT);
 
         while(count($dateOptions) < $numPickupDays) {
-            //$nextDay =  date($dateFormat, $startDate); This isn't using the timezone. Resulted in wrong date
-            $nextDay = Mage::app()->getLocale()->date($startDate, null, null, true)->toString('dd-MM-Y');
+            //SHQ16-1566 support end date inclusive
+            if($endDate && $startDate > $endDate) {
+                break;
+            }
+            $nextDay = Mage::app()->getLocale()->date($startDate, null, null, true)->toString($zendDateFormat);
 
             // Blackout day or date...get next available
             if(in_array($nextDay, $arrBlackoutDates) ||
                 in_array(Mage::app()->getLocale()->date($startDate, null, null, true)->toString('e'), $arrBlackoutDays)) {
+
                 $this->_addDay($startDate);
                 continue;
             }
@@ -190,7 +200,6 @@ class Shipperhq_Pickup_Helper_Date {
 
              }
         }
-
          if(count($timeSlots) == 0) {
              return false;
          }

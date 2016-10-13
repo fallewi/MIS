@@ -63,8 +63,8 @@
                                 <?php $showCarrierNotice = $_rates[0]->getCarrierNotice(); ?>
                             <?php endif ?>
                             <label for="s_method<?php echo $carriergroupInsert ?>_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?>
-                                <?php if ($_rate->getTooltip()): ?>
-                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                <?php if ($_rates[0]->getTooltip()): ?>
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rates[0]->getTooltip() ?>">
                                         <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                     </span>
                                 <?php endif; ?>
@@ -84,14 +84,14 @@
                             <?php endif ?>
                         <?php endif ?>
                         <?php if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Calendar') && Mage::helper('shipperhq_calendar')->hasCalendarDetails($_carriergroupId, $code, $_rates[0]->getCarrierType())) :?>
-                            <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>"?>
+                            <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>" class="ship_options">
                                 <div id="radio_choices_<?php echo $_carriergroupId ?>_<?php echo $code ?>">
                                 </div>
                             </div>
                             <?php echo $this->getCalendarHtml($_carriergroupId, $code) ?>
                         <?php endif ?>
                         <?php if ($this->isFreightCarrier($_rates[0])): ?>
-                            <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>"?>
+                            <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>" class="ship_options">
                                 <div id="radio_choices_<?php echo $_carriergroupId ?>_<?php echo $code ?>">
                                 </div>
                             </div>
@@ -155,8 +155,8 @@
                             <?php $showCarrierNotice = $_rates[0]->getCarrierNotice(); ?>
                         <?php endif ?>
                         <label for="s_method_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?>
-                            <?php if ($_rate->getTooltip()): ?>
-                                <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                            <?php if ($_rates[0]->getTooltip()): ?>
+                                <span style="float:right;" class="helpcursor" title="<?php echo $_rates[0]->getTooltip() ?>">
                                                 <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                             </span>
                             <?php endif; ?>
@@ -170,7 +170,7 @@
                         <p class="disclaimer" id="disclaimer_<?php echo $code ?>" name="disclaimer" hidden=""><?php echo $showCarrierNotice; ?></p>
                     <?php endif ?>
                     <?php if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Calendar') && Mage::helper('shipperhq_calendar')->hasCalendarDetails('', $code, $_rates[0]->getCarrierType())) :?>
-                        <div id="ship_options_<?php echo $code ?>"?>
+                        <div id="ship_options_<?php echo $code ?>" class="ship_options">
                             <div id="radio_choices_<?php echo $code ?>">
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                         <?php endif ?>
                     <?php endif ?>
                     <?php if ($this->isFreightCarrier($_rates[0])): ?>
-                        <div id="ship_options_<?php echo $code ?>"?>
+                        <div id="ship_options_<?php echo $code ?>" class="ship_options">
                             <div id="radio_choices_<?php echo $code ?>">
                             </div>
                         </div>

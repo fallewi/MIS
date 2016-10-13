@@ -50,13 +50,18 @@ class Shipperhq_Calendar_Block_Calendar extends Shipperhq_Frontend_Block_Checkou
 
     public function getDelSlotHtmlSelect($carrierCodeInsert, $carriergroupInsert)
     {
+        $className = 'calendar-slot-select';
+//        if(Mage::getStoreConfig('carriers/shipper/new_styling')) {
+//            $className .= ' shq-input';
+//        }
+
         $id = 'del_slot_select'.$carrierCodeInsert .$carriergroupInsert;
         $selectedTimeSlot =  $this->getAddress()->getTimeSlot();
         $select = $this->getLayout()->createBlock('core/html_select')
             ->setName('del_slot'.$carrierCodeInsert.$carriergroupInsert)
             ->setId($id)
             ->setValue($selectedTimeSlot)
-            ->setClass('pickup-slot-select');
+            ->setClass($className);
 
         return $select->getHtml();
     }

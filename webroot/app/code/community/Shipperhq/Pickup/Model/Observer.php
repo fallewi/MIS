@@ -103,7 +103,14 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
         $shipping_method = $observer->getEvent()->getRequest()->getParam('shipping_method');
         $quote = $observer->getEvent()->getQuote();
         $carrierCode = Mage::helper('shipperhq_shipper')->isPickupRate($quote->getShippingAddress(), $shipping_method);
+        $shippingAddress = $quote->getShippingAddress();
         if($shipping_method == '' || !$carrierCode) {
+            /**
+             * SHQ16-1467 - Revert address to customer entered one if pickup is deselected.
+             */
+            if($shippingAddress->getOrigShippingAddress() != null && $shippingAddress->getOrigShippingAddress() != '') {
+                $this->restoreOriginalShipAddress($shippingAddress);
+            }
             return;
         }
         $pickupLocationId = $observer->getEvent()->getRequest()->getParam('location_id_'.$carrierCode);
@@ -112,7 +119,7 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
         if (!Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup') || !$pickupLocationId) {
             return;
         }
-        $shippingAddress = $quote->getShippingAddress();
+
 
         $this->_savePickupInfoToShippingAddress($shippingAddress, 0, $pickupLocationId, $carrierCode, $pickupDate, $pickupSlot);
     }
@@ -146,6 +153,9 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             }
             $carrierCode = Mage::helper('shipperhq_shipper')->isPickupRate($shippingAddress, $shipping_method);
             if($shipping_method == '' || !$carrierCode) {
+                if($shippingAddress->getOrigShippingAddress() != null && $shippingAddress->getOrigShippingAddress() != '') {
+                    $this->restoreOriginalShipAddress($shippingAddress);
+                }
                 continue;
             }
 
@@ -235,6 +245,8 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
     {
         $pickupLocation = Mage::helper('shipperhq_pickup')->getLocationDetails($carrierGroupId, $carrierCode, $pickupLocationId);
         if($pickupLocation) {
+            $this->saveOriginalShipAddress($shippingAddress);
+
             $regionModel = Mage::getModel('directory/region')->loadByName($pickupLocation['state'], $pickupLocation['country']);
             $regionId = $regionModel->getId();
             $shippingAddress->setPickupLocation($pickupLocation['pickupName']);
@@ -247,7 +259,7 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             $shippingAddress->setPickupContact($pickupLocation['contactName']);
             $shippingAddress->setPickupEmailOption($pickupLocation['emailOption']);
             $shippingAddress->setPickupLocationId($pickupLocation['publicId']);
-            $pickupText = $pickupLocation['pickupName']. ' ' .$pickupDate ;
+            $pickupText = $shippingAddress->getShippingDescription() .' ' .$pickupLocation['pickupName']. ' ' .$pickupDate ;
             if($pickupSlot != '') {
                 $pickupSlot = str_replace('_', ' - ', $pickupSlot);
                 $slotArray = explode(' - ', $pickupSlot);
@@ -321,6 +333,49 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
        return $encodedDetails;
     }
 
+    /**
+     * Save customer entered address to the shipping address model in case we need to revert to that address
+     * SHQ16-1467
+     *
+     * @param $shippingAddress
+     */
+    protected function saveOriginalShipAddress($shippingAddress)
+    {
+        $origShipAddress = $shippingAddress->getOrigShippingAddress();
+
+        if($origShipAddress == "" || $origShipAddress == null) {
+            $origAddressArr['street'] =  $shippingAddress->getStreet();
+            $origAddressArr['company'] = $shippingAddress->getCompany();
+            $origAddressArr['city'] = $shippingAddress->getCity();
+            $origAddressArr['zipcode'] = $shippingAddress->getPostcode();
+            $origAddressArr['state'] = $shippingAddress->getRegion();
+            $origAddressArr['country'] = $shippingAddress->getCountryId();
+            $origAddressArr['region_id'] = $shippingAddress->getRegionId();
+
+            $encodedDetails = Mage::helper('shipperhq_shipper')->encodeShippingDetails($origAddressArr);
+            $shippingAddress->setOrigShippingAddress($encodedDetails);
+        }
+    }
+
+    /**
+     * Overwrite the pickup address with the customer entered address.
+     * SHQ16-1467
+     *
+     * @param $shippingAddress
+     */
+    protected function restoreOriginalShipAddress($shippingAddress)
+    {
+        $encodedOrigShipAddress = $shippingAddress->getOrigShippingAddress();
+        $origShipAddress = Mage::helper('shipperhq_shipper')->decodeShippingDetails($encodedOrigShipAddress);
+
+        $shippingAddress->setStreet($origShipAddress['street']);
+        $shippingAddress->setCompany($origShipAddress['company']);
+        $shippingAddress->setCity($origShipAddress['city']);
+        $shippingAddress->setPostcode($origShipAddress['zipcode']);
+        $shippingAddress->setRegion($origShipAddress['state']);
+        $shippingAddress->setCountryId($origShipAddress['country']);
+        $shippingAddress->setRegionId($origShipAddress['region_id']);
+    }
 
     protected function _getCustomer()
     {

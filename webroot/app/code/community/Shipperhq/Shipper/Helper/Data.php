@@ -350,8 +350,17 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         $carrierGroupDetail['price'] = (float)$rate['totalCharges']*$currencyConversionRate;
         $carrierGroupDetail['cost'] = (float)$rate['shippingPrice']*$currencyConversionRate;
         $carrierGroupDetail['code'] = $rate['code'];
-
-
+        if(isset($rate['selectedOptions'])) {
+            $selectedOptions =  (array)$rate['selectedOptions'];
+            if(isset($selectedOptions['options'])) {
+                foreach($selectedOptions['options'] as $option) {
+                    $thisOption =(array)$option;
+                    if(isset($thisOption['name'])) {
+                        $carrierGroupDetail[$thisOption['name']] = $thisOption['value'];
+                    }
+                }
+            }
+        }
     }
 
     public function getBaseCurrencyRate($code)
@@ -917,6 +926,15 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             return true;
         }
         return false;
+    }
+
+    public function useDefaultCarrierCodes()
+    {
+        $result = false;
+        if(Mage::getStoreConfig('carriers/shipper/CARRIER_STRIP_CODE')) {
+            $result = true;
+        }
+        return $result;
     }
 
     public function isConfirmOrderRequired($carrierType)

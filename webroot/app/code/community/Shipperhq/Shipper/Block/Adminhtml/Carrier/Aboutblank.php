@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Webshopapps Shipping Module
@@ -27,12 +28,31 @@
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @author ShipperHQ Team sales@shipperhq.com
  */
-/**
- * @see Shipperhq_Shipper_Block_Adminhtml_Synchronize_Notify
- */
-?>
-<div class="notification-global notification-global-notice">
-    <strong><?php echo $this->helper('adminhtml')->__('You may need to synchronize with ShipperHQ') ?></strong>
-    <?php echo $this->helper('index')->__('Click here to go to <a href="%s">ShipperHQ Synchronization</a>.', $this->getSynchUrl());?>
-</div>
+class Shipperhq_Shipper_Block_Adminhtml_Carrier_Aboutblank extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+{
+    /**
+     * Return header comment part of html for fieldset
+     *
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     */
+    protected function _getHeaderCommentHtml($element)
+    {
+        $beforeDiv = '<div style="padding:10px;background-color:#fff;border:1px solid #ddd;margin-bottom:7px;">';
+        $afterDiv = '</div>';
+        $element->getComment()
+            ? $comment =   $element->getComment()
+            : $comment =  '';
+        $html =$beforeDiv. '<table>
 
+            <tr>
+             <td colspan="3">
+                <p>'.$comment.'</p>
+              </td>
+            </tr>
+
+            </table>' .$afterDiv;
+        return $html;
+    }
+
+}

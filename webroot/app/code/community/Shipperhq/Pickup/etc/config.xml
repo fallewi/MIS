@@ -32,7 +32,7 @@
 <config>
     <modules>
         <Shipperhq_Pickup>
-            <version>0.0.7</version>
+            <version>0.0.8</version>
             <!-- implemented in module file -->
             <!--<active>true</active>
             <codePool>community</codePool>
@@ -193,16 +193,6 @@
                     <to_quote_address_shipping>*</to_quote_address_shipping>
                 </pickup_location_id>
             </sales_convert_order>
-            <sales_convert_quote_item>
-                <pickup_chosen>
-                    <to_order_item>*</to_order_item>
-                </pickup_chosen>
-            </sales_convert_quote_item>
-            <sales_convert_order_item>
-                <pickup_chosen>
-                    <to_quote_item>*</to_quote_item>
-                </pickup_chosen>
-            </sales_convert_order_item>
         </fieldsets>
     </global>
     <frontend>

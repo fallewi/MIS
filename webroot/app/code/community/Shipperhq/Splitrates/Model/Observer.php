@@ -103,6 +103,9 @@ class Shipperhq_Splitrates_Model_Observer extends Mage_Core_Model_Abstract
             $orderData = $requestData;
         }
         $quote = $observer->getOrderCreateModel()->getQuote();
+        if($quote->isVirtual()) {
+            return;
+        }
         Mage::helper('shipperhq_shipper')->setQuote($quote);
         
         if (!empty($orderData['shipping_method_flag'])) {

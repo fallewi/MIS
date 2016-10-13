@@ -43,7 +43,7 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
     protected $_address;
     protected static $_debug;
 
-    public function getCalendarResults($quote, $carriergroupId, $carrierCode, $dateSelected, $loadOnly, $addressId, &$resultSet, $isOsc = false)
+    public function getCalendarResults($quote, $carriergroupId, $carrierCode, $dateSelected, $loadOnly, $addressId, &$resultSet, $isOsc = false, $methodName)
     {
         $this->quote = $quote;
         $this->quoteStorage = Mage::helper('shipperhq_shipper')->getQuoteStorage($quote);
@@ -84,7 +84,9 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
                     if($carriergroupId != '' && $rate->getCarriergroupId() != $carriergroupId) {
                         continue;
                     }
-                    $dateOnRate = date($dateFormat, strtotime($rate->getDeliveryDate()));
+                    if($methodName == $rate['code'] || $methodName == '') {
+                        $dateOnRate = date($dateFormat, strtotime($rate->getDeliveryDate()));
+                    }
                     if($dateSelected != '' && Date('Y-m-d', (strtotime($dateSelected))) != Date('Y-m-d', strtotime($rate->getDeliveryDate())) ){
                         if(self::$_debug) {
                             Mage::helper('wsalogger/log')->postCritical('Shipperhq Calendar',

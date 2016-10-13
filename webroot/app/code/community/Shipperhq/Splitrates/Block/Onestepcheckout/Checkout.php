@@ -489,22 +489,24 @@ class Shipperhq_Splitrates_Block_Onestepcheckout_Checkout extends Idev_OneStepCh
                             $this->_saveOrder();
                         } else {
                             $this->getOnepage()->saveCheckoutMethod('guest');
-
+                            //SHQ16-1522
+                            if(method_exists(Mage::helper('onestepcheckout') ,'getPersistentHelper' )) {
                             //guest checkout is disabled for persistent cart , reset the customer data here as customer data is emulated
-                            $persistentHelper  = Mage::helper('onestepcheckout')->getPersistentHelper();
-                            if(is_object($persistentHelper)){
-                                if($persistentHelper->isPersistent()){
-                                    $this->getQuote()->getCustomer()
-                                        ->setId(null)
-                                        ->setCustomerGroupId(Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
-                                    $this->getQuote()
-                                        ->setCustomerId(null)
-                                        ->setCustomerEmail(null)
-                                        ->setCustomerFirstname(null)
-                                        ->setCustomerMiddlename(null)
-                                        ->setCustomerLastname(null)
-                                        ->setCustomerGroupId(Mage_Customer_Model_Group::NOT_LOGGED_IN_ID)
-                                        ->setIsPersistent(false);
+                                $persistentHelper  = Mage::helper('onestepcheckout')->getPersistentHelper();
+                                if(is_object($persistentHelper)){
+                                    if($persistentHelper->isPersistent()){
+                                        $this->getQuote()->getCustomer()
+                                            ->setId(null)
+                                            ->setCustomerGroupId(Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
+                                        $this->getQuote()
+                                            ->setCustomerId(null)
+                                            ->setCustomerEmail(null)
+                                            ->setCustomerFirstname(null)
+                                            ->setCustomerMiddlename(null)
+                                            ->setCustomerLastname(null)
+                                            ->setCustomerGroupId(Mage_Customer_Model_Group::NOT_LOGGED_IN_ID)
+                                            ->setIsPersistent(false);
+                                    }
                                 }
                             }
                             $this->_saveOrder();

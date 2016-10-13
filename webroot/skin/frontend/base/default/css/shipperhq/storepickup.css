@@ -1,77 +1,62 @@
-.onestepcheckout-shipping-method-block .location-select {
-    width: 225px;
-}
-
-.onestepcheckout-shipping-method-block .map_canvas {
-    width: 218px;
-    height: 150px;
-    padding: 0px 0px 0px 5px;
-}
-
-.box-content .location-select {
-    width: 229px;
-}
-
-.box-content .map_canvas {
-    width: 221px;
-    height: 150px;
-    padding: 0px 0px 0px 5px;
-}
+/* Old Pickup Styles */
+.map-top-border {
+	border-top: 1px solid #efefef;
+    padding-top: 15px;
+} 
 
 .map_canvas {
     float: right;
-    width: 366px;
-    height: 150px;
-    padding: 0px 0px 0px 5px;
+    width: 48%;
+    height: 180px;
+    padding: 0 0 0 2%;
 }
 
-.shipping-method-select {
-    width: 230px;
-    margin-left: 10px;
+.map_address {
+	float: left;
+	width: 50%;
+	font-size: 12px;
 }
 
-.location-select {
-    width:80%;
+#onestepcheckout-form .map_canvas,
+.multiple-checkout .map_canvas {
+	    float: right;
+	    width: 100%;
+	    height: 180px;
+	    padding: 0;
+	    margin-top:10px;
+	}
+#onestepcheckout-form .map_address,
+.multiple-checkout .map_address {
+		float: left;
+		width: 100%;
+	}
 
-}
-
-.pickup-date-select {
-    width: 140px;
-}
-
-.opc select.pickup-slot-select {
-    width: 140px;
-}
-
-.location_address{
-    width: 300px;
-}
-
-
-.location_table {
-
-}
-
-.left {
-    float:left;
-}
-.right {
-    float: right;
-}
-.outer {
-    overflow: hidden;
-}
-.location {
-    padding: 2px 5px;
-}
+.left {float:left;}
+    
+.right {float: right;}
 
 #co-shipping-method-form .sp-methods dd .location_label label {
     min-width: 100px;
-    padding-left: 10px;
+    background: none !important;
+    padding: 0;
 }
 
-.location_calendar_container {
-    width: 280px;
+.location.left {width:100%;}
+
+.location.left .input-box {
+	margin-bottom: 8px;
+	float: none !important;
+	display: block !important;
+	}
+
+.location_label {display:inline-block;}
+
+.location label {
+	margin-right:10px;
+}
+
+.location_address {
+	width: 300px;
 }
 
 .location .ui-datepicker-trigger {
@@ -79,13 +64,9 @@
     padding-left: 5px;
 }
 
-.overlay-container
-{
-    position:relative;
-}
+.overlay-container {position:relative;}
 
-.overlay-bg
-{
+.overlay-bg {
     position:absolute;
     width:19.2em;
     height:195px;
@@ -94,16 +75,14 @@
     z-index: 101;
 }
 
-.overlay-pickup
-{
+.overlay-pickup {
     position:absolute;
     width:19.2em;
     visibility: hidden;
     z-index: 101;
 }
 
-.overlay-text
-{
+.overlay-text {
     position:relative;
     top:45%;
     left:15%;
@@ -127,21 +106,118 @@
     background-position:4px 8px;
 );
 }
-.trademark
-{
-    font-size:9px; /*Font Size of Trademark Text*/
-}
-
-.ups_logo
-{
+    
+.ups_logo {
     height:36px;
     width:30px;
     padding: 10px 10px;
-
 }
 
-.disclaimer
-{
-    font-size:9px; /*Font Size of Trademark Text*/
+.trademark {font-size:9px; /*Font Size of Trademark Text*/}
+
+.disclaimer {font-size:9px; /*Font Size of Trademark Text*/}
+
+.location-map {margin: 12px 0;}
+
+
+/* New Pickup Styles */
+.opc .shq-custom-method select,
+#onestepcheckout-form .shq-custom-method select,
+.multiple-checkout .shq-custom-method select {max-width: 100% !important; width: 100% !important; }
+
+.opc .shq-custom-method select,
+.opc .shq-custom-method input,
+#onestepcheckout-form .shq-custom-method select,
+#onestepcheckout-form .shq-custom-method input,
+.multiple-checkout .shq-custom-method select,
+.multiple-checkout .shq-custom-method input {
+	font-size: 12px !important;
+	height: 30px !important;
+	border: 1px solid #ddd !important;
+	max-width: 100%;
+	float: left;
+	color:#555;
+	line-height: 30px;
+	padding-left: 5px;
+	padding-right: 5px;
+	}
+
+.calendar-blk, .clock-blk, .location-blk {fill:#555;}
+
+.shq-custom-method {
+	width: 100%;
+	max-width: 480px;
+	display: inline-block;
+	color:#555 !important;
+	margin-top: 10px;
+}
+.shq-optn-50l,
+.shq-optn-50r,
+.shq-optn-100 {
+	float: left;
+	margin-bottom: 20px;
+	font-size: 12px;
 }
 
+.shq-optn-50l {width: 46%; padding-right: 4%; box-sizing: content-box;}
+.shq-optn-50r {width: 46%; padding-left: 4%; box-sizing: content-box;}
+.shq-optn-100 {width: 100%;}
+
+#onestepcheckout-form .shq-optn-50l,
+.multiple-checkout .shq-optn-50l {width: 100%;padding-right:0;}
+
+#onestepcheckout-form .shq-optn-50r,
+.multiple-checkout .shq-optn-50r {width: 100%;padding-left:0;}
+
+.shq-custom-method label.shq-title,
+.shq-custom-method label.shq-input {
+	padding:0 !important;
+	background: none !important;
+}
+.shq-custom-method label.shq-input input {width: auto; float: left;}
+.shq-custom-method label.shq-title:hover,
+.shq-custom-method label.shq-input:hover {
+	background:none !important;
+}
+
+.shq-title,
+.shq-input {
+	float: left;
+	width:100%;
+	font-weight: normal !important;
+	color: #555 !important;
+	font-size: 12px;
+}
+
+.shq-input {margin-top:5px;}
+.shq-input .shq-input {margin-top:0;}
+.shq-input .shq-input .shq-input {margin-top:0;}
+
+img.shq-ico {
+	float: left;
+	width: 14px;
+	margin: 0 5px 0 0;
+}
+.shq-input .shq-input img.shq-ico {
+	margin: 8px 0 0 5px;
+}
+
+@media only screen and (max-width: 480px) {
+	
+	.shq-optn-50l {width: 100%; padding-right: 0;}
+	.shq-optn-50r {width: 100%; padding-left: 0;}
+
+	.map_canvas {
+	    float: right;
+	    width: 100%;
+	    height: 180px;
+	    padding: 0;
+	    margin-top:10px;
+	}
+	
+	.map_address {
+		float: left;
+		width: 100%;
+	}
+
+}

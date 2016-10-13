@@ -68,6 +68,7 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Items_Carriergroup extends Mage_
         $itemsShippingInformation = array();
 
         foreach ($items as $item) {
+            //pickup_chosen is deprecated - leaving in place to historical orders.
             if(!is_null($item->getPickupChosen()) && $item->getPickupChosen() != '') {
                 $itemsShippingInformation[] = str_replace("'", '',$item->getPickupChosen());
             }
