@@ -18,7 +18,7 @@
             <block type="adminhtml/sales_order_view_tab_info" name="order_info_orig" template="sales/order/view/tab/info.phtml">
                 <block type="adminhtml/sales_order_view_messages" name="order_messages"/>
                 <block type="adminhtml/sales_order_view_info" name="order_info" template="sales/order/view/info.phtml"/>
-                <block type="adminhtml/sales_order_view_items" name="order_items" template="shipperhq/postorder/sales/order/view/items_container.phtml">
+                <block type="shipperhq_postorder/adminhtml_sales_order_view_items" name="order_items" template="shipperhq/postorder/sales/order/view/items_container.phtml">
                     <block type="adminhtml/sales_order_view_items" name="order_items_orig" template="sales/order/view/items.phtml">
                         <action method="addItemRender"><type>bundle</type><block>bundle/adminhtml_sales_order_view_items_renderer</block><template>bundle/sales/order/view/items/renderer.phtml</template></action>
                         <action method="addItemRender"><type>default</type><block>adminhtml/sales_order_view_items_renderer_default</block><template>sales/order/view/items/renderer/default.phtml</template></action>

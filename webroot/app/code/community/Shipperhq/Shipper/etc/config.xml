@@ -33,7 +33,7 @@
     <modules>
         <Shipperhq_Shipper>
             <version>0.0.34</version>
-            <extension_version>2.97</extension_version>
+            <extension_version>2.111</extension_version>
             <!-- implemented in module file -->
             <!--  <active>true</active>
               <codePool>community</codePool>

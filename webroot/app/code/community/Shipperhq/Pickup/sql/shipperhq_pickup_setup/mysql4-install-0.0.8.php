@@ -88,6 +88,12 @@ $pickupEmailOption = array(
     'comment' => 'ShipperHQ Pickup Email Option',
     'nullable' => 'true');
 
+$originalShippingAddress = array(
+    'type' => $version > 10 ? Varien_Db_Ddl_Table::TYPE_TEXT : Varien_Db_Ddl_Table::TYPE_VARCHAR,
+    'comment' => 'SHQ Original Shipping Address',
+    'nullable' => 'true',
+);
+
 if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_address'), 'time_slot')){
     $installer->getConnection()->addColumn($installer->getTable('sales/quote_address'), 'time_slot', $timeSlot);
 }
@@ -114,6 +120,9 @@ if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/q
 }
 if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_address'), 'pickup_email_option')){
     $installer->getConnection()->addColumn($installer->getTable('sales/quote_address'), 'pickup_email_option', $pickupEmailOption);
+}
+if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_address'), 'orig_shipping_address')){
+    $installer->getConnection()->addColumn($installer->getTable('sales/quote_address'), 'orig_shipping_address', $originalShippingAddress);
 }
 if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_address_shipping_rate'), 'pickup_location')){
     $installer->getConnection()->addColumn($installer->getTable('sales/quote_address_shipping_rate'), 'pickup_location', $pickupLocation);
@@ -151,6 +160,15 @@ if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/o
 }
 if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/order'), 'pickup_longitude')){
     $installer->getConnection()->addColumn($installer->getTable('sales/order'), 'pickup_longitude', $longitude);
+}
+if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_item'), 'pickup_email')){
+    $installer->getConnection()->addColumn($installer->getTable('sales/quote_item'), 'pickup_email', $pickupEmail);
+}
+if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_address_item'), 'pickup_contact')){
+    $installer->getConnection()->addColumn($installer->getTable('sales/quote_address_item'), 'pickup_contact', $pickupContactName);
+}
+if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/order_item'), 'pickup_email_option')){
+    $installer->getConnection()->addColumn($installer->getTable('sales/order_item'), 'pickup_email_option', $pickupEmailOption);
 }
 
 $installer->endSetup();

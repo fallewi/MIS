@@ -42,8 +42,10 @@
         cell.innerHTML = carriergroupItemText;
         var table = document.getElementsByClassName("data order-tables")[0];
         var footer = table.getElementsByTagName('tfoot')[0];
-        var row = footer.getElementsByTagName('tr')[0];
-        row.insertCell(1);
+        if(footer != null) {
+            var row = footer.getElementsByTagName('tr')[0];
+            row.insertCell(1);
+        }
 
     <?php endif; ?>
     //]]>

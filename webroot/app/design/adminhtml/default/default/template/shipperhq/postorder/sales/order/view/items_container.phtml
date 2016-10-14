@@ -30,18 +30,7 @@
  * @license    http://www.webshopapps.com/license/license.txt - Commercial license
  */
 ?>
-
 <?php echo $this->getChildHtml('order_items_orig') ?>
-
-<!--SHQ16-1181-->
-<?php if (Mage::helper('shipperhq_shipper')->isModuleEnabled('Idev_OneStepCheckout', 'onestepcheckout/general/rewrite_checkout_links')): ?>
-    <?php $oscCommentBlock = $this->getLayout()->getBlockSingleton('Idev_OneStepCheckout_Block_Adminhtml_Sales_Order_View_Comment'); ?>
-    <?php if(method_exists($oscCommentBlock, 'getCommentHtml')
-        && is_callable(array($oscCommentBlock, 'getCommentHtml'))): ?>
-        <?php $commentHtml = $oscCommentBlock->getCommentHtml(); ?>
-        <?php echo $commentHtml; ?>
-    <?php endif; ?>
-<?php endif; ?>
 
 <script type="text/javascript">
     //<![CDATA[
@@ -57,9 +46,11 @@
 
     var table = document.getElementsByClassName("data order-tables")[0];
     var footer = table.getElementsByTagName('tfoot')[0];
-    var row = footer.getElementsByTagName('tr')[0];
-    row.insertCell(1);
-    row.insertCell(2);
+    if(footer != null) {
+        var row = footer.getElementsByTagName('tr')[0];
+        row.insertCell(1);
+        row.insertCell(2);
+    }
     <?php endif; ?>
 
     //]]>

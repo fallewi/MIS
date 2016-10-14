@@ -206,7 +206,7 @@ class Shipperhq_Pickup_Helper_Data extends Mage_Core_Helper_Abstract
                     }
                     if(array_key_exists($carrierGroupId, $itemsGrouped)) {
                         foreach($itemsGrouped[$carrierGroupId] as $item) {
-                            $item->setPickupChosen($pickupText);
+                            $item->setCarriergroupShipping($pickupText);
                         }
                     }
 
@@ -220,7 +220,7 @@ class Shipperhq_Pickup_Helper_Data extends Mage_Core_Helper_Abstract
     public function savePickupToItems($items, $pickupInformation)
     {
         foreach($items as $item){
-            $item->setPickupChosen($pickupInformation);
+            $item->setCarriergroupShipping($pickupInformation);
             $item->save();
         }
     }
