@@ -70,18 +70,22 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
         <div class="cart-product-shipping-info">
             <?php
                 $strLeadTime = $_product->getResource()->getAttribute('lead_time')->getFrontend()->getValue($_product);
+                echo "This item ";
                 switch ($_product->getAttributeText('stock')):
                     case "Stock Item":
-                        echo "This item ships from our warehouse";
+                        echo "ships from our warehouse; ";
                         break;
                     case "Factory Stock Item":
-                        echo "This item ships from the manufacturer";
+                        echo "ships from the manufacturer; ";
                         break;
                     case "Made to Order":
-                        echo "This item is custom made and ships from the manufacturer";
+                        echo "is custom made and ships from the manufacturer; ";
                         break;
+                    default:
+                        echo "";
+                        Mage::log('Unexpected stock value for product: '.$_product->getAttributeText('stock'));
                 endswitch;
-            ?>; departs in  <?php echo $strLeadTime ?>.
+            ?>departs in  <?php echo $strLeadTime ?>.
         </div>
 
         <div class="product-cart-sku">
