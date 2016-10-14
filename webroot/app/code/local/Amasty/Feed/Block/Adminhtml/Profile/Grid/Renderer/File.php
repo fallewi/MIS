@@ -8,7 +8,7 @@ class Amasty_Feed_Block_Adminhtml_Profile_Grid_Renderer_File extends Mage_Adminh
 {
     public function render(Varien_Object $row)
     {
-        if (file_exists($row->getMainPath())) {
+        if (file_exists($row->geOutputPath())) {
 
             $downloadUrl = $row->getDownloadUrl();
 

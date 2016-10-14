@@ -37,7 +37,7 @@ class Amasty_Feed_Block_Adminhtml_Profile_Edit extends Mage_Adminhtml_Block_Widg
 
 
         
-                if (file_exists($feed->getMainPath())) {
+                if (file_exists($feed->geOutputPath())) {
                     $downloadUrl = $feed->getDownloadUrl();
 
                     $this->_addButton('download', array(

@@ -6,6 +6,7 @@
  */  
 class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 {
+
     const STATE_READY    = 0;
     const STATE_WAITING  = 1;
     const STATE_PROGRESS = 2;
@@ -22,6 +23,11 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     const DELIVERY_TYPE_DLD = 0;
     const DELIVERY_TYPE_FTP = 2;
     const DELIVERY_TYPE_SFTP = 3;
+
+    const COMPRESS_NONE = '';
+    const COMPRESS_ZIP = 'zip';
+    const COMPRESS_GZ = 'gz';
+    const COMPRESS_BZ = 'bz2';
     
     public function _construct()
     {    
@@ -913,7 +919,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         if ('/' != substr($remotePath, -1, 1) && '\\' != substr($remotePath, -1, 1)) {
             $remotePath .= '/';
         }
-        $remoteFileName = $this->getFilename() . $this->getFileExt();
+        $remoteFileName = $this->getResponseFilename();
         $remotePath .= $remoteFileName;
         
         return $remotePath;
@@ -943,7 +949,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         }
         $remotePath = $this->_getRemotePath();
         
-        $upload = @ftp_put($ftp, $remotePath, $this->getMainPath(), FTP_ASCII);
+        $upload = @ftp_put($ftp, $remotePath, $this->geOutputPath(), FTP_ASCII);
         if (!$upload) {
             throw new Exception(Mage::helper('amfeed')->__('Can not upload the file to the folder %s. Please check write permissions', $remotePath));
         }
@@ -956,7 +962,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     }
     
     protected function _sftpUpload(){
-        $srcFile = $this->getMainPath();
+        $srcFile = $this->geOutputPath();
         $dstFile = $this->_getRemotePath();
         
         if (false !== strpos($this->getFtpHost(), ':')) {
@@ -1107,8 +1113,13 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     public function getMainPath()
     {
         return Mage::helper('amfeed')->getDownloadPath('feeds', $this->getRealFilename());
-    } 
-    
+    }
+
+    public function geOutputPath()
+    {
+        return Mage::helper('amfeed')->getDownloadPath('feeds', $this->getOutputFilename());
+    }
+
     public function getUrl()
     {
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'amfeed/' . $this->getFilename() . $this->getFileExt();
@@ -1292,11 +1303,66 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         return 'export_' . $this->getId();
     }
 
+    public function getOutputFilename()
+    {
+        return $this->compress();
+    }
+
+    public function getResponseFilename()
+    {
+        $filename = $this->getFilename() . $this->getFileExt();
+
+        if ($this->getCompress() !== self::COMPRESS_NONE) {
+            $filename .= '.' . $this->getCompress();
+        }
+
+        return $filename;
+    }
+
+
     public function getStore()
     {
         if (!$this->_store) {
             $this->_store = Mage::app()->getStore($this->getStoreId());
         }
         return $this->_store;
+    }
+
+    public function compress()
+    {
+        $filename = $this->getRealFilename();
+        $outputFilename = $filename;
+        $compressor = null;
+
+        if ($this->getCompress() === self::COMPRESS_ZIP) {
+            $compressor = new Amasty_Feed_Model_Compressor_Zip();
+        } else if ($this->getCompress() === self::COMPRESS_GZ) {
+            $compressor =  new Mage_Archive_Gz();
+        } else if ($this->getCompress() === self::COMPRESS_BZ) {
+            $compressor =  new Mage_Archive_Bz();
+        }
+
+        if ($compressor){
+            $outputFilename .= '.' . $this->getCompress();
+        }
+
+        if ($compressor && file_exists(Mage::helper('amfeed')->getDownloadPath('feeds', $filename)))
+        {
+            $packFilename = 'export'.$this->getFileExt();
+
+            rename(
+                Mage::helper('amfeed')->getDownloadPath('feeds', $filename),
+                Mage::helper('amfeed')->getDownloadPath('feeds', $packFilename)
+            );
+
+            $compressor->pack(
+                Mage::helper('amfeed')->getDownloadPath('feeds', $packFilename),
+                Mage::helper('amfeed')->getDownloadPath('feeds', $outputFilename)
+            );
+
+            unlink(Mage::helper('amfeed')->getDownloadPath('feeds', $packFilename));
+        }
+
+        return $outputFilename;
     }
 }
