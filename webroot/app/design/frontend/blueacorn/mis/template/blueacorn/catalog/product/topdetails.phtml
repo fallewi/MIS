@@ -32,12 +32,8 @@
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
 <?php
-$categoryurl = "";
 $category = Mage::getModel('catalog/category')->loadByAttribute('name',$_product->getAttributeText('manufacturer'));
-if (is_object($category))
-{
-    $categoryurl = $category->getUrl();
-}
+$categoryurl = is_object($category) ? $category->getUrl() : "";
 ?>
 <div class="top-product-details">
     <div class="product-name">
