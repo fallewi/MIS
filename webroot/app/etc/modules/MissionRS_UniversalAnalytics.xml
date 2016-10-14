@@ -5,7 +5,7 @@
             <active>true</active>
             <codePool>local</codePool>
             <depends>
-                BlueAcorn_UniversalAnalytics
+                <BlueAcorn_UniversalAnalytics />
             </depends>
         </MissionRS_UniversalAnalytics>
     </modules>
