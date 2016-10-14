@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_AmastyOrderAttributeFix>
+            <version>0.1.0</version>
+        </MissionRS_AmastyOrderAttributeFix>
+    </modules>
+    <global>
+        <blocks>
+            <amorderattr>
+                <rewrite>
+                    <adminhtml_order_create_form_attributes>MissionRS_AmastyOrderAttributeFix_Block_Adminhtml_Order_Create_Form_Attributes</adminhtml_order_create_form_attributes>
+                </rewrite>
+            </amorderattr>
+        </blocks>
+        <models>
+            <amorderattr>
+                <rewrite>
+                    <observer>MissionRS_AmastyOrderAttributeFix_Model_Observer</observer>
+                    <paypalobserver>MissionRS_AmastyOrderAttributeFix_Model_PaypalObserver</paypalobserver>
+                </rewrite>
+            </amorderattr>
+        </models>
+    </global>
+</config>
