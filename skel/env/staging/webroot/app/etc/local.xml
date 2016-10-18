@@ -40,9 +40,9 @@
             </db>
             <default_setup>
                 <connection>
-                    <host><![CDATA[172.24.16.35]]></host>
+                    <host><![CDATA[172.24.16.189]]></host>
                     <username><![CDATA[staging_mission]]></username>
-                    <password><![CDATA[jZ62mKQTnNQ3]]></password>
+                    <password><![CDATA[JratEXd4GpZL96]]></password>
                     <dbname><![CDATA[staging_mission]]></dbname>
                     <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
                     <model><![CDATA[mysql4]]></model>
