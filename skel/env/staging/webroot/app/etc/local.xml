@@ -57,7 +57,7 @@
 <full_page_cache>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
-                <server>10.136.244.35</server>
+                <server>172.24.16.189</server>
                 <port>6391</port>
                 <database>0</database>
                 <force_standalone>0</force_standalone>
@@ -68,7 +68,7 @@
         <cache>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
-                <server>10.136.244.35</server>
+                <server>172.24.16.189</server>
                 <port>6392</port>
                 <database>0</database>
                 <force_standalone>0</force_standalone>
