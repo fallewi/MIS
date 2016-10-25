@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-#############################
-# Put testvar overrides here
-#############################
+#################################################
+# Put envar overrides here, comma-seperated list
+#################################################
 
-CHECK_DIRS=( \
-  app/design/frontend/blueacorn/site/template \
-)
+#CHECK_DIRS=(app/code/local/BlueAcorn/Foo,app/code/local/BlueAcorn/Bar)
+#BLACKLIST_DIRS=(app/code/local/BlueAcorn/Foo/Model)
+#CHECK_FILE_EXTS=(php$,phtml$,css$)    <--- regex syntax
+#DIFF_BRANCH="origin/master"
 
-CHECK_FILE_EXTS=( \
- phtml \
-)
+CHECK_DIRS=(app/design/frontend/blueacorn/site/template)
+CHECK_FILE_EXTS=(phtml$)
 
 source setup.sh
 

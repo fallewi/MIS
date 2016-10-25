@@ -11,5 +11,9 @@
     ]
   },
   "stopSpecOnExpectationFailure": false,
-  "random": false
+  "random": false,
+  "CHECK_DIRS": "app/code/local/BlueAcorn,app/code/community/BlueAcorn",
+  "BLACKLIST_DIRS": "",
+  "CHECK_FILE_EXTS": "php",
+  "DIFF_BRANCH": "origin/develop"
 }

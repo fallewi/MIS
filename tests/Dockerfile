@@ -18,6 +18,8 @@ RUN apk add --update \
 
 RUN mkdir -p /repo/tests
 
+COPY docker/php.ini /etc/php5/php.ini
+
 ENV HOME="/tmp"
 USER nobody
 WORKDIR /repo/tests

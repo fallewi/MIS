@@ -8,14 +8,14 @@
 <ruleset name="Magento">
     <description>Magento coding standard.</description>
     <rule ref="Zend.Files.ClosingTag"/>
-    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
-    <rule ref="Generic.WhiteSpace.ScopeIndent"/>
-    <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="120"/>
-            <property name="absoluteLineLimit" value="120"/>
-        </properties>
-    </rule>
+    <!--<rule ref="Generic.WhiteSpace.DisallowTabIndent"/>-->
+    <!--<rule ref="Generic.WhiteSpace.ScopeIndent"/>-->
+    <!--<rule ref="Generic.Files.LineLength">-->
+        <!--<properties>-->
+            <!--<property name="lineLimit" value="120"/>-->
+            <!--<property name="absoluteLineLimit" value="120"/>-->
+        <!--</properties>-->
+    <!--</rule>-->
     <rule ref="Generic.Files.LineEndings"/>
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
     <rule ref="Squiz.Functions.GlobalFunction"/>
@@ -30,10 +30,10 @@
     <rule ref="Squiz.Scope.MethodScope"/>
     <rule ref="Generic.Functions.CallTimePassByReference"/>
     <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
-    <rule ref="PEAR.WhiteSpace.ScopeClosingBrace"/>
+    <!--<rule ref="PEAR.WhiteSpace.ScopeClosingBrace"/>-->
     <rule ref="Generic.ControlStructures.InlineControlStructure"/>
-    <rule ref="PEAR.ControlStructures.ControlSignature"/>
-    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+    <!--<rule ref="PEAR.ControlStructures.ControlSignature"/>-->
+    <!--<rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>-->
     <rule ref="Squiz.Commenting.DocCommentAlignment"/>
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
     <rule ref="Squiz.Commenting.FunctionCommentThrowTag" />

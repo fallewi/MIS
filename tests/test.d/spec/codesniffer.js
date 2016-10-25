@@ -8,7 +8,7 @@ describe("PHPCodeSniffer", function() {
 
         var exit_code = 0;
 
-        child_process.exec('./codesniffer.sh', {cwd: tasksDir, timeout:120000}, function (error, stdout, stderr) {
+        child_process.exec('./codesniffer.sh', {cwd: tasksDir, timeout:120000, env: process.env}, function (error, stdout, stderr) {
 
             if (error) {
                 exit_code = error.code;

@@ -8,7 +8,7 @@ describe("PHP Lint", function() {
 
         var exit_code = 0;
 
-        child_process.exec('./phplint.sh', {cwd: tasksDir, timeout:60000}, function (error, stdout, stderr) {
+        child_process.exec('./phplint.sh', {cwd: tasksDir, timeout:60000, env: process.env}, function (error, stdout, stderr) {
 
             if (error) {
                 exit_code = error.code;

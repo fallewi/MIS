@@ -16,20 +16,20 @@ HTTPD_USER: missionrs
 # REDIS_CACHES: {}
 REDIS_CACHES:
    default:
-     host: 172.24.16.35
-     port: 6379
+     host: 172.24.16.189
+     port: 6391
      db: 0
      cmd: flushdb
 
    fpc:
-     host: 172.24.16.35
-     port: 6379
+     host: 172.24.16.189
+     port: 6392
      db: 1
      cmd: flushdb
 
    obj:
-     host: 172.24.16.35
-     port: 6379
+     host: 172.24.16.189
+     port: 6391
      db: 0
      cmd: flushdb
 

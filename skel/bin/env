@@ -11,7 +11,7 @@ display_help() {
   Usage: env <command> [options]
 
   Commands:
-    set <envname>        set the current environment
+    set <name>           set the current environment
                          this will symlink configuration into webroot
 
     get                  Print the current environment
@@ -19,12 +19,12 @@ display_help() {
     list                 Print the available environments
                          (directories under env/)
 
-    make <envname>       Generates a new environment from skel templates
+    make <name>          Generates a new environment from skel templates
 
-    vars [envname]       Prints variables from current [or passed] environment
-                         (from envars files)
+    vars [name] [var...] Prints variables from current [or passed] environment
+                         Pass individual variable names to limit output
 
-    var <name> [envname] Print a variable value from the current environment
+    var <varname> [name] Print a variable value from the current environment
                          (if set), or optionally from the passed environment
 
     test                 Tests that an environment is set and its configuration
@@ -35,13 +35,13 @@ display_help() {
       as well as an accompaying docker-compose file )
 
     up                   start a dockerized environment
-                         (always updates to latest mage- images)
+                         (also updates/pulls latest mage- images)
 
     down                 stop a dockerized environment
 
-    status [name]        print dockerized environment or container name status
+    status [service]     print environment name status
 
-    logs [name]          print dockerized environment or container name logs
+    logs [service]          print dockerized environment or container name logs
 
 
   Options:
@@ -49,10 +49,10 @@ display_help() {
 
     -q | --quiet         semantic output
 
-    -np | --no-prompt    Avoids prompts (skips existing files) when linking
+    -np | --no-prompt    Avoid prompts (e.g. auto-skip linking existing targets
+                         when setting an environemt)
 
-    -f | --force         Overwrite when linking files
-                         (when setting an environment)
+    -f | --force         Overwrite targets
 
     --only-ansible       Only create Ansible Playbooks when making an environemt
                          (when making an environment)
@@ -63,12 +63,17 @@ display_help() {
     --base-env <env>     Base environment to use when making an environment
                          (when making an environment, prompted by default)
 
+    # dockerized flags
+    ##################
+
+    --skip-build         Skips building and pulling latest mage-* images when
+                         upping an environment
+
     -v | --volumes       create or delete dockerized environment volumes
                          (when toggling a dockerized environment)
 
     -l | --local         skips activating the docker-machine, e.g. run locally
                          (when toggling a dockerized environment)
-
 
 EOF
 
@@ -99,6 +104,7 @@ SKIP_ENV=false
 SKIP_ANSIBLE=false
 SKIP_VOLUMES=true
 SKIP_MACHINE=false
+SKIP_BUILD=false
 
 # run functions
 ###############
@@ -170,7 +176,14 @@ print_vars(){
     . $ENV_DIR/appvars ; \
     . $ENV_DIR/$ENV/envars ; \
     printenv | sed '/^\(SHLVL\|PWD\|_\)=/d'"
-  env -i sh -c "$CMD"
+
+  if [ -z "$REQUESTED_VARS" ]; then
+    env -i bash -c "$CMD"
+  else
+    for var in $REQUESTED_VARS; do
+      env -i bash -c "$CMD" | grep "$var="
+    done
+  fi
 }
 
 print_var(){
@@ -533,16 +546,16 @@ docker_make_volumes(){
 docker_up(){
   docker_bootstrap "start"
 
-  echo
-  echo "========================================"
-  echo "build & pull $ENV environment containers..."
-  echo "========================================"
-  echo
-
-  docker-compose $COMPOSE_FLAGS stop
-  docker-compose $COMPOSE_FLAGS pull
-  docker-compose $COMPOSE_FLAGS build --pull || error \
-    "error builing containers..."
+  if ! $SKIP_BUILD; then
+    echo
+    echo "========================================"
+    echo "build & pull $ENV environment containers..."
+    echo "========================================"
+    echo
+    docker-compose $COMPOSE_FLAGS stop
+    docker-compose $COMPOSE_FLAGS build --pull
+    docker-compose $COMPOSE_FLAGS pull
+  fi
 
   echo
   echo "========================================"
@@ -550,30 +563,23 @@ docker_up(){
   echo "========================================"
   echo
 
-  docker-compose $COMPOSE_FLAGS up -d
+  docker-compose $COMPOSE_FLAGS up --remove-orphans -d
 }
 
 
 docker_down(){
 
   docker_bootstrap "stop"
+  local flags="--remove-orphans"
+  $SKIP_VOLUMES || flags+=" -v"
 
-  if $SKIP_VOLUMES; then
-    echo
-    echo "========================================"
-    echo "stopping $ENV environment containers..."
-    echo "========================================"
-    echo
-    docker-compose $COMPOSE_FLAGS stop
+  echo
+  echo "========================================"
+  echo "stopping $ENV environment containers..."
+  echo "========================================"
+  echo
 
-  else
-    echo
-    echo "========================================"
-    echo "removing $ENV containers and volumes..."
-    echo "========================================"
-    echo
-    docker-compose $COMPOSE_FLAGS down -v
-  fi
+  docker-compose $COMPOSE_FLAGS down $flags
 }
 
 docker_status(){
@@ -605,6 +611,7 @@ else
       -l|--local)        SKIP_MACHINE=true ;;
       --only-ansible)    SKIP_ENV=true ;;
       --skip-ansible)    SKIP_ANSIBLE=true ;;
+      --skip-build)      SKIP_BUILD=true ;;
       --base-env)        BASE_ENV="$2" ; shift ;;
       list)              runstr="print_list" ;;
       test)              runstr="env_test" ; fail_in_groundcontrol ;;
@@ -645,9 +652,11 @@ else
                            DOCKER_CONTAINER_NAME="$2" ; shift ;
                          fi
                          ;;
-      vars)              runstr="print_vars"
+      vars)              runstr="print_vars"e
                          if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
-                           ENV="$2" ; shift ;
+                           ENV="$2" ; shift 2 ;
+                           REQUESTED_VARS="$@"
+                           set --
                          fi
                          ;;
       var)               runstr="print_var" ;

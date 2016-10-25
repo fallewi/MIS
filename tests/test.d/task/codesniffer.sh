@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
-#############################
-# Put testvar overrides here
-#############################
+#################################################
+# Put envar overrides here, comma-seperated list
+#################################################
 
-# CHECK_DIRS=( \
-#     app/code/community/Aoe \
-# )
-# CHECK_FILE_EXTS=( \
-#     php \
-# )
+#CHECK_DIRS=(app/code/local/BlueAcorn/Foo,app/code/local/BlueAcorn/Bar)
+#BLACKLIST_DIRS=(app/code/local/BlueAcorn/Foo/Model)
+#CHECK_FILE_EXTS=(php$,phtml$,css$)    <--- regex syntax
+#DIFF_BRANCH="origin/master"
+
 
 source setup.sh
 
@@ -23,6 +22,6 @@ fi
 
 RULESETS_DIR="${TEST_DIR}/asset/rulesets"
 
-$ASSET_DIR/phpcs.phar --extensions=php --standard=$RULESETS_DIR/codesniffer/ruleset.xml $FILE_LIST
+$ASSET_DIR/phpcs.phar --error-severity=1 --warning-severity=99 --extensions=php --standard=$RULESETS_DIR/codesniffer/ruleset.xml $FILE_LIST
 
 exit $?
