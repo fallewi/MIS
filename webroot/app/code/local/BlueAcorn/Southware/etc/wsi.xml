@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:typens="urn:{{var wsdl.name}}"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  name="{{var wsdl.name}}"
+                  targetNamespace="urn:{{var wsdl.name}}">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:{{var wsdl.name}}">
+
+            <!--BEGIN CUSTOMER PARAMS -->
+            <xsd:element name="southware_customerUpdateRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="customerEmail" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="southwareCustomerId" type="xsd:int" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="southware_customerUpdateResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <!--END CUSTOMER PARAMS -->
+
+            <!--BEGIN ORDER PARAMS -->
+            <xsd:element name="southware_orderUpdateRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="orderNumber" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="southwareOrderId" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="southware_orderUpdateResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!--END ORDER PARAMS -->
+
+        </xsd:schema>
+    </wsdl:types>
+
+
+    <!-- BEGIN MESSAGES -->
+
+    <!-- BEGIN CUSTOMER MESSAGES -->
+    <wsdl:message name="southware_customerUpdateRequest">
+        <wsdl:part name="parameters" element="typens:southware_customerUpdateRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="southware_customerUpdateResponse">
+        <wsdl:part name="parameters" element="typens:southware_customerUpdateResponseParam" />
+    </wsdl:message>
+    <!-- END CUSTOMER MESSAGES -->
+
+    <!-- BEGIN ORDER MESSAGES -->
+    <wsdl:message name="southware_orderUpdateRequest">
+        <wsdl:part name="parameters" element="typens:southware_orderUpdateRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="southware_orderUpdateResponse">
+        <wsdl:part name="parameters" element="typens:southware_orderUpdateResponseParam" />
+    </wsdl:message>
+    <!-- END ORDER MESSAGES -->
+
+    <!-- END MESSAGES -->
+
+
+    <wsdl:portType name="{{var wsdl.handler}}PortType">
+        <!-- BEGIN PORT TYPES -->
+        <!-- BEGIN CUSTOMER PORT TYPES -->
+        <wsdl:operation name="southware_customerUpdate">
+            <wsdl:documentation>Set customer ID</wsdl:documentation>
+            <wsdl:input message="typens:southware_customerUpdateRequest" />
+            <wsdl:output message="typens:southware_customerUpdateResponse" />
+        </wsdl:operation>
+        <!-- END CUSTOMER PORT TYPES -->
+
+        <!-- BEGIN ORDER PORT TYPES -->
+        <wsdl:operation name="southware_orderUpdate">
+            <wsdl:documentation>Set order ID</wsdl:documentation>
+            <wsdl:input message="typens:southware_orderUpdateRequest" />
+            <wsdl:output message="typens:southware_orderUpdateResponse" />
+        </wsdl:operation>
+        <!-- END ORDER PORT TYPES -->
+
+        <!-- END PORT TYPES -->
+    </wsdl:portType>
+    <wsdl:binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <!-- BEGIN BINDINGS -->
+        <!-- BEGIN CUSTOMER BINDINGS -->
+        <wsdl:operation name="southware_customerUpdate">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- END CUSTOMER BINDINGS -->
+
+        <!-- BEGIN ORDER BINDINGS -->
+        <wsdl:operation name="southware_orderUpdate">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- END ORDER BINDINGS -->
+        <!-- END BINDINGS -->
+    </wsdl:binding>
+</wsdl:definitions>
