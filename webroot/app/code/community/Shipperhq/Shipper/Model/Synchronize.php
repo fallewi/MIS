@@ -89,6 +89,7 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
 
     public function checkSynchStatus($saveTime = false)
     {
+        $result = false;
         if(Mage::getStoreConfig('carriers/shipper/active')) {
 
             $synchCheckUrl = Mage::helper('shipperhq_shipper')->getCheckSynchronizedUrl();
@@ -126,10 +127,9 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
             if($saveTime) {
                 Mage::helper('shipperhq_shipper')->saveConfig(Shipperhq_Shipper_Helper_Data::SHIPPERHQ_LAST_SYNC, $latestSync, 'default', 0, false);
             }
-
-            //$result = $synchResult->synchronized == 1 ? '1' : "Required";
-            return $result;
         }
+        return $result;
+
     }
 
     /**
@@ -350,6 +350,7 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
                 Mage::helper('wsalogger/log')->postDebug('Shipperhq_Shipper', 'Saving synch data',
                     'No attribute changes required, 0 rows saved');
             }
+            $this->checkSynchStatus(true);
             return $result;
         }
 
@@ -361,6 +362,7 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
             $newUpdate->clearInstance();
             $result++;
         }
+
         return $result;
 
     }
@@ -424,15 +426,6 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
 
         if ($result >= 0) {
             $this->checkSynchStatus(true);
-            //   $synchSetUrl = Mage::helper('shipperhq_shipper')->getSetSynchronizedUrl();
-//            $timeout = Mage::helper('shipperhq_shipper')->getWebserviceTimeout();
-//            $shipperMapper = $this->_getShipperMapper();
-//            $request = $shipperMapper->getCredentialsTranslation();
-//            $setSynchResult = $this->_getShipperInstance()->sendAndReceive($request, $synchSetUrl, $timeout);
-//            if (Mage::helper('shipperhq_shipper')->isDebug()) {
-//                Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'Setting synchronized status: ',
-//                    $setSynchResult['result']);
-//            }
         }
       return $result;
     }

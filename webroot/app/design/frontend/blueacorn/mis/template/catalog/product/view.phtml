@@ -262,17 +262,23 @@
                     <?php if ($_product->isAvailable()):
                         $strLeadTime = $_product->getResource()->getAttribute('lead_time')->getFrontend()->getValue($_product);
                         ?>
-                        <p>
-                            <?php switch ($_product->getAttributeText('stock')):
+                        <p><?php
+                            echo "This item ";
+                            switch ($_product->getAttributeText('stock')):
                                 case "Stock Item":
+                                    echo "ships from our warehouse; ";
+                                    break;
                                 case "Factory Stock Item":
-                                    echo $this->__('This item ships in ' . $strLeadTime . ".");
+                                    echo "ships from the manufacturer; ";
                                     break;
                                 case "Made to Order":
-                                    echo $this->__('This item is custom made and ships in ' . $strLeadTime . ".");
+                                    echo "is custom made and ships from the manufacturer; ";
                                     break;
+                                default:
+                                    echo "";
+                                    Mage::log('Unexpected stock value for product: '.$_product->getAttributeText('stock'));
                             endswitch;
-                            ?>
+                            ?>departs in  <?php echo $strLeadTime ?>.
                         </p>
                     <?php else: ?>
                         <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>

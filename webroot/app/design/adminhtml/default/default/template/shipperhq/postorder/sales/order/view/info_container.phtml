@@ -35,7 +35,7 @@
 <script type="text/javascript">
     //<![CDATA[
     <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
-    var carriergroupInfo = <?php echo $this->getChildHtml('postorder_info') ?>;
+    var carriergroupInfo = ''+<?php echo $this->getChildHtml('postorder_info') ?>;
     $$('.box-right')[1].insert({after:carriergroupInfo});
     <?php endif; ?>
     //]]>

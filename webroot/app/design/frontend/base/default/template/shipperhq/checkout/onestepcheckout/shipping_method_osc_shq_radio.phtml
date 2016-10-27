@@ -69,7 +69,7 @@
                                 <p class="disclaimer" id="disclaimer_<?php echo $_carriergroupId ?>_<?php echo $code ?>" name="disclaimer_<?php echo $_carriergroupId ?>"><?php echo $_rates[0]->getCustomDescription(); ?></p>
                             <?php endif; ?>
                             <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                                <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>"?>
+                                <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>" class="ship_options">
                                     <div id="radio_choices_<?php echo $_carriergroupId ?>_<?php echo $code ?>">
                             <?php endif ?>
                             <?php foreach ($_rates as $_rate): ?>
@@ -175,7 +175,7 @@
                         <p class="disclaimer" id="disclaimer_<?php echo $code ?>" name="disclaimer"><?php echo $_rates[0]->getCustomDescription(); ?></p>
                     <?php endif; ?>
                     <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                        <div id="ship_options_<?php echo $code ?>"?>
+                        <div id="ship_options_<?php echo $code ?>" class="ship_options">
                         <div id="radio_choices_<?php echo $code ?>">
                     <?php endif ?>
                     <?php foreach ($_rates as $_rate): ?>

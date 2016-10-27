@@ -67,7 +67,7 @@
                     <?php endif; ?>
                     <ul>
                         <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                            <div id="ship_options_<?php echo $code ?>"?>
+                            <div id="ship_options_<?php echo $code ?>" name="ship_options">
                                 <div id="radio_choices_<?php echo $code ?>">
                         <?php endif ?>
                         <?php $_sole = false; foreach ($_rates as $_rate): ?>
@@ -175,7 +175,7 @@
                         <?php endif; ?>
                         <ul>
                             <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                        <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>"?>
+                        <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>" class="ship_options">
                             <div id="radio_choices_<?php echo $_carriergroupId ?>_<?php echo $code ?>">
                                 <?php endif ?>
                                 <?php  $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
@@ -290,7 +290,10 @@
             alert(Translator.translate('Your order cannot be completed at this time as there is no shipping methods available for it. Please make neccessary changes in your shipping address.'));
             return false;
         }
-
+        var isVirtual = '<?php echo $this->getQuote()->isVirtual(); ?>';
+        if (isVirtual) {
+            return true;
+        }
         var shippingMethodSection = $('order-shipping-method-choose');
         var carrierGroupCount = shippingMethodSection.select('.carrier-group-name').length;
         var selectedMethods = 0;

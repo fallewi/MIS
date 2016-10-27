@@ -301,6 +301,33 @@
                         </sort_order>
                     </fields>
                 </shipper>
+                <ups>
+                    <frontend_model>shipperhq_shipper/adminhtml_carrier_aboutblank</frontend_model>
+                    <comment>
+                        <![CDATA[
+                    <b>Note: Credentials required for labelling if using ShipperHQ for rates</b>
+                    </br>
+                ]]>
+                    </comment>
+                </ups>
+                <fedex>
+                    <frontend_model>shipperhq_shipper/adminhtml_carrier_aboutblank</frontend_model>
+                    <comment>
+                        <![CDATA[
+                    <b>Note: Credentials required for labelling if using ShipperHQ for rates</b>
+                    </br>
+                ]]>
+                    </comment>
+                </fedex>
+                <dhlint>
+                    <frontend_model>shipperhq_shipper/adminhtml_carrier_aboutblank</frontend_model>
+                    <comment>
+                        <![CDATA[
+                    <b>Note: Credentials required for labelling if using ShipperHQ for rates</b>
+                    </br>
+                ]]>
+                    </comment>
+                </dhlint>
             </groups>
         </carriers>
     </sections>

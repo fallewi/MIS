@@ -325,21 +325,24 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
             $stdAttributes = array_merge(self::getDimensionalAttributes($magentoItem), self::$_stdAttributeNames);
             $options = self::populateCustomOptions($magentoItem);
             $weight = $magentoItem->getWeight();
-            if(is_null($weight)) { //SHIPPERHQ-1855
+
+            if(is_null($weight) || $weight == 0) { //SHIPPERHQ-1855 / SHQ16-1399
                 if ($productType!= Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL &&
                     $productType!= Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE &&
                     Mage::helper('shipperhq_shipper')->isDebug()) {
-                    Mage::helper('wsalogger/log')->postCritical('ShipperHQ','Item weight is null, using 0',
+                    Mage::helper('wsalogger/log')->postCritical('ShipperHQ','Item weight is null, using default weight set in SHQ',
                         'Please review the product configuration for Sku ' .$magentoItem->getSku() .' as product has NULL weight');
+                    $weight = null;
                 }
-                $weight = 0;
             }
+
             if(is_null($id)) {
                 if (Mage::helper('shipperhq_shipper')->isDebug()) {
                     Mage::helper('wsalogger/log')->postDebug('ShipperHQ','Item ID is null',
                         $magentoItem->getSku());
                 }
             }
+
             $formattedItem = array(
                 'id'                          => $id,
                 'sku'                         => $magentoItem->getSku(),
@@ -370,6 +373,12 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 'fixedPrice'                  => $fixedPrice,
                 'fixedWeight'                 => $fixedWeight,
             );
+
+            $formattedItem['discountedBasePrice'] = self::checkPricePositiveValue($formattedItem['discountedBasePrice']);
+            $formattedItem['discountedStorePrice'] = self::checkPricePositiveValue($formattedItem['discountedStorePrice']);
+            $formattedItem['discountedTaxInclBasePrice'] = self::checkPricePositiveValue($formattedItem['discountedTaxInclBasePrice']);
+            $formattedItem['discountedTaxInclStorePrice'] = self::checkPricePositiveValue($formattedItem['discountedTaxInclStorePrice']);
+
 
             if (!$childItems) {
                 $formattedItem['items'] = self::getFormattedItems(
@@ -410,6 +419,12 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
 
         }
         return $formattedItems;
+    }
+
+
+    protected static function checkPricePositiveValue($price) {
+        return $price<0 ? 0 : $price;
+
     }
 
     private static function getBundleChildPrices($magentoItem)

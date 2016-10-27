@@ -47,6 +47,8 @@ class Amasty_Feed_Model_Observer
                         $currentFeed->save();
                     }
                 }
+
+                $currentFeed->compress();
 //                echo $message;
             }
         }

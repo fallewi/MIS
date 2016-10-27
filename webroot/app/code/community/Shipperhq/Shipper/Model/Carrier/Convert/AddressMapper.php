@@ -188,6 +188,11 @@ class Shipperhq_Shipper_Model_Carrier_Convert_AddressMapper extends Shipperhq_Sh
                 'fixedWeight'                 => $fixedWeight,
             );
 
+            $formattedItem['discountedBasePrice'] = self::checkPricePositiveValue($formattedItem['discountedBasePrice']);
+            $formattedItem['discountedStorePrice'] = self::checkPricePositiveValue($formattedItem['discountedStorePrice']);
+            $formattedItem['discountedTaxInclBasePrice'] = self::checkPricePositiveValue($formattedItem['discountedTaxInclBasePrice']);
+            $formattedItem['discountedTaxInclStorePrice'] = self::checkPricePositiveValue($formattedItem['discountedTaxInclStorePrice']);
+
             if (!$childItems) {
                 $formattedItem['items'] = self::getFormattedItems(
                     $magentoItem->getChildren(), true, null );
@@ -198,6 +203,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_AddressMapper extends Shipperhq_Sh
         }
         return $formattedItems;
     }
+
 
     /**
      * Get values for destination

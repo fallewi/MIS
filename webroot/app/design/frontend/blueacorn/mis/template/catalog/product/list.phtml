@@ -78,9 +78,7 @@
 
                         <?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?>
                         </a></h2>
-                        <?php if($_product->getRatingSummary()): ?>
-                        <?php echo $this->getReviewsSummaryHtml($_product) ?>
-                        <?php endif; ?>
+                        <?php $this->helper('yotpo')->showBottomline($this, $_product); ?>
                         <?php
                         // Provides extra blocks on which to hang some features for products in the list
                         // Features providing UI elements targeting this block will display directly below the product name

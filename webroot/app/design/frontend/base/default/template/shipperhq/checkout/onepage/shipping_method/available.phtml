@@ -58,8 +58,11 @@
                         <p class="disclaimer" id="disclaimer_<?php echo $code ?>" name="disclaimer"><?php echo $_rates[0]->getCustomDescription(); ?></p>
                     <?php endif; ?>
                     <ul>
+                        <?php if($calendarRates): ?>
+                            <?php echo $this->getCalendarHtml('', $code, $_sole) ?>
+                        <?php endif ?>
                         <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                            <div id="ship_options_<?php echo $code ?>">
+                            <div id="ship_options_<?php echo $code ?>" name="ship_options">
                                 <div id="radio_choices_<?php echo $code ?>">
                         <?php endif ?>
                         <?php $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
@@ -75,7 +78,7 @@
                                     <?php else: ?>
                                         <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> />
                                     <?php endif ?>
-                                    <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $this->getMethodTitle($_rate->getMethodTitle(), $_rate->getMethodDescription(), true) ?>
+                                    <label for="s_method_<?php echo $_rate->getCode() ?>">
                                         <strong>
                                             <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
                                             <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
@@ -89,6 +92,7 @@
                                                 </span>
                                             <?php endif; ?>
                                         </strong>
+                                        <?php echo $this->getMethodTitle($_rate->getMethodTitle(), $_rate->getMethodDescription(), true) ?>
                                     </label>
                                 <?php endif ?>
                             </li>
@@ -96,7 +100,6 @@
                         <?php if($calendarRates): ?>
                             </div>
                             </div>
-                            <?php echo $this->getCalendarHtml('', $code, $_sole) ?>
                         <?php endif ?>
                         <?php if($isPickupCarrier || $isFreightCarrier): ?>
                             </div>
@@ -164,7 +167,7 @@
                         <?php endif; ?>
                         <ul>
                             <?php if($calendarRates || $isPickupCarrier || $isFreightCarrier): ?>
-                        <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>"?>
+                        <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>" name="ship_options">
                             <div id="radio_choices_<?php echo $_carriergroupId ?>_<?php echo $code ?>">
                                 <?php endif ?>
                                 <?php  $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>

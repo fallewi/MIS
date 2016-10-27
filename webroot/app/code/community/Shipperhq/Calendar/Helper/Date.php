@@ -52,11 +52,13 @@ class Shipperhq_Calendar_Helper_Date {
         $numPickupDays = array_key_exists('maxDays', $calendarDetails) ? $calendarDetails['maxDays'] : 10;
 
         //Convert java linux timestamps (milliseconds) into php linux timestamps (seconds)
-
         $dateOptions = array();
         $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
         $zendDateFormat = Mage::helper('shipperhq_shipper')->getZendDateFormat();
         $startDate = $calendarDetails['start'];
+        $endDate = isset($calendarDetails['calendarEndDate']) ?
+            Mage::app()->getLocale()->date($calendarDetails['calendarEndDate']/1000, null, null, true)->getTimestamp()
+            : false;
 
         $arrBlackoutDates = array();
         foreach($calendarDetails['blackoutDates'] as $blackoutDate)
@@ -86,11 +88,12 @@ class Shipperhq_Calendar_Helper_Date {
         Mage::helper('wsalogger/log')->postInfo('Shipperhq Calendar',
                                                  'Current Date & Time According to Magento Time Zone',
                                                  $localDT);
-
         while(count($dateOptions) < $numPickupDays) {
-              //
-              //$nextDay1 = date($dateFormat, $startDate);
-              $nextDay = Mage::app()->getLocale()->date($startDate, null, null, true)->toString($zendDateFormat);
+            //SHQ16-1566 support end date inclusive
+            if($endDate && $startDate > $endDate) {
+                break;
+            }
+            $nextDay = Mage::app()->getLocale()->date($startDate, null, null, true)->toString($zendDateFormat);
 
             // Blackout day or date...get next available
             if(in_array($nextDay, $arrBlackoutDates) ||

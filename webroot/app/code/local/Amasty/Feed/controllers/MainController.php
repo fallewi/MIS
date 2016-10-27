@@ -54,10 +54,12 @@ class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
         $profile = Mage::getModel('amfeed/profile')->load($fileName, 'filename');
 
         if ($profile->getId()){
-            $this->_prepareDownloadResponse($profile->getFilename() . $profile->getFileExt(), array(
-                'value' => Mage::helper('amfeed')->getDownloadPath('feeds', $profile->getRealFilename()),
-                'type' => 'filename'
-            ));
+            $this->_prepareDownloadResponse(
+                $profile->getResponseFilename(),
+                array(
+                    'value' => Mage::helper('amfeed')->getDownloadPath('feeds', $profile->getOutputFilename()),
+                    'type' => 'filename'
+                ));
         } else {
             Mage::throwException("Profile not found");
         }

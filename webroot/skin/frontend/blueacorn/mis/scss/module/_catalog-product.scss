@@ -400,6 +400,7 @@
 
             .phone-number {
                 color: $c-blue;
+                white-space: nowrap;
             }
 
             .price {
@@ -407,7 +408,10 @@
                 font-size: 24px;
             }
             .map-pricing-bigger{
-                font-size:24px;
+                font-size:1.2em;
+                strong{
+                    color: #EC3838;
+                }
             }
         }
 
@@ -517,7 +521,7 @@
 
         // Since product detail page images are not cropped to a specific aspect ratio, in order to make the image not
         // cut off on tall skinny screens, we are setting a max-height on the image
-        max-height: 750px;
+        max-height: 500px;
 
         // Centering the image for instances where max-height kicks in
         margin: 0px auto;
@@ -580,7 +584,7 @@
 .product-collateral,
 .product-view .block-related,
 .box-collateral {
-    margin-bottom: 40px;
+    margin-bottom: 1em;
 }
 
 .product-view {
