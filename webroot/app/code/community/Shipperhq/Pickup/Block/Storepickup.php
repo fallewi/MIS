@@ -48,12 +48,14 @@ class Shipperhq_Pickup_Block_Storepickup
     {
         $currentLocationId = $this->getAddress()->getPickupLocation();
 
+        $className = 'location-select';
+
         $id = 'location-select' .$carrierCodeInsert .$carriergroupInsert;
         $name = 'location_id' .$carrierCodeInsert .$carriergroupInsert;
         $select = $this->getLayout()->createBlock('core/html_select')
             ->setName($name)
             ->setId($id)
-            ->setClass('location-select')
+            ->setClass($className)
             ->setValue($currentLocationId)
             ->setOptions($this->_locationOptions);
         return $select->getHtml();
@@ -96,6 +98,11 @@ class Shipperhq_Pickup_Block_Storepickup
 
     public function getPickupSlotHtmlSelect($carrierCodeInsert, $carriergroupInsert)
     {
+        $className = 'pickup-slot-select';
+//        if(Mage::getStoreConfig('carriers/shipper/new_styling')) {
+//            $className .= ' shq-input';
+//        }
+
         $id = 'pickup_slot_select' .$carrierCodeInsert .$carriergroupInsert;
         $name = 'pickup_slot' .$carrierCodeInsert . $carriergroupInsert;
         $selectedTimeSlot =  $this->getAddress()->getTimeSlot();
@@ -103,7 +110,7 @@ class Shipperhq_Pickup_Block_Storepickup
             ->setName($name)
             ->setId($id)
             ->setValue($selectedTimeSlot)
-            ->setClass('pickup-slot-select');
+            ->setClass($className);
 
         return $select->getHtml();
     }

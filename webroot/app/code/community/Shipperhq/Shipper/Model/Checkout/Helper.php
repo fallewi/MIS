@@ -64,8 +64,15 @@ class Shipperhq_Shipper_Model_Checkout_Helper
                 ->setCarrierType($foundRate->getCarrierType())
                 ->setCarriergroupShippingDetails($encodedShipDetails)
                 ->setCarriergroupShippingHtml(Mage::helper('shipperhq_shipper')->getCarriergroupShippingHtml(
-                    $encodedShipDetails))
-                ->save();
+                    $encodedShipDetails));
+            foreach($shipDetails as $detail) {
+                //records destination type returned on rate - not type from address validation or user selection
+                if(isset($detail['destination_type'])) {
+                    $shippingAddress->setDestinationType($detail['destination_type']);
+                }
+            }
+
+            $shippingAddress->save();
             Mage::helper('shipperhq_shipper')->setShippingOnItems($shipDetails,  $shippingAddress);
 
         }

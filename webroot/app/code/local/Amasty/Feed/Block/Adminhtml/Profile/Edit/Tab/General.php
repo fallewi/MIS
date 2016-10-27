@@ -98,6 +98,16 @@ class Amasty_Feed_Block_Adminhtml_Profile_Edit_Tab_General extends Mage_Adminhtm
             'label' => $hlp->__('Default number of additional images'),
             'name' => 'max_images',
         ));
+
+        $fldInfo->addField(
+            'compress',
+            'select',
+            array(
+                'label' => __('Compress'),
+                'name' => 'compress',
+                'options' =>  Mage::getSingleton('amfeed/source_compress')->toArray()
+            )
+        );
         
         $form->setValues($model->getData());
         

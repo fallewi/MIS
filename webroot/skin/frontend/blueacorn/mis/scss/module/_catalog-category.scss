@@ -1,0 +1,18 @@
+/* ============================================ *
+ * Catalog - Category
+ * ============================================ */
+
+.category-products{
+  .yotpo{
+    .pull-left{
+      float: none;
+    }
+  }
+  .yotpo-bottomline{
+    &.pull-left{
+      &.star-clickable{
+        text-align: center;
+      }
+    }
+  }
+}

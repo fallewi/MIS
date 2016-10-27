@@ -133,7 +133,7 @@
             changeDate(carriergroupId, carriergroupInsert, carrierCode, false);
         }
 
-        function changeDate(carriergroupId, carriergroupInsert, carrierCode, isInitialize) {
+        function changeDate(carriergroupId, carriergroupInsert, carrierCode, isInitialize,  methodName="") {
             var carrierCodeInsert = '_' + carrierCode;
             var dateSelected = $('del_date_select' + carrierCodeInsert + carriergroupInsert).value;
 
@@ -151,13 +151,15 @@
                 {
                     method: 'get',
                     onComplete: updateDates,
-                    parameters: {carriergroup_id: carriergroupId, carrier_code: carrierCode, date_selected: dateSelected , load_only: isInitialize}
+                    parameters: {carriergroup_id: carriergroupId, carrier_code: carrierCode,
+                        date_selected: dateSelected , load_only: isInitialize, method_name: methodName}
                 }
             );
 
         }
 
         function updateDates(transport) {
+
             var deliveryDateData = transport.responseText.evalJSON();
             deliverydate_data = deliveryDateData;
             var carriergroupId = deliveryDateData.carriergroup_id;
@@ -244,6 +246,7 @@
         }
 
         function changeShipOptions(data, carriergroupInsert, carrierCode, carriergroupId) {
+
             var carrierCodeInsert = '_' + carrierCode;
 
             if (data == false) {
@@ -411,7 +414,7 @@
                     $('calendar_table' + carrierCodeInsert + carriergroupInsert).show();
                     hidePickupElements(carriergroupInsert);
                     //if we are just selected the radio, we don't need to rerequest rates
-                    changeDate(methodCarriergroupId, carriergroupInsert, carrierCode, true);
+                    changeDate(methodCarriergroupId, carriergroupInsert, carrierCode, true, lastPartMethodName);
                 }
                 var allCalendarDetails = document.getElementsByClassName('calendar_table' +carriergroupInsert);
                 for(var i = 0; i<allCalendarDetails.length; i++) {

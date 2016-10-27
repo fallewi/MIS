@@ -121,3 +121,17 @@
 2.95 - SHQ16-1327 Add required changes for compatibility with PVR
 2.96 - 2.96 release tag
 2.97 - SHQ16-1342 Remove null from UPS AP Location text
+2.98 - SHQ16-1399 Will now use the default weight set in SHQ when weight of item is 0 or null
+2.99 - SHQ16-1237 Fixed issue with wrong rate showing on first load
+2.100 - SHIPPERHQ-1622 optionally reset carrier code to default Magento on place order
+2.101 - SHQ16-1467 Fixed pickup address persisting issue
+2.102 - SHIPPERHQ-1635 Add back in transaction ID
+2.103 - SHQ16-1389 save address type used in rate SHQ16-1515 resovled date format bug
+2.104 - SHQ16-1389 save address type used in rate
+2.105 - SHQ16-1518 Calendar default date changes, SHQ16-1502 ignore admin validation of virtual orders
+2.106 - SHIPPERHQ-1370 check for selected calendar rates and display by default if selected
+2.107 - SHQ16-1522 OSC support for legacy versions
+2.108 - SHQ16-1523 display location for preselected pickup, SHQ16-1525 improve synch notifications, SHQ16-1181 order view duplicate comments correction
+2.109 - SHQ16-1566 support for calendar end date
+2.110 - Resolved JS errors on admin view
+2.111 - SHQ16-1616 account for negative discounted prices, SHQ16-1618 save carrier group ID on order packages

@@ -209,6 +209,7 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                                 ->setPackageName($box->getPackageName())
                                 ->setDeclaredValue($box->getDeclaredValue())
                                 ->setSurchargePrice($box->getSurchargePrice())
+                                ->setCarrierGroupId($box->getCarrierGroupId())
                                 ->setItems($box->getItems());
                             $package->save();
                         }
@@ -218,13 +219,13 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                                 $boxText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($packagesColl, $carrierGroup['name']);
                                 $order->addStatusToHistory($order->getStatus(), $boxText, false);
                             }
-                            $order->addStatusToHistory($order->getStatus(), 'ShipperHQ Transaction ID: ' . $carrierGroup['transaction'], false);
-                            $order->save();
                         }
 
+                        //SHIPPERHQ-1635
+                        $order->addStatusToHistory($order->getStatus(), 'ShipperHQ Transaction ID: ' . $carrierGroup['transaction'], false);
+                        $order->save();
                     }
-                }
-                else {
+                } else {
                     $shippingMethod = $order->getShippingMethod();
                     if($rate = $quote->getShippingAddress()->getShippingRateByCode($shippingMethod)) {
                         $packagesColl= Mage::getModel('shipperhq_shipper/quote_packages')
@@ -239,6 +240,7 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                                 ->setPackageName($box->getPackageName())
                                 ->setDeclaredValue($box->getDeclaredValue())
                                 ->setSurchargePrice($box->getSurchargePrice())
+                                ->setCarrierGroupId($box->getCarrierGroupId())
                                 ->setItems($box->getItems());
                             $package->save();
                         }

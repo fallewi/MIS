@@ -19,7 +19,12 @@ class WebServiceClient {
        $jsonRequest = json_encode($requestObj);
        $debugRequest = $requestObj;
        $debugRequest->credentials->password = null;
-       $jsonDebugRequest = json_encode($debugRequest, JSON_PRETTY_PRINT);
+       if (version_compare(PHP_VERSION, '5.4') >= 0) {
+           $jsonDebugRequest = json_encode($debugRequest, JSON_PRETTY_PRINT);
+       }
+       else {
+           $jsonDebugRequest = json_encode($debugRequest);
+       }
        $debugData['json_request'] = $jsonDebugRequest;
        $debugData['url']               = $webServiceURL;
        $responseBody = '';

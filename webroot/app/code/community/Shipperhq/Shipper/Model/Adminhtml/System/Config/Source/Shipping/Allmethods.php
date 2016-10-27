@@ -69,7 +69,6 @@ class Shipperhq_Shipper_Model_Adminhtml_System_Config_Source_Shipping_Allmethods
                 );
             }
         }
-        Mage::log($methods);
         return $methods;
     }
 }

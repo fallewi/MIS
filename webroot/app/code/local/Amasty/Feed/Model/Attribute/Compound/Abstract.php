@@ -10,7 +10,7 @@
         protected $_feed;
         protected $_attributesCodes = array();
 
-        const CATEGORIES_SHORT_PATH = true;
+        const CATEGORIES_SHORT_PATH = false;
         
         public function init($feed){
             $this->_feed = $feed;

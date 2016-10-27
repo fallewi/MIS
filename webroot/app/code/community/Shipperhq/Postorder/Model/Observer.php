@@ -42,18 +42,21 @@ class Shipperhq_Postorder_Model_Observer extends Mage_Core_Model_Abstract
             switch ($eventName) {
                 case 'sales_order_place_after':
                     $order = $observer->getEvent()->getOrder();
-                    //SHIPPERHQ-1622 not yet implemented
-//                    $quote = $order->getQuote();
-//                    $shipping_method = $order->getShippingMethod();
-//                    $rate = $quote->getShippingAddress()->getShippingRateByCode($shipping_method);
-//                    if($rate) {
-//                        $order->setCarrierType($rate->getCarrierType());
-//                        list($carrierCode, $method) = explode('_', $shipping_method, 2);
-//                        $magentoCarrierCode = Mage::helper('shipperhq_shipper')->mapToMagentoCarrierCode(
-//                            $rate->getCarrierType(),$carrierCode);
-//                        $newShipMethod = ($magentoCarrierCode .'_' .$method);
-//                        $order->setShippingMethod($newShipMethod);
-//                    }
+                    if(Mage::helper('shipperhq_shipper')->useDefaultCarrierCodes()) {
+                        $quote = $order->getQuote();
+                        $shipping_method = $order->getShippingMethod();
+                        $rate = $quote->getShippingAddress()->getShippingRateByCode($shipping_method);
+                        if($rate) {
+
+                            $order->setCarrierType($rate->getCarrierType());
+                            list($carrierCode, $method) = explode('_', $shipping_method, 2);
+                            $magentoCarrierCode = Mage::helper('shipperhq_shipper')->mapToMagentoCarrierCode(
+                            $rate->getCarrierType(),$carrierCode);
+                            $newShipMethod = ($magentoCarrierCode .'_' .$method);
+                            $order->setShippingMethod($newShipMethod);
+
+                        }
+                    }
                     break;
                 case 'sales_order_invoice_save_after':
                     $order = $observer->getEvent()->getInvoice()->getOrder();

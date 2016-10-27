@@ -152,14 +152,5 @@ if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/o
 if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/order'), 'pickup_longitude')){
     $installer->getConnection()->addColumn($installer->getTable('sales/order'), 'pickup_longitude', $longitude);
 }
-if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_item'), 'pickup_email')){
-    $installer->getConnection()->addColumn($installer->getTable('sales/quote_item'), 'pickup_email', $pickupEmail);
-}
-if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/quote_address_item'), 'pickup_contact')){
-    $installer->getConnection()->addColumn($installer->getTable('sales/quote_address_item'), 'pickup_contact', $pickupContactName);
-}
-if(!$installer->getConnection()->tableColumnExists($installer->getTable('sales/order_item'), 'pickup_email_option')){
-    $installer->getConnection()->addColumn($installer->getTable('sales/order_item'), 'pickup_email_option', $pickupEmailOption);
-}
 
 $installer->endSetup();

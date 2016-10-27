@@ -154,8 +154,8 @@ class Shipperhq_Calendar_Model_Observer extends Mage_Core_Model_Abstract
         if(Mage::getSingleton('core/session')->getProductPageEstimate() &&
         $selectedDeliveryDate && $request->getDeliveryDateSelected() == '') {
             if(array_key_exists('date_selected', $selectedDeliveryDate)) {
-                date_default_timezone_set('UTC');
-                $request->setDeliveryDateSelected(strtotime($selectedDeliveryDate['date_selected']));
+                $timeStamp = Mage::app()->getLocale()->date($selectedDeliveryDate['date_selected'], null, null, true)->toString('U');
+                $request->setDeliveryDateSelected($timeStamp);
                 $request->setDeliveryDate($selectedDeliveryDate['date_selected']);
                 $request->setCarriergroupId($selectedDeliveryDate['carriergroup_id']);
             }
@@ -199,9 +199,21 @@ class Shipperhq_Calendar_Model_Observer extends Mage_Core_Model_Abstract
             $decodedCgDetails['dateFormat'] : Mage::helper('shipperhq_shipper')->getDateFormat();
 
         $deliveryDate = Mage::app()->getLocale()->date($dateSelected, null, null, false)->toString($dateFormat);
+        if($deliveryDate != $shippingRateSelected->getDeliveryDate()) {
+            Mage::helper('wsalogger/log')->postCritical('Shipperhq Calendar',
+                'Delivery date in shipping rates does not match selected date ',
+                array('Rate ' =>$shippingRateSelected->getCode(),
+                    'rate delivery date'=> $shippingRateSelected->getDeliveryDate(),
+                    'date selected' =>$deliveryDate));
+
+            $shippingAddress->setDispatchDate('');
+
+        }
+        else {
+            $shippingAddress->setDispatchDate($shippingRateSelected->getDispatchDate());
+        }
 
         $shippingAddress->setDeliveryDate($deliveryDate);
-        $shippingAddress->setDispatchDate($shippingRateSelected->getDispatchDate());
         $timeSlotFieldName = 'del_slot_' .$code .$suffix;
         $timeSlot = (isset($orderData[$timeSlotFieldName]) ? $orderData[$timeSlotFieldName] : null);
 
@@ -222,6 +234,7 @@ class Shipperhq_Calendar_Model_Observer extends Mage_Core_Model_Abstract
         foreach($carrierGroupShippingDetail as $key => $shipDetail) {
             if($shippingAddress->getDeliveryDate() != '') {
                 $shipDetail['delivery_date'] = $shippingAddress->getDeliveryDate();
+                $shipDetail['dispatch_date'] = $shippingAddress->getDispatchDate();
                 if($shippingAddress->getTimeSlot()!= '') {
                     $shipDetail['del_slot'] = $shippingAddress->getTimeSlot();
                 }

@@ -114,8 +114,9 @@ class Shipperhq_Calendar_Helper_Data extends Mage_Core_Helper_Abstract
     {
         if ($selectedDeliveryDate = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getSelectedDeliveryArray()){
             if(array_key_exists('date_selected', $selectedDeliveryDate)) {
-                date_default_timezone_set('UTC');
-                $request->setDeliveryDateSelected(strtotime($selectedDeliveryDate['date_selected']));
+               // date_default_timezone_set('UTC');
+                $timeStamp = Mage::app()->getLocale()->date($selectedDeliveryDate['date_selected'], null, null, true)->toString('U');
+                $request->setDeliveryDateSelected($timeStamp);
                 $request->setDeliveryDate($selectedDeliveryDate['date_selected']);
                 $request->setCarriergroupId($selectedDeliveryDate['carriergroup_id']);
             }
