@@ -5,7 +5,7 @@
  * @license     http://fishpig.co.uk/license.txt
  * @author      Ben Tideswell <help@fishpig.co.uk>
  */
-
+ 
 class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 {
 	/**
@@ -20,21 +20,21 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 *
 	 * @var
 	 */
-	static protected $_db = null;
+	static protected $_db = array();
 	
 	/**
 	 * Array of post type data
 	 *
 	 * @var array
 	 */
-	static protected $_postTypes = null;
+	static protected $_postTypes = array();
 
 	/**
 	 * Array of taxonomy data
 	 *
 	 * @var array
 	 */
-	static protected $_taxonomies = null;
+	static protected $_taxonomies = array();
 	
 	/**
 	 * Holds the current store
@@ -50,7 +50,14 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 * @var int
 	 */
 	static protected $_blogId = 1;
-	
+
+	/**
+	 * Content taken from WordPress to be injected into Magento
+	 *
+	 * @var array
+	 */	
+	protected $_contentHolder = array();
+
 	public function __construct()
 	{
 		/**
@@ -92,11 +99,11 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	protected function _initDb()
 	{
-		if (!is_null(self::$_db)) {
+		if (isset(self::$_db[$this->_getStoreId()]) && !is_null(self::$_db[$this->_getStoreId()])) {
 			return $this;
 		}
 		
-		self::$_db = false;
+		self::$_db[$this->_getStoreId()] = false;
 		
 		/**
 		  * Before connecting to the database
@@ -180,7 +187,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 			Mage::getSingleton('core/resource')->setMappedTableName((string)$table->table, $tablePrefix . $table->table);
 		}
 		
-		self::$_db = $db;
+		self::$_db[$this->_getStoreId()] = $db;
 		
 		return $this;
 	}
@@ -192,21 +199,21 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	protected function _initPostTypes()
 	{
-		if (!is_null(self::$_postTypes)) {
+		if (isset(self::$_postTypes[$this->_getStoreId()]) && !is_null(self::$_postTypes[$this->_getStoreId()])) {
 			return $this;	
 		}
 
-		self::$_postTypes = false;
+		self::$_postTypes[$this->_getStoreId()] = false;
 
 		$transportObject = new Varien_Object(array('post_types' => false));
 		
 		Mage::dispatchEvent('wordpress_app_init_post_types', array('transport' => $transportObject, 'helper' => $this));
 
 		if ($transportObject->getPostTypes()) {
-			self::$_postTypes = $transportObject->getPostTypes();
+			self::$_postTypes[$this->_getStoreId()] = $transportObject->getPostTypes();
 		}
 		else {
-			self::$_postTypes = array(
+			self::$_postTypes[$this->_getStoreId()] = array(
 				'post' => Mage::getModel('wordpress/post_type')->setData(array(
 					'post_type' => 'post',
 					'rewrite' => array('slug' => $this->getWpOption('permalink_structure')),
@@ -223,11 +230,11 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 			);
 		}
 		
-		$transportObject = new Varien_Object(array('post_types' => self::$_postTypes));
+		$transportObject = new Varien_Object(array('post_types' => self::$_postTypes[$this->_getStoreId()]));
 		
 		Mage::dispatchEvent('wordpress_app_init_post_types_after', array('transport' => $transportObject, 'helper' => $this));
 		
-		self::$_postTypes = $transportObject->getPostTypes();
+		self::$_postTypes[$this->_getStoreId()] = $transportObject->getPostTypes();
 
 		return $this;
 	}
@@ -239,7 +246,9 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */	
 	public function getDbConnection()
 	{
-		return self::$_db;
+		$this->_initDb();
+
+		return self::$_db[$this->_getStoreId()];
 	}
 	
 	/**
@@ -251,7 +260,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	{
 		$this->init();
 		
-		return self::$_postTypes;
+		return self::$_postTypes[$this->_getStoreId()];
 	}
 	
 	/**
@@ -264,8 +273,8 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	{
 		$this->init();
 		
-		return isset(self::$_postTypes[$type])
-			? self::$_postTypes[$type]
+		return isset(self::$_postTypes[$this->_getStoreId()][$type])
+			? self::$_postTypes[$this->_getStoreId()][$type]
 			: false;
 	}
 
@@ -278,7 +287,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	{
 		$this->init();
 		
-		return self::$_taxonomies;
+		return self::$_taxonomies[$this->_getStoreId()];
 	}
 	
 	/**
@@ -291,8 +300,8 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	{
 		$this->init();
 		
-		return isset(self::$_taxonomies[$taxonomy])
-			? self::$_taxonomies[$taxonomy]
+		return isset(self::$_taxonomies[$this->_getStoreId()][$taxonomy])
+			? self::$_taxonomies[$this->_getStoreId()][$taxonomy]
 			: false;
 	}
 	
@@ -303,18 +312,18 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	protected function _initTaxonomies()
 	{
-		if (!is_null(self::$_taxonomies)) {
+		if (isset(self::$_taxonomies[$this->_getStoreId()]) && !is_null(self::$_taxonomies[$this->_getStoreId()])) {
 			return $this;
 		}
 		
-		self::$_taxonomies = false;
+		self::$_taxonomies[$this->_getStoreId()] = false;
 					
 		$transportObject = new Varien_Object(array('taxonomies' => false));
 		
 		Mage::dispatchEvent('wordpress_app_init_taxonomies', array('transport' => $transportObject));
 		
 		if ($transportObject->getTaxonomies()) {
-			self::$_taxonomies = $transportObject->getTaxonomies();
+			self::$_taxonomies[$this->_getStoreId()] = $transportObject->getTaxonomies();
 		}
 		else {
 			$blogPrefix = Mage::helper('wordpress')->isWordPressMU()
@@ -325,14 +334,14 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 				'category' => Mage::helper('wordpress')->getWpOption('category_base'),
 				'post_tag' => Mage::helper('wordpress')->getWpOption('tag_base'),
 			);
-			
+
 			foreach($bases as $baseType => $base) {
 				if ($blogPrefix && $base && strpos($base, '/blog') === 0) {
 					$bases[$baseType] = substr($base, strlen('/blog'));	
 				}
 			}
 
-			self::$_taxonomies = array(
+			self::$_taxonomies[$this->_getStoreId()] = array(
 				'category' => Mage::getModel('wordpress/term_taxonomy')->setData(array(
 					'type' => 'category',
 					'taxonomy_type' => 'category',
@@ -365,7 +374,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 			);
 		}
 
-		if (isset(self::$_taxonomies['category'])) {
+		if (isset(self::$_taxonomies[$this->_getStoreId()]['category'])) {
 			$helper = Mage::helper('wordpress');
 			
 			$canRemoveCategoryPrefix = $helper->isPluginEnabled('wp-no-category-base/no-category-base.php')
@@ -374,15 +383,15 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 				|| Mage::helper('wp_addon_wordpressseo')->canRemoveCategoryBase();
 			
 			if ($canRemoveCategoryPrefix) {
-				self::$_taxonomies['category']->setSlug('');
+				self::$_taxonomies[$this->_getStoreId()]['category']->setSlug('');
 			}
 		}
 		
-		$transportObject = new Varien_Object(array('taxonomies' => self::$_taxonomies));
+		$transportObject = new Varien_Object(array('taxonomies' => self::$_taxonomies[$this->_getStoreId()]));
 		
 		Mage::dispatchEvent('wordpress_app_init_taxonomies_after', array('transport' => $transportObject, 'helper' => $this));
 		
-		self::$_taxonomies = $transportObject->getTaxonomies();
+		self::$_taxonomies[$this->_getStoreId()] = $transportObject->getTaxonomies();
 
 		return $this;
 	}
@@ -438,11 +447,11 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function getStore()
 	{
-		if (self::$_store === false) {
+		if (isset(self::$_store[$this->_getStoreId()]) && self::$_store[$this->_getStoreId()] === false) {
 			return Mage::app()->getStore();
 		}
 		
-		self::$_store = Mage::app()->getStore();
+		self::$_store[$this->_getStoreId()] = Mage::app()->getStore();
 
 		if (Mage::app()->getStore()->getCode() === 'admin') {
 			$storeValue = Mage::app()->getRequest()->getParam('store', false);
@@ -450,17 +459,80 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 			$store = Mage::getModel('core/store')->load($storeValue, (int)$storeValue > 0 ? null : 'code');
 
 			if ($store->getId()) {
-				self::$_store = $store;
+				self::$_store[$this->_getStoreId()] = $store;
 			}
 			else {
-				self::$_store = $this->getDefaultStore(Mage::app()->getRequest()->getParam('website', null));
+				self::$_store[$this->_getStoreId()] = $this->getDefaultStore(Mage::app()->getRequest()->getParam('website', null));
 			}
 			
-			if (!self::$_store) {
-				self::$_store = Mage::app()->getStore();
+			if (!self::$_store[$this->_getStoreId()]) {
+				self::$_store[$this->_getStoreId()] = Mage::app()->getStore();
 			}
 		}
 		
-		return self::$_store;
+		return self::$_store[$this->_getStoreId()];
 	}	
+	
+	/**
+	 * Add content from WP to the Magento footer
+	 *
+	 * @param string $content
+	 * @return $this
+	 */
+	public function addWordPressContentToFooter($content)
+	{
+		if (!is_array($content)) {
+			if ($content === false || $content === '') {
+				return $this;
+			}
+		}
+		else {
+			$content = implode("\n", $content);
+		}
+		
+		$key = md5(trim($content));
+		
+		if (!isset($this->_contentHolder[$key])) {
+			$this->_contentHolder[$key] = $content;
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * Get the WordPress content
+	 *
+	 * @return bool|string
+	 **/
+	public function getWordPressContent()
+	{
+		if (count($this->_contentHolder) === 0) {
+			return false;
+		}
+
+		$content = $this->_contentHolder;
+		$head = $this->getLayout()->getBlock('head');
+		$jsTemplate = '<script type="text/javascript" src="%s"></script>';
+
+		if (!$head || strpos(implode(',', array_keys($head->getItems())), 'jquery') === false) {
+			if (!$head || strpos(implode(',', array_keys($headBlock->getItems())), 'underscore') === false) {
+				array_shift($content, sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/underscore.min.js?ver=1.6.0')));
+			}
+			
+			array_shift($content, sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1')));			
+			array_shift($content, sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/jquery/jquery.js?ver=1.11.3')));
+		}
+
+		return implode("\n", $content);
+	}
+	
+	/**
+	 * Get the currently set store ID
+	 *
+	 * @return int
+	 **/
+	protected function _getStoreId()
+	{
+		return (int)Mage::app()->getStore()->getId();
+	}
 }

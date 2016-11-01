@@ -42,6 +42,18 @@ class Fishpig_Wordpress_Helper_Shortcode_Product extends Fishpig_Wordpress_Helpe
 					else if ($params->getIds()) {
 						$params->setIds(explode(',', $params->getIds()));
 					}
+					else if ($params->getSkus()) {
+						$ids = array();
+						$resource = Mage::getResourceModel('catalog/product');
+						
+						foreach(explode(',', $params->getSkus()) as $sku) {
+							if ($id = $resource->getIdBySku($sku)) {
+								$ids[] = $id;
+							}
+						}
+
+						$params->setIds($ids);
+					}
 					
 					if ($params->getIds()) {
 						$collection->addAttributeToFilter('entity_id', array('in' => $params->getIds()));
@@ -92,7 +104,7 @@ class Fishpig_Wordpress_Helper_Shortcode_Product extends Fishpig_Wordpress_Helpe
 					
 					$template = $params->getTemplate() ? $params->getTemplate() : 'wordpress/shortcode/product.phtml';
 
-					$html = $this->_createBlock('catalog/product')
+					$html = $this->_createBlock('wordpress/shortcode_product')
 						->setTemplate($template)
 						->setItems($collection)
 						->setProducts($collection)

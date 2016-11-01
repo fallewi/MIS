@@ -9,6 +9,17 @@
 class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 {
 	/**
+	 * Process a string. Render shortcodes where possible
+	 *
+	 * @param string $string
+	 * @return string
+	 **/
+	public function process($string)
+	{
+		return $this->applyFilters($string, Mage::getModel('wordpress/post'));
+	}
+	
+	/**
 	 * Applies a set of filters to the given string
 	 *
 	 * @param string $content
@@ -16,8 +27,12 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 	 * @param string $context
 	 * @return string
 	 */
-	public function applyFilters($content, $object, $context)
+	public function applyFilters($content, $object, $context = null)
 	{
+		if (Mage::getStoreConfigFlag('wordpress/misc/autop')) {
+			$content = $this->addParagraphsToString($content);
+		}
+
 		$contentObj = new Varien_Object(array(
 			'content' => trim(preg_replace('/(&nbsp;)$/', '', trim($content)))
 		));
@@ -26,10 +41,6 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 		
 		$content = $contentObj->getContent();
 
-		if (Mage::getStoreConfigFlag('wordpress/misc/autop')) {
-			$content = $this->addParagraphsToString($content);
-		}
-		
 		$this->_applyShortcodes($content, $object, $context);
 		$this->_addMagentoFilters($content);
 		
@@ -38,7 +49,7 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 		Mage::dispatchEvent('wordpress_string_filter_after', array('content' => $contentObj, 'object' => $object, 'context' => $context, 'helper' => $this));
 
 		$content = $contentObj->getContent();
-	
+		
 		return $content;
 	}
 
@@ -86,15 +97,33 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 
 	/**
 	 * Add paragraph tags to the content
-	 * Taken from the WordPress core
-	 * Long live open source!
 	 *
 	 * @param string $content
 	 */
 	public function addParagraphsToString($content)
 	{
+		$content = $this->_addParagraphsToString($content);
+		
+		$content = preg_replace('/<p>(\[|<div)/', '$1', $content);
+		$content = preg_replace('/\]<\/p>/', ']', $content);
+		$content = preg_replace('/(<\/div>)<\/p>/', '$1', $content);
+		
+		return $content;
+	}
+
+	/**
+	 * Actually do the HTML conversion
+	 *
+	 * @param string $content
+	 */
+	protected function _addParagraphsToString($content)
+	{
 		if (function_exists('wpautop')) {
 			return wpautop($content);
+		}
+
+		if ($this->_retrieveAutoP()) {
+			return fp_wpautop($content);
 		}
 
 		$protectedTags = array(
@@ -171,6 +200,51 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 
 		return $content;
 	}
+
+	/**
+	 * Retrieve the autop function and evaluate
+	 *
+	 * @return bool
+	 **/
+	protected function _retrieveAutoP()
+	{
+		if (function_exists('fp_wpautop')) {
+			return true;
+		}
+
+		$formattingFile = Mage::getModuleDir('', 'Fishpig_Wordpress') . DS . 'formatting.php';
+#		$formattingFile = Mage::helper('wordpress')->getWordPressPath() . 'wp-includes' . DS . 'formatting.php';
+		
+		if (!is_file($formattingFile)) {
+			return false;
+		}
+		
+		$code = preg_replace('/\/\*\*.*\*\//Us', '', file_get_contents($formattingFile));
+
+		$functions = array(
+			'wpautop' => '',
+			'wp_replace_in_html_tags' => '',
+			'_autop_newline_preservation_helper' => '',
+			'wp_html_split' => '',
+			'get_html_split_regex' => '',
+		);
+		
+		foreach($functions as $function => $ignore) {
+			if (preg_match('/(function ' . $function . '\(.*)function/sU', $code, $matches)) {
+				$functions[$function] = $matches[1];
+			}
+			else {
+				return false;
+			}
+		}
+		
+		$code = preg_replace('/(' . implode('|', array_keys($functions)) . ')/', 'fp_$1', implode("\n\n", $functions));
+		
+		@eval($code);
+
+		return function_exists('fp_wpautop');
+	}
+	
 
 	/**
 	 * Preserve new lines

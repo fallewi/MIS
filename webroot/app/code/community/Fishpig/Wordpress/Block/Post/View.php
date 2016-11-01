@@ -41,11 +41,18 @@ class Fishpig_Wordpress_Block_Post_View extends Fishpig_Wordpress_Block_Post_Abs
 	 */
 	protected function _initPostViewTemplate()
 	{
+		if ($this->getTemplate()) {
+			return $this;
+		}
+
 		if ($viewTemplate = $this->getPost()->getTypeInstance()->getViewTemplate()) {
 			return $this->setTemplate($viewTemplate);
 		}
 		else if ($this->getPost()->getPostViewTemplate()) {
 			return $this->setTemplate($this->getPost()->getPostViewTemplate());
+		}
+		else {
+			$this->setTemplate('wordpress/post/view.phtml');
 		}
 
 		return $this;

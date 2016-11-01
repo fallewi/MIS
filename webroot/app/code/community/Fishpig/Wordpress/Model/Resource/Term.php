@@ -95,7 +95,7 @@ class Fishpig_Wordpress_Model_Resource_Term extends Fishpig_Wordpress_Model_Reso
 				$termIds = array_merge($termIds, $this->getChildIds($termId));
 			}
 			
-			return array_merge(array($parentId), $termIds);
+			return array_unique(array_merge(array($parentId), $termIds));
 		}
 		
 		return array($parentId);

@@ -101,6 +101,11 @@ class Fishpig_Wordpress_Controller_Router extends Mage_Core_Controller_Varien_Ro
 
 			Mage::dispatchEvent('wordpress_match_routes_before', array('router' => $this, 'uri' => $uri));
 
+			# Call this again to check for changes
+			if (($uri = Mage::helper('wordpress/router')->getBlogUri()) === null) {
+				return false;	
+			}
+			
 			if (!$uri) {
 				$this->addRouteCallback(array($this, '_getHomepageRoutes'));	
 			}
@@ -204,7 +209,9 @@ class Fishpig_Wordpress_Controller_Router extends Mage_Core_Controller_Varien_Ro
 		}
 
 		foreach($routes as $routeId => $route) {
+
 			$this->addRoute(rtrim($route, '/'), '*/post/view', array('id' => $routeId));
+			$this->addRoute(rtrim($route, '/') . '/all', '*/post/view', array('id' => $routeId));
 		}
 
 		return $this;
@@ -221,7 +228,6 @@ class Fishpig_Wordpress_Controller_Router extends Mage_Core_Controller_Varien_Ro
 	{
 		foreach(Mage::helper('wordpress/app')->getTaxonomies() as $taxonomy) {
 			if (($routes = $taxonomy->getUris($uri)) !== false) {
-
 				foreach($routes as $routeId => $route) {
 					$this->addRoute($route, '*/term/view', array('id' => $routeId, 'taxonomy' => $taxonomy->getTaxonomyType()));
 					$this->addRoute(rtrim($route, '/') . '/feed', '*/term/feed', array('id' => $routeId, 'taxonomy' => $taxonomy->getTaxonomyType()));

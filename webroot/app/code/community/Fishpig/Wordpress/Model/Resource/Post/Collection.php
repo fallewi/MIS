@@ -260,7 +260,7 @@ class Fishpig_Wordpress_Model_Resource_Post_Collection extends Fishpig_Wordpress
 	{
 		return count($this->_postTypes) > 0;
 	}
-	
+
 	/**
 	 * Adds a published filter to collection
 	 *
@@ -374,7 +374,7 @@ class Fishpig_Wordpress_Model_Resource_Post_Collection extends Fishpig_Wordpress
 	public function addTermIdFilter($termId, $type)
 	{
 		$this->joinTermTables($type);
-		
+
 		if (is_array($termId)) {
 			$this->getSelect()->where("`tax_{$type}`.`term_id` IN (?)", $termId);
 		}
@@ -440,4 +440,30 @@ class Fishpig_Wordpress_Model_Resource_Post_Collection extends Fishpig_Wordpress
 		
 		return $this;
 	}
+	
+	/**
+	 * Calculate the collection size correctly
+	 *
+	 * @return int
+	**/
+	public function getSize()
+	{
+		if (is_null($this->_totalRecords)) {
+			$this->_totalRecords = count($this->getConnection()->fetchCol($this->getSelectCountSql()));
+		}
+	
+		return intval($this->_totalRecords);
+	}
+    
+    /**
+     * Get a valid count SQL object
+     *
+     * @return
+    **/
+    public function getSelectCountSql()
+    {
+		return parent::getSelectCountSql()
+	    	->reset(Zend_Db_Select::COLUMNS)
+	    	->columns('main_table.ID');
+    }
 }

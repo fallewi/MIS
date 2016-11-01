@@ -151,4 +151,34 @@ class Fishpig_Wordpress_Model_Image extends Fishpig_Wordpress_Model_Post_Attachm
 	{
 		return $this->getMetaValue('image_alt');
 	}
+	
+	/**
+	 * Retrieve the description for the image
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->_getData('post_content');
+	}
+	
+	/**
+	 * Retrieve the title for the image
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->_getData('post_title');
+	}
+	
+	/**
+	 * Retrieve the caption for the image
+	 *
+	 * @return string
+	 */
+	public function getCaption()
+	{
+		return $this->_getData('post_excerpt');
+	}
 }
