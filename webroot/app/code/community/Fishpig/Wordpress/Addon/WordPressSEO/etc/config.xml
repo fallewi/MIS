@@ -16,6 +16,9 @@
 			<wp_addon_wordpressseo>
 				<class>Fishpig_Wordpress_Addon_WordPressSEO_Helper</class>
 			</wp_addon_wordpressseo>
+			<wp_addon_yoastseo>
+				<class>Fishpig_Wordpress_Addon_WordPressSEO_Helper</class>				
+			</wp_addon_yoastseo>
 		</helpers>
 	</global>
 	<frontend>

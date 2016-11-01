@@ -96,8 +96,14 @@ class Fishpig_Wordpress_Helper_Social extends Fishpig_Wordpress_Helper_Abstract
 						$middle .= sprintf(' st_image="%s"', $featuredImage->getAvailableImage());
 					}
 
-					if (($excerpt = trim($post->getData('post_excerpt'))) !== '') {
+					if (($excerpt = trim($post->getMetaValue('_yoast_wpseo_metadesc'))) !== '') {
+						$middle .= sprintf(' st_summary="%s"', $this->_sanitizeString($excerpt, '<a><span><strong><em>'));						
+					}
+					else if (($excerpt = trim($post->getData('post_excerpt'))) !== '') {
 						$middle .= sprintf(' st_summary="%s"', $this->_sanitizeString($excerpt, '<a><span><strong><em>'));
+					}
+					else {
+						$middle .= sprintf(' st_summary="%s"', $this->_sanitizeString($post->getPostExcerpt(20), '<a><span><strong><em>'));						
 					}
 
 					$buttonsHtml = str_replace($matches[0][$it], $prefix . $middle . $suffix, $buttonsHtml);

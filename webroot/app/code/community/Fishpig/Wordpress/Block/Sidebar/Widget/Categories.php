@@ -68,7 +68,7 @@ class Fishpig_Wordpress_Block_Sidebar_Widget_Categories extends Fishpig_Wordpres
 	public function getCurrentCategory()
 	{
 		if (!$this->hasCurrentCategory()) {
-			$this->setCurrentCategory(Mage::registry('wordpress_category'));
+			$this->setCurrentCategory(Mage::registry('wordpress_term'));
 		}
 		
 		return $this->getData('current_category');

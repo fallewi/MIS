@@ -102,24 +102,30 @@ class Fishpig_Wordpress_Model_Resource_Post extends Fishpig_Wordpress_Model_Reso
 			->distinct()
 			->from(array('_relationship' => $this->getTable('wordpress/term_relationship')), 'object_id')
 			->where('object_id = (?)', $postId)
-			->join(
-				array('_taxonomy' => $this->getTable('wordpress/term_taxonomy')),
-				$this->_getReadAdapter()->quoteInto("_taxonomy.term_taxonomy_id = _relationship.term_taxonomy_id AND _taxonomy.taxonomy= ?", $taxonomy),
-				'*'
-			)
-			->join(
-				array('_term' => $this->getTable('wordpress/term')),
-				"`_term`.`term_id` = `_taxonomy`.`term_id`",
-				'name')
-			->order('_term.name ASC');
+			->order('_term.term_id ASC');
+			
+		$select->join(
+			array('_taxonomy' => $this->getTable('wordpress/term_taxonomy')),
+			$this->_getReadAdapter()->quoteInto("_taxonomy.term_taxonomy_id = _relationship.term_taxonomy_id AND _taxonomy.taxonomy= ?", $taxonomy),
+			'*'
+		);
+		
+		$select->join(
+			array('_term' => $this->getTable('wordpress/term')), 
+			"`_term`.`term_id` = `_taxonomy`.`term_id`", 
+			'name'
+		);
+		
+		if (Mage::helper('wordpress')->isAddonInstalled('WordPressSEO')) {
+			Mage::helper('wp_addon_yoastseo')->addPrimaryCategoryToSelect($select, $postId);
+		}
 
-			$select->reset('columns')
-				->columns(array(
-					$taxonomy . '_id' => '_term.term_id', 
-					'term_id' => '_term.term_id',
-					'object_id'
-				))
-				->limit(1);
+		$select->reset('columns')
+			->columns(array(
+				$taxonomy . '_id' => '_term.term_id', 
+				'term_id' => '_term.term_id',
+				'object_id'
+			))->limit(1);
 
 		return $this->_getReadAdapter()->fetchAll($select);
 				
@@ -164,12 +170,12 @@ class Fishpig_Wordpress_Model_Resource_Post extends Fishpig_Wordpress_Model_Reso
 			}	
 	
 			if (count($sqlFields) > 0) {
-				$sqlColumns[$postType->getPostType()] = 'WHEN `post_type` = \'' . $postType->getPostType() . '\' THEN (CONCAT(' . implode(', ', $sqlFields) . '))';
+				$sqlColumns[$postType->getPostType()] = ' WHEN `post_type` = \'' . $postType->getPostType() . '\' THEN (CONCAT(' . implode(', ', $sqlFields) . '))';
 			}
 		}
 
 		return count($sqlColumns) > 0 
-			? sprintf('CASE %s END', implode('', $sqlColumns))
+			? new Zend_Db_Expr(sprintf("CASE %s END", implode("", $sqlColumns)))
 			: false;
 	}
 	
@@ -189,7 +195,7 @@ class Fishpig_Wordpress_Model_Resource_Post extends Fishpig_Wordpress_Model_Reso
 		if ($postTypes = Mage::helper('wordpress/app')->getPostTypes()) {
 			$fields = $this->getPermalinkSqlFields();
 
-			foreach($postTypes as $postType) {
+			foreach($postTypes as $postType) {	
 				if (false && $postType->isHierarchical()) {
 					$tokens = $postType->getExplodedPermalinkStructure();
 					
@@ -231,7 +237,6 @@ class Fishpig_Wordpress_Model_Resource_Post extends Fishpig_Wordpress_Model_Reso
 					
 					array_pop($tokens);
 				}
-
 
 				try {
 					for($i = 0; $i <= 1; $i++) {
@@ -280,13 +285,21 @@ class Fishpig_Wordpress_Model_Resource_Post extends Fishpig_Wordpress_Model_Reso
 							unset($tokens[$key]);
 						}
 					}
+					
+					if (isset($filters['post_id']) && isset($filters['postname'])) {
+						if ((int)$filters['postname'] > 0 && (int)$filters['post_id'] === 0) {
+							$temp = $filters['post_id'];
+							$filters['post_id'] = $filters['postname'];
+							$filters['postname'] = $temp;
+						}
+					}
 
 					if ($buffer = $this->getPermalinks($filters, $postType)) {
 						foreach($buffer as $routeId => $route) {
 							if (rtrim($route, '/') === $originalUri) {
 								$permalinks[$routeId] = $route;
 								throw new Exception('Break');
-							}	
+							}
 						}
 						
 #						$permalinks += $buffer;
