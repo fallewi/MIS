@@ -40,9 +40,9 @@
             </db>
             <default_setup>
                 <connection>
-                    <host><![CDATA[172.24.16.35]]></host>
-                    <username><![CDATA[prod_mission]]></username>
-                    <password><![CDATA[493WNzTFuEYw]]></password>
+                    <host><![CDATA[172.24.16.189]]></host>
+                    <username><![CDATA[preprod_mission]]></username>
+                    <password><![CDATA[Ex0Uh3ei]]></password>
                     <dbname><![CDATA[preprod_mission]]></dbname>
                     <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
                     <model><![CDATA[mysql4]]></model>
@@ -57,9 +57,9 @@
         <full_page_cache>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
-                <server>10.136.244.35</server>
-                <port>6381</port>
-                <database>1</database>
+                <server>127.0.0.1</server>
+                <port>6383</port>
+                <database>0</database>
                 <force_standalone>0</force_standalone>
                 <compress_data>0</compress_data>
             </backend_options>
@@ -68,9 +68,9 @@
         <cache>
             <backend>Mage_Cache_Backend_Redis</backend>
             <backend_options>
-                <server>10.136.244.35</server>
-                <port>6382</port>
-                <database>1</database>
+                <server>127.0.0.1</server>
+                <port>6384</port>
+                <database>0</database>
                 <force_standalone>0</force_standalone>
             </backend_options>
        </cache>
