@@ -46,7 +46,7 @@ Sync is run...
 * whenever an environment is set
 * whenever a deployment is made
 
-... to ensure your assets become part of the application. 
+... to ensure your assets become part of the application.
 
 # Development Process
 
@@ -122,7 +122,7 @@ bin/tests
 
 # alternatively, manually run tests [requires node]
 cd /path/to/repo/tests
-npm install
+yarn install
 node .
 ```
 

@@ -53,15 +53,18 @@
   hosts: term-container
   gather_facts: False
   any_errors_fatal: yes
+  vars:
+    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}/{{ SNAPSHOT_BASE_ENV }}"
+    SNAPSHOT_PATH_DB: "{{ SNAPSHOT_PATH }}/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+    SNAPSHOT_PATH_MEDIA: "{{ SNAPSHOT_PATH }}/media/"
   tasks:
 
     - name: start remote post-deployment tasks
       include: tasks/deploy/remote/post.yml
 
     # @TODO use UFS mount or dumbnail module. for now, copy media
-    # @TODO if copying media, lets use rsync
     - name: copy media from NFS
-      shell: cp -dR /nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/media {{ APP_ROOT }}/
+      shell: cp -dR {{ SNAPSHOT_PATH_MEDIA }} {{ APP_ROOT }}/
       args:
         creates: "{{ APP_ROOT }}/media/catalog"
       tags:

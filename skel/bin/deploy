@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
 # globals
 #########
@@ -18,7 +17,7 @@ FORCE_ENVIRONMENT_PLAYBOOK=true
 # runtime
 #########
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 
 # @TODO only fail if deployment requires local compilation -- how to determine??
 fail_in_groundcontrol "bin/deploy"
