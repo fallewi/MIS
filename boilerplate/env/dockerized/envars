@@ -10,9 +10,10 @@ REPO_REF="develop??"
 #  typically ocean-CLIENT_CODE, node-a (qa-1), node-b (qa-2), &c.
 DOCKER_MACHINE="node-??"
 
-# when installed for first time, ...
-#  what media/database snapshot environment should we use to seed?
-SNAPSHOT_BASE_ENV="www??"
+# defines the media/database snapshot to seed this environment with
+#  browse snapshots via http://snapshots.badevops.com/
+SNAPSHOT_BASE_CLIENT="$CLIENT_CODE"
+SNAPSHOT_BASE_ENV="staging??"
 
 ##
 #

@@ -27,10 +27,10 @@ Use `bin/deploy` to deploy, and understand:
 ##### bin/deploy basics
 
 Keep in mind that deploy is an environment-specific command, and the hosts that get deployed to are in the environment's
-ssh_config. 
+ssh_config.
 
 When executing `bin/deploy <env>`, the `skel/ansible/<env>.deploy.yml` ansible playbook runs. Playbooks run against
-a set of hosts -- and these hosts are defined in `skel/env/<env>/ssh_config`. 
+a set of hosts -- and these hosts are defined in `skel/env/<env>/ssh_config`.
 
 The ssh_config must be kept up to date. See [ENVIRONMENTS.md](ENVIRONMENTS.md) for more on environments.
 
@@ -71,7 +71,7 @@ cd /sites && git clone @REPO_REMOTE
 if blueacornui exists, configure for compiling assets
 ```sh
 cd /sites/@CLIENT_CODE/blueacornui
-npm install
+yarn install
 bower install
 ```
 

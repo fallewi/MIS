@@ -8,7 +8,7 @@
   gather_facts: no
   vars:
     FORCE_DB_IMPORT: false
-    SNAPSHOT_DB_URL: "http://snapshots.badevops.com/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+    SNAPSHOT_DB_URL: "http://snapshots.badevops.com/clients/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}/{{ SNAPSHOT_BASE_ENV }}/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
 
   tags:
     - db-import
@@ -37,7 +37,7 @@
   gather_facts: no
   vars:
     FORCE_MEDIA_IMPORT: false
-    SNAPSHOT_MEDIA_URL: "http://snapshots.badevops.com/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.media.tar.gz"
+    SNAPSHOT_MEDIA_URL: "http://snapshots.badevops.com/clients/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}/{{ SNAPSHOT_BASE_ENV }}/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}-{{ SNAPSHOT_BASE_ENV }}.media.tar.gz"
 
   tags:
     - media-import

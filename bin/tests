@@ -37,9 +37,12 @@ display_help() {
                            replace and overwrite existing tests/
                          When running,
                            force a rebuild of the test docker container
-                           
+
     -b | --base-branch   Specify the base branch for the build. This will be used
                          to determine the file diffs for your branch.
+                         
+    -r | --ref           Specify the ref to test. By default, it will use the
+                         current HEAD                         
 
     -c | --cmd           When running, specifies the test docker container CMD
 
@@ -61,18 +64,12 @@ EOF
   exit $1
 }
 
-error(){
-  printf "\033[31m%s\n\033[0m" "$@" >&2
-  exit 1
-}
-
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 
 if [ -z "$CLIENT_CODE" ] || [ "$CLIENT_CODE" = "@CLIENT_CODE" ]; then
   error "CLIENT_CODE undefined" "has skel been initialized?"
@@ -174,6 +171,7 @@ while [ $# -ne 0 ]; do
                          DOCKER_COMMAND="$2" ; shift ;;
     -f|--force)          FORCE=true ;;
     -b|--base-branch)    DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -e BASE_BRANCH=$2"; shift ;;
+    -r|--ref)            DOCKER_RUN_FLAGS="$DOCKER_RUN_FLAGS -e COMMIT_HASH=$2"; shift ;;
     --repo-url)          TESTS_REPO_URL="$2" ; shift ;;
     --repo-ref)          TESTS_REPO_REF="$2" ; shift ;;
     --repo-root-match)   REPO_ROOT_MATCH="$2" ; shift ;;

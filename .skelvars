@@ -1,1 +1,3 @@
-SKEL_VERSION=2.8.0
+SKEL_VERSION=2.9.0
+GP_REMOTE=${GP_REMOTE:-"git@github.com:BlueAcornInc/green-pistachio.git"}
+GP_BRANCH=${GP_BRANCH:-"master"}
