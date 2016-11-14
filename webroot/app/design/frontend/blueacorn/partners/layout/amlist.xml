@@ -11,7 +11,12 @@
 
     <default>
         <reference name="head">
+            <action method="removeItem"><type>js</type><name>prototype/prototype.js</name></action>
+            <action method="removeItem"><type>js</type><name>prototype/validation.js</name></action>
             <action method="addCss"><stylesheet>css/amlist.css</stylesheet></action>
+            <action method="addItem"><type>skin_css</type><name>css/datatable.min.css</name></action>
+            <!--<action method="addItem"><type>skin_js</type><name>js/datatable.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/datatable.jquery.js</name></action>-->
         </reference>
     </default>
 
@@ -45,3 +50,37 @@
     </catalog_product_view>
 
 </layout>
+
+<!--
+
+<script type="text/javascript" src="http://localhost.missionrs.com/js/lib/ccard.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/scriptaculous/builder.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/scriptaculous/effects.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/scriptaculous/dragdrop.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/scriptaculous/controls.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/scriptaculous/slider.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/varien/js.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/varien/form.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/mage/translate.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/mage/cookies.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/js/varien/weee.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/modernizr.custom.min.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/selectivizr.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/matchMedia.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/matchMedia.addListener.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/enquire.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/blueacorn/mis/js/app.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/jquery.cycle2.min.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/jquery.cycle2.swipe.min.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/slideshow.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/lib/imagesloaded.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/blueacorn/enterprise/js/scripts.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/minicart.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/base/default/js/msrp.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/rwd/default/js/msrp_rwd.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/blueacorn/enterprise/js/enterprise/catalogevent.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/blueacorn/enterprise/js/enterprise/wishlist.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/blueacorn/mis/js/blueacorn-magento-overrides.js"></script>
+<script type="text/javascript" src="http://localhost.missionrs.com/skin/frontend/blueacorn/mis/js/vendor/jquery.fittext.js"></script>
+
+-->

@@ -12,6 +12,7 @@ class Amasty_List_Block_Index extends Mage_Core_Block_Template
         
         $lists = Mage::getResourceModel('amlist/list_collection')
             ->addCustomerFilter(Mage::getSingleton('customer/session')->getCustomerId())
+            ->setOrder('title','asc')
             ->load();
             
         $this->setLists($lists);
