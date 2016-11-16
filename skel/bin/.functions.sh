@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-
-. ${BADEVOPS_DIR:=$HOME/.badevops}/helpers.sh &>/dev/null || {
-  echo "ERROR - badevops-bootstrap helpers are required by skel!"
+__cmd_prefix="badevops-"
+. $(dirname $0)/.shell-helpers.sh &>/dev/null || {
+  echo "ERROR - unable to load shell-helpers.sh!"
   exit 1
 }
 
@@ -28,6 +28,7 @@ DOCKER_DIR="$REPO_ROOT/$SKEL_DIR/docker"
 BOILERPLATE_DIR="$REPO_ROOT/$SKEL_DIR/boilerplate"
 TESTS_DIR="$REPO_ROOT/tests"
 APP_ROOT="$REPO_ROOT/$WEBROOT_DIR"
+SKIP_BOOTSTRAP=false
 
 [ -d "$APP_ROOT" ] || error "APP_ROOT $APP_ROOT doesn't exist"
 [ -d "$ENV_DIR" ] || error "ENV_DIR $ENV_DIR doesn't exist"
@@ -129,16 +130,18 @@ env_bootstrap_ansible(){
     # dockerized environments
     #
 
+
     ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/dockerized_hosts.py
     FORCE_ENVIRONMENT_PLAYBOOK=false
 
     if [ -e "${ANSIBLE_DIR}/${ENV}.${ANSIBLE_PLAYBOOK}" ]; then
-      ANSIBLE_PLAYBOOK="${ENV}.${ANSIBLE_PLAYBOOK}"
+      ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
     else
-      ANSIBLE_PLAYBOOK="dockerized.$ANSIBLE_PLAYBOOK"
+      ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/dockerized.$ANSIBLE_PLAYBOOK"
     fi
 
     # force activation of configured machine
+    export MACHINE_STORAGE_PATH=${MACHINE_STORAGE_PATH:-~/.docker/machine}
     configure_docker_machine $DOCKER_MACHINE
 
   else
@@ -169,19 +172,16 @@ env_bootstrap_ansible(){
     echo export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
   fi
 
-  # cd to ansible playbook directory so we can use host_vars, group_vars
-  #  http://docs.ansible.com/ansible/intro_inventory.html
-  cd $ANSIBLE_DIR
-
-  if [ -e ${ENV}.${ANSIBLE_PLAYBOOK} ]; then
-    ANSIBLE_PLAYBOOK="${ENV}.${ANSIBLE_PLAYBOOK}"
+  if [ -e $ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK} ]; then
+    ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
   else
     $FORCE_ENVIRONMENT_PLAYBOOK && error "missing playbook" \
       "${ENV}.${ANSIBLE_PLAYBOOK}"
   fi
 
   [ -e "$ANSIBLE_PLAYBOOK" ] || error "missing playbook(s)" \
-    "$ANSIBLE_PLAYBOOK" "${ENV}.${ANSIBLE_PLAYBOOK}"
+    "$ANSIBLE_PLAYBOOK" "$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
+
 }
 
 
@@ -232,6 +232,10 @@ ansible_command(){
   set_cmd ansible-playbook || error \
     "ansible-playbook is required! please initialize badevops-bootstrap"
 
+  $SKIP_BOOTSTRAP && __cmd=ansible-playbook
+
+  cd $REPO_ROOT
+
   if $ANSIBLE_LIST_TAGS ; then
     $__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK --list-tags
     exit 0
@@ -264,6 +268,7 @@ ansible_command(){
   fi
 
   export ANSIBLE_HOST_KEY_CHECKING=false
+  export ANSIBLE_RETRY_FILES_ENABLED=false
 
   $__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
     $ANSIBLE_TAGS $ANSIBLE_LIMIT $ANSIBLE_VERBOSITY $ANSIBLE_CHECK \

@@ -60,7 +60,7 @@ nginx:
 phpfpm:
   container_name: ${ENV}-${CLIENT_CODE}-phpfpm
   restart: unless-stopped
-  image: registry.badevops.com/mage-phpfpm:m1
+  image: registry.badevops.com/mage-php:m1-fpm
   links:
     - smtp
     - mysql
