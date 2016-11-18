@@ -5,13 +5,22 @@
             <version>0.1.0</version>
         </MissionRS_AmastyListGuides>
     </modules>
+    <global>
+        <blocks>
+            <amlist>
+                <rewrite>
+                    <index>MissionRS_AmastyListGuides_Block_Index</index>
+                </rewrite>
+            </amlist>
+        </blocks>
+    </global>
     <frontend>
         <routers>
             <amlist>
                 <args>
-                    <module>
-                        <MissionRS_AmastyListGuides before="Amasty_List">MissionRS_AmastyListGuides</MissionRS_AmastyListGuides>
-                    </module>
+                    <modules>
+                        <missionrs_amastylistguides before="Amasty_List">MissionRS_AmastyListGuides</missionrs_amastylistguides>
+                    </modules>
                 </args>
             </amlist>
         </routers>

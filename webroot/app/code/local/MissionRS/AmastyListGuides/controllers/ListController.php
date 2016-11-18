@@ -1,6 +1,11 @@
 <?php
-
-require_once 'Amasty/List/controllers/ListController.php' ;
+/**
+ * @author MissionRS Victor Cortez
+ * @package MissionRS_AmastyListGuides
+ * Updated Parent Core files $_customerId and  _renderLayoutWithMenu()
+ * setting them as protected to avoid rewriting.
+ */
+require_once(Mage::getModuleDir('controllers','Amasty_List').DS.'ListController.php');
 
 class MissionRS_AmastyListGuides_ListController extends Amasty_List_ListController
 {

@@ -1,10 +1,10 @@
 <?php
 /**
- * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
- * @package Amasty_List
+ * @author MissionRS Victor Cortez
+ * @package MissionRS_AmastyListGuides
+ * Extending to add setOrder to title
  */ 
-class Amasty_List_Block_Index extends Mage_Core_Block_Template 
+class MissionRS_AmastyListGuides_Block_Index extends Amasty_List_Block_Index
 { 
     protected function _prepareLayout()
     {
@@ -12,6 +12,7 @@ class Amasty_List_Block_Index extends Mage_Core_Block_Template
         
         $lists = Mage::getResourceModel('amlist/list_collection')
             ->addCustomerFilter(Mage::getSingleton('customer/session')->getCustomerId())
+            ->setOrder('title','asc')
             ->load();
             
         $this->setLists($lists);

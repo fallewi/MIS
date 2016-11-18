@@ -9,7 +9,7 @@
 <?php $items = $this->getList()->getItems(); ?>
 <?php $_hlp = Mage::helper('amlist'); ?>
 <?php $_coreHelper = $this->helper('core'); ?>
-<h3><?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
+<h3>Order: <?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php if (count($items)): ?>
 <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
@@ -19,7 +19,6 @@
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
         <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/mrscart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
     </div>
-    <div class="paging"></div>
     <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">    <col width="30" />
         <col width="60" />
         <col />
@@ -68,7 +67,6 @@
         <?php endforeach ?>
         </tbody>
     </table>
-    <div class="paging"></div>
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
         <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/mrscart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
@@ -87,13 +85,8 @@
 <script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.jquery.js"></script>
 <script type="text/javascript">
     $j(document).ready(function () {
-        $j("#ckbCheckAll").click(function () {
-            $j(".checkBoxClass").prop('checked', $j(this).prop('checked'));
-        });
-
         $j("#amlist-table").datatable({
-            pageSize: 20,
-            sort: [false, true, true, true, false, false]
+            sort: [false, true, true, true, false]
         }) ;
     });
 </script>

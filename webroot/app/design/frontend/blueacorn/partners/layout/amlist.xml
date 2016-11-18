@@ -15,8 +15,6 @@
             <action method="removeItem"><type>js</type><name>prototype/validation.js</name></action>
             <action method="addCss"><stylesheet>css/amlist.css</stylesheet></action>
             <action method="addItem"><type>skin_css</type><name>css/datatable.min.css</name></action>
-            <!--<action method="addItem"><type>skin_js</type><name>js/datatable.min.js</name></action>
-            <action method="addItem"><type>skin_js</type><name>js/datatable.jquery.js</name></action>-->
         </reference>
     </default>
 
@@ -47,6 +45,9 @@
         <update handle="customer_account"/>
         <reference name="content">
             <block type="amlist/items" name="amlist.items" template="amlist/items_order.phtml" />
+        </reference>
+        <reference name="head">
+            <action method="setTitle" translate="title"><title>Order From Guide</title></action>
         </reference>
     </amlist_list_order>
     
