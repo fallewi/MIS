@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_AmastyListGuides>
+            <version>0.1.0</version>
+        </MissionRS_AmastyListGuides>
+    </modules>
+    <frontend>
+        <routers>
+            <amlist>
+                <args>
+                    <module>
+                        <MissionRS_AmastyListGuides before="Amasty_List">MissionRS_AmastyListGuides</MissionRS_AmastyListGuides>
+                    </module>
+                </args>
+            </amlist>
+        </routers>
+    </frontend>
+</config>

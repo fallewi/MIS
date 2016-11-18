@@ -30,7 +30,7 @@
     <amlist_list_index>
         <update handle="customer_account"/>
         <reference name="content">
-            <block type="amlist/index" name="amlist.index" template="amlist/index.phtml"/>
+            <block type="amlist/index" name="amlist.index" template="amlist/index.phtml" />
         </reference>
     </amlist_list_index>
 
@@ -42,6 +42,13 @@
             <block type="amlist/edit" name="amlist.edit" template="amlist/edit.phtml" />
         </reference>
     </amlist_list_edit>
+
+    <amlist_list_order>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="amlist/items" name="amlist.items" template="amlist/items_order.phtml" />
+        </reference>
+    </amlist_list_order>
     
     <catalog_product_view>
         <reference name="product.info.addto">
