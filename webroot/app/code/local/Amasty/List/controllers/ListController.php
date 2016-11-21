@@ -6,7 +6,7 @@
  */ 
 class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 {
-    private $_customerId = 0;
+    protected $_customerId = 0;
     
     public function preDispatch()
     {
@@ -37,7 +37,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
     /**
      * Highlight menu and render layout
      */
-    private function _renderLayoutWithMenu()
+    protected function _renderLayoutWithMenu()
     {
         $this->loadLayout();
         $this->_initLayoutMessages('customer/session');
@@ -74,7 +74,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
         
         $this->_renderLayoutWithMenu();
     }
-    
+
     /**
      * Save list details
      */

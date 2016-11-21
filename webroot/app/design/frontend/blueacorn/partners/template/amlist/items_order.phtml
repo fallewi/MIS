@@ -9,7 +9,7 @@
 <?php $items = $this->getList()->getItems(); ?>
 <?php $_hlp = Mage::helper('amlist'); ?>
 <?php $_coreHelper = $this->helper('core'); ?>
-<h3>Edit: <?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
+<h3>Order: <?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php if (count($items)): ?>
 <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
@@ -17,23 +17,21 @@
 <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
-        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
+        <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/mrscart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
     </div>
-    <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">
+    <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">    <col width="30" />
         <col width="60" />
+        <col />
+        <col width="120" />
         <col width="60" />
-        <col width="130"/>
         <col />
-        <col />
-        <col width="60"/>
         <thead>
             <tr>
-                <th><?php echo $this->__('Qty') ?></th>
                 <th>&nbsp;</th>
                 <th>SKU</th>
                 <th><?php echo $this->__('Details') ?></th>
                 <th><?php echo $this->__('Price') ?></th>
-                <th class="a-center">&nbsp;</th>
+                <th><?php echo $this->__('Qty') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -43,9 +41,6 @@
         ?>
         <?php foreach ($items as $item): $id = $item->getId();?>
             <tr>
-                <td>
-                    <input type="text" size="2" name="qty[<?php echo $id ?>]" value="<?php echo $item->getQty() ?>" class="input-text" />
-                </td>
                 <td>
                         <a href="<?php echo $this->getProductItemUrl($item) ?>">
                             <img src="<?php echo $this->getProductItemImage($item)  ?>"
@@ -60,22 +55,13 @@
                         </a><br />
                         Case Pack: <?php echo $item->getProduct()->getAttributeText('uom'); ?>
                     <?php echo $item->getOptionsHtml() ?>
-                    <?php if(!$item->getProduct()->isSaleable()){ $unsaleable = true; ?><span class="red">Product is currently not available.</span> <?php } ?>
+                    <?php if(!$item->getProduct()->isSaleable()){ $unsaleable = true; ?><span class="availability out-of-stock">Product is currently not available.</span> <?php }else{$unsaleable= false;} ?>
                 </td>
                 <td>
                     <?php $price = $item->getPrice(); $total += ($price * $item->getQty());  echo $_coreHelper->formatPrice($price, true); ?>
                 </td>
                 <td>
-                <?php if ($allLists->getSize()): ?>
-                <select name="moveto[<?php echo $id ?>]">
-                    <option value="0">Move to &hellip;</option>
-                    <?php foreach ($allLists as $l): ?>
-                    <option value="<?php echo $l->getId()?>"><?php echo $this->htmlEscape($l->getTitle())?></option>
-                    <?php endforeach ?>
-                </select>
-                </p>
-                <?php endif; ?>
-                    <a href="<?php echo $this->getUrl('*/*/removeItem', array('id'=>$id))?>" onclick="return confirm('<?php echo $this->__('Are you sure?') ?>')" class="link-remove" ><?php echo $this->__('Remove') ?></a>
+                    <input type="text" size="2" name="qty[<?php echo $id ?>]" value="" class="input-text"<?php if($unsaleable){echo " disabled" ; } ?> />
                 </td>
             </tr>
         <?php endforeach ?>
@@ -83,7 +69,7 @@
     </table>
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
-        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
+        <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/mrscart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
     </div>
 </form>
 <script type="text/javascript">decorateTable('amlist-table')</script>
@@ -100,7 +86,7 @@
 <script type="text/javascript">
     $j(document).ready(function () {
         $j("#amlist-table").datatable({
-            sort: [false, false, true, true, true, false]
+            sort: [false, true, true, true, false]
         }) ;
     });
 </script>

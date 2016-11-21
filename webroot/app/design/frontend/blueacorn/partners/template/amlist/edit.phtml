@@ -11,7 +11,7 @@
     <h3>Set/Update Guide Title</h3>
 </div>
 <?php endif; ?>
-
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <form action="<?php echo $this->getUrl('*/*/save', array('id'=>$_list->getId())) ?>" method="post" id="form-validate">
 <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
     <fieldset class="group-select">
