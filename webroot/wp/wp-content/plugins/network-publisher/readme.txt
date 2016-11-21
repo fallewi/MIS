@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: linksalpha
-Tags: twitter, page, widgets, widget, linkedin, linkedin groups, linkedin company page, linkedin page, Post, facebook, facebook page, facebook profile, yammer, google, sidebar, rss, plugin, posts, publish, distribute, status, update, status update, twitter, admin, links, auto posts, auto, automatic posting, Blogger, Tumblr, Typepad
+Tags: twitter, page, Post, facebook, facebook page, facebook profile, rss, plugin, publish, distribute, status, update, status update, twitter, admin, links, auto posts, auto, automatic posting, Tumblr
 Requires at least: 1.0.0
-Tested up to: 4.4
-Stable tag: 6.1
+Tested up to: 4.5.2
+Stable tag: 6.1.1
 
 == Description ==
 
@@ -12,13 +12,6 @@ Plugin enables you to `Automatically Publish` your `Blog Posts to Social Network
 1. Facebook Profile
 1. Facebook Pages
 1. Twitter
-1. LinkedIn
-1. LinkedIn Groups
-1. Yammer
-1. Plurk
-1. Wordpress.com Blog
-1. Wordpress.org Blog
-1. Blogger
 1. Tumblr
 
 **Getting Started**
@@ -27,7 +20,6 @@ New user? [Click here](http://help.linksalpha.com/networks/getting-started) to r
 
 **Additional Features**
 
-* View Weekly Stats to track total number of Blog Posts, Tweets, Bitly Clicks, Facebook Comments, Facebook Likes, and Facebook Shares.
 * View status of your blog posts to each social network - whether the blog post has been published, when it was published, etc. 
 
 
@@ -41,11 +33,6 @@ New user? [Click here](http://help.linksalpha.com/networks/getting-started) to r
 **Miscellaneous:**
  
 * Get Support: [Support Desk](http://support.linksalpha.com/home)
-
-
-**Free E-commerce Store Builder**
-
-We are excited to announce launch of [SingleContactapp.com](http://www.singlecontactapp.com), a free E-commerce Store builder. Add products, setup payments, and shipping and you are ready to sell!
 
 
 == Installation ==
@@ -68,10 +55,12 @@ We are excited to announce launch of [SingleContactapp.com](http://www.singlecon
 2. Post Published on Facebook using Network Publisher
 3. LinksAlpha Networks Manager
 4. Results log for posts pulished on Social Network Profiles
-5. LinksAlpha White Label App Manager 
-6. Network Publisher widget in the WordPress Post Editor window
+5. Network Publisher widget in the WordPress Post Editor window
 
 == Changelog ==
+
+= 6.1.1 =
+* Minor bug fixes.
 
 = 6.1 =
 * Minor bug fixes.
