@@ -55,30 +55,12 @@ EOF
   exit $1
 }
 
-error(){
-  printf "\033[31m%s\n\033[0m" "$@" >&2
-  exit 1
-}
-
-prompt_confirm() {
-  while true; do
-    read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY
-    case $REPLY in
-      [yY]) echo ; return 0 ;;
-      [nN]) echo ; return 1 ;;
-      *) printf " \033[31m %s \n\033[0m" "invalid input"
-    esac
-  done
-}
-
-
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 
 # defaults
 FORCE_OVERWRITE=${INIT_FORCE_OVERWRITE:-false}
@@ -114,7 +96,6 @@ repo_init(){
   run_task "init_rerere_restore" "restoring pre-init rerere cache"
 
   repo_deploykey
-  run_task "init_blueacornui" "modman init + green-pistachio/blueacornui"
 
   printf "\n  ************************************ \n"
   printf "\n            skel initialized\n"
@@ -175,7 +156,9 @@ repo_deploykey(){
 init_rerere(){
   git config rerere.enabled true
 
-  [ -d .git/rr-cache ] && mv -f .git/rr-cache .git/rr-cache.pre-skel-init
+  [ -e .git/rr-cache ] || mkdir .git/rr-cache
+  rm -rf .git/rr-cache.pre-skel-init 2>/dev/null
+  mv .git/rr-cache .git/rr-cache.pre-skel-init
 
   # distribute rerere cache
   #########################
@@ -197,9 +180,10 @@ init_rerere(){
 
 init_rerere_restore(){
   git add $SKEL_DIR/.rr-cache 2>/dev/null
-  [ -d .git/rr-cache.pre-skel-init ] && \
-    unlink .git/rr-cache 2>/dev/null && \
-    mv -f .git/rr-cache.pre-skel-init .git/rr-cache 2>/dev/null
+  [ -e .git/rr-cache.pre-skel-init ] && {
+    rm -rf .git/rr-cache 2>/dev/null
+    mv .git/rr-cache.pre-skel-init .git/rr-cache
+  }
 }
 
 init_boilerplate(){
@@ -216,7 +200,9 @@ init_boilerplate(){
   else
     echo "[BOILERPLATE] : checking out $LAST_SQUASH_TREE" && git checkout -q $LAST_SQUASH_TREE
     local MERGE_TREE=$(git subtree split --annotate='(boilerplate) ' --prefix=boilerplate/REPO_ROOT/)
-    echo "[BOILERPLATE]: built tree \"$MERGE_TREE\", returning" && git checkout -q $WORKING_BRANCH
+    echo "[BOILERPLATE]: built tree \"$MERGE_TREE\", returning to $WORKING_BRANCH" && {
+      git checkout -q $WORKING_BRANCH || error "error returning to $WORKING_BRANCH"
+    }
   fi
 
   if [ -z $MERGE_TREE ]; then
@@ -285,30 +271,6 @@ init_localize(){
     fi
   done
 
-}
-
-init_blueacornui(){
-
-  if [ -d "$WEBROOT_DIR/blueacornui" ] || [ -d "$REPO_ROOT/blueacornui" ] || $SKIP_GP ; then
-    echo "skipping green pistachio..."
-    return
-  fi
-
-  prompt_confirm "add blueacornui / green pistachio [y/n]?" || return
-
-  type modman >/dev/null 2>&1 || error "modman is not installed"
-
-  echo "checking for modman..."
-  if [ ! -d "$WEBROOT_DIR/.modman" ]; then
-    cd $WEBROOT_DIR
-    modman init
-  fi
-
-  echo "checking for blueacornui..."
-  if [ ! -d "$REPO_ROOT/blueacornui" ]; then
-    cd $WEBROOT_DIR
-    modman clone --copy $GP_REMOTE
-  fi
 }
 
 skel_downstream(){

@@ -84,18 +84,12 @@ EOF
   exit $1
 }
 
-error(){
-  printf "\033[31m%s\n\033[0m" "$@" >&2
-  exit 1
-}
-
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 
 QUIET=false
 FORCE_OVERWRITE=false
@@ -115,17 +109,6 @@ run_task() {
   echo
 
   $1
-}
-
-prompt_confirm() {
-  while true; do
-    read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY
-    case $REPLY in
-      [yY]) echo ; return 0 ;;
-      [nN]) echo ; return 1 ;;
-      *) printf " \033[31m %s \n\033[0m" "invalid input"
-    esac
-  done
 }
 
 set_env(){
@@ -149,9 +132,8 @@ set_env(){
 
 print_env(){
   if ! $QUIET; then printf "Current environment: "; fi
-  [ -e $ENV_DIR/current ] || error "uninitialized"
-  type greadlink >/dev/null 2>&1 && READLINK="greadlink" || READLINK="readlink"
-  echo $($READLINK "$ENV_DIR/current")
+  [ -L $ENV_DIR/current ] || error "current environment not set or symlinked"
+  echo $(readlink $ENV_DIR/current)
 }
 
 print_list(){
@@ -267,7 +249,7 @@ env_blueacornui() {
   cd $REPO_ROOT/blueacornui
 
   if [ ! -d node_modules ]; then
-    npm install
+    yarn install
     bower install
   fi
 
@@ -652,7 +634,7 @@ else
                            DOCKER_CONTAINER_NAME="$2" ; shift ;
                          fi
                          ;;
-      vars)              runstr="print_vars"e
+      vars)              runstr="print_vars"
                          if [ ! -z "$2" ] && [[ ! $2 == -* ]]; then
                            ENV="$2" ; shift 2 ;
                            REQUESTED_VARS="$@"

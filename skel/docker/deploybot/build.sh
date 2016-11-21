@@ -12,14 +12,13 @@ error(){
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
 # read envars
-source $CWD/../../env/appvars || error "could not read appvars"
+source $__cwd/../../env/appvars || error "could not read appvars"
 
 # copy deploy key (used for git checkouts)
-cp $CWD/../../deploy.key $CWD/deploy.key || error "could not copy deploy.key" \
+cp $__cwd/../../deploy.key $__cwd/deploy.key || error "could not copy deploy.key" \
   "have you initialized the skel?"
 
 [ -z "$CLIENT_CODE" ] && error \
@@ -46,7 +45,7 @@ echo "building $IMAGE_NAME..."
 echo "========================================"
 echo
 
-cd $CWD
+cd $__cwd
 
 if [ ! -e Dockerfile ]; then
   [ -e Dockerfile.skel ] || error "no Dockerfile or Dockerfile.skel found"

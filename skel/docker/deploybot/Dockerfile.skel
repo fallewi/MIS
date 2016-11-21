@@ -6,7 +6,7 @@ RUN apk add --update \
   && rm -rf /var/cache/apk/*
 
 # install grunt + bower
-RUN npm install -g grunt-cli bower
+RUN npm install -g yarn grunt-cli bower
 
 # configuration
 ###############

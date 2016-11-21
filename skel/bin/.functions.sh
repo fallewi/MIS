@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-
-error(){
-  printf "\033[31m%s\n\033[0m" "$@" >&2
+__cmd_prefix="badevops-"
+. $(dirname $0)/.shell-helpers.sh &>/dev/null || {
+  echo "ERROR - unable to load shell-helpers.sh!"
   exit 1
 }
 
@@ -13,7 +13,7 @@ WEBROOT_DIR=${WEBROOT_DIR:-webroot}
 WORKING_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 SKEL_IN_GROUNDCONTROL=false
 
-source "$REPO_ROOT/.skelvars" || error \
+. "$REPO_ROOT/.skelvars" || error \
   "unable to source skelvars. has skel been attached?"
 
 [ -z "$WORKING_BRANCH" ] && error "unable to determine WORKING_BRANCH"
@@ -28,6 +28,7 @@ DOCKER_DIR="$REPO_ROOT/$SKEL_DIR/docker"
 BOILERPLATE_DIR="$REPO_ROOT/$SKEL_DIR/boilerplate"
 TESTS_DIR="$REPO_ROOT/tests"
 APP_ROOT="$REPO_ROOT/$WEBROOT_DIR"
+SKIP_BOOTSTRAP=false
 
 [ -d "$APP_ROOT" ] || error "APP_ROOT $APP_ROOT doesn't exist"
 [ -d "$ENV_DIR" ] || error "ENV_DIR $ENV_DIR doesn't exist"
@@ -36,60 +37,16 @@ APP_ROOT="$REPO_ROOT/$WEBROOT_DIR"
 # attempt to remember initialized values
 if [ -f "$ENV_DIR/appvars" ]; then
   grep @CLIENT_CODE $ENV_DIR/appvars >/dev/null 2>&1 || \
-    source $ENV_DIR/appvars
+    . $ENV_DIR/appvars
   [ -z "$REPO_REMOTE" ] || REPO_REMOTE_NAME=$(git remote -v | grep $REPO_REMOTE | head -n 1 | awk '{print $1}')
 fi
 
 REPO_REMOTE_NAME=${REPO_REMOTE_NAME:-origin}
 
-# sed_inplace : in place file substitution
-############################################
+
 #
-# usage: sed_inplace "file" "sed substitution"
-#    ex: sed_inplace "/tmp/file" "s/CLIENT_CODE/BA/g"
+# helpers
 #
-
-sed_inplace(){
-  # linux
-  local SED_CMD="sed"
-
-  if [[ $OSTYPE == darwin* ]]; then
-    if $(type gsed >/dev/null 2>&1); then
-      local SED_CMD="gsed"
-    elif $(type /usr/local/bin/sed >/dev/null 2>&1); then
-      local SED_CMD="/usr/local/bin/sed"
-    else
-      sed -i '' -E "$2" $1
-      return
-    fi
-  fi
-
-  $SED_CMD -r -i "$2" $1
-}
-
-
-# line_in_file : ensure a line exists in a file
-###############################################
-#
-# usage: line_in_file "file" "match" "line"
-#    ex: line_in_file "varsfile" "^VARNAME=.*$" "VARNAME=value"
-#
-
-line_in_file(){
-  local delim=${4:-"|"}
-  grep -q "$2" $1 2>/dev/null && sed_inplace $1 "s$delim$2$delim$3$delim" || echo $3 >> $1
-}
-
-prompt_confirm() {
-  while true; do
-    read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY
-    case $REPLY in
-      [yY]) echo ; return 0 ;;
-      [nN]) echo ; return 1 ;;
-      *) printf " \033[31m %s \n\033[0m" "invalid input"
-    esac
-  done
-}
 
 # modified from git-subtree.sh, sets LATEST_SQUASH var to tree ref
 #  http://git.kernel.org/cgit/git/git.git/tree/contrib/subtree/git-subtree.sh
@@ -132,10 +89,7 @@ find_latest_squash()
 configure_docker_machine(){
   if [ $1 = "local" ]; then
     echo "local flag detected. de-activating docker-machine if set..."
-    # unset the current docker machine
-    for var in DOCKER_HOST DOCKER_CERT_PATH DOCKER_MACHINE_NAME DOCKER_TLS_VERIFY; do
-      unset $var 2>/dev/null
-    done
+    __deactivate_machine
   else
     local SHELL=${SHELL:-"sh"}
     echo "activing docker-machine $1..."
@@ -165,6 +119,10 @@ env_bootstrap(){
   [ -d "$ENV_DIR/$ENV" ] || error "$ENV environment not found"
 
   DOCKER_MACHINE=$($REPO_ROOT/$SKEL_DIR/bin/env var DOCKER_MACHINE $ENV)
+}
+
+env_bootstrap_ansible(){
+  env_bootstrap
 
   if [ ! -z "$DOCKER_MACHINE" ]; then
 
@@ -172,16 +130,18 @@ env_bootstrap(){
     # dockerized environments
     #
 
+
     ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/dockerized_hosts.py
     FORCE_ENVIRONMENT_PLAYBOOK=false
 
     if [ -e "${ANSIBLE_DIR}/${ENV}.${ANSIBLE_PLAYBOOK}" ]; then
-      ANSIBLE_PLAYBOOK="${ENV}.${ANSIBLE_PLAYBOOK}"
+      ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
     else
-      ANSIBLE_PLAYBOOK="dockerized.$ANSIBLE_PLAYBOOK"
+      ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/dockerized.$ANSIBLE_PLAYBOOK"
     fi
 
     # force activation of configured machine
+    export MACHINE_STORAGE_PATH=${MACHINE_STORAGE_PATH:-~/.docker/machine}
     configure_docker_machine $DOCKER_MACHINE
 
   else
@@ -192,11 +152,6 @@ env_bootstrap(){
 
     [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"
   fi
-
-}
-
-env_bootstrap_ansible(){
-  env_bootstrap
 
   FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-false}
   ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/ssh_hosts.py}
@@ -217,19 +172,16 @@ env_bootstrap_ansible(){
     echo export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
   fi
 
-  # cd to ansible playbook directory so we can use host_vars, group_vars
-  #  http://docs.ansible.com/ansible/intro_inventory.html
-  cd $ANSIBLE_DIR
-
-  if [ -e ${ENV}.${ANSIBLE_PLAYBOOK} ]; then
-    ANSIBLE_PLAYBOOK="${ENV}.${ANSIBLE_PLAYBOOK}"
+  if [ -e $ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK} ]; then
+    ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
   else
     $FORCE_ENVIRONMENT_PLAYBOOK && error "missing playbook" \
       "${ENV}.${ANSIBLE_PLAYBOOK}"
   fi
 
   [ -e "$ANSIBLE_PLAYBOOK" ] || error "missing playbook(s)" \
-    "$ANSIBLE_PLAYBOOK" "${ENV}.${ANSIBLE_PLAYBOOK}"
+    "$ANSIBLE_PLAYBOOK" "$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
+
 }
 
 
@@ -240,6 +192,13 @@ ansible_command(){
   ANSIBLE_LIST_HOSTS=false
   ANSIBLE_LIST_TAGS=false
   ANSIBLE_VARS=""
+  SKELWRAP=${SKELWRAP:-false}
+
+  # run ansible commands within the badevops-skelwrap container's environment
+  $SKELWRAP && [ ! "$DEX_IMAGE_NAME" = "skelwrap" ] && {
+    echo "execing badevops-skelwrap $0 $@"
+    exec badevops-skelwrap $0 $@
+  }
 
   while [ $# -ne 0 ]; do
     case $1 in
@@ -249,7 +208,7 @@ ansible_command(){
       --list-hosts)       ANSIBLE_LIST_HOSTS=true ;;
       --tags|-t)          ANSIBLE_TAGS="--tags=$2" ; shift ;;
       --list-tags)        ANSIBLE_LIST_TAGS=true ;;
-      --extra-vars|-e)    ANSIBLE_VARS="$ANSIBLE_VARS $2" ; shift ;;
+      --extra-vars|-e)    ANSIBLE_VARS+=" -e $2" ; shift ;;
       --inventory-script) ANSIBLE_INV_SCRIPT="$2" ; shift ;;
       --step|-s)          ANSIBLE_STEP="--step" ;;
       --private-key)      ANSIBLE_KEY="--private-key=$2" ; shift ;;
@@ -270,18 +229,25 @@ ansible_command(){
 
   env_bootstrap_ansible
 
+  set_cmd ansible-playbook || error \
+    "ansible-playbook is required! please initialize badevops-bootstrap"
+
+  $SKIP_BOOTSTRAP && __cmd=ansible-playbook
+
+  cd $REPO_ROOT
+
   if $ANSIBLE_LIST_TAGS ; then
-    ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK --list-tags
+    $__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK --list-tags
     exit 0
   fi
 
   if $ANSIBLE_LIST_HOSTS ; then
-    ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK --list-hosts
+    $__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK --list-hosts
     exit 0
   fi
 
   if $DEBUG; then
-    echo "ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
+    echo "$__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
     $ANSIBLE_TAGS $ANSIBLE_LIMIT $ANSIBLE_VERBOSITY $ANSIBLE_CHECK \
     $ANSIBLE_ASK_SSH_PASS $ANSIBLE_ASK_SUDO_PASS $ANSIBLE_STEP \
     --extra-vars=\"ENV=$ENV LOCAL_ROOT=$REPO_ROOT REPO_REMOTE_NAME=$REPO_REMOTE_NAME $ANSIBLE_VARS\""
@@ -293,7 +259,7 @@ ansible_command(){
     echo
     printf "environment: \033[35m%s\n\033[0m" "$ENV"
 
-    ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK \
+    $__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK \
       --list-hosts $ANSIBLE_LIMIT
 
     type PROMPT_FN >/dev/null 2>&1 && PROMPT_FN
@@ -302,11 +268,12 @@ ansible_command(){
   fi
 
   export ANSIBLE_HOST_KEY_CHECKING=false
+  export ANSIBLE_RETRY_FILES_ENABLED=false
 
-  ansible-playbook -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
+  $__cmd -i $ANSIBLE_INV_SCRIPT $ANSIBLE_PLAYBOOK  \
     $ANSIBLE_TAGS $ANSIBLE_LIMIT $ANSIBLE_VERBOSITY $ANSIBLE_CHECK \
     $ANSIBLE_ASK_SSH_PASS $ANSIBLE_ASK_SUDO_PASS $ANSIBLE_STEP \
-    --extra-vars="ENV=$ENV LOCAL_ROOT=$REPO_ROOT REPO_REMOTE_NAME=$REPO_REMOTE_NAME $ANSIBLE_VARS"
+    -e ENV=$ENV -e LOCAL_ROOT=$REPO_ROOT -e REPO_REMOTE_NAME=$REPO_REMOTE_NAME $ANSIBLE_VARS
 }
 
 ansible_command_help() {

@@ -9,6 +9,9 @@
   gather_facts: no
   tasks:
 
+    - name: create inventory group based on DOCKER_MACHINE name
+      group_by: key={{ DOCKER_MACHINE }}
+
     - name: fail to provision on local environments - use alternative palybook
       fail: msg="not supported on local environments - use alt local playbook"
       when: DOCKER_MACHINE == 'local'
@@ -39,67 +42,57 @@
 #       tags:
 #         - db
 
-- name: "docker-machine - ensure /nfs is populated with SNAPSHOT_BASE_ENV"
-  hosts: docker-machine
+#
+# seed docker-machine with /nfs snapshots -- e.g. used for seeding ocean-
+#  environments that don't already have /nfs available
+#
+
+- name: "docker-machine - seed machine with /nfs snapshots"
+  hosts: ocean-*
+  gather_facts: no
   vars:
-    # force import will overwrite existing db
-    FORCE_DB_IMPORT: false
-    FORCE_MEDIA_IMPORT: false
-    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}"
-    SNAPSHOT_PATH_DB: "{{ SNAPSHOT_PATH }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
-    SNAPSHOT_PATH_MEDIA: "{{ SNAPSHOT_PATH }}/media/"
+    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}/{{ SNAPSHOT_BASE_ENV }}"
+    SNAPSHOT_DB_PATH: "{{ SNAPSHOT_PATH }}/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+    SNAPSHOT_MEDIA_PATH: "{{ SNAPSHOT_PATH }}/media/"
   tags:
-    - synchronize
-
+    - seed-snapshots
   tasks:
-    - name: ensure /nfs exists and contains SNAPSHOT_BASE_ENV target
-      file:
-        state: directory
-        path: "{{ SNAPSHOT_PATH }}"
-      tags:
-        - synchronize-database-only
-        - synchronize-media-only
+    - block:
+      - name: ensure we have /nfs targets available locally
+        local_action: stat path={{ SNAPSHOT_PATH }}
+        register: local_nfs
+      - fail: msg="{{ SNAPSHOT_PATH }} is missing from the ansible host"
+        when: not local_nfs.stat.exists
 
-    - name: register presence of SNAPSHOT_BASE_ENV database
-      stat: path={{ SNAPSHOT_PATH_DB }}
-      register: database_result
-      tags:
-        - synchronize-database-only
+      - name: "synchronize database from {{ SNAPSHOT_DB_PATH }}"
+        synchronize:
+          src: "{{ SNAPSHOT_DB_PATH }}"
+          dest: "{{ SNAPSHOT_DB_PATH }}"
+        tags:
+          - seed-snapshots-db-only
+        when: SQL_FILE is undefined or not SQL_FILE
 
-    - name: register presence of SNAPSHOT_BASE_ENV media
-      stat: path={{ SNAPSHOT_PATH_MEDIA }}
-      register: media_result
-      tags:
-        - synchronize-media-only
+      - name: "synchronize media from {{ SNAPSHOT_MEDIA_PATH }}"
+        synchronize:
+          src: "{{ SNAPSHOT_MEDIA_PATH }}"
+          dest: "{{ SNAPSHOT_MEDIA_PATH }}"
+          copy_links: yes
+          archive: no
+          recursive: yes
+          delete: yes
+        tags:
+          - seed-snapshots-media-only
 
-    - name: "synchronize database from {{ SNAPSHOT_PATH_DB }}"
-      synchronize:
-        src: "{{ SNAPSHOT_PATH_DB }}"
-        dest: "{{ SNAPSHOT_PATH_DB }}"
-      when: not database_result.stat.exists or FORCE_DB_IMPORT
-      tags:
-        - synchronize-database-only
-
-    - name: "synchronize media from {{ SNAPSHOT_PATH_MEDIA }}"
-      synchronize:
-        src: "{{ SNAPSHOT_PATH_MEDIA }}"
-        dest: "{{ SNAPSHOT_PATH_MEDIA }}"
-        copy_links: yes
-        archive: no
-        recursive: yes
-        delete: yes
-      when: not media_result.stat.exists or FORCE_MEDIA_IMPORT
-      tags:
-        - synchronize-media-only
-
+      when: SQL_FILE is undefined or not SQL_FILE
 
 - name: "term-container - database import"
   hosts: term-container
   vars:
     # force import will overwrite existing db
-    FORCE_DB_IMPORT: false
-    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ CLIENT_CODE }}/{{ SNAPSHOT_BASE_ENV }}"
-    SNAPSHOT_PATH_DB: "{{ SNAPSHOT_PATH }}/{{ CLIENT_CODE }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+    FORCE_IMPORT: false
+    SNAPSHOT_PATH: "/nfs/snapshots/clients/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}/{{ SNAPSHOT_BASE_ENV }}"
+    SNAPSHOT_DB_PATH: "{{ SNAPSHOT_PATH }}/{{ SNAPSHOT_BASE_CLIENT | default(CLIENT_CODE) }}-{{ SNAPSHOT_BASE_ENV }}.database.sql.gz"
+    SNAPSHOT_MEDIA_PATH: "{{ SNAPSHOT_PATH }}/media/"
   tags:
     - db-import
 
@@ -116,17 +109,17 @@
       when: SQL_FILE is defined
 
     - set_fact:
-        SNAPSHOT_PATH_DB: "/tmp/sql.gz"
+        SNAPSHOT_DB_PATH: "/tmp/sql.gz"
       when: SQL_FILE is defined
 
     - name: import database - uncompress to /tmp/db.sql
-      shell: zcat {{ SNAPSHOT_PATH_DB }} > /tmp/db.sql
-      when: result|failed or FORCE_DB_IMPORT
+      shell: zcat {{ SNAPSHOT_DB_PATH }} > /tmp/db.sql
+      when: result|failed or FORCE_IMPORT
 
     - name: import database - source /tmp/db.sql into mysql
       shell: mysql -e "SET autocommit=0; SET unique_checks=0; SET foreign_key_checks=0; source /tmp/db.sql; COMMIT; SET unique_checks=1; SET foreign_key_checks=1;"
-      when: result|failed or FORCE_DB_IMPORT
+      when: result|failed or FORCE_IMPORT
 
     - name: import mysql database - remove /tmp/db.sql
       file: state=absent path=/tmp/db.sql
-      when: result|failed or FORCE_DB_IMPORT
+      when: result|failed or FORCE_IMPORT

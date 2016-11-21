@@ -32,13 +32,12 @@ EOF
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
 # run functions
 ###############
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 
 
 squash_ssh_config() {
@@ -58,14 +57,17 @@ env_tmux(){
   env_bootstrap
   TMUXP_PATH=${TMUXP_PATH:-"$ENV_DIR/$ENV/tmuxp.yml"}
 
+  if [ ! -z "$DOCKER_MACHINE" ]; then
+    warn "you cannot tmux ssh into dockerized environments"
+  else
+    [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"
+  fi
+
   cd $ENV_DIR/$ENV
 
   if [ -e $TMUXP_PATH ]; then
-    tmuxp load $TMUXP_PATH
-    exit $?
+    exec tmuxp load $TMUXP_PATH
   fi
-
-  [ -e "ssh_config" ] || error "environment $ENV is missing ssh_config"
 
 
   TMUX_SESSION="$CLIENT_CODE-$ENV"

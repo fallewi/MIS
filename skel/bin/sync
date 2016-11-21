@@ -28,18 +28,12 @@ EOF
   exit $1
 }
 
-error(){
-  printf "\033[31m%s\n\033[0m" "$@" >&2
-  exit 1
-}
-
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 
 FORCE_OVERWRITE=false
 SKIP_PROMPTS=false

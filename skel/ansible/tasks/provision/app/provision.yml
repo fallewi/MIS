@@ -2,11 +2,12 @@
 
 # application depencencies (during provision)
 
-- name: copy n98 binary to BLUEACORN_DIR/bin
-  copy:
-    src: "files/n98-magerun.1.97.11.phar"
+- name: download and verify n98-magerun
+  get_url:
+    url: https://files.magerun.net/n98-magerun-1.97.22.phar
     dest: "{{ BLUEACORN_DIR }}/bin/n98-magerun"
     mode: 0755
+    checksum: md5:0d00a825e331fabe2d2fda0e04fcc336
   when: inventory_hostname.startswith('web')
   tags:
     - provision

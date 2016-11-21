@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+
+# @TODO - optimize attach for M1/M2
+# @TODO - ability to remove GP from M1/M2/DW
+# @TODO - add downstream capability once gp-demandware and blueacornui have been standardized against new skel standards.
+# @TODO - add M1/M2 ability to add/delete pistachios
+# @TODO - Separate Commands based on SKEL_RELEASE
+
+__cwd=$( cd $(dirname $0) ; pwd -P )
+
+. $__cwd/.functions.sh || error "unable to load shared functions"
+
+BIN_DIR="$REPO_ROOT/bin";
+ACORN_DIR="$REPO_ROOT/blueacornui";
+SITE_SETUP='dev';
+
+display_help ()
+{
+
+cat <<-EOF
+
+  Utility for Green Pistachio
+
+  Usage: bin/gp <command> [options]
+
+  Commands:
+    attach            Attaches Green Pistachio/BlueacornUI tools
+                      to the project based on SKEL_RELEASE
+
+    setup             Sets up node & bower dependencies for GP
+
+  Options:
+    --help                          Display help
+
+EOF
+
+    if [ $# -eq 0 ]; then
+        exit 0
+    fi
+
+    exit $1
+
+}
+
+install_deps (){
+
+  cd $ACORN_DIR;
+
+  if [ ! -d "./node_modules" ]; then
+    echo
+    echo "Installing node modules..."
+    echo
+
+    yarn install
+  else
+    echo
+    echo "Updating node modules..."
+    echo
+
+    yarn upgrade
+  fi;
+
+  echo
+
+  if [ ! -d "./bower_components" ]; then
+    echo
+    echo "Installing bower components..."
+    echo
+
+    bower install
+  else
+
+    echo
+    echo "Updating bower components..."
+    echo
+
+    bower install
+  fi;
+}
+
+setup_workflow (){
+  echo
+  echo "Installing node & bower dependencies."
+  echo
+
+  install_deps
+}
+
+attach_gp (){
+
+  local proceed=true;
+  local repoName=$GP_REMOTE
+
+  if [ -z $SKEL_RELEASE ]; then
+    proceed=false;
+    error "SKEL_RELEASE not set. Use command \"export SKEL_RELEASE={m1|m2|dw|wp}\" to set a release to use."
+  fi;
+
+  echo
+  echo "Attaching Green Pistachio"
+  echo
+
+
+  if [ $proceed ]; then
+
+    rm -rf $ACORN_DIR;
+
+    if [ $SKEL_RELEASE == "dw" ]; then
+
+      error "Cloning GP branch \"${GP_BRANCH}\" from source: ${GP_REMOTE}" " - "
+
+      git clone -b $GP_BRANCH $GP_REMOTE "$REPO_ROOT/$repoName"
+
+      echo $APP_ROOT;
+
+      cp -R "$REPO_ROOT/$repoName/blueacornui" ./
+      cp -R "$REPO_ROOT/$repoName/metadata" ./
+
+      rm -rf "$REPO_ROOT/$repoName"
+
+    else
+
+      echo
+      echo "Checking for Modman..."
+      echo
+
+      type modman >/dev/null 2>&1 || error "Modman is not installed. "
+
+      if [ ! -d "$APP_ROOT/.modman" ]; then
+        cd $APP_ROOT
+
+        echo
+        echo "Initializing Modman"
+        echo
+
+        modman init
+      fi
+
+      if [ ! -d $ACORN_DIR ]; then
+        cd $APP_ROOT
+
+        echo
+        printf "Cloning GP branch \"${GP_BRANCH}\" from source: ${GP_REMOTE}"
+        echo
+
+        modman clone --copy $GP_BRANCH $GP_REMOTE
+      fi;
+    fi;
+  fi;
+}
+
+setup_gp (){
+
+  if [ ! -d $ACORN_DIR ]; then
+    error "Green Pistachio is not installed. Please run \"bin/gp attach\" to attach it to this repo."
+  else
+    setup_workflow
+  fi;
+}
+
+if [ $# -eq 0 ]; then
+  display_help 1
+else
+  while [ $# -ne 0 ]; do
+    case $1 in
+        -h|--help|help)     display_help ;;
+        attach)             runstr="attach_gp"       ; shift ;;
+        setup)              runstr="setup_gp"        ; shift ;;
+        *)                  errorMsg "Invalid input" ; shift ;;
+    esac
+    shift
+  done
+
+  $runstr
+fi

@@ -38,7 +38,7 @@ nginx:
 
 phpfpm:
   container_name: ${ENV}-${CLIENT_CODE}-phpfpm
-  image: registry.badevops.com/mage-phpfpm:m1
+  image: registry.badevops.com/mage-php:m1-fpm
   links:
     - mysql
     - smtp

@@ -3,8 +3,7 @@
 # globals
 #########
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+__cwd=$( cd $(dirname $0) ; pwd -P )
 
 CMD_HELP_PREFIX="A command for running utility playbooks.
 
@@ -29,7 +28,7 @@ shift
 # runtime
 #########
 
-. $CWD/.functions.sh || error "unable to load shared functions"
+. $__cwd/.functions.sh || error "unable to load shared functions"
 ansible_command $@
 
 exit $?
