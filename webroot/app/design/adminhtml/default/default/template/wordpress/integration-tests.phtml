@@ -99,3 +99,6 @@
 	<?php endif; ?>
 </div>
 <?php echo $this->getChildHtml('extend') ?>
+<?php if (Mage::app()->getConfig()->getNode('wordpress/core/modules') === false): ?>
+	<script type="text/javascript">document.observe("dom:loaded",function(){$('row_wordpress_misc_include_jquery').remove();$('row_wordpress_misc_include_underscore').remove();});</script>
+<?php endif; ?>

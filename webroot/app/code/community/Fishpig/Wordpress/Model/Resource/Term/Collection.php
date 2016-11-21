@@ -54,11 +54,17 @@ class Fishpig_Wordpress_Model_Resource_Term_Collection extends Fishpig_Wordpress
 			$this->getSelect()->order('term_order ASC');
 		}
 
-		$this->getSelect()->order('term_id DESC');
+		$this->getSelect()->order('term_id ASC');
 
 		return $this;
 	}
 	
+	/**
+	 * Set the collection by the name field
+	 *
+	 * @param string $dir = 'ASC'
+	 * @return $this
+	 **/
 	public function setOrderByName($dir = 'ASC')
 	{
 		$this->getSelect()

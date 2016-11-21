@@ -93,53 +93,60 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 			return false;
 		}
 
-		$appEmulation = Mage::getSingleton('core/app_emulation');
-		$initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($sitemap->getStoreId());
-
-		if (!Mage::getStoreConfigFlag('wordpress/module/enabled', $sitemap->getStoreId())) {
-			return false;
-		}
-
-		$sitemapFilename = Mage::getBaseDir() . '/' . ltrim($sitemap->getSitemapPath() . $sitemap->getSitemapFilename(), '/' . DS);
-		
-		if (!file_exists($sitemapFilename)) {
-			return $this;
-		}
-		
-		$xml = trim(file_get_contents($sitemapFilename));
-		
-		// Trim off trailing </urlset> tag so we can add more
-		$xml = substr($xml, 0, -strlen('</urlset>'));
-
-		// Add the blog homepage
-		$xml .= sprintf(
-			'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq><priority>%.1f</priority></url>',
-			htmlspecialchars(Mage::helper('wordpress')->getUrl()),
-			Mage::getSingleton('core/date')->gmtDate('Y-m-d'),
-			'daily',
-			'1.0'
-		);
-
-		$posts = Mage::getResourceModel('wordpress/post_collection')
-			->addIsViewableFilter()
-			->setOrderByPostDate()
-			->load();
-		
-		foreach($posts as $post) {
+		try {
+			$appEmulation = Mage::getSingleton('core/app_emulation');
+			$initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($sitemap->getStoreId());
+	
+			if (!Mage::getStoreConfigFlag('wordpress/module/enabled', $sitemap->getStoreId())) {
+				return false;
+			}
+	
+			$sitemapFilename = Mage::getBaseDir() . '/' . ltrim($sitemap->getSitemapPath() . $sitemap->getSitemapFilename(), '/' . DS);
+			
+			if (!file_exists($sitemapFilename)) {
+				return $this;
+			}
+			
+			$xml = trim(file_get_contents($sitemapFilename));
+			
+			// Trim off trailing </urlset> tag so we can add more
+			$xml = substr($xml, 0, -strlen('</urlset>'));
+	
+			// Add the blog homepage
 			$xml .= sprintf(
 				'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq><priority>%.1f</priority></url>',
-				htmlspecialchars($post->getUrl()),
-				$post->getPostModifiedDate('Y-m-d'),
-				'monthly',
-				'0.5'
+				htmlspecialchars(Mage::helper('wordpress')->getUrl()),
+				Mage::getSingleton('core/date')->gmtDate('Y-m-d'),
+				'daily',
+				'1.0'
 			);
+	
+			$posts = Mage::getResourceModel('wordpress/post_collection')
+				->addIsViewableFilter()
+				->setOrderByPostDate()
+				->load();
+			
+			foreach($posts as $post) {
+				$xml .= sprintf(
+					'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq><priority>%.1f</priority></url>',
+					htmlspecialchars($post->getUrl()),
+					$post->getPostModifiedDate('Y-m-d'),
+					'monthly',
+					'0.5'
+				);
+			}
+	
+			$xml .= '</urlset>';
+			
+			@file_put_contents($sitemapFilename, $xml);
 		}
-
-		$xml .= '</urlset>';
-		
-		@file_put_contents($sitemapFilename, $xml);
-
-		$appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+		catch (Exception $e) {
+			if (isset($initialEnvironmentInfo)) {
+				$appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+			}
+			
+			Mage::helper('wordpress')->log($e);
+		}
 
 		return $this;
 	}
@@ -152,6 +159,66 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 	 */		
 	public function initWordpressConfigObserver(Varien_Event_Observer $observer)
 	{
+		return $this;
+	}
+	
+	/**
+	 * Inject content (JS, CSS) from WordPress
+	 *
+	 * @param Varien_Event_Observer $observer
+	 * @return $this
+	 **/
+	public function injectWordPressContentObserver(Varien_Event_Observer $observer)
+	{
+		if (!$this->_observerCanRun(__METHOD__)) {
+			return $this;
+		}
+		
+		if (Mage::helper('wordpress')->isApiRequest()) {
+			return $this;
+		}
+
+		$modulesConfigObjects = Mage::getConfig()->getNode('wordpress/core/modules');
+		
+		if (!$modulesConfigObjects) {
+			return $this;
+		}
+		
+		$modules = array_keys($modulesConfigObjects->asArray());
+		$content = array();
+
+		foreach($modules as $module) {
+			if ($code = trim(Mage::getSingleton($module . '/observer')->getHeadFooterContent())) {
+				$content[] = $code;
+			}
+		}
+		
+		if (count($content) === 0) {
+			return $this;
+		}
+
+		$bodyHtml = $observer->getEvent()
+			->getFront()
+				->getResponse()
+					->getBody();
+
+		$baseUrl = Mage::helper('wordpress')->getBaseUrl();
+		$jsTemplate = '<script type="text/javascript" src="%s"></script>';
+
+		if (Mage::getStoreConfigFlag('wordpress/misc/include_underscore')) {
+			array_unshift($content, sprintf($jsTemplate, $baseUrl . 'wp-includes/js/underscore.min.js?ver=1.6.0'));
+		}
+
+		if (Mage::getStoreConfigFlag('wordpress/misc/include_jquery')) {
+			array_unshift($content, sprintf($jsTemplate, $baseUrl . 'wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'));
+			array_unshift($content, sprintf($jsTemplate, $baseUrl . 'wp-includes/js/jquery/jquery.js?ver=1.12.4'));
+		}
+
+		$observer->getEvent()
+			->getFront()
+				->getResponse()
+					->setBody(str_replace('</body>', implode('', $content) . '</body>', $bodyHtml));
+		
 		return $this;
 	}
 	

@@ -395,4 +395,14 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 		
 		return $isLegacy;
 	}
+	
+	/**
+	 * Determine whether the request is an API request
+	 *
+	 * @return bool
+	**/
+	public function isApiRequest()
+	{
+		return strpos(trim(Mage::app()->getRequest()->getPathInfo(), '/'), 'api/') === 0;
+	}
 }

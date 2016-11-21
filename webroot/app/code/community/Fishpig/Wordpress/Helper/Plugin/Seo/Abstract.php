@@ -48,7 +48,7 @@ abstract class Fishpig_Wordpress_Helper_Plugin_Seo_Abstract extends Fishpig_Word
 	{
 		if ($this->isEnabled()) {
 			$method = sprintf('processRoute%s', uc_words($observer->getEvent()->getAction()->getFullActionName(), ''));
-			
+
 			try {
 				if (method_exists($this, $method) && is_callable(array($this, $method))) {
 					$this->_action = $observer->getEvent()->getAction();
