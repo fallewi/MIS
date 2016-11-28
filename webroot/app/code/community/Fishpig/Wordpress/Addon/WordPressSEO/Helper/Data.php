@@ -30,6 +30,22 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 	 */
 	protected $_openGraphTags = array();
 	
+	protected $_separatorOptions = array(
+		'sc-dash'   => '-',
+		'sc-ndash'  => '&ndash;',
+		'sc-mdash'  => '&mdash;',
+		'sc-middot' => '&middot;',
+		'sc-bull'   => '&bull;',
+		'sc-star'   => '*',
+		'sc-smstar' => '&#8902;',
+		'sc-pipe'   => '|',
+		'sc-tilde'  => '~',
+		'sc-laquo'  => '&laquo;',
+		'sc-raquo'  => '&raquo;',
+		'sc-lt'     => '&lt;',
+		'sc-gt'     => '&gt;',
+	);
+	
 	/**
 	 * Automatically load the plugin options
 	 *
@@ -71,7 +87,8 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 	 */
 	public function isEnabled()
 	{
-		return Mage::helper('wordpress')->isPluginEnabled('wordpress-seo/wp-seo.php');
+		return Mage::helper('wordpress')->isPluginEnabled('wordpress-seo/wp-seo.php') 
+			|| Mage::helper('wordpress')->isPluginEnabled('wordpress-seo-premium/wp-seo-premium.php');
 	}
 
 	/**
@@ -133,25 +150,27 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 		/**
 		 * Open Graph Tags
 		 */
-		$tagString = '';
+		if ((int)$this->getData('opengraph') === 1) {
+			$tagString = '';
 
-		foreach($this->_openGraphTags as $key => $value) {
-			$tkey = strpos($key, ':') === false ? 'og:' . $key : $key;
-			
-			if (!is_array($value)) {
-				$value = array($value);
-			}
-			
-			foreach($value as $v) {
-				if (trim($v) !== '') {
-					$tagString .= sprintf('<meta property="%s" content="%s" />', $tkey, addslashes($helper->escapeHtml($v))) . "\n";
+			foreach($this->_openGraphTags as $key => $value) {
+				$tkey = strpos($key, ':') === false ? 'og:' . $key : $key;
+				
+				if (!is_array($value)) {
+					$value = array($value);
+				}
+				
+				foreach($value as $v) {
+					if (trim($v) !== '') {
+						$tagString .= sprintf('<meta property="%s" content="%s" />', $tkey, addslashes($helper->escapeHtml($v))) . "\n";
+					}
 				}
 			}
+	
+			$headBlock->setChild('wp.openGraph', 
+				Mage::getSingleton('core/layout')->createBlock('core/text')->setText($tagString . "\n")
+			);
 		}
-
-		$headBlock->setChild('wp.openGraph', 
-			Mage::getSingleton('core/layout')->createBlock('core/text')->setText($tagString . "\n")
-		);
 		
 		return $this;
 	}
@@ -164,6 +183,12 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 	 */	
 	public function processRouteWordPressIndexIndex($object = null)
 	{
+		if (is_object($object) && $object instanceof Fishpig_Wordpress_Model_Post) {
+			if ($object->isBlogListingPage()) {
+				return $this->processRouteWordPressPageView($object);
+			}
+		}
+		
 		$this->_applyMeta(array(
 			'title' => $this->getTitleHomeWpseo(),
 			'description' => trim($this->getMetadescHomeWpseo()),
@@ -630,10 +655,20 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 			$data['currentyear'] = date('Y');
 			$data['sep'] = '|';
 
+			if ($sep = $this->getData('separator')) {
+				if (isset($this->_separatorOptions[$sep])) {
+					$data['sep'] = $this->_separatorOptions[$sep];
+				}
+			}
+
 			if (($value = trim(Mage::helper('wordpress/router')->getSearchTerm(true))) !== '') {
 				$data['searchphrase'] = $value;
 			}
-
+			
+			if (($page = (int)Mage::app()->getRequest()->getParam('page')) > 1) {
+				$data['page'] = $data['sep'] . ' Page ' . $page;
+			}
+			
 			$this->setRewriteData($data);
 		}
 		
@@ -658,7 +693,7 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 	 * @param string $key
 	 * @return string|false
 	 */
-	protected function _rewriteString($format)
+	protected function _rewriteStringg($format)
 	{
 		if (($value = parent::_rewriteString($format)) !== false) {
 			$data = $this->getRewriteData();
@@ -713,5 +748,54 @@ class Fishpig_Wordpress_Addon_WordPressSEO_Helper_Data extends Fishpig_Wordpress
 	public function processRouteWpAddonEventscalendarEventCategoryView($term)
 	{
 		return $this->processRouteWordpressTermView($term);
+	}
+	
+	/**
+	 * Get the primary category for $post
+	 *
+	 * @param Fishpig_Wordpress_Model_Post $post
+	 * @return false|Fishpig_Wordpress_Model_Term
+	 **/
+	public function getPostPrimaryCategory(Fishpig_Wordpress_Model_Post $post)
+	{
+		if (!$this->isEnabled()) {
+			return false;
+		}
+
+		if ($categoryId = $post->getMetaValue('_yoast_wpseo_primary_category')) {
+			$category = Mage::getModel('wordpress/term')->setTaxonomy('category')->load($categoryId);
+			
+			if ($category->getId()) {
+				return $category;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Add the primary category to the select object
+	 *
+	 * @param 
+	 * @param 
+	 * @return $this
+	 **/
+	public function addPrimaryCategoryToSelect($select, $post)
+	{
+		if (!$this->isEnabled()) {
+			return $this;
+		}
+		
+		if (is_object($post)) {
+			$post = $post->getId();
+		}
+
+		$tempPostModel = Mage::getModel('wordpress/post')->setId($post);
+
+		if ($categoryId = $tempPostModel->getMetaValue('_yoast_wpseo_primary_category')) {
+			$select->reset(Zend_Db_Select::ORDER)->where('_term.term_id=?', $categoryId);
+		}
+		
+		return $this;
 	}
 }

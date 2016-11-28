@@ -24,20 +24,6 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	protected $_crumbs = array();
 	
 	/**
-	 * Determine whether to include jQuery
-	 *
-	 * @var bool
-	 */
-	protected $_includejQuery = false;
-	
-	/**
-	 * Plugins can add scripts here
-	 *
-	 * @var array
-	 */
-	protected $_beforeBodyEndContent = array();
-	
-	/**
 	 * Used to do things en-masse
 	 * eg. include canonical URL
 	 *
@@ -148,6 +134,8 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	 */
     public function renderLayout($output='')
     {
+		Mage::dispatchEvent('wordpress_render_layout_before', array('object' => $this->getEntityObject(), 'action' => $this));
+		
 		if (($headBlock = $this->getLayout()->getBlock('head')) !== false) {
 			if ($entity = $this->getEntityObject()) {
 				$headBlock->addItem('link_rel', ($entity->getCanonicalUrl() ? $entity->getCanonicalUrl() : $entity->getUrl()), 'rel="canonical"');
@@ -163,8 +151,6 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 				'rel="alternate" type="application/rss+xml" title="' . Mage::helper('wordpress')->getWpOption('blogname') . ' &raquo; Comments Feed"'
 			);
 		}
-
-		Mage::dispatchEvent('wordpress_render_layout_before', array('object' => $this->getEntityObject(), 'action' => $this));
 
 		if (($headBlock = $this->getLayout()->getBlock('head')) !== false) {
 			if (Mage::helper('wordpress')->getWpOption('blog_public') !== '1') {
@@ -185,76 +171,12 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 				}
 			}
 		}
-
-		if (count($this->_beforeBodyEndContent) > 0) {
-			if ($beforeBodyEnd = $this->getLayout()->getBlock('before_body_end')) {
-				$helper = Mage::helper('wordpress');
-				$before = '';
-				$jsTemplate = '<script type="text/javascript" src="%s"></script>';
-				
-				if ($this->_includejQuery) {
-					if ($headBlock = $this->getLayout()->getBlock('head')) {
-						if (strpos(implode(',', array_keys($headBlock->getItems())), 'jquery') === false) {
-							$before .= sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/jquery/jquery.js?ver=1.11.3'));
-							$before .= sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'));
-						}
-						
-						if (strpos(implode(',', array_keys($headBlock->getItems())), 'underscore') === false) {
-							$before .= sprintf($jsTemplate, $helper->getBaseUrl('wp-includes/js/underscore.min.js?ver=1.6.0'));
-						}
-					}
-				}
-
-				$beforeBodyEnd->append(
-					$this->getLayout()->createBlock('core/text')->setText($before . implode("\n", $this->_beforeBodyEndContent))
-				);
-			}
-		}
 		
 		$this->_renderTitles();
-
 
 		Mage::helper('wordpress/social')->addCodeToHead();
 		
 		return parent::renderLayout($output);
-	}
-	
-	/**
-	 * Add content to the before_body_end block
-	 *
-	 * @string $content
-	 * @mixed $key = null
-	 * @return $this
-	 */
-	public function addContentToBeforeBodyEnd($content, $key = null)
-	{
-		if (is_null($key)) {
-			$key = count($this->_beforeBodyEndContent) + 10;
-			
-			while(isset($this->_beforeBodyEndContent[$key])) {
-				$key++;
-			}
-		}
-		
-		if (strpos($content, 'underscore') !== false) {
-			return $this;
-		}
-		
-		$this->_beforeBodyEndContent[$key] = $content;
-
-		return $this;
-	}
-	
-	/**
-	 * Include the jQuery library
-	 *
-	 * @return $this
-	 */
-	public function includejQuery()
-	{
-		$this->_includejQuery = true;
-
-		return $this;
 	}
 
 	/**
@@ -539,4 +461,16 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 		
 		return $transport->getReturnValue();
 	}    
+	
+	/**
+	 * If this method is called, you need to update your Magento WordPress Integration add-on extensions
+	 *
+	 * @return $this
+	 **/
+	public function includejQuery()
+	{
+		Mage::helper('wordpress')->log("You need to update your Magento WordPress Integration add-on extensions.");
+		
+		return $this;
+	}
 }

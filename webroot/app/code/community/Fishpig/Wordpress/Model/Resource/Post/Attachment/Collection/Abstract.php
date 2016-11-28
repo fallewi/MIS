@@ -6,7 +6,7 @@
  * @author      Ben Tideswell <help@fishpig.co.uk>
  */
 
-class Fishpig_Wordpress_Model_Resource_Post_Attachment_Collection_Abstract extends Fishpig_Wordpress_Model_Resource_Collection_Abstract
+abstract class Fishpig_Wordpress_Model_Resource_Post_Attachment_Collection_Abstract extends Fishpig_Wordpress_Model_Resource_Collection_Abstract
 {
 	/**
 	 * Load an attachment

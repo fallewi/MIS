@@ -101,6 +101,7 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 			$collection->addAttributeToFilter('status', 1);
 			$collection->addAttributeToFilter('entity_id', array('in' => $associations));
 		
+
 			return $collection;
 		}
 		

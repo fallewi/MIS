@@ -39,8 +39,8 @@
     - grunt
     - grunt-compile-only
 
-- name: update npm dependencies, passing --production flag, using yarn
-  shell: yarn install --production && echo $(shasum package.json | awk '{print $1}') > node_modules/fingerprint.sha
+- name: update npm dependencies, passing --production flag, using npm revert instead of yarn
+  shell: npm install --production && echo $(shasum package.json | awk '{print $1}') > node_modules/fingerprint.sha
   args:
     chdir: "{{ BUILD_PATH }}"
   when: fingerprint|failed

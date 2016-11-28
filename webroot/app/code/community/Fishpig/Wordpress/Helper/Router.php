@@ -9,6 +9,14 @@
 class Fishpig_Wordpress_Helper_Router extends Fishpig_Wordpress_Helper_Abstract
 {
 	/**
+	 * Cache for blog URI
+	 * Can be changed
+	 *
+	 * @static string
+	**/
+	static protected $_blogUri = null;
+
+	/**
 	 * Retrieve the blog URI
 	 * This is the whole URI after blog route
 	 *
@@ -16,12 +24,10 @@ class Fishpig_Wordpress_Helper_Router extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function getBlogUri()
 	{
-		$cacheKey = 'wp_blog_uri';
-		
-		if ($this->_isCached($cacheKey)) {
-			return $this->_cached($cacheKey);
+		if (self::$_blogUri !== null) {
+			return self::$_blogUri;	
 		}
-		
+
 		$pathInfo = strtolower(trim($this->getRequest()->getPathInfo(), '/'));	
 		
 		if ($this->getBlogRoute() && strpos($pathInfo, $this->getBlogRoute()) !== 0) {
@@ -29,6 +35,8 @@ class Fishpig_Wordpress_Helper_Router extends Fishpig_Wordpress_Helper_Abstract
 		}
 
 		$pathInfo = trim(substr($pathInfo, strlen($this->getBlogRoute())), '/');
+
+		self::$_blogUri = '';
 		
 		if ($pathInfo === '') {
 			return '';
@@ -77,11 +85,24 @@ class Fishpig_Wordpress_Helper_Router extends Fishpig_Wordpress_Helper_Abstract
 
 		$uri = urldecode(implode('/', $pathInfo));
 		
-		$this->_cache($cacheKey, $uri);
+		self::$_blogUri = $uri;
 		
 		return $uri;
 	}
 
+	/**
+	 * Set the Blog URI
+	 *
+	 * @param string $blogUri
+	 * @return $this
+	**/
+	public function setBlogUri($blogUri)
+	{
+		self::$_blogUri = $blogUri;
+		
+		return $this;
+	}
+	
 	/**
 	 * Retrieve the page ID set via the query string
 	 *

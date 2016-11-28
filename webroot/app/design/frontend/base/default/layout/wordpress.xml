@@ -175,7 +175,7 @@
 	-->
 	<wordpress_post_view>
 		<reference name="content">
-			<block type="wordpress/post_view" name="wp.post.view" template="wordpress/post/view.phtml">
+			<block type="wordpress/post_view" name="wp.post.view">
 				<block type="core/text_list" name="post.content.before" as="before_post_content" />
 				<block type="core/text_list" name="post.content.after" as="after_post_content">
 					<block type="wordpress/post_meta" name="wp.post.view.meta" as="meta" after="-" template="wordpress/post/meta.phtml">

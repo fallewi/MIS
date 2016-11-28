@@ -123,7 +123,7 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 			? $this->getDbConnection()
 			: Mage::helper('wordpress/app')->getDbConnection();
 			
-		if ($db === false) {
+		if (!$db) {
 			return false;
 		}
 		

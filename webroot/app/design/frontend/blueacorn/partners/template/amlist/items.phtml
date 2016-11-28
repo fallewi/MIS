@@ -9,7 +9,7 @@
 <?php $items = $this->getList()->getItems(); ?>
 <?php $_hlp = Mage::helper('amlist'); ?>
 <?php $_coreHelper = $this->helper('core'); ?>
-<h3><?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
+<h3>Edit: <?php echo $this->htmlEscape($_list->getTitle()) ?></h3>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <?php if (count($items)): ?>
 <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
@@ -18,20 +18,19 @@
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
         <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
-        <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/cart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
     </div>
     <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">
-    <col width="30" />
-    <col />
-    <col width="130" />
-    <col />
-    <col />
-    <col width="120"/> 
+        <col width="60" />
+        <col width="60" />
+        <col width="130"/>
+        <col />
+        <col />
+        <col width="60"/>
         <thead>
             <tr>
-                <th><input type="checkbox" id="ckbCheckAll" title="Check/Uncheck All" /></th>
                 <th><?php echo $this->__('Qty') ?></th>
-                <th><?php echo $this->__('Product') ?></th>
+                <th>&nbsp;</th>
+                <th>SKU</th>
                 <th><?php echo $this->__('Details') ?></th>
                 <th><?php echo $this->__('Price') ?></th>
                 <th class="a-center">&nbsp;</th>
@@ -45,9 +44,6 @@
         <?php foreach ($items as $item): $id = $item->getId();?>
             <tr>
                 <td>
-                    <input type="checkbox" class="checkBoxClass" name="cb[]" value="<?php echo $id ?>" />
-                </td>
-                <td>
                     <input type="text" size="2" name="qty[<?php echo $id ?>]" value="<?php echo $item->getQty() ?>" class="input-text" />
                 </td>
                 <td>
@@ -56,6 +52,7 @@
                                  alt="<?php echo $this->htmlEscape($item->getProduct()->getName()) ?>" width="50" style="width:50px;" />
                         </a>
                 </td>
+                <td><?php echo $item->getProduct()->getSku(); ?></td>
                 <td>
                         <a href="<?php echo $this->getProductItemUrl($item) ?>"
                            title="<?php echo $this->htmlEscape($item->getProduct()->getName()) ?>">
@@ -63,7 +60,7 @@
                         </a><br />
                         Case Pack: <?php echo $item->getProduct()->getAttributeText('uom'); ?>
                     <?php echo $item->getOptionsHtml() ?>
-                    <?php if(!$item->getProduct()->isSaleable()){ ?> Not Saleable <?php } ?>
+                    <?php if(!$item->getProduct()->isSaleable()){ $unsaleable = true; ?><span class="red">Product is currently not available.</span> <?php } ?>
                 </td>
                 <td>
                     <?php $price = $item->getPrice(); $total += ($price * $item->getQty());  echo $_coreHelper->formatPrice($price, true); ?>
@@ -82,18 +79,11 @@
                 </td>
             </tr>
         <?php endforeach ?>
-        <?php if ($total): ?>
-            <tr>
-                <td colspan="4" style="text-align:right"><strong><?php echo $this->__('Total:')?></strong></td>
-                <td colspan="2" style="text-align:left"><strong><?php echo $_coreHelper->formatPrice($total, true) ?></strong></td>
-            </tr>        
-        <?php endif ?>
         </tbody>
     </table>
     <div class="buttons-set">
-        <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
+        <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
         <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
-        <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/cart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
     </div>
 </form>
 <script type="text/javascript">decorateTable('amlist-table')</script>
@@ -105,10 +95,12 @@
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
     </div>
 <?php endif ?>
+<script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.min.js"></script>
+<script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.jquery.js"></script>
 <script type="text/javascript">
     $j(document).ready(function () {
-        $j("#ckbCheckAll").click(function () {
-            $j(".checkBoxClass").prop('checked', $j(this).prop('checked'));
-        });
+        $j("#amlist-table").datatable({
+            sort: [false, false, true, true, true, false]
+        }) ;
     });
 </script>

@@ -2,14 +2,14 @@
 /*
  Plugin Name: Network Publisher
  Plugin URI: http://wordpress.org/extend/plugins/network-publisher/
- Description: Automatically publish your blog posts to Social Networks including Twitter, Facebook, and, LinkedIn.
- Version: 6.1
+ Description: Automatically publish your blog posts to Social Networks including Facebook Profie, Facebook Page, and Twitter
+ Version: 6.1.1
  Author: linksalpha
  Author URI: http://www.linksalpha.com
  */
 
 /*
- Copyright (C) 2015 LinksAlpha.
+ Copyright (C) 2016 LinksAlpha.
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@ define('NETWORKPUB_WIDGET_NAME_INTERNAL', 			'networkpub');
 define('NETWORKPUB_WIDGET_NAME_INTERNAL_NW', 		'nw');
 define('NETWORKPUB_PLUGIN_ADMIN_URL', 				esc_url(get_admin_url(null, 'options-general.php?page='.networkpub_get_plugin_file(NETWORKPUB_WIDGET_NAME))));
 define('NETWORKPUB_WIDGET_PREFIX', 					'networkpub');
-define('NETWORKPUB', 								__('Automatically publish your blog posts to Social Networks including Facebook, Twitter, and LinkedIn'));
+define('NETWORKPUB', 								__('Automatically publish your blog posts to Social Networks including Facebook Profie, Facebook Page, and Twitter'));
 define('NETWORKPUB_ERROR_INTERNAL', 				'internal error');
 define('NETWORKPUB_ERROR_INVALID_URL', 				'invalid url');
 define('NETWORKPUB_ERROR_INVALID_KEY', 				'invalid key');
 define('NETWORKPUB_CURRENTLY_PUBLISHING', 			__('You are currently Publishing your Blog to'));
 define('NETWORKPUB_SOCIAL_NETWORKS', 				__('Social Networks'));
 define('NETWORKPUB_SOCIAL_NETWORK', 				__('Social Network'));
-define('NETWORKPUB_PLUGIN_VERSION', 				'6.1');
+define('NETWORKPUB_PLUGIN_VERSION', 				'6.1.1');
 define('NETWORKPUB_API_URL', 						'http://www.linksalpha.com/a/');
 
 $networkpub_settings['api_key'] = array('label' => 'API Key:', 'type' => 'text', 'default' => '');
@@ -111,7 +111,6 @@ function networkpub_admin() {
 add_filter( 'plugin_action_links', 'networkpub_add_action_plugin', 10, 5 );
 
 function networkpub_add_action_plugin( $links, $plugin_file ) {
-	echo $plugin_file;
 	$links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page='.$plugin_file) ) .'">Settings</a>';
    	return $links;
 }
@@ -1055,23 +1054,20 @@ function networkpub_conf() {
 			</div>
 			<div class="wrap">
 				<div class="networkpublisher_share_box">
-					<table>
-						<tr>
-							<td class="networkpublisher_share_box_left">
-								&nbsp;
-							</td>
-							<td class="networkpublisher_share_box_right">
-								<span style="display: inline-block;padding-right: 5px;">
-									Get a Free E-commerce Store
-								</span>
-								<span>
-									<a href="http://www.singlecontactapp.com" target="_blank">
-										<img src="https://www.singlecontactapp.com/images/logo_singlecontact.png" title="SingleContactapp.com" alt="SingleContactapp.com" style="height: 16px;" />
-									</a>
-								</span>
-							</td>
-						</tr>
-					</table>
+					<span>
+						Share with Friends:&nbsp;
+					</span>
+					<span>
+						<!-- LinksAlpha Plugin Script. -->
+						<script async src="//www.linksalpha.com/js/social.js"></script>
+	                    <!-- LinksAlpha button snippet. -->
+						<div class="linksalpha_container linksalpha_app_3" data-title="LinksAlpha.com - Social Buttons for your website" data-url="http://www.linksalpha.com" data-size="small" data-style="" data-counters="">
+						    <a class="linksalpha_icon_facebook" href="//www.linksalpha.com/share?network=facebook"></a>
+						    <a class="linksalpha_icon_twitter" href="//www.linksalpha.com/share?network=twitter"></a>
+						    <a class="linksalpha_icon_googleplus" href="//www.linksalpha.com/share?network=googleplus"></a>
+						    <a class="linksalpha_icon_mail" href="//www.linksalpha.com/share?network=mail"></a>
+						</div>
+					</span>
 				</div>
 				<div>';
 	if (empty($options['api_key'])) {
@@ -1118,10 +1114,6 @@ function networkpub_conf() {
                                     <tr>
                                         <td class="networkpublisher_add_key_submit_button">
                                             <input type="submit" name="submit" class="button-primary" value="' . __('Add API Key') . '" TABINDEX=1001 />
-                                        </td>
-                                        <td class="networkpublisher_add_key_submit_social">
-                                            <div class="linksalpha-email-button" id="linksalpha_tag_20886785812" data-url="http://www.linksalpha.com" data-text="LinksAlpha - Making Social Media Easy!" data-desc="LinksAlpha provides quick and easy way for companies and users to connect and share on social web. Using LinksAlpha tools, you can integrate Social Media Buttons into your website, Publish your Website Content Automatically to Social Media Sites, and Track Social Media Profiles, all from one place." data-image="http://www.linksalpha.com/images/LALOGO_s175.png"></div>
-											<script type="text/javascript" src="http://www.linksalpha.com/social/loader?tag_id=linksalpha_tag_20886785812&fblikefont=arial&vkontakte=1&livejournal=1&twitter=1&xinglang=de&linkedin=1&tumblr=1&hyves=1&fblikelang=en_US&delicious=1&twitterw=110&gpluslang=en-US&gmail=1&weibo=1&posterous=1&xing=1&sonico=1&twitterlang=en&pinterest=1&myspace=1&msn=1&print=1&mailru=1&email=1&counters=googleplus%2Cfacebook%2Clinkedin%2Ctwitter&reddit=1&hotmail=1&netlog=1&twitterrelated=linksalpha&aolmail=1&link=http%3A%2F%2Fwww.linksalpha.com&diigo=1&evernote=1&digg=1&yahoomail=1&yammer=1&stumbleupon=1&instapaper=1&facebookw=90&googleplus=1&fblikeverb=like&fblikeref=linksalpha&halign=left&readitlater=1&v=2&facebook=1&button=googleplus%2Cfacebook%2Clinkedin%2Ctwitter&identica=1"></script>
                                         </td>
                                     </tr>
                                 </table>

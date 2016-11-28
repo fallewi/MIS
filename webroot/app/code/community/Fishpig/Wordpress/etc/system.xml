@@ -38,14 +38,6 @@
             			</check_for_updates>
             		</fields>            	
             	</module>
-            	<license>
-            		<label>License</label>
-            		<comment>You must have a valid license for each add-on extension listed below. Licenses are automatically validated and logged by FishPig. It is illegal to use an extension listed below with an invalid license.</comment>
-            		<sort_order>2</sort_order>
-            		<show_in_default>1</show_in_default>
-					<expanded>1</expanded>
-            		<fields></fields>            	
-            	</license>
             	<database>
             		<label>Database</label>
             		<sort_order>6</sort_order>
@@ -165,9 +157,17 @@
         				</force_single_store>
 					</fields>
             	</integration>
+            	<license>
+            		<label>License</label>
+            		<comment>You must have a valid license for each add-on extension listed below. Licenses are automatically validated and logged by FishPig. It is illegal to use an extension listed below with an invalid license.</comment>
+            		<sort_order>17</sort_order>
+            		<show_in_default>1</show_in_default>
+					<expanded>1</expanded>
+            		<fields></fields>            	
+            	</license>
             	<autologin>
             		<label>Auto-Login</label>
-					<sort_order>16</sort_order>
+					<sort_order>18</sort_order>
 					<show_in_default>1</show_in_default>
 					<expanded>0</expanded>
 					<comment><![CDATA[<p>For help setting up the Auto-Login features, see <a href="http://fishpig.co.uk/magento/wordpress-integration/auto-login/" target="_blank">this article</a>.</p>]]></comment>
@@ -300,6 +300,22 @@
 							<show_in_default>1</show_in_default>
 							<show_in_store>1</show_in_store>
 		        		</autop>
+        				<include_jquery>
+        					<label>Include jQuery</label>
+        					<sort_order>101</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_store>1</show_in_store>     
+        				</include_jquery>
+        				<include_underscore>
+        					<label>Include underscore.js</label>
+        					<sort_order>102</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_store>1</show_in_store>     
+        				</include_underscore>
 					</fields>
             	</misc>
             	<social>
