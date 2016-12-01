@@ -135,3 +135,10 @@
 2.109 - SHQ16-1566 support for calendar end date
 2.110 - Resolved JS errors on admin view
 2.111 - SHQ16-1616 account for negative discounted prices, SHQ16-1618 save carrier group ID on order packages
+2.112 - Compatibility enhancement for minify JS
+2.113 - IWD Pro Checkout Compatibility. LTL Accessorial display fix
+2.114 - SHQ16-1711 process deliveryMessage, SHQ16-1722 store packages on session, SHQ16-1726 use date selected in accessorial requests
+2.115 - SHQ16-1729 resolve error on shipment email for pickup location
+2.116 - SHQ16-1748 explicitly set collect rates to false on submit, SHQ16-1357 dont show any date for custom calendar carriers on inital load, SHQ16-1750 remove legacy attributes from request
+2.117 - SHQ16-1690 Added section specific classes and removed inline styles
+2.118 - SHQ16-1768 item detail added when merged rates enabled for MAC

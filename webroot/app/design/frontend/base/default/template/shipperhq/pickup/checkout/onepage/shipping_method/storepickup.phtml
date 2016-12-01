@@ -51,13 +51,12 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
 <?php $displayMap = $this->getShowMap();?>
 <?php $displayAddress = $this->getShowAddress();?>
 
-<div id="location_table<?php echo $carrierCodeInsert . $carriergroupInsert; ?>" class="shq-custom-method location_table<?php echo $carriergroupInsert; ?>" style="display: none">
-    <div class="shq-optn-100">
+<div id="location_table<?php echo $carrierCodeInsert . $carriergroupInsert; ?>" class="shq-custom-method shq-pickup location_table<?php echo $carriergroupInsert; ?>" style="display: none">
+    <div class="shq-optn-100 shq-pickup-location">
         <div class="shq-title">
             <label for="location-select" class="shq-title" id="location-select_label<?php echo $carrierCodeInsert .  $carriergroupInsert; ?>">
                 <?php echo $this->__('Choose Location') ?>
-
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/location-blk.svg") ?>" alt="" title="" onclick="">
+	            <span class="shq-ico-location"></span>
             </label>
         </div>
         <div class="shq-input">
@@ -66,28 +65,30 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
         </div>
     </div>
 
-    <div class="shq-optn-50l">
+    <div class="shq-optn-50l shq-calendar-date">
         <div class="overlay-container">
             <div class="overlay-pickup" id="retrieving-location<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"></div>
         </div>
 
         <div class="shq-title">
-            <label for="pickup_date_select" class="shq-title" id="pickup_date_select_label<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"><?php echo $this->__('Choose Pickup Date') ?>
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/calendar-blk.svg") ?>" alt="" title="" onclick="">
+            <label for="pickup_date_select" class="shq-title" id="pickup_date_select_label<?php echo $carrierCodeInsert . $carriergroupInsert; ?>">
+	            <?php echo $this->__('Choose Pickup Date') ?>
+	            <span class="shq-ico-calendar"></span>
             </label>
         </div>
         <div class="shq-input">
             <label class="shq-input">
                 <input type="text"  class="shq-input datepickercalendar" readonly="readonly" value="" id="pickup_date_select<?php echo $carrierCodeInsert . $carriergroupInsert; ?>" name="pickup_date<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"/>
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/calendar-blk.svg") ?>" alt="" title="" onclick="">
+                <span class="shq-ico-calendar shq-ico-r"></span>
             </label>
         </div>
     </div>
 
-    <div class="shq-optn-50r">
+    <div class="shq-optn-50r shq-calendar-time">
         <div class="shq-title">
-            <label for="pickup_slot_select" class="shq-title shq-input" id="pickup_slot_select_label<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"><?php echo $this->__('Choose Pickup Time') ?>
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/clock-blk.svg") ?>" alt="" title="" onclick="">
+            <label for="pickup_slot_select" class="shq-title shq-input" id="pickup_slot_select_label<?php echo $carrierCodeInsert . $carriergroupInsert; ?>">
+	            <span class="shq-ico-clock"></span>
+	            <?php echo $this->__('Choose Pickup Time') ?>
             </label>
         </div>
         <div class="shq-input">
@@ -120,7 +121,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 <div class="overlay-container">
                     <div class="overlay-bg" id="retrieving-map<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"></div>
                 </div>
-                <div id="map-canvas<?php echo $carrierCodeInsert . $carriergroupInsert; ?>" style="height:95%; width:95%;"></div>
+                <div class="shq-map-insert" id="map-canvas<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"></div>
             </div>
         <?php endif; ?>
         <?php if ($displayMap == 'popup'): ?>
@@ -135,7 +136,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
         <div class="overlay-container">
             <div class="overlay-bg" id="retrieving-map<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"></div>
         </div>
-        <div id="map-canvas<?php echo $carrierCodeInsert . $carriergroupInsert; ?>" style="height:400px; width:600px;"></div>
+        <div class="shq-map-popup" id="map-canvas<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"></div>
     </div>
 <?php endif; ?>
 <?php if ($isAccessPoints): ?>
@@ -147,9 +148,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
 
 <script type="text/javascript">
     //<![CDATA[
-
     var StorePickup = Class.create();
-
 
     var minDate = null;
     var maxDate = null;
@@ -203,17 +202,6 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                         var retrievinglocation = $('retrieving-location_' + carrierCode + carriergroupInsert);
                         var inline = '<?php echo $displayMap; ?>' == 'inline';
                         if(inline) {
-                            var mapHeight = $('map-canvas_' + carrierCode + carriergroupInsert).clientHeight ||
-                                $('map-canvas_' + carrierCode + carriergroupInsert).offsetHeight;
-                            var mapWidth = $('map-canvas_' + carrierCode + carriergroupInsert).clientWidth ||
-                                $('map-canvas_' + carrierCode + carriergroupInsert).offsetWidth;
-                            $('map-canvas_' + carrierCode + carriergroupInsert).offsetWidth;
-                            var sStyleHeight = "height:" + mapHeight + "px; ";
-                            var sStyleWidth = "width:" + mapWidth + "px;";
-
-                            retrievingmap.setAttribute("style", sStyleHeight);
-                            retrievingmap.setAttribute("style", sStyleWidth);
-
                             retrievingmap.innerHTML = "<div class='overlay-text'><img src=" +
                                 "'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>'></div>";
                             retrievingmap.style.visibility = "visible";
@@ -279,17 +267,6 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
             var inline = '<?php echo $displayMap; ?>' == 'inline';
             var carrierType = '<?php echo $this->getCarrierType(); ?>';
             if(inline) {
-                var mapHeight = $('map-canvas_' + thisCarrierCode +  carriergroupInsert).clientHeight ||
-                    $('map-canvas_' + thisCarrierCode + carriergroupInsert).offsetHeight;
-                var mapWidth = $('map-canvas_' + thisCarrierCode + carriergroupInsert).clientWidth ||
-                    $('map-canvas_' + thisCarrierCode + carriergroupInsert).offsetWidth;
-                $('map-canvas_' + thisCarrierCode + carriergroupInsert).offsetWidth;
-                var sStyleHeight = "height:" + mapHeight + "px; ";
-                var sStyleWidth = "width:" + mapWidth + "px;";
-
-                retrievingmap.setAttribute("style", sStyleHeight);
-                retrievingmap.setAttribute("style", sStyleWidth);
-
                 retrievingmap.innerHTML = "<div class='overlay-text'><img src=" +
                     "'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>'></div>";
                 retrievingmap.style.visibility = "visible";
@@ -466,13 +443,16 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                     if (locationDetails.street2) {
                         street = street + locationDetails.street2 + '</br>';
                     }
-                    address = address + '<ul>';
+                    address = address + '<address>';
                     if(showAddress == 'inline') {
                         address = address + '<strong>' +locationDetails.addressText + '</strong><br/>';
                     }
                     address = address + locationDetails.name + '<br/>' + street
-                        + locationDetails.city + ', ' + locationDetails.region + ' ' + locationDetails.zip +
-                        '</br> T:' + locationDetails.phone;
+                        + locationDetails.city + ', ' + locationDetails.region + ' ' + locationDetails.zip;
+
+                    if(locationDetails.phone) {
+                        address = address + '</br> T:' + locationDetails.phone;
+                    }
 
                     if(locationDetails.fax)  {
                         address = address + '</br>F: ' + locationDetails.fax;
@@ -483,12 +463,11 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                     if(locationDetails.website) {
                         address = address + '</br>' + locationDetails.website;
                     }
-                    address = address + '</p>';
                     if(locationDetails.walking_directions) {
-                        address = address + '<p>' + locationDetails.walking_directions + '</p>';
+                        address = address +'</br>' + locationDetails.walking_directions;
                     }
 
-                    address = address + '</ul>';
+                    address = address + '</address>';
 
 
                 }

@@ -53,15 +53,17 @@ class Shipperhq_Shipper_Block_Adminhtml_Synchronize_Notify extends Mage_Adminhtm
      */
     protected function _canShowNotification()
     {
+        $value = Mage::getSingleton('adminhtml/session')->getAlreadySynched();
         if(Mage::getSingleton('adminhtml/session')->getAlreadySynched()) {
-            return false;
+            return $value == 'required' ? true : false;
         }
 
         if ($this->_isSynchRequired()) {
+            Mage::getSingleton('adminhtml/session')->setAlreadySynched('required');
             return true;
         }
 
-        Mage::getSingleton('adminhtml/session')->setAlreadySynched(true);
+        Mage::getSingleton('adminhtml/session')->setAlreadySynched('not_required');
         return false;
     }
 

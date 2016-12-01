@@ -78,9 +78,11 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
         $dateOnRate = '';
         $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
         $tooltipImgUrl = Mage::getModel ('core/design_package')->getSkinUrl('images/shipperhq/tooltip.jpg');
+        $carrierType = false;
         foreach ($this->_rates as $code => $rates) {
             if ($code == $carrierCode) {
                 foreach ($rates as $rate) {
+                    $carrierType = $rate->getCarrierType();
                     if($carriergroupId != '' && $rate->getCarriergroupId() != $carriergroupId) {
                         continue;
                     }
@@ -99,12 +101,13 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
                     $_excl = $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), !$isOsc);
                     $_incl = $this->_getShippingPrice($rate->getPrice(), true, !$isOsc);
 
-                    $label =  $this->getMethodTitle($rate->getMethodTitle(), $rate->getMethodDescription(), !$isOsc) .' ' .$_excl;
+                    $label =  $_excl;
                     if (Mage::helper('tax')->displayShippingBothPrices() && $_incl != $_excl)
                     {
                         $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
                     }
-                    if ($rate->getTooltip()) {
+                    $label .=  ' ' .$this->getMethodTitle($rate->getMethodTitle(), $rate->getMethodDescription(), !$isOsc);
+                    if ($rate->getTooltip() && !$isOsc) {
                         $label .= '<span style="float:right;" class="helpcursor" title="'.$rate->getTooltip().'">
                                        <img src="'.$tooltipImgUrl.'">
                                    </span>';
@@ -151,8 +154,17 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
                 }
             }
         }
-        $resultSet['default_date'] = $dateSelected != '' ? $dateSelected : $dateOnRate;
-
+        //SHQ16-1357 - don't show default date if it's a custom rate carrier
+        if($dateSelected != '') {
+            $defaultDate = $dateSelected;
+        }
+        elseif($carrierType && $carrierType != 'custom') {
+            $defaultDate = $dateOnRate;
+        }
+        else {
+            $defaultDate = '';
+        }
+        $resultSet['default_date'] = $defaultDate;
         $this->quoteStorage->setSelectedDeliveryArray(null);
 
     }

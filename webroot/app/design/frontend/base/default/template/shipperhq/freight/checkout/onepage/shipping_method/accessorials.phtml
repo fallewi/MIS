@@ -58,7 +58,7 @@
                 <input  class="accessorial" type="checkbox" name="notify_required_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" id="notify_required_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" value="1"
                     <?php if ($this->helper('shipperhq_freight')->getNotifyRequired($carrierGroup, $carrierCode)): ?> checked="checked"<?php endif; ?> />
                 <label id="notify_required_label_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
-                       for="notify_required"><?php echo $this->__('Notify Required?') ?></label>
+                       for="notify_required_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__('Notify Required?') ?></label>
             </li>
         <?php endif; ?>
 
@@ -66,7 +66,8 @@
             <li class="a-left input-checkbox" id="inside_delivery_div_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>">
                 <input  class="accessorial" type="checkbox" name="inside_delivery_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" id="inside_delivery_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" value="1"
                     <?php if ($this->helper('shipperhq_freight')->getInsideDelivery($carrierGroup, $carrierCode)): ?> checked="checked"<?php endif; ?> />
-                <label id="inside_delivery_label_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" for="inside_delivery"><?php echo $this->__('Inside Delivery?') ?></label>
+                <label id="inside_delivery_label_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
+                       for="inside_delivery_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__('Inside Delivery?') ?></label>
             </li>
         <?php endif; ?>
 
@@ -148,6 +149,7 @@ FreightListener.prototype = {
         var notify_required = false;
         var destination_type = false;
         var inside_delivery = false;
+        var date_selected = false; //SHQ16-1726 explicitly add selected date if present to request
 
         if($('liftgate_required_'+carrierCode+carrierGroupInsert)) {
             liftgate_required = $('liftgate_required_'+carrierCode+carrierGroupInsert).checked
@@ -165,6 +167,9 @@ FreightListener.prototype = {
             inside_delivery = $('inside_delivery_' +carrierCode+carrierGroupInsert).checked;
         }
 
+        if($('del_date_select_' + carrierCode + carrierGroupInsert)) {
+            date_selected = $('del_date_select_' + carrierCode + carrierGroupInsert).value;
+        }
         new Ajax.Request(url, {
                 method: 'get',
                 dataType: 'json',
@@ -180,6 +185,7 @@ FreightListener.prototype = {
                     notify_required: notify_required,
                     destination_type: destination_type,
                     inside_delivery: inside_delivery,
+                    date_selected: date_selected,
                     onestepcheckout: false
                 }
             }
@@ -200,6 +206,7 @@ FreightListener.prototype = {
         var notify_required = false;
         var destination_type = false;
         var inside_delivery = false;
+        var date_selected = false; //SHQ16-1726 explicitly add selected date if present to request
 
         if($('liftgate_required_'+carrierCode+carrierGroupInsert)) {
             liftgate_required = $('liftgate_required_'+carrierCode+carrierGroupInsert).checked
@@ -215,6 +222,10 @@ FreightListener.prototype = {
 
         if($('inside_delivery_' +carrierCode+carrierGroupInsert)) {
             inside_delivery = $('inside_delivery_' +carrierCode+carrierGroupInsert).checked;
+        }
+
+        if($('del_date_select_' + carrierCode + carrierGroupInsert)) {
+            date_selected = $('del_date_select_' + carrierCode + carrierGroupInsert).value;
         }
 
         document.getElementById('retrieving-rates').innerHTML =
@@ -233,6 +244,7 @@ FreightListener.prototype = {
                 notify_required: notify_required,
                 destination_type: destination_type,
                 inside_delivery: inside_delivery,
+                date_selected: date_selected,
                 onestepcheckout: true
             }
 

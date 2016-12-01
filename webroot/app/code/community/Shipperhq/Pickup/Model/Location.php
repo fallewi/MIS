@@ -80,11 +80,12 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
                                 $_excl = $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), false);
                                 $_incl = $this->_getShippingPrice($rate->getPrice(), true, false);
 
-                                $label =  $this->getMethodTitle( $rate->getMethodTitle(),  $rate->getMethodDescription(), !$isOsc) .' ' .$_excl;
+                                $label = $_excl;
                                 if (Mage::helper('tax')->displayShippingBothPrices() && $_incl != $_excl)
                                 {
                                     $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
                                 }
+                                $label .=  ' ' .$this->getMethodTitle( $rate->getMethodTitle(),  $rate->getMethodDescription(), !$isOsc);
                                 $updatedRates[$rate->getCode()] = array(
                                     //  'code' 			=> ,
                                     'price' 				=> $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), false),

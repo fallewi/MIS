@@ -177,6 +177,8 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
         switch ($actionName) {
             case 'checkout_onepage_saveShipping':
             case 'checkout_onepage_saveBilling':
+            case 'opc_json_saveBilling':
+            case 'opc_json_saveShipping':
                 Mage::dispatchEvent("shipperhq_save_shipping_before",
                     array(
                         'request' => $observer->getControllerAction()->getRequest(),

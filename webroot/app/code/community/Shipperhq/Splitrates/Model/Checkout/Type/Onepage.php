@@ -207,6 +207,7 @@ class Shipperhq_Splitrates_Model_Checkout_Type_Onepage extends Mage_Checkout_Mod
             }
         }
 
+        $this->getQuote()->getShippingAddress()->setCollectShippingRates(false);
         $this->getQuote()->collectTotals();
         $this->getQuote()->save();
 

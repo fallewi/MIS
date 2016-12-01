@@ -77,8 +77,13 @@
         </reference>
     </checkout_onepage_shippingmethod>
 
+    <!-- IWD OPC -->
+    <opc_index_index>
+        <undate handle="checkout_onepage_index"/>
+    </opc_index_index>
+
     <!-- One Step Checkout Integration -->
-  <onestepcheckout_index_index>
+    <onestepcheckout_index_index>
         <reference name="head">
             <action method="addItem">
                 <type>skin_css</type>

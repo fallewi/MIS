@@ -44,9 +44,9 @@
 <?php $_oneStepCheckout = $this->oneStepCheckoutEnabled(); ?>
 <?php $_sole = $this->getSoleMethod(); ?>
 
-<div id="calendar_table<?php echo $carrierCodeInsert .$carriergroupInsert; ?>" style="display: none" class="shq-custom-method calendar_table<?php echo $carriergroupInsert; ?>">
+<div id="calendar_table<?php echo $carrierCodeInsert .$carriergroupInsert; ?>" style="display: none" class="shq-custom-method shq-calendar calendar_table<?php echo $carriergroupInsert; ?>">
 
-    <div class="shq-optn-50l">
+    <div class="shq-optn-50l shq-calendar-date">
 
         <div class="overlay-container">
             <div class="overlay-calendar" id="retrieving-calendar<?php echo $carrierCodeInsert. $carriergroupInsert; ?>"></div>
@@ -55,22 +55,22 @@
         <div class="shq-title" id="calendar_date_label<?php echo $carrierCodeInsert. $carriergroupInsert; ?>">
             <label for="del_date_select" id="del_date_select_label<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" class="shq-title">
                 <?php echo $this->__('Choose Delivery Date') ?>
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/calendar-blk.svg") ?>" alt="" title="" onclick="">
+	            <span class="shq-ico-calendar"></span>
             </label>
         </div>
         <div class="shq-input">
             <label id="del_date_report<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" class="shq-input">
                 <input type="text" class="shq-input datepickercalendar" readonly="readonly" value="" id="del_date_select<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" name="del_date<?php echo $carrierCodeInsert . $carriergroupInsert;?>" />
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/calendar-blk.svg") ?>" alt="" title="" onclick="">
+	            <span class="shq-ico-calendar shq-ico-r"></span>
             </label>
         </div>
     </div>
 
-    <div class="shq-optn-50r">
+    <div class="shq-optn-50r shq-calendar-time">
         <div class="shq-title">
             <label for="del_slot_select" id="del_slot_select_label<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" class="shq-title shq-input">
                 <?php echo $this->__('Choose Delivery Time') ?>
-                <img class="shq-ico" src="<?php echo $this->getSkinUrl("images/shipperhq/clock-blk.svg") ?>" alt="" title="" onclick="">
+	            <span class="shq-ico-clock"></span>
             </label>
         </div>
         <div class="shq-input">
@@ -229,7 +229,7 @@
                             $j('#del_date_select'+ carrierCodeInsert + carriergroupInsert).datepicker('setDate', selectedDate);
                         }
                         else {
-                            $j('#del_date_select'+ carrierCodeInsert + carriergroupInsert).datepicker('setDate', minDate);
+                        //    $j('#del_date_select'+ carrierCodeInsert + carriergroupInsert).datepicker('setDate', minDate);
                         }
                         $j('#del_date_select'+carrierCodeInsert + carriergroupInsert).datepicker( "option", "minDate", minDate );
                         $j('#del_date_select'+carrierCodeInsert + carriergroupInsert).datepicker( "option", "maxDate", maxDate );
@@ -597,13 +597,24 @@
                     if(isOsc) {
                         if(showByDefault ||  isSoleMethod == '1') {
                             $('calendar_table' + carrierCodeInsert + carriergroupInsert).show();
+                            var delDateSelect = $('del_date_select' + carrierCodeInsert + carriergroupInsert);
+                            var required = delDateSelect.hasClassName('validate-one-required');
+                            if(!required) {
+                                delDateSelect.addClassName('validate-one-required');
+                            }
                             changeDate(carriergroupId, carriergroupInsert, carrierCode, true);
+
                         }
                     }
                     else {
                         //  SHIPPERHQ-1370
                         if(isSoleMethod == '1' ||  showByDefault) {
                             $('calendar_table' + carrierCodeInsert + carriergroupInsert).show();
+                            var delDateSelect = $('del_date_select' + carrierCodeInsert + carriergroupInsert);
+                            var required = delDateSelect.hasClassName('validate-one-required');
+                            if(!required) {
+                                delDateSelect.addClassName('validate-one-required');
+                            }
                         }
                         changeDate(carriergroupId, carriergroupInsert, carrierCode, true);
                     }
@@ -673,6 +684,11 @@
 
                     if($('calendar_table' + carrierCodeInsert + carriergroupInsert)) {
                         $('calendar_table' + carrierCodeInsert + carriergroupInsert).show();
+                        var delDateSelect = $('del_date_select' + carrierCodeInsert + carriergroupInsert);
+                        var required = delDateSelect.hasClassName('validate-one-required');
+                        if(!required) {
+                            delDateSelect.addClassName('validate-one-required');
+                        }
                         hidePickupElements(carriergroupInsert);
                         //if we are just selected the radio, we don't need to rerequest rates
                         changeDate(methodCarriergroupId, carriergroupInsert, carrierCode, true, lastPartMethodName);
@@ -683,6 +699,12 @@
                             continue;
                         }
                         // $('radio_choices').hide();
+                        var thisId = allCalendarDetails[i].id;
+                        var delDateSelect = $('del_date_select' + thisId.substr(14));
+                        var required = delDateSelect.hasClassName('validate-one-required');
+                        if(required) {
+                            delDateSelect.removeClassName('validate-one-required');
+                        }
                         allCalendarDetails[i].hide();
                     }
 

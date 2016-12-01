@@ -403,7 +403,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
             'title' => $carrierRate->carrierTitle);
 
         if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Calendar')) {
-            Mage::helper('shipperhq_calendar')->cleanUpCalendarsInSession($carrierRate->carrierCode, $carrierGroupId);
+            Mage::helper('shipperhq_calendar')->cleanUpCalendarsInSession($carrierRate->carrierCode, $carrierGroupId, $isSplit);
         }
         if(isset($carrierRate->error)) {
             $carrierResultWithRates['error'] = (array)$carrierRate->error;
@@ -424,12 +424,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
         $hideNotify = Mage::getStoreConfig('carriers/shipper/hide_notify');
         $locale = $this->getLocaleInGlobals();
         $dateOption = $carrierRate->dateOption;
-        $deliveryMessage = isset($carrierRate->deliveryDateMessage) ?
-            Mage::helper('shipperhq_shipper')->__($carrierRate->deliveryDateMessage) : '';
-        if(is_null($deliveryMessage) || $deliveryMessage == '') {
-            $deliveryMessage = $dateOption == Shipperhq_Shipper_Helper_Data::TIME_IN_TRANSIT ? 'business day(s)' :
-                Mage::helper('shipperhq_shipper')->__('Delivers :');
-        }
+
         $customDescription = isset($carrierRate->customDescription) ?
             Mage::helper('shipperhq_shipper')->__($carrierRate->customDescription) : false;
         $freightRate = isset($carrierRate->availableOptions) && !empty($carrierRate->availableOptions) || $carrierRate->carrierType == 'customerAccount';
@@ -437,7 +432,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
         $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrency()->getCode();
         $dateFormat = isset($carrierRate->deliveryDateFormat) ?
            $this->getCldrDateFormat($locale, $carrierRate->deliveryDateFormat) : Mage::helper('shipperhq_shipper')->getDateFormat();
-
+        $carrierGroupDetail['dateFormat'] = $dateFormat;
         foreach($carrierRate->rates as $oneRate) {
             //SHQ16-1118 reset so not carried over from previous rates
             $carrierGroupDetail['delivery_date'] = '';
@@ -466,27 +461,13 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                 }
             }
             Mage::helper('shipperhq_shipper')->populateRateLevelDetails((array)$oneRate, $carrierGroupDetail, $baseRate);
+            if($oneRate->deliveryMessage && !is_null($oneRate->deliveryMessage)) {
+
+                $methodDescription = $dateOption == Shipperhq_Shipper_Helper_Data::TIME_IN_TRANSIT ?
+                    '(' .$oneRate->deliveryMessage .')' : $oneRate->deliveryMessage;
+            }
             if($oneRate->deliveryDate && is_numeric($oneRate->deliveryDate)) {
                 $deliveryDate = Mage::app()->getLocale()->date($oneRate->deliveryDate/1000, null, null, true)->toString($dateFormat);
-                if($dateOption == Shipperhq_Shipper_Helper_Data::DELIVERY_DATE_OPTION && isset($oneRate->deliveryDate)) {
-                    $methodDescription = Mage::helper('shipperhq_shipper')->__(' %s %s',$deliveryMessage, $deliveryDate);
-                    if($oneRate->latestDeliveryDate && is_numeric($oneRate->latestDeliveryDate)) {
-                        $latestDeliveryDate = Mage::app()->getLocale()->date($oneRate->latestDeliveryDate/1000, null, null, true)->toString($dateFormat);
-                        $methodDescription.= ' - ' .$latestDeliveryDate;
-                    }
-                }
-                else if($dateOption == Shipperhq_Shipper_Helper_Data::TIME_IN_TRANSIT
-                    && isset($oneRate->dispatchDate)) {
-                    $deliveryMessage = Mage::helper('shipperhq_shipper')->__('business days');
-                    $numDays = floor(abs($oneRate->deliveryDate/1000 - $oneRate->dispatchDate/1000)/60/60/24);
-                    if($oneRate->latestDeliveryDate && is_numeric($oneRate->latestDeliveryDate)) {
-                        $maxNumDays = floor(abs($oneRate->latestDeliveryDate/1000 - $oneRate->dispatchDate/1000)/60/60/24);
-                        $methodDescription = Mage::helper('shipperhq_shipper')->__(' (%s - %s %s)',$numDays, $maxNumDays, $deliveryMessage);
-                    }
-                    else {
-                        $methodDescription = Mage::helper('shipperhq_shipper')->__(' (%s %s)',$numDays, $deliveryMessage);
-                    }
-                }
             }
             if($oneRate->dispatchDate && is_numeric($oneRate->dispatchDate)) {
                 $dispatchDate = Mage::app()->getLocale()->date($oneRate->dispatchDate/1000, null, null, true)->toString($dateFormat);
@@ -548,7 +529,7 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                 $rateToAdd['custom_description'] = $customDescription;
             }
 
-            if(!empty($oneRate->description) && $oneRate->description != "" && $oneRate->carrierType == "custom") {
+            if(!empty($oneRate->description) && $oneRate->description != "") {
                 $rateToAdd['tooltip'] = $oneRate->description;
             }
 

@@ -29,7 +29,7 @@ class Shipperhq_Shipper_Model_Adminhtml_System_Config_Source_Shipping_Allmethods
     /*
      * Ignore carrier codes for Allowed Methods
      */
-    protected $ignoreCarrierCodes = ['multicarrier', 'shipper', 'calendar', 'pickup'];
+    protected $ignoreCarrierCodes = array('multicarrier', 'shipper', 'calendar', 'pickup');
 
     /**
      * Return array of carriers.
