@@ -1,0 +1,11 @@
+#amlist-table_wrapper
+{
+    margin-top:.5em;
+}
+
+.fg-toolbar .custom-shiv,.fg-toolbar input[type=search]
+{
+    height: auto;
+    width: auto;
+    float: none;
+}
