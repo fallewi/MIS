@@ -147,6 +147,8 @@ FreightListener.prototype = {
         var notify_required = false;
         var destination_type = false;
         var inside_delivery = false;
+        var date_selected = false; //SHQ16-1726 explicitly add selected date if present to request
+
 
         if($('liftgate_required_'+carrierCode+carrierGroupInsert)) {
             liftgate_required = $('liftgate_required_'+carrierCode+carrierGroupInsert).checked
@@ -162,6 +164,9 @@ FreightListener.prototype = {
 
         if($('inside_delivery_' +carrierCode+carrierGroupInsert)) {
             inside_delivery = $('inside_delivery_' +carrierCode+carrierGroupInsert).checked;
+        }
+        if($('del_date_select_' + carrierCode + carrierGroupInsert)) {
+            date_selected = $('del_date_select_' + carrierCode + carrierGroupInsert).value;
         }
 
         new Ajax.Request(url, {
@@ -179,6 +184,7 @@ FreightListener.prototype = {
                     notify_required: notify_required,
                     destination_type: destination_type,
                     inside_delivery: inside_delivery,
+                    date_selected: date_selected,
                     onestepcheckout: false
                 }
             }
@@ -199,6 +205,7 @@ FreightListener.prototype = {
         var notify_required = false;
         var destination_type = false;
         var inside_delivery = false;
+        var date_selected = false; //SHQ16-1726 explicitly add selected date if present to request
 
         if($('liftgate_required_'+carrierCode+carrierGroupInsert)) {
             liftgate_required = $('liftgate_required_'+carrierCode+carrierGroupInsert).checked
@@ -214,6 +221,10 @@ FreightListener.prototype = {
 
         if($('inside_delivery_' +carrierCode+carrierGroupInsert)) {
             inside_delivery = $('inside_delivery_' +carrierCode+carrierGroupInsert).checked;
+        }
+
+        if($('del_date_select_' + carrierCode + carrierGroupInsert)) {
+            date_selected = $('del_date_select_' + carrierCode + carrierGroupInsert).value;
         }
 
         document.getElementById('retrieving-rates').innerHTML =
@@ -232,6 +243,7 @@ FreightListener.prototype = {
                 notify_required: notify_required,
                 destination_type: destination_type,
                 inside_delivery: inside_delivery,
+                date_selected: date_selected,
                 onestepcheckout: true
             }
 

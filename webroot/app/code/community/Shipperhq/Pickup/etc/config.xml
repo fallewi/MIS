@@ -119,6 +119,14 @@
                     </shipperhq_pickup_save_shipping_method_observer>
                 </observers>
             </checkout_controller_onepage_save_shipping_method>
+            <opc_controller_json_save_shipping_method>
+            	<observers>
+            		<shipperhq_pickup_save_shipping_method_observer>
+            			<class>shipperhq_pickup/observer</class>
+            			<method>savePickupLocation</method>
+            		</shipperhq_pickup_save_shipping_method_observer>
+            	</observers>
+            </opc_controller_json_save_shipping_method>
             <adminhtml_sales_order_create_process_data>
                 <observers>
                     <shipperhq_pickup_save_shipping_method_admin_observer>

@@ -48,7 +48,9 @@
 <layout version="0.1.0">
     <customer_address_form>
         <reference name="head">
-            <action method="addCss" ifconfig="carriers/shipper/enable_lookup"><stylesheet>shipperhq/lookup/css/lookup.css</stylesheet></action>
+            <action method="addCss" ifconfig="carriers/shipper/enable_lookup">
+                <stylesheet>shipperhq/lookup/css/lookup.css</stylesheet>
+            </action>
         </reference>
         <reference name="my.account.wrapper">
             <block type="core/template" name="shipperhq_lookup_autocomplete" template="shipperhq/lookup/lookup.phtml"/>
@@ -56,34 +58,53 @@
     </customer_address_form>
     <customer_account_create>
         <reference name="head">
-            <action method="addCss" ifconfig="carriers/shipper/enable_lookup"><stylesheet>shipperhq/lookup/css/lookup.css</stylesheet></action>
+            <action method="addCss" ifconfig="carriers/shipper/enable_lookup">
+                <stylesheet>shipperhq/lookup/css/lookup.css</stylesheet>
+            </action>
         </reference>
         <reference name="footer">
             <block type="core/template" name="shipperhq_lookup_autocomplete" template="shipperhq/lookup/lookup.phtml"/>
         </reference>
     </customer_account_create>
-    <checkout_onepage_index>
+    <shipperhq_lookup>
         <reference name="head">
-            <action method="addCss" ifconfig="carriers/shipper/enable_lookup"><stylesheet>shipperhq/lookup/css/lookup.css</stylesheet></action>
+            <action method="addCss" ifconfig="carriers/shipper/enable_lookup">
+                <stylesheet>shipperhq/lookup/css/lookup.css</stylesheet>
+            </action>
         </reference>
         <reference name="content">
-            <block type="core/template" name="shipperhq_lookup_autocomplete" template="shipperhq/lookup/lookup-checkout.phtml"/>
+            <block type="core/template" name="shipperhq_lookup_autocomplete"
+                   template="shipperhq/lookup/lookup-checkout.phtml"/>
         </reference>
-    </checkout_onepage_index>
+    </shipperhq_lookup>
     <checkout_cart_index>
         <reference name="head">
-            <action method="addCss" ifconfig="carriers/shipper/enable_lookup"><stylesheet>shipperhq/lookup/css/lookup.css</stylesheet></action>
+            <action method="addCss" ifconfig="carriers/shipper/enable_lookup">
+                <stylesheet>shipperhq/lookup/css/lookup.css</stylesheet>
+            </action>
         </reference>
         <reference name="content">
-            <block type="core/template" name="shipperhq_lookup_autocomplete" template="shipperhq/lookup/lookup-cart.phtml"/>
+            <block type="core/template" name="shipperhq_lookup_autocomplete"
+                   template="shipperhq/lookup/lookup-cart.phtml"/>
         </reference>
     </checkout_cart_index>
+    <!-- standard -->
+    <checkout_onepage_index>
+        <update handle="shipperhq_lookup"/>
+    </checkout_onepage_index>
+    <!-- IWD OPC -->
+    <opc_index_index>
+        <update handle="shipperhq_lookup"/>
+    </opc_index_index>
     <onestepcheckout_index_index>
         <reference name="head">
-            <action method="addCss" ifconfig="carriers/shipper/enable_lookup"><stylesheet>shipperhq/lookup/css/lookup.css</stylesheet></action>
+            <action method="addCss" ifconfig="carriers/shipper/enable_lookup">
+                <stylesheet>shipperhq/lookup/css/lookup.css</stylesheet>
+            </action>
         </reference>
         <reference name="content">
-            <block type="core/template" name="shipperhq_lookup_autocomplete" template="shipperhq/lookup/lookup-checkout.phtml"/>
+            <block type="core/template" name="shipperhq_lookup_autocomplete"
+                   template="shipperhq/lookup/lookup-checkout.phtml"/>
         </reference>
     </onestepcheckout_index_index>
 </layout>

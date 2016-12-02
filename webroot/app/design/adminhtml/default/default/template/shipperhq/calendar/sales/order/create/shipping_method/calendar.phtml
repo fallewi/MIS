@@ -133,7 +133,10 @@
             changeDate(carriergroupId, carriergroupInsert, carrierCode, false);
         }
 
-        function changeDate(carriergroupId, carriergroupInsert, carrierCode, isInitialize,  methodName="") {
+        function changeDate(carriergroupId, carriergroupInsert, carrierCode, isInitialize,  methodName) {
+            if(methodName === undefined){
+                methodName = '';
+            }
             var carrierCodeInsert = '_' + carrierCode;
             var dateSelected = $('del_date_select' + carrierCodeInsert + carriergroupInsert).value;
 

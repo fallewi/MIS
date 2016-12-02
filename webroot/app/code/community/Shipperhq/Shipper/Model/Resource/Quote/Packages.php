@@ -57,11 +57,12 @@ class Shipperhq_Shipper_Model_Resource_Quote_Packages extends Mage_Core_Model_My
             $condition = $this->_getWriteAdapter()->quoteInto('package_id = ?', $object->getId());
             $this->_getWriteAdapter()->delete($this->getTable('quote_package_items'), $condition);
             foreach ($object->getData('items') as $item) {
+                $item = (array)$item;
                 $itemInsert = new Varien_Object();
                 $itemInsert->setData('package_id',$object->getId());
-                $itemInsert->setSku($item->sku);
-                $itemInsert->setWeightPacked($item->weightPacked);
-                $itemInsert->setQtyPacked($item->qtyPacked);
+                $itemInsert->setSku($item['sku']);//$itemInsert->setSku($item->sku);
+                $itemInsert->setWeightPacked($item['weightPacked']);//$itemInsert->setWeightPacked($item->weightPacked);
+                $itemInsert->setQtyPacked($item['qtyPacked']);//$itemInsert->setQtyPacked($item->qtyPacked);
                 $this->_getWriteAdapter()->insert($this->getTable('quote_package_items'), $itemInsert->getData());
             }
             $this->_getWriteAdapter()->commit();

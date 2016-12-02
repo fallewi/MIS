@@ -362,7 +362,6 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 'discountedTaxInclBasePrice'  => $magentoItem->getBasePrice() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()) + ($magentoItem->getBaseTaxAmount()/$magentoItem->getQty()),
                 'discountedTaxInclStorePrice' => $magentoItem->getPrice() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()) +  ($magentoItem->getTaxAmount()/$magentoItem->getQty()),
                 'attributes'                  => $options? array_merge(self::populateAttributes($stdAttributes, $magentoItem), $options) : self::populateAttributes($stdAttributes, $magentoItem),
-                'legacyAttributes'            => self::populateAttributes(self::$_legacyAttributeNames, $magentoItem),
                 'baseCurrency'                => $request->getBaseCurrency()->getCurrencyCode(),
                 'packageCurrency'             => $request->getPackageCurrency()->getCurrencyCode(),
                 'storeBaseCurrency'           => Mage::app()->getBaseCurrencyCode(),

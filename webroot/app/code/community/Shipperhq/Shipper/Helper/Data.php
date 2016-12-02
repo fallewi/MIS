@@ -210,29 +210,64 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         $shippingAddress = $this->getQuote()->getShippingAddress();
 
         $cgId = array_key_exists('carrierGroupId', $carrierGroupDetail) ? $carrierGroupDetail['carrierGroupId'] : null;
-        $this->cleanUpPackages($shippingAddress->getAddressId(),$cgId, $carrierRate['carrierCode']);
+
+        $this->extractPackages($carrierRate, $carrierGroupDetail);
+    }
+
+    public function isPackageBreakdownDisplayEnabled()
+    {
+        return Mage::helper('wsalogger')->isDebugError();
+    }
+
+    public function loadSessionPackagesByCarrier($addressId, $carrierGroupId, $carrierCode, $methodCode)
+    {
+        $sessionPackages = $this->getQuoteStorage()->getShipperhqPackages();
+        $shippingMethod = $carrierCode .'_' .$methodCode;
+        $carrierPackages = isset($sessionPackages[$addressId]) && isset($sessionPackages[$addressId][$carrierGroupId]) ?
+            $sessionPackages[$addressId][$carrierGroupId] : array();
+        if(isset($carrierPackages[$shippingMethod])) {
+            return $carrierPackages[$shippingMethod];
+        }
+        elseif (isset($carrierPackages[$carrierCode])) {
+            return $carrierPackages[$carrierCode];
+        }
+
+        return array();
+
+    }
+
+    protected function extractPackages($carrierRate, &$carrierGroupDetail)
+    {
+        if(!$this->getQuote()->getShippingAddress()->getAddressId()) {
+            return;
+        }
+        $shippingAddress = $this->getQuote()->getShippingAddress();
+        $cgId = array_key_exists('carrierGroupId', $carrierGroupDetail) ? $carrierGroupDetail['carrierGroupId'] : null;
+
+        $sessionPackages = $this->getQuoteStorage()->getShipperhqPackages();
+        $carrierPackages = isset($sessionPackages[$shippingAddress->getAddressId()]) && isset($sessionPackages[$shippingAddress->getAddressId()][$cgId]) ?
+            $sessionPackages[$shippingAddress->getAddressId()][$cgId] : array();
 
         //store packages
         if(array_key_exists('shipments', $carrierRate) && $carrierRate['shipments'] != null) {
-            if(!$this->getQuote()->getShippingAddress()->getAddressId()) {
-                return;
-            }
+
             $mapping = $this->getPackagesMapping();
             $standardData = array('address_id' => $shippingAddress->getAddressId(),
-                                'carrier_group_id' => $cgId,
-                                'carrier_code' =>  $carrierRate['carrierCode']);
+                'carrier_group_id' => $cgId,
+                'carrier_code' =>  $carrierRate['carrierCode']);
+            $saveThese = array();
             foreach($carrierRate['shipments'] as $shipment) {
                 $data = array_merge($standardData, Mage::helper('shipperhq_shipper/mapper')->map($mapping,(array)$shipment));
-                $package = Mage::getModel('shipperhq_shipper/quote_packages');
-                $package->setData($data);
-                $package->save();
+                $saveThese[] = $data;
+            }
+            if(count($saveThese) > 0) {
+                $carrierPackages[$standardData['carrier_code']] = $saveThese;
             }
         }
 
         if(array_key_exists('rates', $carrierRate) && $carrierRate['rates'] != null) {
             foreach($carrierRate['rates'] as $rate) {
                 $cgId = array_key_exists('carrierGroupId', $carrierGroupDetail) ? $carrierGroupDetail['carrierGroupId'] : null;
-                $this->cleanUpPackages($shippingAddress->getAddressId(),$cgId, $carrierRate['carrierCode'].'_'.$rate->code);
                 $mapping = $this->getPackagesMapping();
                 $standardData = array('address_id' => $shippingAddress->getAddressId(),
                     'carrier_group_id' => $cgId,
@@ -241,21 +276,19 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                     continue;
                 }
                 if(!is_null($standardData['address_id'])) {
+                    $saveThese = array();
                     foreach($rate->shipments as $shipment) {
-                        $data = array_merge($standardData, Mage::helper('shipperhq_shipper/mapper')->map($mapping,(array)$shipment));
-                        $package = Mage::getModel('shipperhq_shipper/quote_packages');
-                        $package->setData($data);
-                        $package->save();
-
+                        $data = array_merge($standardData, Mage::helper('shipperhq_shipper/mapper')->map($mapping, (array)$shipment));
+                        $saveThese[] = $data;
+                    }
+                    if(count($saveThese) > 0) {
+                        $carrierPackages[$standardData['carrier_code']] = $saveThese;
                     }
                 }
             }
         }
-    }
-
-    public function isPackageBreakdownDisplayEnabled()
-    {
-        return Mage::helper('wsalogger')->isDebugError();
+        $sessionPackages[$shippingAddress->getAddressId()][$cgId] = $carrierPackages;
+        $this->getQuoteStorage()->setShipperhqPackages($sessionPackages);
     }
 
     protected function cleanUpPackages($addressId, $carrierGroupId, $carrier_code)
@@ -276,6 +309,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
     }
+
     protected function getPackagesMapping()
     {
         return array(
@@ -293,8 +327,8 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     public function getPackageBreakdown($carrierGroupId, $carrier_code)
     {
         if($this->isPackageBreakdownDisplayEnabled()) {
-             $packages  = Mage::getModel('shipperhq_shipper/quote_packages')->loadByCarrier(
-                 $this->getQuote()->getShippingAddress()->getAddressId(),$carrierGroupId, $carrier_code);
+             $packages  = $this->loadSessionPackagesByCarrier(
+                 $this->getQuote()->getShippingAddress()->getAddressId(),$carrierGroupId, $carrier_code, '');
             return $this->getPackageBreakdownText($packages);
         }
 
@@ -316,7 +350,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 $boxText .= 'x' . $box['width'] ;
                 $boxText .= 'x'. $box['height'] ;
                 $boxText .= ': W='.$box['weight'] . ':' ;
-                $boxText .= ' Value='.$box['declaredValue']. ':';
+                $boxText .= ' Value='.$box['declared_value']. ':';
                 $boxText .= $this->getProductBreakdownText($box);
             }
             $boxText .= '</br>';
@@ -334,7 +368,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         if (array_key_exists('items',$box)  || (is_object($box) && !is_null($box->getItems()))) {
             if (is_array($box['items'])) {
                 foreach ($box['items'] as $item) {
-                    $productText .= ' SKU=' .$item['qty_packed'] .' * '.$item['sku'] .' ' .$item['weight_packed'] .$weightUnit .';  ';
+                    $productText .= ' SKU=' .$item['qtyPacked'] .' * '.$item['sku'] .' ' .$item['weightPacked'] .$weightUnit .';  ';
                 }
             } else {
                 $productText = $box['items'];
@@ -550,7 +584,6 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getWebserviceTimeout()
     {
-
         if (self::$_wsTimeout==NULL) {
             $timeout =  Mage::getStoreConfig('carriers/shipper/ws_timeout');
             if(!is_numeric($timeout) || $timeout < 30) {

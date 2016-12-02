@@ -187,6 +187,10 @@ class Shipperhq_Frontend_Block_Checkout_Helper
                     $itemsGrouped[$carriergroup]);
                 $carrierGroupRates[$carriergroup]['plain_item_list']= $itemsGrouped[$carriergroup];
             }
+            if($displayMerged && $carriergroup == '') {
+                $carrierGroupRates[$carriergroup]['item_list']= $this->getFormattedItemList($address->getAllItems());
+                $carrierGroupRates[$carriergroup]['plain_item_list']= $address->getAllItems();
+            }
             if(array_key_exists($carriergroup, $carrierGroupErrors)) {
                 $carrierGroupRates[$carriergroup]['error']= $carrierGroupErrors[$carriergroup];
             }

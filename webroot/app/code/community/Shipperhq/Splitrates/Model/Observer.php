@@ -82,7 +82,7 @@ class Shipperhq_Splitrates_Model_Observer extends Mage_Core_Model_Abstract
                 }
             }
             $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
-            $controller->setFlag('', Mage_Checkout_OnepageController::FLAG_NO_DISPATCH, true);
+            $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
             // Emulate regular postDispatch
             $controller->postDispatch();
         }
@@ -107,10 +107,10 @@ class Shipperhq_Splitrates_Model_Observer extends Mage_Core_Model_Abstract
             return;
         }
         Mage::helper('shipperhq_shipper')->setQuote($quote);
-        
+
         if (!empty($orderData['shipping_method_flag'])) {
             $helper = Mage::getSingleton('shipperhq_splitrates/checkout_helper');
-            
+
             if (!empty($orderData['shipping_method'])) {
                 $requestData['order']['shipping_method'] = $orderData['shipping_method'];
             } else {

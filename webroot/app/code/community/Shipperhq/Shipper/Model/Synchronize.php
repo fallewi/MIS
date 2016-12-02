@@ -78,6 +78,7 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
             $updateData = $this->_compareAttributeData($latestAttributes);
             $updateResult = $this->_updateAll($updateData);
             $result['result'] = $updateResult;
+            Mage::getSingleton('adminhtml/session')->setAlreadySynched('not_required');
         }
         else{
             $result['error']
