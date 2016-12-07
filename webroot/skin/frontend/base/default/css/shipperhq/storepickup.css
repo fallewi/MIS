@@ -2,7 +2,7 @@
 .map-top-border {
 	border-top: 1px solid #efefef;
     padding-top: 15px;
-} 
+}
 
 .map_canvas {
     float: right;
@@ -32,7 +32,7 @@
 	}
 
 .left {float:left;}
-    
+
 .right {float: right;}
 
 #co-shipping-method-form .sp-methods dd .location_label label {
@@ -40,6 +40,8 @@
     background: none !important;
     padding: 0;
 }
+
+/*#opc-co-shipping-method-form .sp-methods dd .location_label label,*/
 
 .location.left {width:100%;}
 
@@ -106,7 +108,7 @@
     background-position:4px 8px;
 );
 }
-    
+
 .ups_logo {
     height:36px;
     width:30px;
@@ -193,17 +195,44 @@
 .shq-input .shq-input {margin-top:0;}
 .shq-input .shq-input .shq-input {margin-top:0;}
 
-img.shq-ico {
-	float: left;
-	width: 14px;
-	margin: 0 5px 0 0;
+.shq-ico-location,
+.shq-ico-calendar,
+.shq-ico-clock {
+    width: 14px;
+    height: 14px;
+    float: left;
+    display: inline-block;
+    margin: 0 5px 0 0;
+    background-size: 14px 14px;
 }
-.shq-input .shq-input img.shq-ico {
-	margin: 8px 0 0 5px;
+.shq-ico-calendar {
+	background: transparent url('../../images/shipperhq/calendar-blk.svg') center center no-repeat;
+}
+
+.shq-ico-clock {
+	background: transparent url('../../images/shipperhq/clock-blk.svg') center center no-repeat;
+}
+
+.shq-ico-location {
+	background: transparent url('../../images/shipperhq/location-blk.svg') center center no-repeat;
+}
+
+.shq-ico-r  {
+	margin: 8px 0 0 5px !important;
+}
+.shq-map-insert {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+shq-map-popup {
+	width: 600px;
+	height: 400px;
 }
 
 @media only screen and (max-width: 480px) {
-	
+
 	.shq-optn-50l {width: 100%; padding-right: 0;}
 	.shq-optn-50r {width: 100%; padding-left: 0;}
 
@@ -214,7 +243,7 @@ img.shq-ico {
 	    padding: 0;
 	    margin-top:10px;
 	}
-	
+
 	.map_address {
 		float: left;
 		width: 100%;

@@ -33,32 +33,46 @@
             </action>
         </reference>
         <reference name="my.account.wrapper">
-            <block type="shipperhq_validation/customer_address_edit" name="shqvalidation.address_edit" template="shipperhq/validation/customer/address.phtml">
+            <block type="shipperhq_validation/customer_address_edit" name="shqvalidation.address_edit"
+                   template="shipperhq/validation/customer/address.phtml">
             </block>
         </reference>
         <reference name="before_body_end">
-            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
+            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end"/>
         </reference>
     </customer_address_form>
 
-    <checkout_onepage_index>
+    <shipperhq_validation>
         <reference name="head">
             <action method="addJs">
                 <name>shipperhq/jquery-loader.js</name>
             </action>
         </reference>
         <reference name="checkout.onepage">
-            <block type="shipperhq_validation/checkout_onepage_billing" name="shipperhq_validation.billing" as="billing" template="shipperhq/validation/checkout/onepage/choose_billing.phtml">
-                <block type="checkout/onepage_billing" name="checkout.onepage.billing" as="billingorig" template="checkout/onepage/billing.phtml"/>
+            <block type="shipperhq_validation/checkout_onepage_billing" name="shipperhq_validation.billing" as="billing"
+                   template="shipperhq/validation/checkout/onepage/choose_billing.phtml">
+                <block type="checkout/onepage_billing" name="checkout.onepage.billing" as="billingorig"
+                       template="checkout/onepage/billing.phtml"/>
             </block>
-            <block type="shipperhq_validation/checkout_onepage_shipping" name="shipperhq_validation.shipping" as="shipping" template="shipperhq/validation/checkout/onepage/choose_shipping.phtml">
-                <block type="checkout/onepage_shipping" name="checkout.onepage.shipping" as="shippingorig" template="checkout/onepage/shipping.phtml"/>
+            <block type="shipperhq_validation/checkout_onepage_shipping" name="shipperhq_validation.shipping"
+                   as="shipping" template="shipperhq/validation/checkout/onepage/choose_shipping.phtml">
+                <block type="checkout/onepage_shipping" name="checkout.onepage.shipping" as="shippingorig"
+                       template="checkout/onepage/shipping.phtml"/>
             </block>
         </reference>
         <reference name="before_body_end">
-            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
+            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end"/>
         </reference>
+    </shipperhq_validation>
+
+    <!-- standard opc -->
+    <checkout_onepage_index>
+        <update handle="shipperhq_validation"/>
     </checkout_onepage_index>
+    <!-- IWD OPC -->
+    <opc_index_index>
+        <update handle="shipperhq_validation"/>
+    </opc_index_index>
 
     <onestepcheckout_index_index>
         <reference name="head">
@@ -67,12 +81,14 @@
             </action>
         </reference>
         <reference name="onestepcheckout.checkout">
-            <block type="checkout/onepage_billing" as="billing_address" name="shipperhq_validation.billing.address" template="shipperhq/validation/checkout/onestepcheckout/billing_fields.phtml">
-                <block type="onestepcheckout/fields" as="billing_address_orig" name="onestepcheckout.billing.address" template="onestepcheckout/billing_fields.phtml" />
+            <block type="checkout/onepage_billing" as="billing_address" name="shipperhq_validation.billing.address"
+                   template="shipperhq/validation/checkout/onestepcheckout/billing_fields.phtml">
+                <block type="onestepcheckout/fields" as="billing_address_orig" name="onestepcheckout.billing.address"
+                       template="onestepcheckout/billing_fields.phtml"/>
             </block>
         </reference>
         <reference name="before_body_end">
-            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
+            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end"/>
         </reference>
     </onestepcheckout_index_index>
 

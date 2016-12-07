@@ -19,7 +19,7 @@
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
         <button type="submit" onclick="this.form.action='<?php echo $this->getUrl('*/*/mrscart') ?>'" class="button" type="button"><span><?php echo $this->__('Add to Cart') ?></span></button>
     </div>
-    <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">    <col width="30" />
+    <table cellspacing="0" width="100%" class="display" id="amlist-table">    <col width="30" />
         <col width="60" />
         <col />
         <col width="120" />
@@ -34,6 +34,15 @@
                 <th><?php echo $this->__('Qty') ?></th>
             </tr>
         </thead>
+        <tfoot>
+            <tr>
+                <th>&nbsp;</th>
+                <th>SKU</th>
+                <th><?php echo $this->__('Details') ?></th>
+                <th><?php echo $this->__('Price') ?></th>
+                <th><?php echo $this->__('Qty') ?></th>
+            </tr>
+        </tfoot>
         <tbody>
         <?php 
             $allLists = $this->getAllLists($this->getList()->getId()); 
@@ -81,12 +90,20 @@
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
     </div>
 <?php endif ?>
-<script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.min.js"></script>
-<script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.jquery.js"></script>
 <script type="text/javascript">
-    $j(document).ready(function () {
-        $j("#amlist-table").datatable({
-            sort: [false, true, true, true, false]
-        }) ;
-    });
+    $j(document).ready(function() {
+        $j('#amlist-table').DataTable(
+            {
+                "columns": [
+                    { "orderable": false },
+                    null,
+                    null,
+                    null,
+                    { "orderable": false }
+                ],
+                "order": [[ 1, "asc" ]],
+                "jQueryUI": true
+            }
+        );
+    } );
 </script>

@@ -17,10 +17,8 @@
 <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
-        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
     </div>
-    <table cellspacing="0" width="100%" class="data-table box-table" id="amlist-table">
-        <col width="60" />
+    <table cellspacing="0" width="100%" class="data-table box-table stripe" id="amlist-table">
         <col width="60" />
         <col width="130"/>
         <col />
@@ -28,7 +26,6 @@
         <col width="60"/>
         <thead>
             <tr>
-                <th><?php echo $this->__('Qty') ?></th>
                 <th>&nbsp;</th>
                 <th>SKU</th>
                 <th><?php echo $this->__('Details') ?></th>
@@ -36,6 +33,15 @@
                 <th class="a-center">&nbsp;</th>
             </tr>
         </thead>
+        <tfoot>
+            <tr>
+                <th>&nbsp;</th>
+                <th>SKU</th>
+                <th><?php echo $this->__('Details') ?></th>
+                <th><?php echo $this->__('Price') ?></th>
+                <th class="a-center">&nbsp;</th>
+            </tr>
+        </tfoot>
         <tbody>
         <?php 
             $allLists = $this->getAllLists($this->getList()->getId()); 
@@ -43,9 +49,6 @@
         ?>
         <?php foreach ($items as $item): $id = $item->getId();?>
             <tr>
-                <td>
-                    <input type="text" size="2" name="qty[<?php echo $id ?>]" value="<?php echo $item->getQty() ?>" class="input-text" />
-                </td>
                 <td>
                         <a href="<?php echo $this->getProductItemUrl($item) ?>">
                             <img src="<?php echo $this->getProductItemImage($item)  ?>"
@@ -83,7 +86,6 @@
     </table>
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
-        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
     </div>
 </form>
 <script type="text/javascript">decorateTable('amlist-table')</script>
@@ -95,12 +97,21 @@
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a> 
     </div>
 <?php endif ?>
-<script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.min.js"></script>
-<script type="text/javascript" src="/skin/frontend/blueacorn/partners/js/datatable.jquery.js"></script>
 <script type="text/javascript">
-    $j(document).ready(function () {
-        $j("#amlist-table").datatable({
-            sort: [false, false, true, true, true, false]
-        }) ;
-    });
+    $j(document).ready(function() {
+        $j('#amlist-table').DataTable(
+            {
+
+                "columns": [
+                    { "orderable": false },
+                    null,
+                    null,
+                    null,
+                    { "orderable": false }
+                ],
+                "order": [[ 1, "asc" ]],
+                "jQueryUI": true
+            }
+        );
+    } );
 </script>

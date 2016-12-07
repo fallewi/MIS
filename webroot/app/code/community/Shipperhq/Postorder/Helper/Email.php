@@ -52,7 +52,7 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
 
         // get the carriergroups in the order
         $encDetails = $order->getCarriergroupShippingDetails();
-        if(is_null($encDetails) || empty($encDetails)) {
+        if(is_null($encDetails) || empty($encDetails) && !is_null($order->getQuote())) {
             $encDetails = $order->getQuote()->getShippingAddress()->getCarriergroupShippingDetails();
         }
 
@@ -118,7 +118,8 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
     private function buildShippingDescription($shipItem, $order)
     {
         $shippingDescription = $shipItem['carrierTitle'].' - '. $shipItem['methodTitle'].' ';
-        $shippingDescription .= " ". $order->getQuote()->getStore()->formatPrice($shipItem['price']).'<br/>';
+        $text = $order->formatPrice($shipItem['price']);
+        $shippingDescription .= " " .$text .'<br/>';
         if(array_key_exists('pickup_date', $shipItem)) {
             $shippingDescription .= Mage::helper('shipperhq_shipper')->__('Location') .' : ' .$shipItem['location_name'];
             $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Date') .' : ' .$shipItem['pickup_date'];

@@ -135,7 +135,13 @@ class Shipperhq_Pickup_Block_Storepickup
         if(!is_null($closestLocations) && array_key_exists($carriergroupId, $closestLocations) &&
             array_key_exists($carrierCode, $closestLocations[$carriergroupId])) {
             foreach ($closestLocations[$carriergroupId][$carrierCode] as $location) {
-                $label = array_key_exists('pickupFullName', $location) ? $location['pickupFullName']: $location['pickupName'];
+
+                if(array_key_exists('pickupFullName', $location)) { //SHQ16-1342
+                    $label =  str_replace(", null", "", $location['pickupFullName']);
+                } else {
+                    $label = $location['pickupName'];
+                }
+
                 if($longMeasurement && $location['distance'] != '6371') {
                     $label .=' ('. Mage::helper('shipperhq_shipper')->__('Distance') .' '.
                         number_format($location['distance']).' '.$longMeasurement.')';

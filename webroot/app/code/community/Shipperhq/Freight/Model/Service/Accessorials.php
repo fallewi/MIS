@@ -190,28 +190,28 @@ class Shipperhq_Freight_Model_Service_Accessorials
         return $this->_rates;
     }
 
-    protected function _setAccessorials($quote, $params) {
-        $requestedCode =  $params['carrier_code'];
+    protected function _setAccessorials($quote, $params)
+    {
+        $requestedCode = $params['carrier_code'];
         $requestCarrierGroup = $params['carrier_group'];
+        $requestedDate = isset($params['date_selected']) ? $params['date_selected'] : false;
         $allAccessorials = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
         $address = $quote->getShippingAddress();
         $billingAddress = $quote->getBillingAddress();
-        foreach($allAccessorials as $accessorial_code) {
-            $value = array_key_exists($accessorial_code, $params)? $params[$accessorial_code] : null;
+        foreach ($allAccessorials as $accessorial_code) {
+            $value = array_key_exists($accessorial_code, $params) ? $params[$accessorial_code] : null;
             $this->cacheSelectedAccessorialValue($accessorial_code, $requestCarrierGroup, $requestedCode, $value);
-            if($accessorial_code == 'destination_type') {
+            if ($accessorial_code == 'destination_type') {
                 $billingAddress->setDestinationType($value);
                 $address->setDestinationType($value);
-            }
-            else {
-                if($value == 'true' || $value == 1) {
+            } else {
+                if ($value == 'true' || $value == 1) {
                     $value = 1;
-                }
-                else {
+                } else {
                     $value = 0;
                 }
-                $billingAddress->setData($accessorial_code,(string)$value);
-                $address->setData($accessorial_code,(string)$value);
+                $billingAddress->setData($accessorial_code, (string)$value);
+                $address->setData($accessorial_code, (string)$value);
             }
         }
 
@@ -219,13 +219,22 @@ class Shipperhq_Freight_Model_Service_Accessorials
             'carrier_code' => $requestedCode);
         Mage::helper('shipperhq_shipper')->getQuoteStorage()->setSelectedFreightCarrier($selectedFreightOptions);
 
+        //SHQ16-1726 explicitly add selected date if present to request
+        if ($requestedDate) {
+            $dateSelections = array('carriergroup_id' => $requestCarrierGroup,
+                'carrier_code' => $requestedCode,
+                'date_selected' => $requestedDate);
+            $this->quoteStorage->setSelectedDeliveryArray($dateSelections);
+        }
         $this->_cleanDownRatesCollection($requestedCode, $address, $requestCarrierGroup);
         $address->save();
         $billingAddress->save();
 
         $this->_refreshShippingRates($address);
         Mage::helper('shipperhq_shipper')->getQuoteStorage()->setSelectedFreightCarrier(null);
-
+        if ($requestedDate) {
+            $this->quoteStorage->setSelectedDeliveryArray(null);
+        }
     }
 
     protected function _getShippingPrice($quote, $price, $flag, $includeContainer = true)

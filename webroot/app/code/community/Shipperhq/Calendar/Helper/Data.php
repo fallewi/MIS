@@ -130,17 +130,20 @@ class Shipperhq_Calendar_Helper_Data extends Mage_Core_Helper_Abstract
 
     }
 
-    public function cleanUpCalendarsInSession($carrierCode, $carriergroupId)
+    public function cleanUpCalendarsInSession($carrierCode, $carriergroupId, $isSplit = true)
     {
+        $calendarCarrierGroupId = $isSplit ? $carriergroupId : 0;
+
         if ($selectedDeliveryDate = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getSelectedDeliveryArray()){
             if(array_key_exists('date_selected', $selectedDeliveryDate)) {
                 return;
             }
         }
+
         $allCalendarDetails = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getCalendarDetails();
         if(is_array($allCalendarDetails)) {
-            if(array_key_exists($carriergroupId, $allCalendarDetails) && array_key_exists($carrierCode, $allCalendarDetails[$carriergroupId])) {
-                unset($allCalendarDetails[$carriergroupId][$carrierCode]);
+            if(array_key_exists($calendarCarrierGroupId, $allCalendarDetails) && array_key_exists($carrierCode, $allCalendarDetails[$calendarCarrierGroupId])) {
+                unset($allCalendarDetails[$calendarCarrierGroupId][$carrierCode]);
                 Mage::helper('shipperhq_shipper')->getQuoteStorage()->setCalendarDetails($allCalendarDetails);
             }
         }

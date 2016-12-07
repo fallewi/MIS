@@ -63,7 +63,6 @@ class Item
    public $freeShipping;
 //   public $freeMethodWeight;
    public $additionalAttributes;
-   public $legacyAttributes;
    public $items;
    public $type;
    public $fixedPrice;
@@ -98,7 +97,6 @@ class Item
     * @param float $taxPercentage
     * @param string $type
     * @param array $attributes
-    * @param array $legacyAttributes
     * @param array $additionalAttributes
     */
    function __construct($items = array(), $qty = 0, $weight = 0.0, $rowTotal = 0,
@@ -110,7 +108,7 @@ class Item
                         $name = "", $packageCurrency = "",$baseCurrency = "",
                         $storeBaseCurrency = "", $storeCurrentCurrency = "", $storePrice = 0.0, $taxInclBasePrice = 0.0,
                         $taxInclStorePrice = 0.0, $taxPercentage = 0.0, $type = "",
-                        $attributes = array(), $legacyAttributes = array(), $additionalAttributes = array())
+                        $attributes = array(), $additionalAttributes = array())
    {
       $this->additionalAttributes = $additionalAttributes;
       $this->attributes = $attributes;
@@ -128,7 +126,6 @@ class Item
       $this->freeShipping = $freeShipping;
       $this->id = $id;
       $this->items = $items;
-      $this->legacyAttributes = $legacyAttributes;
       $this->name = $name;
       $this->packageCurrency = $packageCurrency;
       $this->qty = $qty;
@@ -397,22 +394,6 @@ class Item
    public function getItems()
    {
       return $this->items;
-   }
-
-   /**
-    * @param array $legacyAttributes
-    */
-   public function setLegacyAttributes($legacyAttributes)
-   {
-      $this->legacyAttributes = $legacyAttributes;
-   }
-
-   /**
-    * @return array
-    */
-   public function getLegacyAttributes()
-   {
-      return $this->legacyAttributes;
    }
 
    /**

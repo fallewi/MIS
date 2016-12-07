@@ -137,10 +137,8 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
 <br style="clear:both"/>
 
 <script type="text/javascript">
-    //<![CDATA[
-
+//<![CDATA[
 var StorePickup = Class.create();
-
 
 var minDate = null;
 var maxDate = null;
@@ -262,9 +260,9 @@ function available(date, cgid, locationId) {
     var found = [false,"","unAvailable"];
     var locData = location_data;
     var ourLocData = locData[cgid + '_' + locationId];
-    
+
     var availableDates = ourLocData.pickup_dates;
-    
+
     for (var key in availableDates) {
         if(dmy == key) {
             found = [true, "","Available"];
@@ -435,8 +433,8 @@ function maplocation(transport) {
     var mapExists = document.getElementById('map_container' + carrierCodeInsert + carriergroupInsert);
     var mapURL = locationDetails.map_url;
     var showAddress = locationDetails.show_address;
-    
-    
+
+
 
     if(mapExists) {
         myLatlng = new google.maps.LatLng(lat, long);
@@ -479,7 +477,7 @@ function maplocation(transport) {
             $('map_container' + carrierCodeInsert + carriergroupInsert).hide()
         }
     }
-    
+
     var address= '';
 
     if(locationDetails.show_address) {
@@ -547,7 +545,7 @@ function maplocation(transport) {
         $('retrieving-location' + carrierCodeInsert + carriergroupInsert).innerHTML = "";
         $('retrieving-location' + carrierCodeInsert + carriergroupInsert).style.visibility = "hidden";
     }
-    
+
     if(locationDetails.updated_rates) {
         changeShipOptions(locationDetails.updated_rates, carriergroupInsert, carrierCode, carriergroupId);
     }
@@ -576,7 +574,7 @@ function changeShipOptions(data, carriergroupInsert, carrierCode, carriergroupId
         } else {
             var existingRadios = document.getElementsByName('shipping_method'+carriergroupInsert);
             var selectedMethod = false;
-    
+
             for(i=0;i < existingRadios.length ;i++) {
                 var radio = existingRadios[i];
                 if(radio.checked) {
@@ -602,7 +600,7 @@ function changeShipOptions(data, carriergroupInsert, carrierCode, carriergroupId
                  <label for="s_method'+carriergroupInsert+'_'+code+'">'+element.label+'</label></li>';
                 }
                 radioText += radioIndText;
-    
+
             }
             $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML=radioText;
             for(code in data)

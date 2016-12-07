@@ -56,7 +56,6 @@ if(!empty($checkoutHelper->settings['addressreview']['enable_addressreview'])):?
     </div>
     <script type="text/javascript">
         //<![CDATA[
-
         <?php
             if(Mage::getSingleton('customer/session')->isLoggedIn()){
                 $blacklist = array('entity_id','entity_type_id','attribute_set_id','increment_id','parent_id','created_at','updated_at','is_active','customer_id');

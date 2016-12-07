@@ -33,7 +33,7 @@
     <modules>
         <Shipperhq_Shipper>
             <version>0.0.34</version>
-            <extension_version>2.111</extension_version>
+            <extension_version>2.118</extension_version>
             <!-- implemented in module file -->
             <!--  <active>true</active>
               <codePool>community</codePool>
@@ -157,6 +157,15 @@
                     </shipperhq_shipper_savebilling_observer>
                 </observers>
             </controller_action_predispatch_checkout_onepage_saveBilling>
+            <!--IWD OPC-->
+            <controller_action_predispatch_opc_json_saveBilling>
+                <observers>
+                    <shipperhq_shipper_savebilling_observer>
+                        <class>shipperhq_shipper/observer</class>
+                        <method>onCheckoutSaveBilling</method>
+                    </shipperhq_shipper_savebilling_observer>
+                </observers>
+            </controller_action_predispatch_opc_json_saveBilling>
             <!-- set checkout for rates processing and re-request rates if it's split checkout -->
             <controller_action_predispatch_onestepcheckout_index_index>
                 <observers>

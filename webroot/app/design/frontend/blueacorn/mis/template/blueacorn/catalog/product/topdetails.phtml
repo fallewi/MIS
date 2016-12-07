@@ -50,10 +50,6 @@ $categoryurl = is_object($category) ? $category->getUrl() : "";
         <?php if($_product->getMpn()): ?>
             <span class="mpn-number"><?php echo $this->__("MPN : ") ?><?php echo $_product->getMpn(); ?> <span class="spacer">/</span></span>
         <?php endif ?>
-
-        <?php if($_product->getSku()): ?>
-            <span class="item-number"><?php echo $this->__("Item #: ") ?><?php echo $_product->getSku(); ?> <span class="spacer">/</span></span>
-        <?php endif ?>
     </div>
     <div class="grid-full">
         <div class="y-summary"><?php $this->helper('yotpo')->showBottomline($this, $_product); ?></div>

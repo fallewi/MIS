@@ -114,13 +114,16 @@
 .shq-input .shq-input {margin-top:0;}
 .shq-input .shq-input .shq-input {margin-top:0;}
 
-img.shq-ico {
-	float: left;
-	width: 14px;
-	margin: 0 5px 0 0;
+.shq-ico-calendar {
+	background: transparent url('../../images/shipperhq/calendar-blk.svg') center center no-repeat;
 }
-.shq-input .shq-input img.shq-ico {
-	margin: 8px 0 0 5px;
+
+.shq-ico-clock {
+	background: transparent url('../../images/shipperhq/clock-blk.svg') center center no-repeat;
+}
+
+.shq-ico-r  {
+	margin: 8px 0 0 5px !important;
 }
 
 @media only screen and (max-width: 480px) {

@@ -183,6 +183,9 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
 
                 $shippingAddress = $quote->getShippingAddress();
                 $orderId = $order->getId();
+                if(is_null($orderId)) {
+                    return;
+                }
                 $carrierGroupDetail = Mage::helper('shipperhq_shipper')->decodeShippingDetails(
                     $shippingAddress->getCarriergroupShippingDetails());
                 if(is_array($carrierGroupDetail)){
@@ -193,30 +196,25 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                         $carrierGroupId = $carrierGroup['carrierGroupId'];
                         $carrier_code = $carrierGroup['carrier_code'];
                         $shippingMethodCode = $carrierGroup['code'];
-                        $packagesColl= Mage::getModel('shipperhq_shipper/quote_packages')
-                            ->loadByCarrier($shippingAddress->getAddressId(), $carrierGroupId, $carrier_code. '_' .$shippingMethodCode);
-                        if(count($packagesColl) < 1) {
-                            $packagesColl= Mage::getModel('shipperhq_shipper/quote_packages')
-                                ->loadByCarrier($shippingAddress->getAddressId(), $carrierGroupId, $carrier_code);
-                        }
-                        foreach ($packagesColl as $box) {
-                            $package = Mage::getModel('shipperhq_shipper/order_packages');
-                            $package->setOrderId($orderId);
-                            $package->setLength($box->getLength())
-                                ->setWidth($box->getWidth())
-                                ->setHeight($box->getHeight())
-                                ->setWeight($box->getWeight())
-                                ->setPackageName($box->getPackageName())
-                                ->setDeclaredValue($box->getDeclaredValue())
-                                ->setSurchargePrice($box->getSurchargePrice())
-                                ->setCarrierGroupId($box->getCarrierGroupId())
-                                ->setItems($box->getItems());
-                            $package->save();
+                        $sessionPackages = Mage::helper('shipperhq_shipper')->loadSessionPackagesByCarrier($shippingAddress->getAddressId(),
+                            $carrierGroupId, $carrier_code, $shippingMethodCode);
+
+                        foreach ($sessionPackages as $box) {
+
+                            $quotePackage = Mage::getModel('shipperhq_shipper/quote_packages');
+                            $quotePackage->setData($box);
+                            $quotePackage->save();
+
+                            $orderPackage = Mage::getModel('shipperhq_shipper/order_packages');
+                            unset($box['address_id']);
+                            $orderPackage->setData($box);
+                            $orderPackage->setOrderId($orderId);
+                            $orderPackage->save();
                         }
 
                         if (Mage::helper('shipperhq_shipper')->storeDimComments()) {
-                            if ($recordOrderPackages && count($packagesColl) > 0) {
-                                $boxText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($packagesColl, $carrierGroup['name']);
+                            if ($recordOrderPackages && count($sessionPackages) > 0) {
+                                $boxText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($sessionPackages, $carrierGroup['name']);
                                 $order->addStatusToHistory($order->getStatus(), $boxText, false);
                             }
                         }
@@ -228,9 +226,14 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                 } else {
                     $shippingMethod = $order->getShippingMethod();
                     if($rate = $quote->getShippingAddress()->getShippingRateByCode($shippingMethod)) {
-                        $packagesColl= Mage::getModel('shipperhq_shipper/quote_packages')
-                            ->loadByCarrier($shippingAddress->getAddressId(), null, $rate->getCarrier());
+                        $packagesColl = Mage::helper('shipperhq_shipper')->loadSessionPackagesByCarrier($shippingAddress->getAddressId(),
+                            null, $rate->getCarrier(), '');
+
                         foreach ($packagesColl as $box) {
+                            $quotePackage = Mage::getModel('shipperhq_shipper/quote_packages');
+                            $quotePackage->setData($box);
+                            $quotePackage->save();
+
                             $package = Mage::getModel('shipperhq_shipper/order_packages');
                             $package->setOrderId($orderId);
                             $package->setLength($box->getLength())

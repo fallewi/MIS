@@ -90,6 +90,15 @@
                     </shipperhq_splitrates_save_shipping_methods_observer>
                 </observers>
             </controller_action_predispatch_checkout_onepage_saveShippingMethod>
+            <!-- IWD OPC -->
+            <controller_action_predispatch_opc_json_saveShippingMethod>
+                <observers>
+                    <shipperhq_splitrates_save_shipping_methods_observer>
+                        <class>shipperhq_splitrates/observer</class>
+                        <method>preDispatchShippingMethodSave</method>
+                    </shipperhq_splitrates_save_shipping_methods_observer>
+                </observers>
+            </controller_action_predispatch_opc_json_saveShippingMethod>
             <!--manually merge shipping rates -->
             <controller_action_predispatch_onestepcheckout_ajax_set_methods_separate>
                 <observers>
