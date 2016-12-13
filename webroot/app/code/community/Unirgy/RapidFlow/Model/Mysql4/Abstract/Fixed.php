@@ -19,6 +19,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract_Fixed
     protected $_rowTypeFields = array();
 
     protected $_exportConvertFields = array();
+    protected $_startLine;
 
     public function import()
     {
@@ -63,7 +64,7 @@ if ($benchmark) Mage::log("============================= IMPORT START: ".memory_
         $count = 0;
         // data will loaded page by page to conserve memory
         for ($page = 0; ; $page++) {
-            $this->_startLine = 1+$page*$this->_pageRowCount;
+            $this->_startLine = 1 + $page * $this->_pageRowCount;
 
             $this->_checkLock();
 
@@ -115,9 +116,10 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
     protected function _prepareRowTypeData()
     {
         $rowTypes = Mage::getSingleton('urapidflow/config')->getRowTypes($this->_dataType);
+
         $this->_rowTypeFields = array();
-        foreach ($rowTypes as $rowType=>$rowNode) {
-            foreach ($rowNode->columns as $fieldName=>$fieldNode) {
+        foreach ($rowTypes as $rowType => $rowNode) {
+            foreach ($rowNode->columns as $fieldName => $fieldNode) {
                 $this->_rowTypeFields[$rowType][$fieldName] = $fieldNode;
             }
         }
@@ -135,14 +137,8 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
     protected function _importFetchNewData()
     {
         $profile = $this->_profile;
-        $logger = $profile->getLogger();
 
-        $defaultSeparator = $profile->getData('options/csv/multivalue_separator');
-        if (!$defaultSeparator) {
-            $defaultSeparator = ';';
-        }
-
-        for ($i1=0; $i1<$this->_pageRowCount; $i1++) {
+        for ($i1 = 0; $i1 < $this->_pageRowCount; $i1++) {
             $row = $profile->ioRead();
             if (!$row) {
                 // last row
@@ -179,9 +175,9 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
 
             default: // add/update
                 $rowAction = '+';
-                $method = '_importRow'.$rowType;
+                $method = '_importRow' . $rowType;
             }
-            if ($method===false) {
+            if ($method === false) {
                 $profile->addValue('rows_empty');
                 continue;
             }
@@ -194,7 +190,7 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
                 continue;
             }
 
-            $lineNum = $this->_startLine+$i1;
+            $lineNum = $this->_startLine + $i1;
             $this->_newRows[$lineNum] = $row;
             $this->_newRowTypes[$lineNum] = $rowType;
             $this->_newRowActions[$lineNum] = $rowAction;
@@ -257,10 +253,10 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
     }
 
     /**
-    * Export one or multiple row types
-    *
-    * @param string|array $rowType
-    */
+     * Export one or multiple row types
+     *
+     * @throws Unirgy_RapidFlow_Exception_Stop
+     */
     public function export()
     {
         $profile = $this->_profile;
@@ -352,8 +348,9 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
         // fetch rows data
         $result = $this->_select->query();
         $row = $result->fetch();
+        $columns = array();
         if ($row) {
-            $columns = Mage::getSingleton('urapidflow/config')->getRowTypeColumns($rowType);
+            $columns = $this->getRowTypeColumns($rowType);
             $header = array_keys($columns);
             array_unshift($header, '##'.$rowType);
             $profile->ioWriteHeader($header);
@@ -366,12 +363,12 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
             $count++;
             if ($cbMethod) {
                 try {
-                    if ($this->$cbMethod($row)===false) {
+                    if ($this->$cbMethod($row) === false) {
                         --$this->_rowNum;
                         $row = $result->fetch();
                         continue;
                     }
-                } catch (Exception $e) {
+                } catch(Exception $e) {
                     $profile->addValue('rows_errors');
                     $logger->error($e->getMessage());
                 }
@@ -380,22 +377,22 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
                 $row[$k] = $this->_convertEncoding($row[$k]);
             }
             $r = array($rowType);
-            foreach ($columns as $k=>$c) {
+            foreach ($columns as $k => $c) {
                 if (!isset($row[$k])) {
                     $r[] = '';
                     continue;
                 }
-                $v = $row[$k];
-                $r[] = isset($this->_attrOptionsByValue[$k][$v]) ? $this->_attrOptionsByValue[$k][$v] : $v;
+                $v   = $row[$k];
+                $r[] = isset($this->_attrOptionsByValue[$k][$v])? $this->_attrOptionsByValue[$k][$v]: $v;
             }
 
             $r = $this->_convertEncoding($r);
             $profile->ioWrite($r);
             $profile->addValue('rows_processed')->addValue('rows_success');
 
-            if ($count==$this->_pageRowCount) {
+            if ($count == $this->_pageRowCount) {
                 $profile->setMemoryUsage(memory_get_usage(true))->setMemoryPeakUsage(memory_get_peak_usage(true))
-                    ->setSnapshotAt(now())->sync();
+                        ->setSnapshotAt(now())->sync();
 
                 $this->_checkLock();
 
@@ -424,5 +421,14 @@ if ($benchmark) Mage::log("_importSaveRows: ".memory_get_usage(true).', '.memory
             Mage::throwException($this->__('Invalid store'));
         }
         return $this->_storeIds && !in_array($sId, $this->_storeIds);
+    }
+
+    /**
+     * @param $rowType
+     * @return mixed
+     */
+    protected function getRowTypeColumns($rowType)
+    {
+        return Mage::getSingleton('urapidflow/config')->getRowTypeColumns($rowType);
     }
 }

@@ -127,6 +127,7 @@ class Unirgy_RapidFlow_Model_Profile extends Mage_Core_Model_Abstract
 
     protected function _run()
     {
+        /** @var Unirgy_RapidFlow_Model_Mysql4_Abstract $res */
         $res = $this->getDataTypeModel();
         $res->setProfile($this);
 
@@ -136,7 +137,7 @@ class Unirgy_RapidFlow_Model_Profile extends Mage_Core_Model_Abstract
             Mage::throwException(Mage::helper('urapidflow')->__('You are not allowed to run this profile'));
         }
 
-        if ($this->getProfileType()=='import') {
+        if ($this->getProfileType() === 'import') {
             $res->import();
         } else {
             $res->export();
@@ -310,7 +311,7 @@ class Unirgy_RapidFlow_Model_Profile extends Mage_Core_Model_Abstract
         $this->setRunStatus('running');
         $this->loggerStartProfile();
 
-        Mage::dispatchEvent('urapidflow_profile_action', array('action'=>'start', 'profile'=>$this));
+        Mage::dispatchEvent('urapidflow_profile_action', array('action' => 'start', 'profile' => $this));
 
         return $this;
     }
@@ -579,7 +580,7 @@ class Unirgy_RapidFlow_Model_Profile extends Mage_Core_Model_Abstract
     {
         $remoteType = $this->getData('options/remote/type');
         $compressType = $this->getData('options/compress/type');
-        if ($when=='before' && $this->getProfileType()=='import') {
+        if ($when === 'before' && $this->getProfileType() === 'import') {
             switch ($remoteType) {
             case 'ftp': case 'ftps':
                 $this->_ftpDownload();
@@ -590,7 +591,7 @@ class Unirgy_RapidFlow_Model_Profile extends Mage_Core_Model_Abstract
                 $this->_zipExtract();
                 break;
             }
-        } elseif ($when=='after' && $this->getProfileType()=='export') {
+        } elseif ($when === 'after' && $this->getProfileType() === 'export') {
             switch ($compressType) {
             case 'zip':
                 $this->_zipArchive();
@@ -881,11 +882,11 @@ xmlns:html="http://www.w3.org/TR/REC-html40">
 
     protected function _processColumnsPost()
     {
-    	if ($this->hasColumnsPost()) {
+        if ($this->hasColumnsPost()) {
             $columns = array();
-            foreach ($this->getColumnsPost() as $k=>$a) {
-                foreach ($a as $i=>$v) {
-                    if ($v!=='') {
+            foreach ($this->getColumnsPost() as $k => $a) {
+                foreach ($a as $i => $v) {
+                    if ($v !== '') {
                         $columns[$i][$k] = $v;
                     }
                 }
@@ -917,7 +918,7 @@ xmlns:html="http://www.w3.org/TR/REC-html40">
     {
         foreach ($this->_jsonFields as $k=>$f) {
             if (!is_null($this->getData($f))) {
-                $this->setData($k, Zend_Json::decode($this->getData($f)));
+                $this->setData($k, Mage::helper('core')->jsonDecode($this->getData($f)));
             }
         }
     }
@@ -931,7 +932,7 @@ xmlns:html="http://www.w3.org/TR/REC-html40">
 
     public function importFromJson($json)
     {
-        $data = Zend_Json::decode($json);
+        $data = Mage::helper('core')->jsonDecode($json);
         if (!$data) {
             return $this;
         }
@@ -1089,9 +1090,9 @@ xmlns:html="http://www.w3.org/TR/REC-html40">
                         $process->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
                     }
                 } catch (Mage_Core_Exception $e) {
-                    $this->getLogger()->log("ERROR", $e->getMessage());
+                    $this->getLogger()->log('ERROR', $e->getMessage());
                 } catch (Exception $e) {
-                    $this->getLogger()->log("ERROR",
+                    $this->getLogger()->log('ERROR',
                                             $process->getIndexer()->getName() . " index process unknown error:\n" . $e);
                 }
             }

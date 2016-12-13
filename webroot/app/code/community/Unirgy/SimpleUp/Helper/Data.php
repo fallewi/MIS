@@ -251,7 +251,7 @@ EOT
             try {
                 $json = trim($response);
                 if ($json[0]==='{' || $json[0]==='[') {
-                    $result = Zend_Json::decode($json);
+                    $result = Mage::helper('core')->jsonDecode($json);
                 } else {
                     $result = array();
                 }

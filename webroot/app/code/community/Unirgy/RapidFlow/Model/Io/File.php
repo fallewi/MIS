@@ -15,6 +15,12 @@
  * @license    http:///www.unirgy.com/LICENSE-M1.txt
  */
 
+/**
+ * Class Unirgy_RapidFlow_Model_Io_File
+ *
+ * @method string getBaseDir
+ * @method $this setBaseDir(string $dir)
+ */
 class Unirgy_RapidFlow_Model_Io_File extends Unirgy_RapidFlow_Model_Io_Abstract
 {
     protected $_openMode;
@@ -80,7 +86,7 @@ class Unirgy_RapidFlow_Model_Io_File extends Unirgy_RapidFlow_Model_Io_Abstract
         if ($length) {
             $data = fread($this->_fp, $length);
         } else {
-            $data = fread($this->_fp);
+            $data = fread($this->_fp, 1024);
         }
         return $data;
     }
@@ -97,15 +103,9 @@ class Unirgy_RapidFlow_Model_Io_File extends Unirgy_RapidFlow_Model_Io_Abstract
 
     public function getFilepath($filename)
     {
-        if (!$this->getBaseDir()) {
-            $this->setBaseDir(Mage::getConfig()->getVarDir('urapidflow'));
-        }
-        $dir = $this->getBaseDir();
-        if ($dir) {
-            Mage::app()->getConfig()->createDirIfNotExists($dir);
-        }
-        $filepath = rtrim($dir, '/').'/'.ltrim($filename, '/');
-        return $filepath;
+        $dir      = $this->dir();
+
+        return rtrim($dir, '/') . '/' . ltrim($filename, '/');
     }
 
     public function reset()
@@ -124,5 +124,21 @@ class Unirgy_RapidFlow_Model_Io_File extends Unirgy_RapidFlow_Model_Io_Abstract
     public function __destruct()
     {
         $this->close();
+    }
+
+    /**
+     * @return string
+     */
+    protected function dir()
+    {
+        if (!$this->getBaseDir()) {
+            $this->setBaseDir(Mage::getConfig()->getVarDir('urapidflow'));
+        }
+        $dir = $this->getBaseDir();
+        if ($dir) {
+            Mage::app()->getConfig()->createDirIfNotExists($dir);
+        }
+
+        return $dir;
     }
 }

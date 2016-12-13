@@ -72,6 +72,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Catalog_Product
         $manageStock = Mage::getStoreConfig('cataloginventory/item_options/manage_stock', $storeId);
 
         $pUrl = Mage::getSingleton('catalog/url');
+        $suffix = $this->_getPathSuffix($storeId);
         $secure = $profile->getData('options/export/image_https');
         $baseUrl = Mage::app()->getStore($storeId)->getBaseUrl('web', $secure);
         $mediaUrl = Mage::app()->getStore($storeId)->getBaseUrl('media', $secure);
@@ -123,7 +124,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Catalog_Product
             $columns = array();
             $i = 1;
             foreach ($this->_attributesByCode as $k=>$a) {
-                if ($k=='product.entity_id') {
+                if ($k === 'product.entity_id') {
                     continue;
                 }
                 $columns[$i-1] = array('field' => $k, 'title' => $k, 'alias' => $k, 'default' => '');
@@ -155,7 +156,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Catalog_Product
         $profile->setRowsFound($count)->setStartedAt(now())->sync(true, array('rows_found', 'started_at'), false);
         $profile->activity($this->__('Exporting'));
 #memory_get_usage(true);
-if ($benchmark) Mage::log("============================= IMPORT START: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('============================= EXPORT START: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
 
         // open export file
         $profile->ioOpenWrite();
@@ -175,7 +176,7 @@ if ($benchmark) Mage::log("============================= IMPORT START: ".memory_
         // data will loaded page by page to conserve memory
         for ($page = 0; ; $page++) {
 #memory_get_usage(true);
-if ($benchmark) Mage::log("================ PAGE START: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('================ PAGE START: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
             // set limit for current page
             $select->limitPage($page+1, $this->_pageRowCount);
             // retrieve product entity data and attributes in filters
@@ -195,22 +196,22 @@ if ($benchmark) Mage::log("================ PAGE START: ".memory_get_usage().', 
             }
             unset($rows);
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_readRows: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('_readRows: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
 
             $this->_productIds = array_keys($this->_products);
 
             $this->_fetchAttributeValues($storeId, true);
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchAttributeValues: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('_fetchAttributeValues: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
             $this->_fetchWebsiteValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchWebsiteValues: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('_fetchWebsiteValues: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
             $this->_fetchStockValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchStockValues: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('_fetchStockValues: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
             $this->_fetchCategoryValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memory_get_peak_usage());
+if ($benchmark) Mage::log('_fetchCategoryValues: ' . memory_get_usage() . ', ' . memory_get_peak_usage());
 
             $this->_csvRows = array();
 
@@ -235,7 +236,7 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
                     $sourceModel = $this->_attr($attr, 'source_model');
 
                     // retrieve correct value for current row and field
-                    if (($v = $this->_attr($attr, 'force_value'))) {
+                    if ($v = $this->_attr($attr, 'force_value')) {
                         $value = $v;
                     } elseif (!empty($this->_fieldAttributes[$attr])) {
                         $a = $this->_fieldAttributes[$attr];
@@ -249,23 +250,23 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
                     }
 
                     // replace raw numeric values with source option labels
-                    if ((!$exportInternalValues || strpos($attr, 'category.')===0)
-                        && ($inputType=='select' || $inputType=='multiselect' || $sourceModel)
+                    if ((!$exportInternalValues || strpos($attr, 'category.') === 0)
+                        && ($inputType === 'select' || $inputType === 'multiselect' || $sourceModel)
                         && ($options = $this->_attr($attr, 'options'))
                     ) {
-                        if (!is_array($value) && $inputType=='multiselect') {
+                        if (!is_array($value) && $inputType === 'multiselect') {
                             $value = explode(',', $value);
                         } elseif (!is_array($value)) {
                             $value = array($value);
                         }
-                        foreach ($value as $k=>&$v) {
-                            if ($v==='') {
+                        foreach ($value as $k => &$v) {
+                            if ($v === '') {
                                 continue;
                             }
                             if (!isset($options[$v])) {
                                 $profile->addValue('num_warnings');
                                 $logger->setColumn($f['column_num'])
-                                    ->warning($this->__("Unknown option '%s' for product '%s' attribute '%s'", $v, $p[0]['sku'], $attr));
+                                       ->warning($this->__("Unknown option '%s' for product '%s' attribute '%s'", $v, $p[0]['sku'], $attr));
                                 if (!$exportInvalidValues) {
                                     unset($value[$k]);
                                 }
@@ -278,15 +279,19 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
 
                     // combine multiselect values
                     if (is_array($value)) {
-                        $value = join(!empty($f['separator']) ? $f['separator'] : $defaultSeparator, $value);
+                        $value = implode(!empty($f['separator']) ? $f['separator'] : $defaultSeparator, $value);
                     }
 
                     // process special cases of loaded attributes
                     switch ($attr) {
                     // product url
                     case 'url_path':
-                        if (!empty($f['format']) && $f['format']=='url') {
+                    case 'url_key':
+                        if (!empty($f['format']) && $f['format'] === 'url') {
                             $value = $baseUrl.$value;
+                            if(strpos($value, $suffix) === false){
+                                $value .= $suffix;
+                            }
                         }
                         break;
 
@@ -329,14 +334,14 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
 
                     switch ($this->_attr($attr, 'frontend_input')) {
                     case 'media_image':
-                        if ($value=='no_selection') {
+                        if ($value ==='no_selection') {
                             $value = '';
                         }
                         if ($value!=='' && $exportImageFiles) {
                             $logger->setColumn($f['column_num']);
                             $this->_copyImageFile($imagesFromDir, $imagesToDir, $value);
                         }
-                        if (!empty($f['format']) && $f['format']=='url' && !empty($value)) {
+                        if (!empty($f['format']) && $f['format'] === 'url' && !empty($value)) {
                             try {
                                 $path = $imgModel->setBaseFile($value)->getBaseFile();
                                 $path = str_replace($mediaDir . DS, "", $path);
@@ -381,7 +386,7 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
             $this->_checkLock();
 
             // stop repeating if this is the last page
-            if (sizeof($this->_products)<$this->_pageRowCount) {
+            if (sizeof($this->_products) < $this->_pageRowCount) {
                 break;
             }
             if ($this->_pageSleepDelay) {
@@ -416,11 +421,11 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
 
         $dryRun = $profile->getData('options/import/dryrun');
 
-        if (Mage::app()->isSingleStoreMode()) {
-            $storeId = 0;
-        } else {
+        //if (Mage::app()->isSingleStoreMode()) {
+        //    $storeId = 0;
+        //} else {
             $storeId = $profile->getStoreId();
-        }
+        //}
         $this->_storeId = $storeId;
         $this->_entityTypeId = $this->_getEntityType($this->_entityType, 'entity_type_id');
 
@@ -464,7 +469,7 @@ if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage().', '.memor
 
         $this->_profile->activity('Importing');
 #memory_get_usage(true);
-if ($benchmark) Mage::log("============================= IMPORT START: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('============================= IMPORT START: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
 
         $this->_isLastPage = false;
 
@@ -478,74 +483,74 @@ if ($benchmark) Mage::log("============================= IMPORT START: ".memory_
                     $this->_write->beginTransaction();
                 }
 #memory_get_usage(true);
-if ($benchmark) Mage::log("================ PAGE START: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('================ PAGE START: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_importResetPageData();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importResetPageData: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importResetPageData: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_importFetchNewData();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importFetchNewData: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importFetchNewData: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_importFetchOldData();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importFetchOldData: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importFetchOldData: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_fetchAttributeValues($storeId, true);
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchAttributeValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_fetchAttributeValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_fetchWebsiteValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchWebsiteValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_fetchWebsiteValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_fetchStockValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchStockValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_fetchStockValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 $this->_fetchCategoryValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_fetchCategoryValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_fetchCategoryValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
 
                 $this->_importProcessNewData();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importProcessNewData: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importProcessNewData: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
 
                 $this->_checkLock();
 
                 Mage::dispatchEvent('urapidflow_product_import_after_fetch', array('vars'=>$eventVars));
                 $this->_importValidateNewData();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importValidateNewData: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importValidateNewData: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 Mage::dispatchEvent('urapidflow_product_import_after_validate', array('vars'=>$eventVars));
                 $this->_importProcessDataDiff();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importProcessDataDiff: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importProcessDataDiff: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                 Mage::dispatchEvent('urapidflow_product_import_after_diff', array('vars'=>$eventVars));
 
                 if (!$dryRun) {
                     $this->_importSaveEntities();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importSaveEntities: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importSaveEntities: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                     $this->_importCopyImageFiles();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importCopyImageFiles: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importCopyImageFiles: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                     $this->_importGenerateAttributeValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importGenerateAttributeValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importGenerateAttributeValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
 
                     $this->_importSaveAttributeValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importSaveAttributeValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importSaveAttributeValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                     $this->_importSaveWebsiteValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importSaveWebsiteValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importSaveWebsiteValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                     $this->_importSaveProductCategories();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importSaveProductCategories: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importSaveProductCategories: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
                     $this->_importSaveStockValues();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importSaveStockValues: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importSaveStockValues: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
 
                     #$this->_importReindexProducts();
                     #$this->_importRefreshRewrites();
                     $this->_importUpdateImageGallery();
 #memory_get_usage(true);
-if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).', '.memory_get_peak_usage(true));
+if ($benchmark) Mage::log('_importUpdateImageGallery: ' . memory_get_usage(true) . ', ' . memory_get_peak_usage(true));
 
                     Mage::dispatchEvent('urapidflow_product_import_after_save', array('vars'=>$eventVars));
 
@@ -564,7 +569,7 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                 }
             } catch (Exception $e) {
                 if ($useTransactions && !$dryRun) {
-                    $this->_write->rollback();
+                    $this->_write->rollBack();
                 }
 #print_r($e);
                 throw $e;
@@ -668,7 +673,7 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                     static $_dp;
                         if (null === $_dp) {
                             $_dp = Mage::getStoreConfig('urapidflow/import_options/date_processor');
-                            if ($_dp == 'date_parse_from_format' && !version_compare(phpversion(), '5.3.0', '>=')) {
+                            if ($_dp === 'date_parse_from_format' && !version_compare(phpversion(), '5.3.0', '>=')) {
                                 $_dp = 'strtotime';
                             }
                         }
@@ -730,6 +735,11 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
 
     /**
      * retrieve attr record by id or code, with optional record field and value
+     *
+     * @param      $attribute
+     * @param null $field
+     * @param null $value
+     * @return array|bool
      */
     protected function _attr($attribute, $field = null, $value = null)
     {
@@ -741,7 +751,7 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
             return false;
         }
         if ($field !== null && $value !== null) {
-            if ($field == 'options_bytext') {
+            if ($field === 'options_bytext') {
                 $value = strtolower($value);
             }
             return isset($attr[$field][$value])? $attr[$field][$value]: false;
@@ -763,7 +773,7 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
     protected function _importFetchNewData()
     {
         $profile = $this->_profile;
-        $logger = $profile->getLogger();
+        $logger  = $profile->getLogger();
 
         $defaultSeparator = $profile->getData('options/csv/multivalue_separator');
         if (!$defaultSeparator) {
@@ -773,19 +783,21 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
         // read rows from file into memory and collect skus
         $this->_newData = array();
         // $i1 should be preserved during the loop
-        for ($i1=0; $i1<$this->_pageRowCount; $i1++) {
-            $error = false;
+        for ($i1 = 0; $i1 < $this->_pageRowCount; $i1++) {
+            /** @var array $row */
             $row = $profile->ioRead();
             if (!$row) {
                 // last row
                 $this->_isLastPage = true;
+
 #var_dump($this->_newData);
                 return true;
             }
+            //Mage::dispatchEvent('urapidflow_product_import_fetch_row', array('row' => &$row));
 
             $empty = true;
             foreach ($row as $v) {
-                if (trim($v)!=='') {
+                if (trim($v) !== '') {
                     $empty = false;
                     break;
                 }
@@ -796,57 +808,57 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
             }
 
             $profile->addValue('rows_processed');
-            $logger->setLine($this->_startLine+$i1);
+            $logger->setLine($this->_startLine + $i1);
             if (empty($row[$this->_skuIdx])) {
                 $profile->addValue('rows_errors')->addValue('num_errors');
-                $logger->setColumn($this->_skuIdx+1)->error($this->__('Empty SKU'));
+                $logger->setColumn($this->_skuIdx + 1)->error($this->__('Empty SKU'));
                 continue;
             }
             if (!empty($this->_newData[$row[$this->_skuIdx]])) {
                 $profile->addValue('rows_errors')->addValue('num_errors');
-                $logger->setColumn($this->_skuIdx+1)->error($this->__('Duplicate SKU'));
+                $logger->setColumn($this->_skuIdx + 1)->error($this->__('Duplicate SKU'));
                 continue;
             }
-            $sku = $row[$this->_skuIdx];
-            $this->_skuLine[$sku] = $this->_startLine+$i1;
-            $this->_newData[$sku] = $this->_newDataTemplate;
+            $sku                      = $row[$this->_skuIdx];
+            $this->_skuLine[$sku]     = $this->_startLine + $i1;
+            $this->_newData[$sku]     = $this->_newDataTemplate;
             $this->_defaultUsed[$sku] = $this->_newDataTemplate;
 
             $error = false;
-            foreach ($row as $col=>$v) {
-                if (!isset($this->_fieldsIdx[$col]) && $v!=='') {
+            foreach ($row as $col => $v) {
+                if (!isset($this->_fieldsIdx[$col]) && $v !== '') {
                     $profile->addValue('num_warnings');
-                    $logger->setColumn($col+1)
-                        ->warning($this->__('Column is out of boundaries, ignored'));
+                    $logger->setColumn($col + 1)
+                           ->warning($this->__('Column is out of boundaries, ignored'));
                     continue;
                 }
-                $_kk = (array)$this->_fieldsIdx[$col];
-                $_v = $v;
+                $_kk = (array) $this->_fieldsIdx[$col];
+                $_v  = $v;
                 foreach ($_kk as $k) {
                     $v = $_v;
-                    if ($k===false || in_array($k,array('const.value','const.function'))) {
+                    if ($k === false || in_array($k, array('const.value', 'const.function'))) {
                         continue;
                     }
-                    $input = $this->_attr($k, 'frontend_input');
-                    $multiselect = $input=='multiselect';
-                    $separator = trim(!empty($this->_fields[$k]['separator']) ? $this->_fields[$k]['separator'] : $defaultSeparator);
+                    $input       = $this->_attr($k, 'frontend_input');
+                    $multiselect = $input === 'multiselect';
+                    $separator   = trim(!empty($this->_fields[$k]['separator'])? $this->_fields[$k]['separator']: $defaultSeparator);
                     try {
                         $v = $this->_convertEncoding($v);
-                    } catch (Exception $e) {
+                    } catch(Exception $e) {
                         $profile->addValue('num_warnings');
-                        $logger->setColumn($col+1)->warning($e);
+                        $logger->setColumn($col + 1)->warning($e);
                         #$error = true;
                     }
-                    if ($v!=='') {
+                    if ($v !== '') {
                         // options and multiselect
-                        if ($input=='select') {
+                        if ($input === 'select') {
                             $v = trim($v);
                         } elseif ($multiselect) {
                             $values = explode($separator, $v);
-                            $v = array();
+                            $v      = array();
                             foreach ($values as $v1) {
                                 $v1 = trim($v1);
-                                if ($v1!=='') {
+                                if ($v1 !== '') {
                                     $v[] = $v1;
                                 }
                             }
@@ -856,7 +868,7 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                             }
                         }
                     }
-                    if (!isset($this->_defaultUsed[$sku][$k]) || $v!=='' && $v!==array()) {
+                    if (!isset($this->_defaultUsed[$sku][$k]) || $v !== '' && $v !== array()) {
                         $this->_newData[$sku][$k] = $v;
                         unset($this->_defaultUsed[$sku][$k]);
                     }
@@ -978,11 +990,19 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
 
                 $attrSetFields = $this->_getAttributeSetFields($attrSetId);
                 $typeId = !empty($typeId) ? $typeId : $oldProduct['type_id'];
-                $isParentProduct = $typeId=='configurable' || $typeId=='grouped' || $typeId=='bundle';
+                $isParentProduct = $typeId === 'configurable' || $typeId === 'grouped' || $typeId === 'bundle';
 
                 $dynamic = $this->__('Dynamic');
-                $dynPrice = ($typeId=='configurable' || $typeId=='bundle') && (isset($p['price_type']) && !empty($p['price_type'])  && (in_array($p['price_type'], array($dynamic, 1))) || !isset($p['price_type']) && !empty($oldProduct['price_type']));
-                $dynWeight = ($typeId=='configurable' || $typeId=='bundle') && (isset($p['weight_type']) && !empty($p['weight_type']) && (in_array($p['weight_type'], array($dynamic, 1))) || !isset($p['weight_type']) && !empty($oldProduct['weight_type']));
+                $dynPrice = $typeId === 'bundle' &&
+                            (isset($p['price_type']) && !empty($p['price_type']) &&
+                             in_array($p['price_type'], array($dynamic, Mage_Bundle_Model_Product_Price::PRICE_TYPE_DYNAMIC)) ||
+                             (!isset($p['price_type']) && isset($oldProduct['price_type']) &&
+                             $oldProduct['price_type'] == Mage_Bundle_Model_Product_Price::PRICE_TYPE_DYNAMIC));
+
+                $dynWeight = ($typeId === 'configurable' || $typeId === 'bundle') &&
+                             (isset($p['weight_type']) && !empty($p['weight_type']) &&
+                              (in_array($p['weight_type'], array($dynamic, 1)) ||
+                              !isset($p['weight_type']) && !empty($oldProduct['weight_type'])));
 
                 if ($isNew) {
                     // check missing required columns
@@ -1054,9 +1074,9 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                         }
                         foreach ((array)$newValue as $i=>$v) {
                             $vLower = strtolower(trim($v));
-                            if ($k=='category.name') {
-                                $delimiter = !empty($this->_fields[$k]['delimiter']) ? $this->_fields[$k]['delimiter'] : '>';
-                                $vLower = str_replace($delimiter, '>', $vLower);
+                            if ($k === 'category.name') {
+                                $delimiter = !empty($this->_fields[$k]['delimiter'])? $this->_fields[$k]['delimiter']: '>';
+                                $vLower    = str_replace($delimiter, '>', $vLower);
                             }
                             if (isset($this->_defaultUsed[$sku][$k])
                                 && !in_array($k, array('category.name', 'category.path'))
@@ -1075,10 +1095,10 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                                 } else {
                                     $this->_newData[$sku][$k] = $vId;
                                 }
-                            } elseif ($allowSelectIds && isset($attr['options'][$v])) {
+                            } else if ($allowSelectIds && isset($attr['options'][$v])) {
                                 // select ids used, no mapping required
                             } else {
-                                if ($k=='category.name') {
+                                if ($k === 'category.name') {
                                     if ($autoCreateCategories) {
                                         $newOptionId = $this->_importCreateCategory($v);
                                         if (is_array($newValue)) {
@@ -1090,10 +1110,10 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                                         $logger->warning($this->__("Created a new category '%s'", $v));
                                     } else {
                                         $profile->addValue('num_errors');
-                                        $logger->error('Invalid category: '.$v);
+                                        $logger->error('Invalid category: ' . $v);
                                         $this->_valid[$sku] = false;
                                     }
-                                } elseif ($autoCreateOptions && !empty($attr['attribute_id']) && (empty($attr['source_model']) || $attr['source_model']=='eav/entity_attribute_source_table')) {
+                                } elseif ($autoCreateOptions && !empty($attr['attribute_id']) && (empty($attr['source_model']) || $attr['source_model'] === 'eav/entity_attribute_source_table')) {
                                     $newOptionId = $this->_importCreateAttributeOption($attr, $v);
                                     if (is_array($newValue)) {
                                         $this->_newData[$sku][$k][$i] = $newOptionId;
@@ -1103,7 +1123,7 @@ if ($benchmark) Mage::log("_importUpdateImageGallery: ".memory_get_usage(true).'
                                     $profile->addValue('num_warnings');
                                     $logger->warning($this->__("Created a new option '%s' for attribute '%s'", $v, $k));
                                 } else {
-                                    if ($k!='product.websites'
+                                    if ($k != 'product.websites'
                                         || !Mage::helper('urapidflow')->hasEeGwsFilter()
                                     ) {
                                         $profile->addValue('num_errors');
@@ -1233,7 +1253,7 @@ $oldValues = array();
                             $isUpdated = true;
                         }
                         if (Mage::helper('urapidflow')->hasMageFeature('product.required_options')) {
-                            if ($k==='product.required_options' && $this->_products[$pId][0]['product.required_options'] != $newValue) {
+                            if ($k === 'product.required_options' && $this->_products[$pId][0]['product.required_options'] != $newValue) {
                                 $this->_updateEntity[$pId]['required_options'] = $newValue;
                                 $isUpdated = true;
                             }
@@ -1255,7 +1275,7 @@ $oldValues = array();
                         }
                         continue;
                     }
-                    if (($k==='category.ids' || $k==='category.path' || $k==='category.name') && ($newValue || $deleteOldCat)) {
+                    if (($k === 'category.ids' || $k === 'category.path' || $k === 'category.name') && ($newValue || $deleteOldCat)) {
                         $newValue = array_unique((array)$newValue);
                         $oldValue = !empty($this->_products[$pId][0][$k]) ? (array)$this->_products[$pId][0][$k] : array();
 
@@ -1312,7 +1332,7 @@ $oldValues = array();
                         }
                         continue;
                     }
-                    if (empty($attr['attribute_id']) || empty($attr['backend_type']) || $attr['backend_type']=='static') {
+                    if (empty($attr['attribute_id']) || empty($attr['backend_type']) || $attr['backend_type'] == 'static') {
                         continue;
                     }
                     // existing attribute values
@@ -1320,6 +1340,7 @@ $oldValues = array();
                     if ($attr['frontend_input']=='media_image' && $newValue) {
                         if ($importImageFiles) {
                             if (!$dryRun) {
+                                $this->_currentMediaSku = $sku;
                                 $isValueChanged = $this->_copyImageFile($imagesFromDir, $imagesToDir, $newValue, true, $oldValue);
                                 if ($isValueChanged === null) {
                                     $isValueChanged = $newValue!==$oldValue;
@@ -1400,6 +1421,37 @@ var_dump($this->_changeStock);
 var_dump($this->_changeWebsite);
 echo '<hr>';
 */
+    }
+
+    protected $_currentMediaSku;
+    protected $_mediaProductsProcessed = array();
+
+    /**
+     * Get unique image name
+     *
+     * When importing product images, given the appropriate setting is configured, we need to provide unique image name
+     * However the image should be unique compared to other products or previous imports, if this product had same file
+     * stored with different name during this import (e.g. importing image, small and thumbnail with same image name)
+     * then we should use the same name for all media attributes of the product.
+     *
+     * @param string $toFilename
+     * @return string
+     */
+    protected function _getUniqueImageName($toFilename)
+    {
+        // initialize product media cache
+        if(empty($this->_mediaProductsProcessed[$this->_currentMediaSku])){
+            $this->_mediaProductsProcessed[$this->_currentMediaSku] = array();
+        }
+
+        // if there is no entry for this original file name, get new unique name and store it
+        if(!isset($this->_mediaProductsProcessed[$this->_currentMediaSku][$toFilename])){
+            $this->_mediaProductsProcessed[$this->_currentMediaSku][$toFilename] = parent::_getUniqueImageName($toFilename);
+        }
+
+        // return unique file name
+        return $this->_mediaProductsProcessed[$this->_currentMediaSku][$toFilename];
+
     }
 
     protected function _rtIdxRegisterAttrChange($pId, $attrCode, $value, $isSku=true)

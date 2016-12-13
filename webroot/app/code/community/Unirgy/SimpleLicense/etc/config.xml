@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unirgy_SimpleLicense>
-            <version>1.1.2</version>
+            <version>1.1.6</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"/>
         </Unirgy_SimpleLicense>
@@ -110,12 +110,12 @@
    <admin>
       <routers>
          <adminhtml>
-				<args>
-					<modules>
-						<usimplelicadmin before="Mage_Adminhtml">Unirgy_SimpleLicense_Adminhtml</usimplelicadmin>
-					</modules>
-				</args>
-			</adminhtml>
+            <args>
+               <modules>
+                  <usimplelicadmin after="Mage_Adminhtml">Unirgy_SimpleLicense</usimplelicadmin>
+               </modules>
+            </args>
+         </adminhtml>
       </routers>
    </admin>
 </config>

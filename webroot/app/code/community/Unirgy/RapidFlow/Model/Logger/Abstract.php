@@ -79,16 +79,16 @@ abstract class Unirgy_RapidFlow_Model_Logger_Abstract extends Varien_Object
         return $this;
     }
 
-    public function success($message)
+    public function success($message = null)
     {
         return $this;
     }
-    public function warning($message)
+    public function warning($message = null)
     {
         return $this;
     }
 
-    public function error($message)
+    public function error($message = null)
     {
         return $this;
     }
