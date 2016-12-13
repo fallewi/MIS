@@ -137,12 +137,24 @@ class Enterprise_ImportExport_Model_Scheduled_Operation extends Mage_Core_Model_
     {
         $fileInfo = $this->getFileInfo();
         if (trim($fileInfo)) {
-            $this->setFileInfo(unserialize($fileInfo));
+            try {
+                $fileInfo = Mage::helper('core/unserializeArray')
+                    ->unserialize($fileInfo);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+            $this->setFileInfo($fileInfo);
         }
 
         $attrsInfo = $this->getEntityAttributes();
         if (trim($attrsInfo)) {
-            $this->setEntityAttributes(unserialize($attrsInfo));
+            try {
+                $attrsInfo = Mage::helper('core/unserializeArray')
+                    ->unserialize($attrsInfo);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+            $this->setEntityAttributes($attrsInfo);
         }
 
         return parent::_afterLoad();

@@ -168,6 +168,7 @@
                 <model>enterprise_pbridge/payment_method_pbridge</model>
                 <title>Payment Bridge</title>
                 <debug>0</debug>
+                <verifyssl>0</verifyssl>
             </pbridge>
             <pbridge_paypal_direct>
                 <model>enterprise_pbridge/payment_method_paypal</model>

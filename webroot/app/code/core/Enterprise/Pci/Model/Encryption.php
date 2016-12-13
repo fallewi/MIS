@@ -116,10 +116,10 @@ class Enterprise_Pci_Model_Encryption extends Mage_Core_Model_Encryption
         // look for salt
         $hashArr = explode(':', $hash, 2);
         if (1 === count($hashArr)) {
-            return $this->hash($password, $version) === $hash;
+            return hash_equals($this->hash($password, $version), $hash);
         }
         list($hash, $salt) = $hashArr;
-        return $this->hash($salt . $password, $version) === $hash;
+        return hash_equals($this->hash($salt . $password, $version), $hash);
     }
 
     /**
