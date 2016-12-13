@@ -101,7 +101,9 @@
                     null,
                     { "orderable": false }
                 ],
-                "order": [[ 1, "asc" ]],
+                "order": [[ 1, "asc" ]],<?php if(count($items) < 11): ?>
+                "paging": false,
+                <?php endif ?>
                 "jQueryUI": true
             }
         );
