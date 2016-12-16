@@ -17,6 +17,7 @@
 <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
+        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
     </div>
     <table cellspacing="0" width="100%" class="data-table box-table stripe" id="amlist-table">
         <col width="60" />
@@ -86,6 +87,7 @@
     </table>
     <div class="buttons-set">
         <a href="<?php echo $this->getUrl('*/*/index') ?>" class="left">&laquo; <?php echo $this->__('All Folders') ?></a>
+        <button type="submit" class="button" name="do"><span><?php echo $this->__('Update') ?></span></button>
     </div>
 </form>
 <script type="text/javascript">decorateTable('amlist-table')</script>
@@ -110,6 +112,7 @@
                     { "orderable": false }
                 ],
                 "order": [[ 1, "asc" ]],
+                "paging":   false,
                 "jQueryUI": true
             }
         );
