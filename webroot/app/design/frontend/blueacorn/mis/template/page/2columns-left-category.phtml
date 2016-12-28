@@ -67,9 +67,7 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
                 <?php if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandles())): ?>
                     <!--start category title/description here-->
 
-                    <?php if($_imgUrl): ?>
-                        <?php echo $_imgHtml ?>
-                    <?php endif; ?>
+
 
                     <div class="page-title category-title">
                         <?php if($catalog_view_block->IsRssCatalogEnable() && $catalog_view_block->IsTopCategory()): ?>
@@ -80,7 +78,9 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
 
                     <?php echo $catalog_view_block->getMessagesBlock()->toHtml() ?>
 
-                    
+                    <?php if($_imgUrl): ?>
+                        <?php echo $_imgHtml ?>
+                    <?php endif; ?>
                     <!--end category title/description here-->
                 <?php endif; ?>
 
