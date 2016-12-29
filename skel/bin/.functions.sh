@@ -48,6 +48,11 @@ REPO_REMOTE_NAME=${REPO_REMOTE_NAME:-origin}
 # helpers
 #
 
+# from shell-helpers v2 -@TODO refactor in devops-prototype-skel
+is/absolute(){
+  [[ "${1:0:1}" == / || "${1:0:2}" == ~[/a-z] ]]
+}
+
 # modified from git-subtree.sh, sets LATEST_SQUASH var to tree ref
 #  http://git.kernel.org/cgit/git/git.git/tree/contrib/subtree/git-subtree.sh
 find_latest_squash()
@@ -124,37 +129,49 @@ env_bootstrap(){
 env_bootstrap_ansible(){
   env_bootstrap
 
+  local envplaybook=false
+
+  # prefer per-environment playbook if exists
+  [ -e "${ANSIBLE_DIR}/${ENV}.${ANSIBLE_PLAYBOOK}" ] && {
+    ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
+    envplaybook=true
+  }
+
+
   if [ ! -z "$DOCKER_MACHINE" ]; then
 
     #
     # dockerized environments
     #
 
-
-    ANSIBLE_INV_SCRIPT=$ANSIBLE_DIR/inventory/dockerized_hosts.py
+    ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/dockerized_hosts.py}
     FORCE_ENVIRONMENT_PLAYBOOK=false
-
-    if [ -e "${ANSIBLE_DIR}/${ENV}.${ANSIBLE_PLAYBOOK}" ]; then
-      ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
-    else
-      ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/dockerized.$ANSIBLE_PLAYBOOK"
-    fi
+    $envplaybook || ANSIBLE_PLAYBOOK="dockerized.$ANSIBLE_PLAYBOOK"
 
     # force activation of configured machine
     export MACHINE_STORAGE_PATH=${MACHINE_STORAGE_PATH:-~/.docker/machine}
     configure_docker_machine $DOCKER_MACHINE
 
   else
-
     #
     # legacy environments
     #
 
+
+    ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/ssh_hosts.py}
+    FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-false}
+
     [ -e "$ENV_DIR/$ENV/ssh_config" ] || error "$ENV has no ssh_config"
   fi
 
-  FORCE_ENVIRONMENT_PLAYBOOK=${FORCE_ENVIRONMENT_PLAYBOOK:-false}
-  ANSIBLE_INV_SCRIPT=${ANSIBLE_INV_SCRIPT:-$ANSIBLE_DIR/inventory/ssh_hosts.py}
+  $FORCE_ENVIRONMENT_PLAYBOOK && ! $envplaybook && error \
+    "missing per-environment playbook" "${ENV}.${ANSIBLE_PLAYBOOK}"
+
+  is/absolute "$ANSIBLE_PLAYBOOK" || \
+    ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/$ANSIBLE_PLAYBOOK"
+
+  [ -e "$ANSIBLE_PLAYBOOK" ] || error "missing playbook: $ANSIBLE_PLAYBOOK"
+
 
   [ -e "$ANSIBLE_INV_SCRIPT" ] || error "missing inventory script:" \
     "$ANSIBLE_INV_SCRIPT"
@@ -171,16 +188,6 @@ env_bootstrap_ansible(){
     echo export ANSIBLE_SSH_CONF_ENVARS="$REPO_ROOT/$SKEL_DIR/.skelvars,$ENV_DIR/appvars,$ENV_DIR/$ENV/envars"
     echo export ANSIBLE_SSH_CONF_HOSTGROUP="$ENV"
   fi
-
-  if [ -e $ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK} ]; then
-    ANSIBLE_PLAYBOOK="$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
-  else
-    $FORCE_ENVIRONMENT_PLAYBOOK && error "missing playbook" \
-      "${ENV}.${ANSIBLE_PLAYBOOK}"
-  fi
-
-  [ -e "$ANSIBLE_PLAYBOOK" ] || error "missing playbook(s)" \
-    "$ANSIBLE_PLAYBOOK" "$ANSIBLE_DIR/${ENV}.${ANSIBLE_PLAYBOOK}"
 
 }
 
