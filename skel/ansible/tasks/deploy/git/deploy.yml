@@ -9,6 +9,8 @@
 # remote-deployment
 ###################
 - name: git checkout
+  environment:
+    TMPDIR: "{{ BLUEACORN_DIR }}/tmp"
   git:
     repo: "{{ REPO_REMOTE }}"
     version: "{{ REPO_REF }}"
