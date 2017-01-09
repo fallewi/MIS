@@ -145,7 +145,7 @@ class Enterprise_Catalog_Block_Adminhtml_Redirect_Select_Category_Tree
             'parent_id'      => (int)$node->getParentId(),
             'children_count' => (int)$node->getChildrenCount(),
             'is_active'      => (bool)$node->getIsActive(),
-            'name'           => $node->getName(),
+            'name'           => $this->escapeHtml($node->getName()),
             'href'           => $this->getCategoryEditUrl($node),
             'level'          => (int)$node->getLevel(),
             'product_count'  => (int)$node->getProductCount()

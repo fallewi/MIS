@@ -55,6 +55,13 @@ class Enterprise_Pbridge_Model_Pbridge_Api_Abstract extends Varien_Object
         try {
             $http = new Varien_Http_Adapter_Curl();
             $config = array('timeout' => 60);
+            if (Mage::getStoreConfigFlag('payment/pbridge/verifyssl')) {
+                $config['verifypeer'] = true;
+                $config['verifyhost'] = 2;
+            } else {
+                $config['verifypeer'] = false;
+                $config['verifyhost'] = 0;
+            }
             $http->setConfig($config);
             $http->write(
                 Zend_Http_Client::POST,

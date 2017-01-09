@@ -22,6 +22,14 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
     const IMPORT_ROW_RESULT_NOCHANGE = 'nochange';
     const IMPORT_ROW_RESULT_DEPENDS  = 'depends';
     const IMPORT_ROW_RESULT_EMPTY    = 'empty';
+
+    const TABLE_CATALOG_PRODUCT_BUNDLE_SELECTION = 'bundle/selection';
+    const TABLE_CATALOG_PRODUCT_BUNDLE_SELECTION_PRICE = 'bundle/selection_price';
+    const TABLE_CATALOG_PRODUCT_ENTITY = 'catalog/product';
+    const TABLE_CATALOG_PRODUCT_BUNDLE_OPTION = 'bundle/option';
+    const TABLE_CATALOG_PRODUCT_BUNDLE_OPTION_VALUE = 'bundle/option_value';
+    const TABLE_STORE_WEBSITE = 'core/website';
+
     protected $_exportImageRetainFolders;
 
     protected $_translateModule = 'Unirgy_RapidFlow';
@@ -45,8 +53,11 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
     protected $_encodingIllegalChar;
     protected $_downloadRemoteImages;
     protected $_missingImageAction;
+    protected $_existingImageAction;
     protected $_remoteImageSubfolderLevel;
     protected $_imagesMediaDir;
+    protected $_deleteOldImage;
+    protected $_deleteOldImageSkipUsageCheck;
 
     protected $_pageRowCount   = 500;
     protected $_pageSleepDelay = 0;
@@ -142,6 +153,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
     protected $_storeIds = null;
 
     protected $_galleryAttrId;
+    protected $_attrByCode;
 
     /**
      * Translate a phrase
@@ -168,19 +180,25 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
         $this->_locale = Mage::getSingleton('core/locale');
     }
 
+    /**
+     * @param  Unirgy_RapidFlow_Model_Mysql4_Abstract $profile
+     * @return $this
+     */
     public function setProfile($profile)
     {
         $this->_profile = $profile;
+        $profileType = $profile->getProfileType();
 
         $this->_encodingFrom                 = $profile->getData('options/encoding/from');
         $this->_encodingTo                   = $profile->getData('options/encoding/to');
         $this->_encodingIllegalChar          = $profile->getData('options/encoding/illegal_char');
-        $this->_downloadRemoteImages         = $profile->getData('options/' . $profile->getProfileType() . '/image_files_remote');
-        $this->_missingImageAction           = (string) $profile->getData('options/' . $profile->getProfileType() . '/image_missing_file');
-        $this->_remoteImageSubfolderLevel    = $profile->getData('options/' . $profile->getProfileType() . '/image_remote_subfolder_level');
+        $this->_downloadRemoteImages         = $profile->getData('options/' . $profileType . '/image_files_remote');
+        $this->_missingImageAction           = (string) $profile->getData('options/' . $profileType . '/image_missing_file');
+        $this->_existingImageAction          = (string) $profile->getData('options/' . $profileType . '/image_existing_file');
+        $this->_remoteImageSubfolderLevel    = $profile->getData('options/' . $profileType . '/image_remote_subfolder_level');
         $this->_imagesMediaDir               = Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product';
-        $this->_deleteOldImage               = $profile->getData('options/' . $profile->getProfileType() . '/image_delete_old');
-        $this->_deleteOldImageSkipUsageCheck = $profile->getData('options/' . $profile->getProfileType() . '/image_delete_skip_usage_check');
+        $this->_deleteOldImage               = $profile->getData('options/' . $profileType . '/image_delete_old');
+        $this->_deleteOldImageSkipUsageCheck = $profile->getData('options/' . $profileType . '/image_delete_skip_usage_check');
 
         return $this;
     }
@@ -202,10 +220,17 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
         return $this;
     }
 
+    /**
+     * @return array|null
+     */
     protected function _getStoreIds()
     {
-        if (is_null($this->_storeIds)) {
+        if (null === $this->_storeIds) {
             $ids = $this->_profile->getData('options/store_ids');
+            if(empty($ids)){
+                $this->_storeIds = array();
+                return $this->_storeIds;
+            }
             if (!is_array($ids)) {
                 $ids = explode(',', $ids);
             }
@@ -222,7 +247,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
      * Get and validate store ID
      *
      * @param string|int $id
-     * @param boolean    $allowAdmin
+     * @param boolean $allowDefault
      * @return int
      */
     protected function _getStoreId($id, $allowDefault = false)
@@ -326,12 +351,29 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
 
     protected function _getAttributeId($attrCode, $entityType = 'catalog_product')
     {
+        $attr = $this->_getAttr($attrCode, $entityType);
+
+        return $attr->getAttributeId();
+    }
+
+    /**
+     * @param $attrCode
+     * @param $entityType
+     * @return Mage_Eav_Model_Entity_Attribute_Abstract
+     * @throws \Mage_Core_Exception
+     */
+    protected function _getAttr($attrCode, $entityType)
+    {
+        if(isset($this->_attrByCode[$entityType][$attrCode])){
+            return $this->_attrByCode[$entityType][$attrCode];
+        }
+
         $attr = Mage::getSingleton('eav/config')->getAttribute($entityType, $attrCode);
         if (!$attr || !$attr->getAttributeId()) {
             Mage::throwException($this->__('Invalid attribute: %s', $attrCode));
         }
-
-        return $attr->getAttributeId();
+        $this->_attrByCode[$entityType][$attrCode] = $attr;
+        return $attr;
     }
 
     protected function _getEntityType($entityTypeCode, $field = null)
@@ -487,7 +529,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
                 $toDir .= $ds . ltrim($prefix, $ds);
                 $toFilename = rtrim($toDir, $ds) . $ds . ltrim($filename, $ds);
                 $filename   = $prefix . $ds . $filename;
-            } elseif (($dirname = dirname($filename))) {
+            } elseif ($dirname = dirname($filename)) {
                 $toDir .= $ds . ltrim($dirname, $ds);
             }
         } elseif (!$import && $slashPos === 0) {
@@ -501,9 +543,44 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
             return true;
         }
 
+        if($import && $toExists && $this->_existingImageAction){
+            $this->_profile->addValue('num_warnings');
+            $warning = $this->__('Imported image file already exists.');
+            if($filename === $oldValue){
+                // new file name is same as current value
+                $warning .= $this->__(' %1 is same as current value, %2.', $filename, $oldValue);
+            } else {
+                switch ($this->_existingImageAction) {
+                    case 'skip':
+                        $warning .= $this->__(' Skipping field update');
+                        $this->_profile->getLogger()->warning($warning);
+                        return false;
+                        break;
+                    case 'replace' :
+                        // basically just notify user that there is
+                        $warning .= $this->__(' Replacing existing image');
+                        break;
+                    case 'save_new':
+                        $warning .= $this->__(' Updating image name and saving as new image.');
+                        $toFilename  = $this->_getUniqueImageName($toFilename);
+                        $newBasename = basename($toFilename);
+                        $oldBasename = basename($filename);
+                        if ($newBasename !== $oldBasename) {
+                            $filename = str_replace($oldBasename, $newBasename, $filename);
+                            $warning .= $this->__(' New image name: %s', $filename);
+                        }
+                        break;
+                }
+            }
+            $this->_profile->getLogger()->warning($warning);
+        } else if($import && !$toExists){
+            // if have to import, but image is new
+            $this->_getUniqueImageName($toFilename);
+        }
+
         if (!$fromExists) {
-            $warning = $this->__('Original file image does not exist');
-            if ($this->_missingImageAction == 'error') {
+            $warning = $this->__('Original file image does not exist: %s', $fromFilename);
+            if ($this->_missingImageAction === 'error') {
                 throw new Unirgy_RapidFlow_Exception_Row($warning);
             } else {
                 $result = false;
@@ -528,8 +605,8 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
                 return $result;
             }
         } elseif ($toExists && $fromExists && !$fromRemote
-                  && $filename == $oldValue
-                  && filesize($fromFilename) == filesize($toFilename)
+                  && $filename === $oldValue
+                  && filesize($fromFilename) === filesize($toFilename)
         ) {
             // no need to copy
             return false;
@@ -578,8 +655,16 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
             }
         } else {
             if (!@copy($fromFilename, $toFilename)) {
+                $errors = error_get_last();
+                $error = 'COPY ERROR: ';
+                if(array_key_exists('type', $errors)){
+                    $error .= $errors['type'];
+                }
+                if(array_key_exists('message', $errors)){
+                    $error .= PHP_EOL . $errors['message'];
+                }
                 $this->_profile->addValue('num_warnings');
-                $this->_profile->getLogger()->warning($this->__('Was not able to copy image file'));
+                $this->_profile->getLogger()->warning($this->__('Was not able to copy image file: %s', $error));
 
                 return false;
             }
@@ -627,7 +712,7 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
         }
 
         $warning = $this->__('Related file image does not exist');
-        if ($this->_missingImageAction == 'error') {
+        if ($this->_missingImageAction === 'error') {
             throw new Unirgy_RapidFlow_Exception_Row($warning);
         }
         $result = false;
@@ -832,13 +917,13 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
      * @param string $baseTable
      * @return string
      */
-    protected function getAttrType($attr, $baseTable = "catalog/product")
+    protected function getAttrType($attr, $baseTable = 'catalog/product')
     {
         $type = $attr['backend_type'];
         if (isset($attr['backend_table']) && !empty($attr['backend_table'])) {
             $baseTable = $this->_t($baseTable);
             $attrTable = $attr['backend_table'];
-            $diff      = str_ireplace($baseTable . "_", "", $attrTable);
+            $diff      = str_ireplace($baseTable . '_', '', $attrTable);
             if (!empty($diff)) {
                 $type = $diff;
             }
@@ -874,5 +959,19 @@ class Unirgy_RapidFlow_Model_Mysql4_Abstract extends Mage_Core_Model_Mysql4_Abst
 
         return $this->_categoryUrlEntities;
         // todo, fetch data with category entity_id, url_key, url_path columns
+    }
+
+    /**
+     * @param string $toFilename
+     *
+     * @return mixed|string
+     */
+    protected function _getUniqueImageName($toFilename)
+    {
+        $fileInfo   = pathinfo($toFilename);
+        $newName    = Varien_File_Uploader::getNewFileName($toFilename);
+        $toFilename = str_replace($fileInfo['filename'] . '.' . $fileInfo['extension'], $newName, $toFilename);
+
+        return $toFilename;
     }
 }

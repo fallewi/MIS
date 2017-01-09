@@ -50,14 +50,14 @@ class Unirgy_RapidFlow_Block_Adminhtml_Profile_Edit_Tab_Export_Condition extends
             'values'    => $source->setPath('yesno')->toOptionArray(),
             'value'     => $model->getData('options/export/skip_out_of_stock'),
         ));
-        
+
         $fieldset->addField('export_skip_configurable_simples', 'select', array(
             'label'     => $this->__('Do not export simple products that are used in configurable'),
             'name'      => 'options[export][skip_configurable_simples]',
             'values'    => $source->setPath('yesno')->toOptionArray(),
             'value'     => $model->getData('options/export/skip_configurable_simples'),
         ));
-        
+
         $fieldset->addField('export_websites_filter', 'multiselect', array(
             'label'     => $this->__('Websites filter'),
             'name'      => 'options[export][websites_filter]',

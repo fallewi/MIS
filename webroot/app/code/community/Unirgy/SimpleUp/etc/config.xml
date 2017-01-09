@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unirgy_SimpleUp>
-            <version>1.1.3</version>
+            <version>1.1.6</version>
             <usimpleup remote="http://download.unirgy.com/simple/client_api/version/"
                 changelog="http://unirgy.com/support/portal/announcements"/>
         </Unirgy_SimpleUp>
@@ -117,12 +117,12 @@
    <admin>
       <routers>
          <adminhtml>
-				<args>
-					<modules>
-						<usimpleupadmin before="Mage_Adminhtml">Unirgy_SimpleUp_Adminhtml</usimpleupadmin>
-					</modules>
-				</args>
-			</adminhtml>
+            <args>
+               <modules>
+                  <usimpleupadmin after="Mage_Adminhtml">Unirgy_SimpleUp</usimpleupadmin>
+               </modules>
+            </args>
+         </adminhtml>
       </routers>
    </admin>
 
@@ -130,6 +130,7 @@
         <usimpleup>
             <general>
                 <check_ioncube>0</check_ioncube>
+                <verify_ssl>0</verify_ssl>
                 <dir_perm>755</dir_perm>
                 <file_perm>755</file_perm>
             </general>

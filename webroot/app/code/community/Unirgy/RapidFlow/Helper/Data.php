@@ -46,6 +46,7 @@ class Unirgy_RapidFlow_Helper_Data extends Mage_Core_Helper_Data
     /**
      * @param int|string $profileId profile id or profile title
      * @return mixed
+     * @throws \Mage_Core_Exception
      */
     public function getProfile($profileId)
     {
@@ -59,7 +60,7 @@ class Unirgy_RapidFlow_Helper_Data extends Mage_Core_Helper_Data
         }
 
         if (!$profile->getId()) {
-            Mage::getSingleton('adminhtml/session')->addError($this->__('Invalid Profile ID'));
+            Mage::throwException($this->__('Invalid Profile ID'));
         }
 
         $profile = $profile->factory();
@@ -155,6 +156,9 @@ class Unirgy_RapidFlow_Helper_Data extends Mage_Core_Helper_Data
                 break;
             case 'unique_url_key':
                 $flag = $this->isModuleActive('Enterprise_Enterprise') && $this->compareMageVer('1.13.0.2');
+                break;
+            case 'multiple_uploader':
+                $flag = class_exists(Mage::getConfig()->getBlockClassName('uploader/multiple'));
                 break;
             }
             $this->_hasMageFeature[$feature] = $flag;

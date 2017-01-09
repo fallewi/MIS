@@ -6,4 +6,20 @@
             <action method="addItem"><type>skin_js</type><name>urapidflow.js</name></action>
         </reference>
     </adminhtml_urapidflowadmin_profile_edit>
+    <_urf_multiple_uploader>
+        <reference name="head">
+            <action method="addJs">
+                <name>lib/uploader/flow.min.js</name>
+            </action>
+            <action method="addJs">
+                <name>lib/uploader/fusty-flow.js</name>
+            </action>
+            <action method="addJs">
+                <name>lib/uploader/fusty-flow-factory.js</name>
+            </action>
+            <action method="addJs">
+                <name>mage/adminhtml/uploader/instance.js</name>
+            </action>
+        </reference>
+    </_urf_multiple_uploader>
 </layout>
