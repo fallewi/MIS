@@ -3,10 +3,10 @@
     <modules>
         <SLI_Search>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
             <depends>
                 <Mage_CatalogSearch/>
-                <Mage_Catalog />
+                <Mage_Catalog/>
             </depends>
         </SLI_Search>
     </modules>
