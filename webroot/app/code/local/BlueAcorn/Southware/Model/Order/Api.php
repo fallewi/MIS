@@ -52,6 +52,11 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
             $result['status_history'][] = $this->_getAttributes($history, 'order_status_history');
         }
 
+        /** looping data to capitalize the string values */
+        foreach ($result as $key => $value) {
+            $result[$key] = $this->capitalize($value, $key);
+        }
+
         return $result;
     }
 
@@ -128,5 +133,36 @@ class BlueAcorn_Southware_Model_Order_Api extends Mage_Sales_Model_Order_Api
         }
 
         return $swCustomerId;
+    }
+
+    /**
+     * Capitalizing string values and formats phone numbers to xxx-xxx-xxxx
+     *
+     * @param $item
+     * @param null $placeholder
+     * @return array|string
+     */
+    public function capitalize($item, $placeholder = null) {
+        if(is_array($item)) {
+            foreach ($item as $key => $value) {
+                $item[$key] = $this->capitalize($value, $key);
+            }
+            return $item;
+        }
+
+        if($placeholder === 'telephone') {
+            /** formatting phone number to be xxx-xxx-xxxx */
+            $formatted_number = preg_replace("/^(\d{3})(\d{3})(\d{4})$/", "$1-$2-$3", $item);
+            $item = $formatted_number;
+        }
+
+        if(is_string($item)) {
+            $data = preg_match('/^[ao][:]/', $item);
+            if ($data == 0) {
+                return strtoupper($item);
+            }
+        }
+
+        return $item;
     }
 }
