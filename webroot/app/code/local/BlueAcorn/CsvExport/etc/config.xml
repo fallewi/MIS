@@ -9,11 +9,7 @@
         <models>
             <blueacorn_csvexport>
                 <class>BlueAcorn_CsvExport_Model</class>
-                <resourceModel>blueacorn_csvexport_resource</resourceModel>
             </blueacorn_csvexport>
-            <blueacorn_csvexport_resource>
-                <class>BlueAcorn_CsvExport_Model_Resource</class>
-            </blueacorn_csvexport_resource>
         </models>
         <blocks>
             <blueacorn_csvexport>

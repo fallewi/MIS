@@ -47,25 +47,147 @@
                         </file_name>
                         <file_location>
                             <label>File Drop Location</label>
-                            <comment>"var/MarketingCSV/" is the preferred folder</comment>
+                            <comment>"MarketingCSV" is the preferred folder</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </file_location>
+                        <excluded_groups>
+                            <label>Excluded Groups</label>
+                            <comment>Select groups to exclude from search</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group_multiselect</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </excluded_groups>
+                    </fields>
+                </general>
+                <email translate="label">
+                    <label>Email Settings</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <email_active>
+                            <label>Enable Email Functionality</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </email_active>
+                        <email_from translate="label">
+                            <label>Email From</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email_from>
+                        <email_subject translate="label">
+                            <label>Email Subject</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email_subject>
+                        <email_body>
+                            <label>Email Message</label>
+                            <comment>Basic message for CSV download email</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email_body>
+                        <email_addresses translate="label">
+                            <label>Email Addresses</label>
+                            <frontend_type>minigrid</frontend_type>
+                            <source_model>blueacorn_csvexport/system_config_source_emailaddresses</source_model>
+                            <backend_model>baminigrid/system_config_backend_minigrid</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email_addresses>
+                    </fields>
+                </email>
+                <manual_run translate="label">
+                    <label>Manually Run </label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <from_datetime>
+                            <label>From Date</label>
+                            <comment>Start time is 5:00pm</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>blueacorn_csvexport/adminhtml_system_config_date</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </from_datetime>
+                        <to_datetime>
+                            <label>To Date</label>
+                            <comment>End time is 4:59:59pm</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>blueacorn_csvexport/adminhtml_system_config_date</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </to_datetime>
+                        <manual_email_name>
+                            <label>Manual Email Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manual_email_name>
+                        <manual_email_address>
+                            <label>Manual Email Address</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-email</validate>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manual_email_address>
+                        <send_emails>
+                            <label>Use Only Manual Email Address</label>
+                            <comment>For use when running manual export. MUST SAVE CONFIG TO TAKE AFFECT</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </send_emails>
                         <run_cron translate="label">
                             <label>Run Manual Marketing Export</label>
                             <comment>If you change settings, make sure to save before pressing button</comment>
                             <frontend_type>button</frontend_type>
                             <frontend_model>blueacorn_csvexport/button</frontend_model>
-                            <sort_order>50</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </run_cron>
                     </fields>
-                </general>
+                </manual_run>
             </groups>
         </blueacorn_csvexport>
     </sections>

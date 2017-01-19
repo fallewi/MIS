@@ -8,18 +8,9 @@
 
 class BlueAcorn_CsvExport_Model_Observer
 {
-    public function createMarketingCsv()
+    public function createMarketingCsv($helper, $manualFlag = null)
     {
-        $test = $this->getSql();
-        $test1 = $test;
-    }
-
-
-    private function getSql()
-    {
-        return Mage::getModel('sales/order')
-            ->getCollection()
-            ->addFieldToFilter('status', array('nin' => array('canceled','closed')));
-
+        $fileName = Mage::getModel('blueacorn_csvexport/marketingfeed')->marketingCollection($helper, $manualFlag);
+        Mage::helper('blueacorn_csvexport')->sendMail($fileName, $manualFlag);
     }
 }
