@@ -47,7 +47,7 @@
                         </file_name>
                         <file_location>
                             <label>File Drop Location</label>
-                            <comment>"MarketingCSV" is the preferred folder</comment>
+                            <comment>Will be created in the Magento var directory</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
@@ -85,6 +85,7 @@
                         </email_active>
                         <email_from translate="label">
                             <label>Email From</label>
+                            <validate>required-entry</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
@@ -93,6 +94,7 @@
                         </email_from>
                         <email_subject translate="label">
                             <label>Email Subject</label>
+                            <validate>required-entry</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>

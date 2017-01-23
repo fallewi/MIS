@@ -8,30 +8,43 @@
 
 class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
 {
-
+    /** Build collection of order to make marketing CSV
+     * @param $helper
+     * @param $manualFlag
+     * @return bool|string
+     */
     public function marketingCollection($helper, $manualFlag)
     {
+        $fileName = false;
         $excludedGroups = $helper->getExcludedGroups();
+        $fromDate = date('Y-m-d H:i:s', strtotime('-1 days 17:00:00' ));
+        $toDate = date('Y-m-d H:i:s', strtotime('today 16:59:59'));
         if($manualFlag){
             $fromDate = date('Y-m-d H:i:s', strtotime($helper->getFromDate() . '17:00:00'));
             $toDate   = date('Y-m-d H:i:s',strtotime($helper->getToDate() . '16:59:59'));
-        }
-        else{
-            $fromDate = date('Y-m-d H:i:s', strtotime('-1 days 17:00:00' ));
-            $toDate = date('Y-m-d H:i:s', strtotime('today 16:59:59'));
         }
 
         $collection = Mage::getModel('sales/order')->getCollection()
             ->addFieldToFilter('status', array('nin' => array('canceled','closed')))
             ->addFieldToFilter('customer_group_id', array('nin' => $excludedGroups ))
-            ->addFieldToFilter('customer_id', array('nin' => 18039));
-//            ->addAttributeToFilter('created_at', array('from'=>$fromDate, 'to'=>$toDate))
-//            ->addFieldToFilter('admin_id', array())
+            ->addFieldToFilter('customer_id', array('nin' => 18039))
+            ->addFieldToFilter('created_at', array('from'=>$fromDate, 'to'=>$toDate));
+//            ->addFieldToFilter('admin_id', array());
 
-        $fileName = $this->saveToFile($collection, $manualFlag);
+        if($collection->getSize() > 0){
+            $fileName = $this->saveToFile($collection, $manualFlag);
+        }
+        else{
+            Mage::getSingleton('core/session')->addError('There were no orders to report with current parameters set');
+        }
         return $fileName;
     }
 
+    /**Save file to configured location
+     * @param $collection
+     * @param $manualFlag
+     * @return string
+     */
     private function saveToFile($collection, $manualFlag)
     {
         $helper = Mage::helper('blueacorn_csvexport');
