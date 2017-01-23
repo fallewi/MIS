@@ -70,24 +70,4 @@ class Shipperhq_Shipper_Model_Source_Freight_Freightclass extends Mage_Eav_Model
         array_unshift($arr, array('value'=>'', 'label'=>Mage::helper('shipping')->__('--- Use Default ---')));
         return $arr;
     }
-
-    public function getFlatColums()
-    {
-        $columns = array(
-            $this->getAttribute()->getAttributeCode() => array(
-                'type'      => 'int',
-                'unsigned'  => false,
-                'is_null'   => true,
-                'default'   => null,
-                'extra'     => null
-            )
-        );
-        return $columns;
-    }
-
-    public function getFlatUpdateSelect($store)
-    {
-        return Mage::getResourceModel('eav/entity_attribute')
-            ->getFlatUpdateSelect($this->getAttribute(), $store);
-    }
 }

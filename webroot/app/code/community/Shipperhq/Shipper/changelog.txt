@@ -142,6 +142,3 @@
 2.116 - SHQ16-1748 explicitly set collect rates to false on submit, SHQ16-1357 dont show any date for custom calendar carriers on inital load, SHQ16-1750 remove legacy attributes from request
 2.117 - SHQ16-1690 Added section specific classes and removed inline styles
 2.118 - SHQ16-1768 item detail added when merged rates enabled for MAC
-2.119 - SHQ16-1791 Admin order view update improvements. SHQ16-1792 Fixed shipping and handling column in order view 
-2.120 - SHQ16-1777 Admin layout refactor. SHQ16-1792 Resolved issue with dates showing when not applicable in admin
-2.121 - SHQ16-1825 Added further checks to ensure attribute is included in indexer

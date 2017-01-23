@@ -320,7 +320,6 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             'weight' => 'weight',
             'surcharge_price' => 'surchargePrice',
             'declared_value' => 'declaredValue',
-            'volume' => 'volume',
             'items'         => 'boxedItems'
         );
     }
@@ -352,9 +351,6 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 $boxText .= 'x'. $box['height'] ;
                 $boxText .= ': W='.$box['weight'] . ':' ;
                 $boxText .= ' Value='.$box['declared_value']. ':';
-                if(isset($box['volume'])) {
-                    $boxText .= ' Volume=' .$box['volume'].':';
-                }
                 $boxText .= $this->getProductBreakdownText($box);
             }
             $boxText .= '</br>';
@@ -372,14 +368,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         if (array_key_exists('items',$box)  || (is_object($box) && !is_null($box->getItems()))) {
             if (is_array($box['items'])) {
                 foreach ($box['items'] as $item) {
-                    $productText .= ' SKU=' .$item['qtyPacked'] .' * '.$item['sku'] .' ' .$item['weightPacked'] .$weightUnit;
-                    if(isset($item['indVolume'])) {
-                        $productText .= ': Individual Volume =' .$box['indVolume'].':';
-                    }
-                    if(isset($item['volumePacked'])) {
-                        $productText .= ': Volume Packed =' .$item['volumePacked'].':';
-                    }
-                    $productText .=';  ';
+                    $productText .= ' SKU=' .$item['qtyPacked'] .' * '.$item['sku'] .' ' .$item['weightPacked'] .$weightUnit .';  ';
                 }
             } else {
                 $productText = $box['items'];
@@ -1026,10 +1015,10 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             if(is_array($carrierGroupDetail) && array_key_exists('carrierTitle', $carrierGroupDetail)) {
                 $carrierGroupId = $carrierGroupDetail['carrierGroupId'];
                 $shippingText = $carrierGroupDetail['carrierTitle'] .' - ' .$carrierGroupDetail['methodTitle'];
-                if(array_key_exists('delivery_date', $carrierGroupDetail) && $carrierGroupDetail['delivery_date'] != '') {
+                if(array_key_exists('delivery_date', $carrierGroupDetail)) {
                     $shippingText .= ' Delivery: ' .$carrierGroupDetail['delivery_date'];
                 }
-                if(array_key_exists('dispatch_date', $carrierGroupDetail) && $carrierGroupDetail['dispatch_date'] != '') {
+                if(array_key_exists('dispatch_date', $carrierGroupDetail)) {
                     $shippingText .= ' Dispatch: ' .$carrierGroupDetail['dispatch_date'];
                 }
                 // if(array_key_exists('time_slot'))

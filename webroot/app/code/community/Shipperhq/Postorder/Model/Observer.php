@@ -77,42 +77,4 @@ class Shipperhq_Postorder_Model_Observer extends Mage_Core_Model_Abstract
             Mage::logException($e);
         }
     }
-
-    //TEST
-    /**
-     * Prepend an additional order info box to the gift options block.
-     * - event: core_block_abstract_to_html_after
-     *
-     * @param Varien_Event_Observer $observer
-     */
-    public function insertAdminBlock(Varien_Event_Observer $observer)
-    {
-        if (!Mage::helper('shipperhq_postorder')->isActive()) {
-            return;
-        }
-
-        // >> check for adminhtml/sales_order/view route here <<
-        if(Mage::app()->getRequest()->getControllerName() != 'sales_order'
-            || Mage::app()->getRequest()->getActionName() != 'view')
-        {
-            return;
-        }
-        $thisBlock = $observer->getBlock();
-        if ($thisBlock->getNameInLayout() == 'gift_options') {
-
-            $carrierGroupInfo = Mage::app()->getLayout()->createBlock(
-                'shipperhq_postorder/adminhtml_sales_order_view_drinfo',
-                'postorder_info',
-                array(
-                    'template' => 'shipperhq/postorder/sales/order/view/carriergroup_info.phtml',
-                    'order' => Mage::registry('current_order'),
-                )
-            );
-
-            $cgHtml = $carrierGroupInfo->getCarriergroupInfoHtml();
-            $giftOptionsHtml = $observer->getTransport()->getHtml();
-            $observer->getTransport()->setHtml($cgHtml . $giftOptionsHtml);
-
-        }
-    }
 }

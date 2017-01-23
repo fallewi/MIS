@@ -30,13 +30,23 @@
  * @license    http://www.webshopapps.com/license/license.txt - Commercial license
  */
 ?>
-<?php echo $this->getChildHtml('order_info_orig') ?>
+
+<?php echo $this->getChildHtml('order_items_orig') ?>
 
 <script type="text/javascript">
     //<![CDATA[
     <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
-    var carriergroupInfo = ''+<?php echo $this->getChildHtml('postorder_info') ?>;
-    $$('.box-right')[1].insert({after:carriergroupInfo});
+        carriergroupItemText = "<th><strong><span class='nobr'><?php echo $this->helper('shipperhq_postorder')->getItemColumnTitle() ?></span></strong></th>";
+        tableHeader = $$('tr.headings')[1];
+        cell = tableHeader.insertCell(1);
+        cell.innerHTML = carriergroupItemText;
+        var table = document.getElementsByClassName("data order-tables")[0];
+        var footer = table.getElementsByTagName('tfoot')[0];
+        if(footer != null) {
+            var row = footer.getElementsByTagName('tr')[0];
+            row.insertCell(1);
+        }
+
     <?php endif; ?>
     //]]>
 </script>
