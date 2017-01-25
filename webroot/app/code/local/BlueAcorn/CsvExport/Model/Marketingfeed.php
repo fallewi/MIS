@@ -28,8 +28,8 @@ class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
             ->addFieldToFilter('status', array('nin' => array('canceled','closed')))
             ->addFieldToFilter('customer_group_id', array('nin' => $excludedGroups ))
             ->addFieldToFilter('customer_id', array('nin' => 18039))
-            ->addFieldToFilter('created_at', array('from'=>$fromDate, 'to'=>$toDate));
-//            ->addFieldToFilter('admin_id', array());
+            ->addFieldToFilter('created_at', array('from'=>$fromDate, 'to'=>$toDate))
+            ->addFieldToFilter('admin_id', array('neq' => 'NULL'));
 
         if($collection->getSize() > 0){
             $fileName = $this->saveToFile($collection, $manualFlag);
@@ -54,11 +54,12 @@ class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
         $io = new Varien_Io_File();
         $path = Mage::getBaseDir('var') . DS . $directory;
         if($manualFlag){
-            $file = $path . DS . $fileName . date('Ymd', strtotime($helper->getFromDate())) . 'to'. date('Ymd',strtotime($helper->getToDate())) . '.csv';
+            $newFileName = $fileName . date('Ymd', strtotime($helper->getFromDate())) . 'to'. date('Ymd',strtotime($helper->getToDate())) . '.csv';
         }
         else{
-            $file = $path . DS . $fileName . date('Ymd') . '.csv';
+            $newFileName = $fileName . date('Ymd') . '.csv';
         }
+        $file = $path . DS . $newFileName;
         $io->setAllowCreateFolders(true);
         $io->open(array('path' => $path));
         $io->streamOpen($file, 'w+');
@@ -68,7 +69,7 @@ class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
         $io->streamWriteCsv($headerData);
         foreach ($collection as $order) {
             $data = array(
-                $order->getId(),
+                $order->getIncrementId(),
                 $order->getSubtotal(),
                 $order->getBillingAddress()->getTelephone(),
                 $order->getShippingAddress()->getTelephone(),
@@ -79,7 +80,7 @@ class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
             );
             $io->streamWriteCsv($data);
         }
-        return $file;
+        return $newFileName;
     }
 
     private function getItemsNames($order)
