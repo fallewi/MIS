@@ -11,9 +11,9 @@ class BlueAcorn_CsvExport_Model_Observer
     public function createMarketingCsv($manualFlag = null)
     {
         $helper = Mage::helper('blueacorn_csvexport');
-        $fileName = Mage::getModel('blueacorn_csvexport/marketingfeed')->marketingCollection($helper, $manualFlag);
-        if($fileName && $helper->isEmailEnabled()){
-            Mage::helper('blueacorn_csvexport')->sendMail($fileName, $manualFlag);
+        $newFileName = Mage::getModel('blueacorn_csvexport/marketingfeed')->marketingCollection($helper, $manualFlag);
+        if($newFileName && $helper->isEmailEnabled()){
+            Mage::helper('blueacorn_csvexport')->sendMail($newFileName, $manualFlag);
         }
         elseif(!$helper->isEmailEnabled()){
             Mage::getSingleton('core/session')->addError('Email functionality is disabled');

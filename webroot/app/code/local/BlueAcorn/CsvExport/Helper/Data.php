@@ -29,8 +29,11 @@ class BlueAcorn_CsvExport_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $fileName
      * @param null $manualFlag
      */
-    public function sendMail($fileName, $manualFlag = null)
+    public function sendMail($newFileName, $manualFlag = null)
     {
+        $directory = (string)$this->getFileLocation();
+        $path = Mage::getBaseDir('var') . DS . $directory;
+        $file = $path . DS . $newFileName;
         $recipients = array();
         $mail = new Zend_Mail('utf-8');
         $mailFrom = $this->getEmailFrom();
@@ -53,13 +56,13 @@ class BlueAcorn_CsvExport_Helper_Data extends Mage_Core_Helper_Abstract
             ->setFrom($mailFrom);
 
         try {
-            $attachment = file_get_contents($fileName);
+            $attachment = file_get_contents($file);
             $mail->createAttachment(
                 $attachment,
                 Zend_Mime::TYPE_OCTETSTREAM,
                 Zend_Mime::DISPOSITION_ATTACHMENT,
                 Zend_Mime::ENCODING_BASE64,
-                $fileName
+                $newFileName
             );
 
             $mail->send();
