@@ -1,0 +1,27 @@
+<config>
+    <modules>
+        <MissionRS_Breadcrumbs>
+            <version>0.1.0</version>
+        </MissionRS_Breadcrumbs>
+    </modules>
+    <global>
+        <models>
+            <missionrs_breadcrumbs>
+                <class>MissionRS_Breadcrumbs_Model</class>
+            </missionrs_breadcrumbs>
+        </models>
+    </global>
+    <frontend>
+        <events>
+            <catalog_controller_product_init>
+                <observers>
+                    <missionrs_breadcrumbs>
+                        <type>singleton</type>
+                        <class>MissionRS_Breadcrumbs_Model_Observer</class>
+                        <method>fullBreadcrumbCategoryPath</method>
+                    </missionrs_breadcrumbs>
+                </observers>
+            </catalog_controller_product_init>
+        </events>
+    </frontend>
+</config>

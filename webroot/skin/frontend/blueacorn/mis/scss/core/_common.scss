@@ -659,6 +659,9 @@ a.button:hover {
             display: none;
         }
     }
+  span {
+    color : $c-red;
+  }
 }
 
 .ie8 .breadcrumbs li{
@@ -673,10 +676,16 @@ a.button:hover {
     float: left;
     font-size: 13px;
     color: #002178;
+  span{
+    color: $brand-primary;
+  }
 }
 
 .breadcrumbs a:hover {
     color: $c-action;
+  span{
+    text-decoration: underline;
+  }
 }
 
 .breadcrumbs strong {
@@ -864,7 +873,7 @@ a.button:hover {
 
     .main,
     .footer-container {
-        padding: $trim;
+    padding: $trim-small $trim;
     }
 }
 
