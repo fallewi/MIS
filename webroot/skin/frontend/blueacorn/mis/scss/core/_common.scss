@@ -400,6 +400,19 @@ $button-padding: 17px 60px 16px;
         background: $c-button-cart-active;
         outline: none;
     }
+
+    &.small{
+        background-color: $white;
+        border:4px solid $c-button-cart;
+        color:#000;
+        font-size:2em;
+        margin:20px;
+        &:hover{
+            background-color: $c-button-cart-hover;
+            border:4px solid #000;
+            color: $white;
+        }
+    }
 }
 
 /* Primary Buttons */
