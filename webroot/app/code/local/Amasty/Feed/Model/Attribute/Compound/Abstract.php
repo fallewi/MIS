@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 
@@ -10,7 +10,7 @@
         protected $_feed;
         protected $_attributesCodes = array();
 
-        const CATEGORIES_SHORT_PATH = false;
+        const CATEGORIES_SHORT_PATH = true;
         
         public function init($feed){
             $this->_feed = $feed;
@@ -93,4 +93,3 @@
 
         }
     }
-?>

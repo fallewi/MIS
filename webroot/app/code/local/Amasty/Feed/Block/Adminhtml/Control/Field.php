@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 
@@ -13,4 +13,3 @@ class Amasty_Feed_Block_Adminhtml_Control_Field extends Amasty_Feed_Block_Adminh
         return parent::__construct();
     }
 }
-?>

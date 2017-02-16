@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 
@@ -11,7 +11,7 @@
  *
  * @author Artem Brunevski
  */
-class Amasty_Feed_Model_Source_Compress extends Varien_Object
+class Amasty_Feed_Model_Source_Compress
 {
     /**
      * Return array of options as value-label pairs

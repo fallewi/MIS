@@ -1,10 +1,10 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
-class Amasty_Feed_Adminhtml_Amfeed_GoogleController extends Mage_Adminhtml_Controller_Action
+class Amasty_Feed_Adminhtml_Amfeed_GoogleController extends Amasty_Feed_Controller_Abstract
 {
     public function indexAction()
     {
@@ -90,7 +90,5 @@ class Amasty_Feed_Adminhtml_Amfeed_GoogleController extends Mage_Adminhtml_Contr
         } else {
             $this->_redirect('*/*/', $args);
         }
-
-
     }
 }

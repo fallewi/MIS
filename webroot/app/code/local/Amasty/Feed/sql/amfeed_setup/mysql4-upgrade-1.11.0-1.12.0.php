@@ -1,7 +1,7 @@
 <?php
     /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
     $installer = $this;
@@ -13,4 +13,3 @@
                 add column `frm_price_thousands_sep` varchar(3) default ',' after frm_price_dec_point;
     ");
     $installer->endSetup();
-?>

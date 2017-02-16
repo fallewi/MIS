@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Helper_Attribute extends Mage_Core_Helper_Abstract
@@ -10,6 +10,8 @@ class Amasty_Feed_Helper_Attribute extends Mage_Core_Helper_Abstract
     public static $_OTHER_CONDITION_PRODUCT_ID = 'entity_id';
     public static $_OTHER_CONDITION_PARENT_ID = 'parent_id';
     public static $_OTHER_CONDITION_IN_STOCK = 'is_in_stock';
+    public static $_OTHER_CONDITION_ENABLE_QTY_INCREMENTS = 'enable_qty_increments';
+    public static $_OTHER_CONDITION_QTY_INCREMENTS = 'qty_increments';
     public static $_OTHER_CONDITION_QTY = 'qty';
     public static $_OTHER_CONDITION_CATEGORY_ID = 'category_id';
     public static $_OTHER_CONDITION_CATEGORY_NAME = 'category_name';
@@ -72,6 +74,8 @@ class Amasty_Feed_Helper_Attribute extends Mage_Core_Helper_Abstract
                 self::$_OTHER_CONDITION_PRODUCT_ID => $hlr->__('Product ID'),
                 self::$_OTHER_CONDITION_PARENT_ID => $hlr->__('Parent ID'),
                 self::$_OTHER_CONDITION_IN_STOCK => $hlr->__('In Stock'),
+                self::$_OTHER_CONDITION_ENABLE_QTY_INCREMENTS => $hlr->__('Enable Qty Increments'),
+                self::$_OTHER_CONDITION_QTY_INCREMENTS => $hlr->__('Qty Increments'),
                 self::$_OTHER_CONDITION_QTY => $hlr->__('Qty'),
                 self::$_OTHER_CONDITION_CATEGORY_ID => $hlr->__('Category ID'),
                 self::$_OTHER_CONDITION_CATEGORY_NAME => $hlr->__('Category Name'),

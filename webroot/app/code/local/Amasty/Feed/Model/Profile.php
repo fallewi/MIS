@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
@@ -204,8 +204,17 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     protected function _prepareProductParentCollection(){
         
         $this->_prepereCollection($this->getProductParentCollection());
-        
+
+        $begoreGroup = $this->getProductCollection()->getSelect()->getPart(Zend_Db_Select::GROUP);
+
+        $this->getProductCollection()->getSelect()->setPart(Zend_Db_Select::GROUP, array(
+            'relation_table.parent_id',
+            'relation_table.child_id'
+        ));
+
         $idsSelect = "select DISTINCT parent_id from (" . $this->getProductCollection()->getSelect()->__toString() . ") as tmp";
+
+        $this->getProductCollection()->getSelect()->setPart(Zend_Db_Select::GROUP, $begoreGroup);
 
         $this->getProductParentCollection()->getSelect()->reset(Zend_Db_Select::WHERE);
         
@@ -219,11 +228,17 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
             );
         
         $this->getProductParentCollection()->getSelect()->setPart(Zend_Db_Select::FROM, $from);
-        
-//        $this->getProductParentCollection()->getSelect()->where("e.entity_id in (" .
-//            $idsSelect
-//        . ")");
 
+
+
+        $this->getProductParentCollection()
+            ->addAttribute("status", $this->getStoreId());
+
+        $this->getProductParentCollection()
+            ->addAttributeToFilter(array(array(
+                "attribute" => 'status',
+                'eq' => 1
+            )), null);
     }
     
     
@@ -330,8 +345,13 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                 if ($value == "no_selection" && $this->getDefaultImage()){
                     $ret = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'amfeed/images/' . $this->getId() . '.jpg';
                 } else {
-                    $image = $value;
-                    $ret = str_replace('https://', 'http://', $mediaConfig->getMediaUrl($image));
+                   if($value && $value != "no_selection") {
+						$image = $value;
+						$ret = str_replace('https://', 'http://', $mediaConfig->getMediaUrl($image));
+					}
+					else{
+						$ret = '';
+					}
                 }
         }
         return $ret;
@@ -507,11 +527,15 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                     $useParent = $fields['parent'][$idx] == 'yes';
                     $value = "";
 
-                    if ($useParent && !empty($productData['parent_id'])){
+                    if ($useParent && !empty($productData['parent_ids'])){
 
-                        $parentProductData = $this->getProductParentData($productData['parent_id']);
-                        if ($parentProductData){
-                            $value = $this->_getValue($fields, $idx, $parentProductData);
+                        foreach(explode(',', $productData['parent_ids']) as $parentId) {
+                            $parentProductData = $this->getProductParentData($parentId);
+
+                            if ($parentProductData) {
+                                $value = $this->_getValue($fields, $idx, $parentProductData);
+                                break;
+                            }
                         }
                     }
 
@@ -1102,7 +1126,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                     }
                  }
                  catch (Exception $e) {
-                    Mage::logException($e);
+                    Mage::logException($e, null, 'amfeed.log');
                     return false;
                  }
                 }

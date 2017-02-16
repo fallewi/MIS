@@ -1,7 +1,7 @@
 <?php
     /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
     $installer = $this;
@@ -228,4 +228,3 @@ VALUES (
                     'a:1:{i:1;a:1:{s:9:\"condition\";a:3:{s:9:\"attribute\";a:1:{i:0;s:5:\"price\";}s:8:\"operator\";a:1:{i:0;s:2:\"gt\";}s:5:\"value\";a:1:{i:0;s:4:\"0.01\";}}}}');
     ");
     $installer->endSetup();
-?>
