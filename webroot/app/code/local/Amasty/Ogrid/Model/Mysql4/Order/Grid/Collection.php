@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Model_Mysql4_Order_Grid_Collection extends Mage_Sales_Model_Mysql4_Order_Grid_Collection
@@ -71,4 +71,3 @@ class Amasty_Ogrid_Model_Mysql4_Order_Grid_Collection extends Mage_Sales_Model_M
         return $this->_customerModeFlag;
     }
 }
-?>

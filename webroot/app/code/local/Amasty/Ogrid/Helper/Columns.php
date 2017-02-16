@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
@@ -104,6 +104,8 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                 $this->_isColumnAvailable('am_billing_company') ||
                 $this->_isColumnAvailable('am_billing_telephone') ||
                 $this->_isColumnAvailable('am_billing_city');
+
+        $showTrackInfo = $this->_isColumnAvailable('am_track_number');
         
         $excludeStatuses = Mage::getStoreConfig('amogrid/general/exclude');
         $excludeStatuses = !empty($excludeStatuses) ? explode(',', $excludeStatuses) : array();
@@ -192,6 +194,18 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                 ),
                 'ifnull(customer.group_id, 0) = customer_group.customer_group_id', 
                 array('customer_group.customer_group_code as am_customer_group')
+            );
+        }
+
+        if ($showTrackInfo){
+            $collection->getSelect()->joinLeft(
+                array(
+                    'shipment_track' => $collection->getTable('sales/shipment_track')
+                ),
+                'main_table.entity_id = shipment_track.order_id',
+                array(
+                    'group_concat(distinct shipment_track.track_number) as am_track_number'
+                )
             );
         }
         
@@ -449,7 +463,6 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                     'width' => 80,
                     'filter_index' => 'order.am_base_subtotal',
                     'currency' => 'base_currency_code',
-                
                 ),
                 'am_customer_group' => array(
                     'header' => $this->__('Customer Group'),
@@ -459,6 +472,12 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                     'type'  => 'options',
                     'options' => $this->getCustomerGroupList(),
                 ),
+                'am_track_number' => array(
+                    'header' => $this->__('Track Number'),
+                    'index' => 'am_track_number',
+                    'width' => 80,
+                    'filter_index' => 'shipment_track.track_number'
+                )
             );
         }
         return $this->_configurableFields;
@@ -792,4 +811,3 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         }
     }
 }
-?>
