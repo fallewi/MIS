@@ -1,7 +1,7 @@
 <?php
  /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 
@@ -125,8 +125,10 @@ class Amasty_Paction_Model_Command_Replacetext extends Amasty_Paction_Model_Comm
 
         $attrGroups = array();
         foreach($productAttributes as $item) {
-            $attribute = Mage::getSingleton('eav/config')->getAttribute(self::ENTITY_TYPE, $item);
-            $attrGroups[$attribute->getBackendType()][$attribute->getId()] = $attribute->getName();
+            if ($item) {
+                $attribute = Mage::getSingleton('eav/config')->getAttribute(self::ENTITY_TYPE, $item);
+                $attrGroups[$attribute->getBackendType()][$attribute->getId()] = $attribute->getName();
+            }
         }
         return $attrGroups;
     }

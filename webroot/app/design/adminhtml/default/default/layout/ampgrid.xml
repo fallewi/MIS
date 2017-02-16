@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 -->
@@ -36,6 +36,10 @@
         <reference name="store_switcher">
             <action method="setTemplate"><template>amasty/ampgrid/grid_store_switcher.phtml</template></action>
             <action method="setChild"><name>grid_template_switcher</name><alial>grid_template_switcher</alial></action>
+        </reference>
+        <reference name="products_list">
+            <block type="ampgrid/adminhtml_catalog_product_grid_template_switcher" name="grid_template_switcher" />
+            <block type="ampgrid/adminhtml_catalog_product_grid_jsinit" name="ampgrid_jsinit"></block>
         </reference>
     </adminhtml_catalog_product_index>
     <adminhtml_catalog_category_edit>

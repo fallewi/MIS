@@ -2,7 +2,7 @@
 
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
 
@@ -47,7 +47,11 @@ class Amasty_File_Block_Adminhtml_Catalog_Product_Edit_Tab_File extends Mage_Adm
 
         $item = Mage::getModel('amfile/file');
         $item->setId(-1);
-        $item->setVisible(0);
+        if (Mage::getStoreConfig('amfile/additional/default_file_visibility')) {
+            $item->setVisible(1);
+        } else {
+            $item->setVisible(0);
+        }
 
         $newBlock = $this->getLayout()
             ->createBlock('core/template', 'new_item')

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Helper_Data extends Mage_Core_Helper_Abstract
@@ -411,13 +411,6 @@ class Amasty_Pgrid_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return 'true';
     }
-
-    public function addNoticeIndex() {
-        $process = Mage::getSingleton('index/indexer')->getProcessByCode('ampgrid_sold');
-        $process->setStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
-        $process->save();
-    }
-
     /**
      * Get selected Group for user
      *
