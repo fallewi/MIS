@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -182,18 +182,32 @@ class Amasty_Rolepermissions_Helper_Block extends Mage_Core_Helper_Abstract
     {
         $rule = Mage::helper('amrolepermissions')->currentRule();
 
-        if ($rule->getScopeStoreviews())
+        if ($rule->getScopeStoreviews()) {
             $html = preg_replace_callback('/<option[^>]+value="(\d*)".*?>/', array($this, $callback), $html);
+            $html = preg_replace_callback('/<optgroup.*?optgroup>/s', array($this, 'removeEmptyOptgroupsCallback'), $html);
+        }
 
         return $html;
+    }
+
+    public function removeEmptyOptgroupsCallback($matches)
+    {
+        $result = $matches[0];
+
+        if (strpos($matches[0], '<option') === false) {
+            $result = '';
+        }
+
+        return $result;
     }
 
     public function removeDefaultStoreOption($html)
     {
         $rule = Mage::helper('amrolepermissions')->currentRule();
 
-        if ($rule->getScopeStoreviews())
+        if ($rule->getScopeStoreviews()) {
             $html = preg_replace('|<option value="">[^<]*</option>|', '', $html);
+        }
 
         return $html;
     }
@@ -204,8 +218,9 @@ class Amasty_Rolepermissions_Helper_Block extends Mage_Core_Helper_Abstract
 
         $allowed = $this->getAllowedOptions();
 
-        if (!in_array($matches[1], $allowed))
+        if (!in_array($matches[1], $allowed)) {
             return '';
+        }
 
         return $result;
     }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -22,5 +22,10 @@ class Amasty_Rolepermissions_Adminhtml_Amrolepermissions_RuleController extends 
             $this->getLayout()->createBlock('amrolepermissions/adminhtml_tab_categories')
                 ->getCategoryChildrenJson($this->getRequest()->getParam('category'))
         );
+    }
+
+    protected function _isAllowed()
+    {
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -11,7 +11,7 @@ class Amasty_Rolepermissions_Block_Adminhtml_Tab_Entities extends Mage_Adminhtml
 
     public function getTabLabel()
     {
-        return $this->__('Advanced: Affected Entities');
+        return $this->__('Advanced: Orders');
     }
 
     public function getTabTitle()
@@ -51,7 +51,7 @@ class Amasty_Rolepermissions_Block_Adminhtml_Tab_Entities extends Mage_Adminhtml
             ;
         }
 
-        $fieldset = $form->addFieldset('access_orders_fieldset', array('legend'=>$this->__('Affected Entities')));
+        $fieldset = $form->addFieldset('access_orders_fieldset', array('legend'=>$this->__('Orders')));
 
         $fieldset->addField('limit_orders', 'select',
             array(
