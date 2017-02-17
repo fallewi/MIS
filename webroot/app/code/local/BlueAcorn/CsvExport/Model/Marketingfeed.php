@@ -17,11 +17,11 @@ class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
     {
         $fileName = false;
         $excludedGroups = $helper->getExcludedGroups();
-        $fromDate = date('Y-m-d H:i:s', strtotime('-1 days 17:00:00' ));
-        $toDate = date('Y-m-d H:i:s', strtotime('today 16:59:59'));
+        $fromDate = date('Y-m-d H:i:s', strtotime('today 05:00:00' ));
+        $toDate = date('Y-m-d H:i:s', strtotime('+1 days 05:00:00'));
         if($manualFlag){
-            $fromDate = date('Y-m-d H:i:s', strtotime($helper->getFromDate() . '17:00:00'));
-            $toDate   = date('Y-m-d H:i:s',strtotime($helper->getToDate() . '16:59:59'));
+            $fromDate = date('Y-m-d H:i:s', strtotime($helper->getFromDate() . '05:00:00'));
+            $toDate   = date('Y-m-d H:i:s',strtotime($helper->getToDate() . '+1 days 05:00:00'));
         }
 
         $collection = Mage::getModel('sales/order')->getCollection()
