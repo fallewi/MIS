@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Block_Template
@@ -98,9 +98,7 @@ class Amasty_Orderattr_Block_Checkout_Onepage_Progress_Step extends Mage_Core_Bl
                             if (!$value) {
                                 break;
                             }
-                            $format = Mage::app()->getLocale()->getDateTimeFormat(
-                                Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
-                            );
+                            $format = Mage::helper('amorderattr')->getDateTimeFormat();
                             if ('time' == $attribute->getNote()) {
                                 $value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
                             } else {

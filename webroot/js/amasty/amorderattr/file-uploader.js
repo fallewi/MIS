@@ -28,15 +28,35 @@ amFileUploader.prototype = {
             formData.append(name, file, file.name);
         }
 
+        if ('undefined' != typeof(FORM_KEY)) {
+            formData.append('form_key',FORM_KEY);
+        }
+
         for (key in this.options) {
             formData.append(key, this.options[key]);
         }
 
         var xhr = new XMLHttpRequest();
+        xhr.element = $(input);
         xhr.open('POST',  this.options['url'], true);
         xhr.onload = function () {
             if (xhr.status === 200) {
-                //console.log('File was uploaded');
+                $$('.amorderattr-error').each(function(block){
+                    block.remove();
+                });
+                if(xhr.response) {
+                    var json = JSON.parse(xhr.response);
+                    if(json && json.error) {
+                        var errorContainer = new Element('div', {
+                            'class' : 'amorderattr-error',
+                            'style' : 'color: red; display: none;'
+                        });
+                        errorContainer.insert('<span>' + json.error + '</span>');
+                        xhr.element.parentNode.insertBefore(errorContainer, xhr.element.nextSibling);
+                        Effect.SlideDown(errorContainer);
+                        return true;
+                    }
+                }
             } else {
                 alert('An error occurred!');
             }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_PaypalObserver
@@ -32,11 +32,15 @@ class Amasty_Orderattr_Model_PaypalObserver
     {
         $checkoutSessionQuote = Mage::getSingleton('checkout/session')->getQuote();
         $isMultipleCheckout = $checkoutSessionQuote -> getIsMultiShipping();
-        if (!$isMultipleCheckout){
+        if (!$isMultipleCheckout
+            && 'importorder' !== Mage::app()->getRequest()->getModuleName()) {
   
             $session = Mage::getSingleton('checkout/session');
             $this->_prepareOrderAttributes();
             $order = $observer->getOrder();
+            if (!$order->getId()) {
+                return false;
+            }
             $orderAttributes = $session->getAmastyOrderAttributes();
             $attributes = Mage::getModel('amorderattr/attribute');
             $attributes->load($order->getId(), 'order_id');
@@ -108,6 +112,9 @@ class Amasty_Orderattr_Model_PaypalObserver
         if (false !== strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order') && 'save' == Mage::app()->getRequest()->getActionName() && !Mage::registry('amorderattr_saved'))
         {
             $order = $observer->getOrder();
+            if (!$order->getId()) {
+                return false;
+            }
             $orderAttributes = Mage::app()->getRequest()->getPost('amorderattr');
             $attributes = Mage::getModel('amorderattr/attribute');
             $attributes->load($order->getId(), 'order_id');

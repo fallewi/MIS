@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Sales_Order_Print_Attributes extends Mage_Core_Block_Template
@@ -101,13 +101,16 @@ class Amasty_Orderattr_Block_Sales_Order_Print_Attributes extends Mage_Core_Bloc
                         break;
                     case 'date':
                         $value = $orderAttributes->getData($attribute->getAttributeCode());
-                        $format = Mage::app()->getLocale()->getDateTimeFormat(
-                            Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
-                        );
+                        if ($value === '0000-00-00'
+                            || $value === '0000-00-00 00:00:00') {
+                            $value = '';
+                            break;
+                        }
                         if (!$value)
                         {
                             break;
                         }
+                        $format = Mage::helper('amorderattr')->getDateTimeFormat();
                         if ('time' == $attribute->getNote())
                         {
                             $value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
@@ -124,7 +127,8 @@ class Amasty_Orderattr_Block_Sales_Order_Print_Attributes extends Mage_Core_Bloc
                         $value = $orderAttributes->getData($attribute->getAttributeCode());
                         if ($value) {
                             $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
-                            $url  = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                            $url = Mage::helper('amorderattr')->getDownloadFileUrl($order->getEntityId(), $attribute->getAttributeCode());
+
                             if (file_exists($path)) {
                                 $pos = strrpos($value, "/");
                                 if ($pos) {

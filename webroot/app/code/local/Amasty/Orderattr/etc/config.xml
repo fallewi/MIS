@@ -2,17 +2,16 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 -->
 <config>
     <modules>
         <Amasty_Orderattr>
-            <version>3.3.0</version>
+            <version>3.4.3</version>
         </Amasty_Orderattr>
     </modules>
-    
     <admin>
         <routers>
             <adminhtml>
@@ -117,8 +116,15 @@
                 </Amasty_Orderattr>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <amorderattr>
+                    <file>amasty/amorderattr.xml</file>
+                </amorderattr>
+            </updates>
+        </layout>
     </adminhtml>
-    
+
     <global>
         <models>
             <amorderattr>
@@ -131,7 +137,7 @@
                     <order_pdf_shipment>Amasty_Orderattr_Model_Order_Pdf_Shipment</order_pdf_shipment>
                 </rewrite>
             </sales>
-            
+
             <amorderattr_mysql4>
                 <class>Amasty_Orderattr_Model_Mysql4</class>
                 <entities>
@@ -143,7 +149,7 @@
                     </shipping_methods>
                 </entities>
             </amorderattr_mysql4>
-            
+
             <sales>
                 <rewrite>
                     <order>Amasty_Orderattr_Model_Sales_Order</order>
@@ -156,16 +162,16 @@
                     <entity_attribute>Amasty_Orderattr_Model_Eav_Mysql4_Entity_Attribute</entity_attribute>
                 </rewrite>
             </eav_mysql4>
-            
+
             <eav_resource>
                 <rewrite>
                     <entity_attribute>Amasty_Orderattr_Model_Eav_Mysql4_Entity_Attribute</entity_attribute>
                 </rewrite>
             </eav_resource>
         </models>
-        
-		<resources>
-             <amorderattr_setup>
+
+        <resources>
+            <amorderattr_setup>
                 <setup>
                     <module>Amasty_Orderattr</module>
                 </setup>
@@ -173,16 +179,20 @@
                     <use>core_setup</use>
                 </connection>
             </amorderattr_setup>
-            
-		    <amorderattr_write>
-		        <connection><use>core_write</use></connection>
-		    </amorderattr_write>
-            
-		    <amorderattr_read>
-		        <connection><use>core_read</use></connection>
-		    </amorderattr_read>
-		</resources>
-        
+
+            <amorderattr_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </amorderattr_write>
+
+            <amorderattr_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </amorderattr_read>
+        </resources>
+
         <blocks>
             <amorderattr>
                 <class>Amasty_Orderattr_Block</class>
@@ -195,7 +205,7 @@
                     <order_email_shipment_items>Amasty_Orderattr_Block_Sales_Order_Email_Shipment_Items</order_email_shipment_items>
                 </rewrite>
             </sales>
-            
+
             <adminhtml>
                 <rewrite>
                     <sales_order_create_form_account>Amasty_Orderattr_Block_Adminhtml_Order_Create_Form_Account</sales_order_create_form_account>
@@ -209,19 +219,19 @@
                 </rewrite>
             </checkout>
         </blocks>
-        
+
         <helpers>
             <amorderattr>
                 <class>Amasty_Orderattr_Helper</class>
             </amorderattr>
-            
+
             <core>
                 <rewrite>
                     <data>Amasty_Orderattr_Helper_Core_Data</data>
                 </rewrite>
             </core>
         </helpers>
-        
+
         <events>
             <sales_quote_save_after>
                 <observers>
@@ -232,7 +242,7 @@
                     </amorderattr>
                 </observers>
             </sales_quote_save_after>
-            
+
             <sales_quote_save_after>
                 <observers>
                     <amorderattr_paypal>
@@ -251,7 +261,7 @@
                     </amorderattr>
                 </observers>
             </sales_order_save_before>
-            
+
             <sales_order_save_after>
                 <observers>
                     <amorderattr>
@@ -261,7 +271,7 @@
                     </amorderattr>
                 </observers>
             </sales_order_save_after>
-            
+
             <sales_order_place_after>
                 <observers>
                     <amorderattr_paypal>
@@ -271,7 +281,7 @@
                     </amorderattr_paypal>
                 </observers>
             </sales_order_place_after>
-                           
+
             <checkout_type_onepage_save_order_after>
                 <observers>
                     <amorderattr>
@@ -281,7 +291,7 @@
                     </amorderattr>
                 </observers>
             </checkout_type_onepage_save_order_after>
-            
+
             <core_layout_block_create_after>
                 <observers>
                     <amorderattr>
@@ -301,7 +311,7 @@
                     </amorderattr>
                 </observers>
             </sales_order_grid_collection_load_before>
-            
+
             <sales_order_invoice_grid_collection_load_before>
                 <observers>
                     <amorderattr>
@@ -311,7 +321,7 @@
                     </amorderattr>
                 </observers>
             </sales_order_invoice_grid_collection_load_before>
-            
+
             <sales_order_shipment_grid_collection_load_before>
                 <observers>
                     <amorderattr>
@@ -321,7 +331,7 @@
                     </amorderattr>
                 </observers>
             </sales_order_shipment_grid_collection_load_before>
-            
+
             <core_block_abstract_to_html_after>
                 <observers>
                     <amorderattr>
@@ -332,6 +342,16 @@
                 </observers>
             </core_block_abstract_to_html_after>
         </events>
+
+        <template>
+            <email>
+                <amorderattr_general_email_template translate="label" module="amorderattr">
+                    <label>Amasty Order Attributes: Changed by Customer</label>
+                    <file>amasty/amorderattr_admin_notification.html</file>
+                    <type>html</type>
+                </amorderattr_general_email_template>
+            </email>
+        </template>
     </global>
 
     <crontab>
@@ -363,6 +383,13 @@
         </sales_email>
         
         <amorderattr>
+            <general>
+                <default_format>1</default_format>
+                <datetime_format><![CDATA[dd.MM.y HH:mm:ss]]></datetime_format>
+                <notify_admin>0</notify_admin>
+                <email_identity>general</email_identity>
+                <email_template>amorderattr_admin_notification_template</email_template>
+            </general>
             <checkout>
                 <progress>1</progress>
                 <hide_empty>1</hide_empty>

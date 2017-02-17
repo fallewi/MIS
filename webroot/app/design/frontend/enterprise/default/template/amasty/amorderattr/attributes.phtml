@@ -1,11 +1,12 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 
 $attributes = $this->getAttributes();
+$order = Mage::registry('current_order');
 ?>
 <?php if (!empty($attributes)): ?>
     <div class="col-1">
@@ -31,4 +32,28 @@ $attributes = $this->getAttributes();
             </div>
         </div>
     </div>
+
+    <?php if($this->showEditable()) :?>
+        <a id="edit_amorderattrs">Edit</a>
+
+        <div class="col-1" id='amorderattrs_form_container' style="display: none;">
+            <div class="box-title">
+                <h2 style="margin-bottom:0"><?php echo $this->__('Edit Additional Info'); ?></h2>
+            </div>
+            <form id="amorderattrs_form" action="<?php echo $this->getUrl('amorderattr/customer/save');?>" method="post" >
+                <input type="hidden" name="order_id"  value="<?php echo $order->getId() ?>" >
+                <?php echo $this->getEditableBlock()->toHtml(); ?>
+                <button onclick="$('amorderattrs_form').submit()" title="<?php $this->__('Save') ?>" class="button"><span><span><?php echo $this->__('Save') ?></span></span></button>
+            </form>
+        </div>
+    <?php endif; ?>
+
 <?php endif; ?>
+
+<script>
+new VarienForm('amorderattrs_form');
+$("edit_amorderattrs").observe('click', function() {
+    Effect.toggle('amorderattrs_form_container', 'blind');
+    $(this).toggleClassName("active");
+});
+</script>

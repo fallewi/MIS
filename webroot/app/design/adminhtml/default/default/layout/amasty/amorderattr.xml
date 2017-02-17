@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @package Amasty_Orderattr
+ */
+-->
+<layout version="0.1.0">
+    <adminhtml_sales_order_create_index>
+        <reference name="head">
+            <action method="addJs"><script>amasty/amorderattr/file-uploader.js</script></action>
+        </reference>
+    </adminhtml_sales_order_create_index>
+</layout>

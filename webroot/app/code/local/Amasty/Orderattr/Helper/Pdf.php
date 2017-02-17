@@ -2,7 +2,7 @@
 
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
@@ -138,6 +138,7 @@ class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
             if (is_array($value)) {
                 $page->drawText($label . ': ', 35, $control->y, 'UTF-8');
                 foreach ($value as $str) {
+                    //$control->y -= 10; // need sometimes for textarea
                     $page->drawText($str, 120, $control->y, 'UTF-8');
                     $control->y -= 10;
                 }

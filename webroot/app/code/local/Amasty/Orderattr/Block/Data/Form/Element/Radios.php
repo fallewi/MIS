@@ -2,7 +2,7 @@
 
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Data_Form_Element_Radios extends Varien_Data_Form_Element_Abstract
