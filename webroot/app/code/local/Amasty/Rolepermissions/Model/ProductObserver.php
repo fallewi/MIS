@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -134,6 +134,13 @@ class Amasty_Rolepermissions_Model_ProductObserver
             if ($rule->getCategories())
             {
                 $productCategories = $product->getCategoryIds();
+                $parentIds = Mage::getResourceSingleton('catalog/product_type_configurable')
+                    ->getParentIdsByChild($product->getEntityId());
+                if (!empty($parentIds)) {
+                    foreach ($parentIds as $pid) {
+                        $productCategories = array_merge($productCategories, Mage::getModel('catalog/product')->load($pid)->getCategoryIds());
+                    }
+                }
                 if (!array_intersect($productCategories, $rule->getCategories()))
                     $hlp->redirectHome();
             }

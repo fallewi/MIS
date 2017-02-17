@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -43,14 +43,16 @@ class Amasty_Rolepermissions_Model_Observer
             {
                 $htmlId = $block->getElement()->getData('html_id');
 
-                if (in_array($htmlId, array('store_id', 'store_ids', 'sendemail_store_id')))
+                if (in_array($htmlId, array('store_id', 'store_ids', 'sendemail_store_id'))) {
                     $html = Mage::helper('amrolepermissions/block')->disableStores($html);
-                else if (in_array($htmlId, array('website_id', 'website_ids')))
+                }
+                else if (in_array($htmlId, array('website_id', 'website_ids'))) {
                     $html = Mage::helper('amrolepermissions/block')->disableWebsites($html);
+                }
             }
-        }
-        else if ($block instanceof Mage_Adminhtml_Block_Store_Switcher)
+        } elseif ($block instanceof Mage_Adminhtml_Block_Store_Switcher) {
             $html = Mage::helper('amrolepermissions/block')->removeDefaultStoreOption($html);
+        }
 
         $transport->setHtml($html);
     }
@@ -58,6 +60,19 @@ class Amasty_Rolepermissions_Model_Observer
     public function blockToHtmlBefore($observer)
     {
         $block = $observer->getBlock();
+
+        if ($block instanceof Mage_Adminhtml_Block_Catalog_Product_Attribute_Edit_Tab_Options) {
+            $rule = Mage::helper('amrolepermissions')->currentRule();
+            $allowedStoreviews = $rule->getScopeStoreviews();
+            $allowedStoreviews[] = 0;
+            $stores = clone($block->getStores());
+            foreach ($stores->getItems() as $key => $item) {
+                if (!in_array($key, $allowedStoreviews)) {
+                    $stores->removeItemByKey($key);
+                }
+            }
+            $block->setStores($stores);
+        }
 
         if ($block instanceof Mage_Adminhtml_Block_Store_Switcher_Form_Renderer_Fieldset) {
             /** @var Varien_Data_Form_Element_Fieldset $blockElement */
@@ -211,7 +226,7 @@ class Amasty_Rolepermissions_Model_Observer
         if (Mage::app()->getResponse()->getHttpResponseCode() == '302')
         {
             Mage::app()->getResponse()->sendResponse();
-            exit;
+            Mage::helper('ambase/utils')->_exit();
         }
     }
 
@@ -295,8 +310,9 @@ class Amasty_Rolepermissions_Model_Observer
 
         $hlp = Mage::helper('amrolepermissions');
 
-        if ($hlp->checkClass($collection, 'Mage_Core_Model_Mysql4_Store_Collection'))
+        if ($hlp->checkClass($collection, 'Mage_Core_Model_Mysql4_Store_Collection')){
             return;
+        }
 
         $external = array(
             'Mage_Cms_Model_Mysql4_Page_Collection' => 'cms/page_store',

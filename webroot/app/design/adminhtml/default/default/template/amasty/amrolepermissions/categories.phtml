@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 ?>
@@ -116,11 +116,15 @@
             } else {
                 categoryRemove(node.id);
             }
-            var parentNode = node.parentNode;
-            if( parentNode.getUI().check ) {
-                parentNode.getUI().check(status, false, true);
-                checkParent(parentNode, status);
+
+            if (status != false) {
+                var parentNode = node.parentNode;
+                if( parentNode.getUI().check ) {
+                    parentNode.getUI().check(status, false, true);
+                    checkParent(parentNode, status);
+                }
             }
+
         }
 
         function bildCategoryTree(parent, config){
