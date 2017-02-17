@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_System_Config_Backend_File extends Mage_Core_Model_Config_Data
@@ -38,6 +38,7 @@ class Amasty_Feed_Model_System_Config_Backend_File extends Mage_Core_Model_Confi
                 $result = $uploader->save($uploadDir);
 
             } catch (Exception $e) {
+                Mage::logException($e, null, 'amfeed.log');
                 Mage::throwException($e->getMessage());
                 return $this;
             }

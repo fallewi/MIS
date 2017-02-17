@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
@@ -26,6 +26,7 @@ class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
                     'type' => 'filename'
                 ));
             } catch (Exception $e) {
+                Mage::logException($e, null, 'amfeed.log');
                 $this->_forward('noRoute');
             }
         }
@@ -77,4 +78,3 @@ class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
         return str_replace($chars, '_', $filename);
     }
 }
-?>

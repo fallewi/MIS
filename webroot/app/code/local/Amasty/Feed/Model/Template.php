@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Template extends Mage_Core_Model_Abstract
@@ -22,4 +22,3 @@ class Amasty_Feed_Model_Template extends Mage_Core_Model_Abstract
         return $profile->save();
     }
 }
-?>

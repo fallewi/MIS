@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
@@ -193,9 +193,14 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
     public function addParentIdToSelect()
     {
         $this->getSelect()
-             ->joinLeft(array('relation_table' => $this->getTable('catalog/product_relation')),
-                        'relation_table.child_id = e.entity_id',
-                        array('parent_id' => 'relation_table.parent_id'));
+            ->joinLeft(
+                array('relation_table' => $this->getTable('catalog/product_relation')),
+                'relation_table.child_id = e.entity_id',
+                array(
+                    'parent_id' => 'relation_table.parent_id',
+                    'parent_ids' => 'GROUP_CONCAT(relation_table.parent_id)'
+                    )
+            );
     }
     
     protected function _checkJoin($alias){
@@ -217,7 +222,9 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
                 array('at_amfeed_is_in_stock' => 'cataloginventory/stock_item'),
                     'product_id=entity_id',
                 array(
-                    'is_in_stock', 'manage_stock', 'use_config_manage_stock'
+                    'is_in_stock', 'manage_stock', 'use_config_manage_stock',
+                    'qty_increments',  'use_config_qty_increments',
+                    'enable_qty_increments', 'use_config_enable_qty_inc'
                 ),
                 null, 'left'
             );
