@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Adminhtml_AmorderattrorderController extends Mage_Adminhtml_Controller_Action
@@ -72,8 +72,7 @@ class Amasty_Orderattr_Adminhtml_AmorderattrorderController extends Mage_Adminht
 			{
 				foreach ($toDelete as $attrCode => $value)
 				{
-					if ($value == "1")
-					{
+					if ($value == "1") {
 						$url = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' .
 								$orderAttributes->getData($attrCode);
 						@unlink($url);
@@ -84,49 +83,35 @@ class Amasty_Orderattr_Adminhtml_AmorderattrorderController extends Mage_Adminht
 			}
 
 			/**
-			 * Uploading files
+			 * saving files
 			 */
-			if (isset($_FILES['amorderattr']) && isset($_FILES['amorderattr']['error']))
-			{
-				foreach ($_FILES['amorderattr']['error'] as $attrCode => $errorCode)
-				{
-					if (UPLOAD_ERR_OK == $errorCode)
-					{
-						// check file size
-						/*if ($filesRestrictions[$attributeCode]['size']
-								&& ($filesRestrictions[$attributeCode]['size']
-										< $_FILES['amorderattr']['size'][$attrCode])
-						) {
-							$this->_getSession()->addError(
-								$this->__(
-									'File size restriction: %d bytes',
-									$filesRestrictions[$attrCode]['size']
-								)
-							);
-						}*/
-						try {
-							if(class_exists("Mage_Core_Model_File_Uploader")){
-								$uploader = new Mage_Core_Model_File_Uploader('amorderattr[' . $attrCode . ']');
+			$files = (array) Mage::getSingleton('adminhtml/session')->getAmastyOrderAttributes();
+			foreach ($files as $attributeCode => $value) {
+				$dir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'tmp';
+				$file = $dir . $value;
+				if ( file_exists($file) && $value ) {
+					try {
+						$newPath = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
+						$pos = strrpos($newPath, "/");
+						if ($pos) {
+							$destinationDir = substr($newPath, 0, $pos);
+							if (!is_dir($destinationDir)) {
+								mkdir($destinationDir, 0755, true);
 							}
-							else{
-								$uploader = new Varien_File_Uploader('amorderattr[' . $attrCode . ']');
-							}
-
-							$uploader->setAllowRenameFiles(true);
-							$uploader->setFilesDispersion(true);
-							$result = $uploader->save(
-							    $uploadDir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original'  . DS
-							);
-							$orderAttributes->setData($attrCode, $result['file']);
-
-						} catch (Exception $e) {
-							$this->_getSession()->addError($e->getMessage());
 						}
+						$result = rename(
+							$file, $newPath
+						);
+						$orderAttributes->setData($attributeCode, $value);
+					}
+					catch(Exception $ex){
+						$orderAttributes->setData($attributeCode, '');
 					}
 				}
 			}
 
     		try {
+				Mage::getSingleton('adminhtml/session')->setAmastyOrderAttributes(null);
     			$orderAttributes->save();
     			$this->_getSession()->addSuccess(Mage::helper('sales')->__('The order attributes have been updated.'));
                 $this->_redirect('adminhtml/sales_order/view', array('order_id' => $orderId));

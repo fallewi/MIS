@@ -1,0 +1,21 @@
+a#edit_amorderattrs:hover {
+    cursor: pointer;
+}
+a#edit_amorderattrs:after{
+    content: " \25BC";
+
+}
+a#edit_amorderattrs.active:after {
+    content: " \25B2";
+}
+#amorderattrs_form_container {
+    width:100%;
+    margin-top: 20px;
+}
+#amorderattrs_form_container .input-box {
+    width: 100%;
+}
+#amorderattrs_form_container .box-title {
+    float: initial;
+    width: 100%;
+}

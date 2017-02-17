@@ -1,11 +1,13 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Sales_Order_View_Attributes extends Mage_Core_Block_Template
 {
+    protected $_editableBlock;
+
     public function __construct()
     {
         parent::__construct();
@@ -104,13 +106,12 @@ class Amasty_Orderattr_Block_Sales_Order_View_Attributes extends Mage_Core_Block
                             $value = null;
                             break;
                         }
-                        $format = Mage::app()->getLocale()->getDateTimeFormat(
-                            Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
-                        );
                         if (!$value)
                         {
                             break;
                         }
+                        
+                        $format = Mage::helper('amorderattr')->getDateTimeFormat();
                         if ('time' == $attribute->getNote())
                         {
                             $value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
@@ -127,7 +128,8 @@ class Amasty_Orderattr_Block_Sales_Order_View_Attributes extends Mage_Core_Block
                         $value = $orderAttributes->getData($attribute->getAttributeCode());
                         if ($value) {
                             $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
-                            $url = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                            $url = Mage::helper('amorderattr')->getDownloadFileUrl($order->getEntityId(), $attribute->getAttributeCode());
+
                             if (file_exists($path)) {
                                 $pos = strrpos($value, "/");
                                 if ($pos) {
@@ -161,5 +163,28 @@ class Amasty_Orderattr_Block_Sales_Order_View_Attributes extends Mage_Core_Block
             }
         }
         return $list;
+    }
+
+    /**
+     * @return bool
+     */
+    public function showEditable()
+    {
+        return (bool) $this->getEditableBlock()->getAttributeCollection()->getSize();
+    }
+
+    /**
+     * @return Amasty_Orderattr_Block_Fields
+     */
+    public function getEditableBlock()
+    {
+        if (!$this->_editableBlock) {
+            $editableBlock = Mage::app()->getLayout()
+                ->createBlock('amorderattr/fields')
+                ->setOrder(Mage::registry('current_order'))
+                ->setStep('frontend_edit');
+            $this->_editableBlock = $editableBlock;
+        }
+        return $this->_editableBlock;
     }
 }

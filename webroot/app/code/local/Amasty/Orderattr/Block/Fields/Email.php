@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
@@ -49,6 +49,14 @@ class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
         $collection->getSelect()->order('checkout_step');
         $attributes = $collection->load();
         $order = $this->getOrder();
+        
+        $shippingMethod = $order->getShippingMethod();
+        $attrsForShippingMethods = Mage::app()->getLayout()->createBlock('amorderattr/fields')->getShippingMethods();
+        $availableAttrs = array();
+        if (array_key_exists($shippingMethod, $attrsForShippingMethods)) {
+            $availableAttrs = $attrsForShippingMethods[$shippingMethod];
+        }
+        
         $orderAttributes = Mage::getModel('amorderattr/attribute')->load($order->getId(), 'order_id');
         if ($attributes->getSize())
         {
@@ -56,8 +64,11 @@ class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
             {
                 $currentStore = $order->getStoreId();
                 $storeIds = explode(',', $attribute->getData('store_ids'));
-                if (!in_array($currentStore, $storeIds) && !in_array(0, $storeIds))
-                {
+                if (!in_array($currentStore, $storeIds) && !in_array(0, $storeIds)) {
+                    continue;
+                }
+                if ($availableAttrs
+                    && !in_array($attribute->getAttributeCode(), $availableAttrs)) {
                     continue;
                 }
                 
@@ -86,13 +97,11 @@ class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
                             $value = '';
                             break;
                         }
-                        $format = Mage::app()->getLocale()->getDateTimeFormat(
-                            Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
-                        );
                         if (!$value)
                         {
                             break;
                         }
+                        $format = Mage::helper('amorderattr')->getDateTimeFormat();
                         if ('time' == $attribute->getNote())
                         {
                             $value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
@@ -121,7 +130,8 @@ class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
                         $value = $orderAttributes->getData($attribute->getAttributeCode());
                         if ($value) {
                             $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
-                            $url  = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                            $url = Mage::helper('amorderattr')->getDownloadFileUrl($order->getEntityId(), $attribute->getAttributeCode());
+
                             if (file_exists($path)) {
                                 $pos = strrpos($value, "/");
                                 if ($pos) {

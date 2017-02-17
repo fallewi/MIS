@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_Sales_Order extends Amasty_Orderattr_Model_Sales_Order_Pure
@@ -11,11 +11,15 @@ class Amasty_Orderattr_Model_Sales_Order extends Amasty_Orderattr_Model_Sales_Or
     * 
     * @param string $attr attribute code
     */
-     private function _getStoreValues($attribute) {
+    private function _getStoreValues($attribute, $storeId = null)
+    {
+        if (is_null($storeId)) {
+            $storeId = Mage::app()->getStore()->getId();
+        }
         $values = array();
         $valuesCollection = Mage::getResourceModel('eav/entity_attribute_option_collection')
              ->setAttributeFilter($attribute->getId())
-             ->setStoreFilter(Mage::app()->getStore()->getId(), false)
+             ->setStoreFilter($storeId, false)
              ->load();
         foreach ($valuesCollection as $item) {
             $values[$item->getId()] = $item->getValue();
@@ -35,24 +39,22 @@ class Amasty_Orderattr_Model_Sales_Order extends Amasty_Orderattr_Model_Sales_Or
         return $values;
     }
     
-    public function custom($attr) {
+    public function custom($attr)
+    {
         $orderAttributes = Mage::getModel('amorderattr/attribute')->load($this->getId(), 'order_id');
         $attribute = Mage::getModel('eav/entity_attribute')->load($attr, 'attribute_code');
         if ($attribute->getAttributeId()) {
-            switch ($attribute->getFrontendInput())
-            {
+            switch ($attribute->getFrontendInput()) {
                 case 'select':
                 case 'boolean':
                 case 'radios':
-                        $values = $this->_getStoreValues($attribute);
+                        $values = $this->_getStoreValues($attribute, $this->getStoreId());
                         $options = $attribute->getSource()->getAllOptions(true, true);
-                        foreach ($options as $i => $option)
-                        {
-                            if (isset($values[$option['value']])&&($option['value'] == $orderAttributes[$attribute->getData('attribute_code')]))
-                            {
+                        foreach ($options as $i => $option) {
+                            if (isset($values[$option['value']])
+                                &&($option['value'] == $orderAttributes[$attribute->getData('attribute_code')])) {
                                 $value = $values[$option['value']];
-                            }  elseif ($option['value'] == $orderAttributes->getData($attribute->getAttributeCode()))
-                            {
+                            } elseif ($option['value'] == $orderAttributes->getData($attribute->getAttributeCode())) {
                                $value = $option['label'];
                             }
                         }
@@ -61,10 +63,8 @@ class Amasty_Orderattr_Model_Sales_Order extends Amasty_Orderattr_Model_Sales_Or
                         $values = $this->_getStoreValues($attribute);
                         $options = $attribute->getSource()->getAllOptions(true, true);
                         $checkboxValues = explode(',',$orderAttributes->getData($attribute->getAttributeCode()));
-                        foreach ($options as $i => $option)
-                        {
-                           if (in_array($option['value'], $checkboxValues) )
-                            {
+                        foreach ($options as $i => $option) {
+                            if (in_array($option['value'], $checkboxValues)) {
                                 $value[] = $values[$option['value']];
                             }
                         }

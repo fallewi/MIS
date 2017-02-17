@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
@@ -80,13 +80,41 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
                         $orderData[$attribute->getAttributeCode()] = '';
                     }
                 }
+
+                if ( 'file' == $inputType ) {
+                    $url = $this->getUrl('adminhtml/amorderattrfile/upload');
+                    $afterElementHtml = '<script type="text/javascript">
+                        var amFileUploaderObject = new amFileUploader(
+                        ' . Mage::helper('core')->jsonEncode(
+                            array(
+                                'url'       => $url,
+                                'extension' => $attribute->getData('file_types'),
+                                'size'      => $attribute->getData('file_size'),
+                                'name'      => $attribute->getdata('attribute_code')
+                            )
+                        ) . '
+                        );
+                        </script>';
+                    if (isset($orderData[$attribute->getAttributeCode()])) {
+                        $value = $orderData[$attribute->getAttributeCode()];
+                        if ($value) {
+                            $elementOptions['required'] = 0;
+                            $elementOptions['class'] = str_replace('required-entry', '', $elementOptions['class']);
+                        }
+                    }
+                }
                     
                 if('checkboxes'==$inputType || 'radios'==$inputType ) {
                     $elementOptions['name']  .= '[]';
-                    if (isset($orderData[$attribute->getAttributeCode()])) {
+                    if (isset($orderData[$attribute->getAttributeCode()]) && 'checkboxes' == $inputType) {
                         $orderData[$attribute->getAttributeCode()] = explode(',', $orderData[$attribute->getAttributeCode()]);
-                    } 
+                    }
+
                     $elementOptions['values'] = $attribute->getSource()->getAllOptions(false, true );
+                    if($attribute->getIsRequired()){
+                        $elementOptions['required'] = 0;
+                        $elementOptions['class'] = ' validate-checkboxgroup-required';
+                    }
                 }
 
                 $element = $fieldset->addField($attribute->getAttributeCode(), $fieldType, $elementOptions)
@@ -130,9 +158,10 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
                     $value = $orderData[$attribute->getAttributeCode()];
 
                     if ($value) {
-                        $afterElementHtml = $this->__('Uploaded file: ');
+                        $afterElementHtml .= $this->__('Uploaded file: ');
                         $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
-                        $url = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                        $url = Mage::helper('amorderattr')->getDownloadFileUrl($orderData['order_id'], $attribute->getAttributeCode());
+
                         if (file_exists($path)) {
                             $pos = strrpos($value, "/");
                             if ($pos) {
@@ -146,9 +175,8 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
                         }
 
                         $afterElementHtml .= $value;
-                        $element->setAfterElementHtml($afterElementHtml);
                     }
-
+                    $element->setAfterElementHtml($afterElementHtml);
                     $element->setName('amorderattr[' . $element->getName() . ']');
                 }
         	}
@@ -161,5 +189,37 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
        $this->setForm($form);
        parent::_prepareForm();
        return $this;               
+    }
+
+    public function _toHtml()
+    {
+        $html = parent::_toHtml();
+        $jsBefore = "
+            <script type=\"text/javascript\" src=\"" . Mage::getBaseUrl('js') . "amasty/amorderattr/file-uploader.js\" ></script >";
+        $js = "
+        <script type=\"text/javascript\">
+
+                   Validation.addAllThese([
+                ['validate-checkboxgroup-required', 'Please select an option.', function(v, elm) {
+                    id = elm.id.slice(0, elm.id.lastIndexOf(\"_\"));
+                    /*if (h.get(id)) {
+                     return true;
+                     }*/
+                    //h.set(id, true);
+                    checkboxGroupChecked = false;
+                    $$('input[id^=' + id + ']').each(function(checkbox){
+                        if (checkbox.checked || checkbox.hasClassName('validation-failed'))
+                        {
+                            checkboxGroupChecked = true;
+                        }
+                    });
+                    return checkboxGroupChecked;
+                }]
+            ]);
+        </script>";
+
+        $html = str_replace('type="file"', 'type="file" onchange="amFileUploaderObject.sendFileWithAjax(this)"', $html);
+        return $jsBefore . $html . $js;
+
     }
 }
