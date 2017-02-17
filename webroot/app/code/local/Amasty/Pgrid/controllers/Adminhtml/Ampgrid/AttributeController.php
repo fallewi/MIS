@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 
@@ -12,8 +12,8 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_AttributeController extends Mage_Adminhtml_
         $attributesKey = Mage::app()->getRequest()->getParam('attributesKey', '');
         $block = $this->getLayout()->createBlock('ampgrid/adminhtml_catalog_product_grid_attributes', '',array('attributes_key'=>$attributesKey));
         if ($block) {
-            echo $block->toHtml();
-            die;
+            Mage::helper('ambase/utils')->_echo($block->toHtml());
+            Mage::helper('ambase/utils')->_exit(1);
         }
     }
 

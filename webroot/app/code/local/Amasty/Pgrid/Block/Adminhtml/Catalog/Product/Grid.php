@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid extends Mage_Adminhtml_Block_Catalog_Product_Grid
@@ -135,6 +135,87 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid extends Mage_Adminhtml_B
             $collection->getSelect()->order($attribute . ' ' .strtoupper($dir));
         }
         return $collection;
+    }
+
+    protected function _prepareCollection()
+    {
+        $replaceCollection = !Mage::helper('ambase')->isVersionLessThan(1, 7) && Mage::getStoreConfig('ampgrid/additional/category_anchor');
+        if (!$replaceCollection) {
+            return parent::_prepareCollection();
+        }
+
+        $store = $this->_getStore();
+        $collection = new Amasty_Pgrid_Model_Resource_Product_Collection();
+        $collection
+            ->addAttributeToSelect('sku')
+            ->addAttributeToSelect('name')
+            ->addAttributeToSelect('attribute_set_id')
+            ->addAttributeToSelect('type_id');
+
+        if (Mage::helper('catalog')->isModuleEnabled('Mage_CatalogInventory')) {
+            $collection->joinField('qty',
+                'cataloginventory/stock_item',
+                'qty',
+                'product_id=entity_id',
+                '{{table}}.stock_id=1',
+                'left');
+        }
+        if ($store->getId()) {
+            //$collection->setStoreId($store->getId());
+            $adminStore = Mage_Core_Model_App::ADMIN_STORE_ID;
+            $collection->addStoreFilter($store);
+            $collection->joinAttribute(
+                'name',
+                'catalog_product/name',
+                'entity_id',
+                null,
+                'inner',
+                $adminStore
+            );
+            $collection->joinAttribute(
+                'custom_name',
+                'catalog_product/name',
+                'entity_id',
+                null,
+                'inner',
+                $store->getId()
+            );
+            $collection->joinAttribute(
+                'status',
+                'catalog_product/status',
+                'entity_id',
+                null,
+                'inner',
+                $store->getId()
+            );
+            $collection->joinAttribute(
+                'visibility',
+                'catalog_product/visibility',
+                'entity_id',
+                null,
+                'inner',
+                $store->getId()
+            );
+            $collection->joinAttribute(
+                'price',
+                'catalog_product/price',
+                'entity_id',
+                null,
+                'left',
+                $store->getId()
+            );
+        }
+        else {
+            $collection->addAttributeToSelect('price');
+            $collection->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner');
+            $collection->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner');
+        }
+
+        $this->setCollection($collection);
+
+        Mage_Adminhtml_Block_Widget_Grid::_prepareCollection();
+        $this->getCollection()->addWebsiteNamesToResult();
+        return $this;
     }
     
     public function setCollection($collection)

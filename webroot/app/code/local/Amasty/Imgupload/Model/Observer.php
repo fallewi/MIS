@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Imgupload
  */
 class Amasty_Imgupload_Model_Observer
@@ -26,6 +26,9 @@ class Amasty_Imgupload_Model_Observer
     	if (is_array($imageData) && !empty($imageData))
     	{
     		$mediaGallery = $product->getMediaGallery();
+            if(!is_array($mediaGallery['images'])) {
+                $mediaGallery['images'] = array();
+            }
     		foreach ($imageData as $file => $url)
     		{
     			$mediaGallery['images'][] = array(

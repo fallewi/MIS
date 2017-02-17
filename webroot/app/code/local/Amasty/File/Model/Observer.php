@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
 class Amasty_File_Model_Observer 
@@ -195,7 +195,6 @@ class Amasty_File_Model_Observer
 
             if ($file->getFileUrl() || $file->getFileLink())
             {
-
                 $storeId = $file->getOrigData() === null ? 0 : +Mage::app()->getRequest()->getParam('store', 0); // New object. Can't use isObjectNew
                 $file->save();
                 $result['updated'][]= $file->getId();
@@ -225,7 +224,7 @@ class Amasty_File_Model_Observer
                     ? $file->getFormCustomerGroups()
                     : Mage::getStoreConfig('amfile/block/customer_group');
 
-                if (count($customerGroups) == 1 && strpos($customerGroups[0], ',')) {
+                if (count($customerGroups) == 1 && strpos($customerGroups[0], ',') !== false) {
                     $customerGroups = explode(',', $customerGroups[0]);
                 } elseif (is_string($customerGroups)) {
                     $customerGroups = explode(',', $customerGroups);

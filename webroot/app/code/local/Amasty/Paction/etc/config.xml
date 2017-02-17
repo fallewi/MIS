@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 -->
 <config>
     <modules>
         <Amasty_Paction>
-            <version>1.5.9</version>
+            <version>1.7.1</version>
         </Amasty_Paction>
     </modules>
     
@@ -142,6 +142,9 @@
                                                 <replacetext translate="title">
                                                     <title>Replace Text</title>
                                                 </replacetext>
+                                                <visibility translate="title">
+                                                    <title>Change Visibility</title>
+                                                </visibility>
                                             </children>
                                         </mass_product_actions>
                                     </children>
@@ -209,7 +212,7 @@
     <default>
         <ampaction>
             <general>
-                <commands>0,addcategory,removecategory,replacecategory,4,modifycost,modifyprice,modifyspecial,modifyallprices,addspecial,addprice,addspecialbycost,11,relate,upsell,crosssell,15,unrelate,unupsell,uncrosssell,19,copyoptions,copyattr,copyimg,removeimg,24,changeattributeset,26,delete,28,appendtext,replacetext,32</commands>
+                <commands>0,addcategory,removecategory,replacecategory,4,modifycost,modifyprice,modifyspecial,modifyallprices,addspecial,addprice,addspecialbycost,11,relate,upsell,crosssell,15,unrelate,unupsell,uncrosssell,19,copyoptions,copyattr,copyimg,removeimg,24,changeattributeset,26,delete,28,appendtext,replacetext,32,visibility,33</commands>
                 <round>math</round>
                 <fixed>0.99</fixed>
                 <categories>1</categories>

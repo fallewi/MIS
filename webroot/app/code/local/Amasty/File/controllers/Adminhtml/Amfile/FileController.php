@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
 
@@ -10,8 +10,18 @@ class Amasty_File_Adminhtml_Amfile_FileController extends Mage_Adminhtml_Control
     public function downloadAction()
     {
         $fileId = $this->getRequest()->getParam('file_id');
-
-        Mage::helper('amfile')->giveFile($fileId);
+        $file = Mage::getModel("amfile/file")->load($fileId);
+        if (!$file->getId()) {
+            return $this->norouteAction();
+        }
+        $path = $file->getFullName();
+        if(!file_exists($path)) {
+            return $this->norouteAction();
+        }
+        $this->_prepareDownloadResponse($file->getFileName(), array(
+            'type'  => 'filename',
+            'value' => $path
+        ));
     }
 
     public function updateAction()

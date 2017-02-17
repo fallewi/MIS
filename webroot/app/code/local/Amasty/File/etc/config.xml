@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_File
  */
 -->
@@ -11,7 +11,7 @@
 
     <modules>
         <Amasty_File>
-            <version>1.6.8</version>
+            <version>1.7.1</version>
         </Amasty_File>
     </modules>
     
@@ -212,6 +212,11 @@
             <import>
                 <ftp_dir>/media/amfile/ftp</ftp_dir>
             </import>
+            <additional>
+                <default_file_visibility>0</default_file_visibility>
+                <detect_mime>0</detect_mime>
+                <grid_upload>0</grid_upload>
+            </additional>
         </amfile>
     </default>
 </config>

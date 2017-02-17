@@ -1,16 +1,15 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Filter_Category extends Mage_Adminhtml_Block_Widget_Grid_Column_Filter_Select
 {
     public function getCondition()
     {
-
         /**
-         * @var Mage_Catalog_Model_Product_Collection $collection
+         * @var Mage_Catalog_Model_Resource_Product_Collection $collection
          */
         $collection = Mage::registry('product_collection');
 
@@ -18,7 +17,27 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Filter_Category extends 
         {
             if ($this->getValue())
             {
-                $collection->addCategoryFilter(Mage::getModel('catalog/category')->load($this->getValue()));
+                $category = Mage::getModel('catalog/category')->load($this->getValue());
+                if (
+                    !Mage::helper('ambase')->isVersionLessThan(1, 7) &&
+                    Mage::getStoreConfig('ampgrid/additional/category_anchor') &&
+                    $category->getIsAnchor()
+                ){
+                    $categories = Mage::helper('ampgrid/category')->getChildrenCategories($category)->getAllIds();
+                    $categories[] = $this->getValue();
+                    $collection->joinField('category_id',
+                        'catalog/category_product',
+                        'category_id',
+                        'product_id=entity_id',
+                        null,
+                        'left'
+                    );
+                    $collection->addAttributeToFilter('category_id', array('in' => $categories));
+                    $collection->getSelect()
+                        ->group('e.entity_id');
+                } else {
+                    $collection->addCategoryFilter($category);
+                }
             }
         
             if (0 == $this->getValue() && strlen($this->getValue()) > 0)
@@ -34,6 +53,5 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Filter_Category extends 
 
             }
         }
-        return null;
     }
 }
