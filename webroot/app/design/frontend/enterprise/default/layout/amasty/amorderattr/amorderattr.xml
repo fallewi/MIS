@@ -2,13 +2,13 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 -->
 <layout>
     <checkout_onepage_index>
-        <reference name="head">            
+        <reference name="head">
             <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
             <action method="addItem"><type>js</type><name>calendar/calendar.js</name></action>
             <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name></action>
@@ -42,4 +42,15 @@
             <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml"/>
         </reference>
     </amscheckout_onepage_static>
+
+    <sales_order_view>
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/amasty/amorderattr/main.css</stylesheet></action>
+            <action method="addItem"><type>js</type><name>prototype/validation.js</name></action>
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name></action>
+            <action method="addItem"><type>js</type><name>amasty/amorderattr/linked.js</name></action>
+        </reference>
+    </sales_order_view>
 </layout>

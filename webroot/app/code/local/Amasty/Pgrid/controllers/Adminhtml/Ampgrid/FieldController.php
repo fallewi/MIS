@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Controller_Action
@@ -120,6 +120,32 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
             Mage::app()->cleanCache('catalog_product_'.$productId);
         }
     }
+
+    protected function _getNumeric($value)
+    {
+        $operator = null;
+
+        if (strpos($value, '+') !== false){
+            $operator = '+';
+        } else if (strpos($value, '-') !== false){
+            $operator = '-';
+        }
+
+        if ($operator){
+            $data = explode($operator, $value);
+            list($arg1, $arg2) = $data;
+            switch($operator){
+                case "+":
+                    $value = $arg1 + $arg2;
+                    break;
+                case "-":
+                    $value = $arg1 - $arg2;
+                    break;
+            }
+        }
+
+        return $value;
+    }
     
     protected function _updateProductData($productId, $field, $value)
     {
@@ -148,15 +174,7 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
                 if (isset($columnProps[$field]['format'])) {
                     switch ($columnProps[$field]['format']) {
                         case 'numeric':
-                            if (false !== strpos($value, '+') || false !== strpos($value, '-')) {
-                                $value = preg_replace('@[^0-9\.+-]@', '', $value);
-                                if (   strpos($value, '+') != (strlen($value) - 1)  &&  strpos($value, '-') != (strlen($value) - 1)  ) {
-                                    try {
-                                        $toEval = '$value = ' . $value . ';';
-                                        eval($toEval);
-                                    } catch (Exception $e) {}
-                                }
-                            }
+                            $value = $this->_getNumeric($value);
 
                             $symbol = Mage::app()->getLocale()->currency($this->_getStore()->getBaseCurrency()->getCode())->getSymbol();
 

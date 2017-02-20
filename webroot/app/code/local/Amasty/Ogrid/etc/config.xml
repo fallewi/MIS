@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 -->
 <config>
     <modules>
         <Amasty_Ogrid>
-            <version>1.9.4</version>
+            <version>1.9.5</version>
         </Amasty_Ogrid>
     </modules>
     

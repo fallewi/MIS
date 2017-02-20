@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Renderer_Related extends Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Renderer_Abstract
@@ -40,36 +40,5 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Renderer_Related extends
         }
         
         return $ret;
-        
-//        print$collection->getSelect();
-//        $categoriesHtml = '';
-//        $categories     = $row->getCategoryCollection()->addNameToResult();
-//        if ($categories)
-//        {
-//            foreach ($categories as $category)
-//            {
-//                $path        = '';
-//                $pathInStore = $category->getPathInStore();
-//                $pathIds     = array_reverse(explode(',', $pathInStore));
-//
-//                $categories = $category->getParentCategories();
-//
-//                foreach ($pathIds as $categoryId) {
-//                    if (isset($categories[$categoryId]) && $categories[$categoryId]->getName()) {
-//                        $path .= $categories[$categoryId]->getName() . '/';
-//                    }
-//                }
-//                
-//                if ($path)
-//                {
-//                    $path = substr($path, 0, -1);
-//                    $path = '<div style="font-size: 90%; margin-bottom: 8px; border-bottom: 1px dotted #bcbcbc;">' . $path . '</div>';
-//                }
-//                
-//                $categoriesHtml .= $path;
-//            }
-//        }
-//        return $categoriesHtml;
     }
 }
-?>

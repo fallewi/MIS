@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -94,7 +94,25 @@ class Amasty_Rolepermissions_Model_Rule extends Mage_Core_Model_Abstract
         $ruleConditions = array();
         $adapter = $this->getResource()->getReadConnection();
         $userId = Mage::getSingleton('admin/session')->getUser()->getId();
-        $collection->addAttributeToSelect('amrolepermissions_owner', 'left');
+
+        $isWyomindGenerate = false;
+        if (Mage::helper('core')->isModuleEnabled('Wyomind_Datafeedmanager')) {
+            $backTrace = debug_backtrace();
+            foreach ($backTrace as $step) {
+                if (isset($step['object'])) {
+                    if (get_class($step['object']) == 'Wyomind_Datafeedmanager_Model_Configurations' && $step['function'] == 'generateFile') {
+                        $isWyomindGenerate = true;
+                        break;
+                    }
+                }
+            }
+            $backTrace = NULL;
+        }
+
+        if (!$isWyomindGenerate) {
+            $collection->addAttributeToSelect('amrolepermissions_owner', 'left');
+        }
+
         $allowOwn = false;
 
         if ($this->getProducts()) {
@@ -111,13 +129,31 @@ class Amasty_Rolepermissions_Model_Rule extends Mage_Core_Model_Abstract
 
         if ($this->getCategories())
         {
-            $collection->getSelect()
-                ->joinLeft(
-                    array('cp' => $collection->getTable('catalog/category_product')),
-                    'cp.product_id = e.entity_id',
-                    array()
-                )
-            ;
+            if (Mage::app()->getRequest()->getActionName() == 'edit') {//if edit product
+                $collection->getSelect()
+                    ->joinLeft(
+                        array('cpsl' => $collection->getTable('catalog/product_super_link')),
+                        'cpsl.product_id = e.entity_id',
+                        array()
+                    )
+                ;
+
+                $collection->getSelect()
+                    ->joinLeft(
+                        array('cp' => $collection->getTable('catalog/category_product')),
+                        'cp.product_id = e.entity_id OR cp.product_id = cpsl.parent_id',
+                        array()
+                    )
+                ;
+            } else {
+                $collection->getSelect()
+                    ->joinLeft(
+                        array('cp' => $collection->getTable('catalog/category_product')),
+                        'cp.product_id = e.entity_id',
+                        array()
+                    )
+                ;
+            }
 
             $ruleConditions []= $adapter->quoteInto(
                 'cp.category_id IN (?)',

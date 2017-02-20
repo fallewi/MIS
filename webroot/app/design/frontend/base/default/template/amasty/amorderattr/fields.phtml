@@ -1,10 +1,13 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 ?>
+<?php //avoid duplication
+    if(!Mage::registry('onepage_repeated_data')) :?>
+<?php Mage::register('onepage_repeated_data', true)?>
 
 <style>
 #amorderattr .required
@@ -76,8 +79,34 @@
     amOrderattrConditionObj.check();
 </script>
 
+<script>
+    window.org_alert = window.alert; // save original function
+    window.alert = null; // disable alerts
+</script>
+
+<?php // ajax  strips <script> from response so populate it in advance
+$block = Mage::app()->getLayout()->createBlock('amorderattr/fields')->setStep('review');
+$elementsHtml = '';
+foreach ($block->getFormElements() as $element) {
+    $elementsHtml .= $element->toHtml();
+}
+$dom = new DOMDocument();
+$dom->loadHTML($elementsHtml);
+$scripts = $dom->getElementsByTagName('script');
+foreach ($scripts as $index => $row) {
+    echo '<script type="text/javascript">' . $row->nodeValue . '</script>';
+}
+?>
+
+<script>
+    window.alert = window.org_alert; //restore alerts
+</script>
+
+<?php endif; //end onepage repeated data?>
+
 
 <?php if ('review' == $this->getStep()):?>
+<?php Mage::unregister('onepage_repeated_data'); ?>
      <tr>
         <td colspan='4' id="td_review">
             <form id="form_review">

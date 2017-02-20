@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 -->
@@ -58,13 +58,79 @@
             <frontend_type>text</frontend_type>
             <sort_order>151801</sort_order>
             <show_in_default>1</show_in_default>
-            <show_in_website>0</show_in_website>
-            <show_in_store>0</show_in_store>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
             <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <default_format translate="label">
+                            <label>Use Datetime Format From Locale</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>affects date and datetime order attributes output</comment>
+                        </default_format>
+                        <datetime_format translate="label">
+                            <label>Datetime Format:</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <default_format>0</default_format>
+                            </depends>
+                            <comment><![CDATA[<a target="_blank" href="http://php.net/manual/en/datetime.formats.date.php">Format Examples</a>]]></comment>
+                        </datetime_format>
+                        <notify_admin translate="label,comment">
+                            <label>Send Email Notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>when Attributes are Changed by Customer</comment>
+                        </notify_admin>
+                        <email_to translate="label">
+                            <label>Email Recipient</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <notify_admin>1</notify_admin>
+                            </depends>
+                        </email_to>
+                        <email_template translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <notify_admin>1</notify_admin>
+                            </depends>
+                        </email_template>
+                    </fields>
+                </general>
                 <checkout translate="label">
                     <label>Checkout Settings</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>1</sort_order>
+                    <sort_order>20</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -95,7 +161,7 @@
                 <pdf translate="label">
                     <label>PDF Documents</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>20</sort_order>
+                    <sort_order>30</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
@@ -123,9 +189,9 @@
                 <invoices_shipments translate="label">
                     <label>Invoices and Shipments</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>25</sort_order>
+                    <sort_order>40</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
+                    <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
                         <invoice_grid translate="label">
@@ -169,9 +235,9 @@
                 <dropdowns_ajax translate="label">
                     <label>Dependent Drop-Downs</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>30</sort_order>
+                    <sort_order>50</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
+                    <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
                         <enabled translate="label">

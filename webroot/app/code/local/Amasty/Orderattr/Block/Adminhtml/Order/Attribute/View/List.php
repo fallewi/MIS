@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_View_List extends Mage_Adminhtml_Block_Template
@@ -102,13 +102,12 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_View_List extends Mage_Ad
                             $value = '';
                             break;
                         }
-                    	$format = Mage::app()->getLocale()->getDateTimeFormat(
-	                        Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM
-	                    );
 	                    if (!$value)
 	                    {
 	                        break;
 	                    }
+
+                        $format = Mage::helper('amorderattr')->getDateTimeFormat();
                     	if ('time' == $attribute->getNote())
                     	{
                     		$value = Mage::app()->getLocale()->date($value, Varien_Date::DATETIME_INTERNAL_FORMAT, null, false)->toString($format);
@@ -148,7 +147,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_View_List extends Mage_Ad
                         $value = $orderAttributes->getData($attribute->getAttributeCode());
                         if ($value) {
                             $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
-                            $url = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+                            $url = Mage::helper('amorderattr')->getDownloadFileUrl($this->_getOrderId(), $attribute->getAttributeCode());
                             if (file_exists($path)) {
                                 $pos = strrpos($value, "/");
                                 if ($pos) {

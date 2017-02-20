@@ -80,14 +80,18 @@ amLinkedFieldsAjax.prototype = {
                 if ('' != transport.responseText){ 
                     var data = transport.responseText.evalJSON(true);
                     $H(data[0]).each(function(pair) {
-                        optionElement = document.createElement('option');
-                        optionElement.value     =  pair.key;
-                        optionElement.text      =  pair.value;
-                        if ( pair.key == data[1]){
-                            optionElement.selected = true;
+                        var value = pair.value.value;
+                        var label = pair.value.label;
+                        if (typeof value !== 'undefined') {
+                            optionElement = document.createElement('option');
+                            optionElement.value = value;
+                            optionElement.text  = label;
+                            if (value == data[1]) {
+                                optionElement.selected = true;
+                            }
+                            optionElement.innerText =  label;
+                            $(this.childField).appendChild(optionElement);
                         }
-                        optionElement.innerText =  pair.value;
-                        $(this.childField).appendChild(optionElement);
                     }.bind(this));
                 }
                 else{

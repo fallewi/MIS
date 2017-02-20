@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mage_Adminhtml_Block_Widget_Form
@@ -235,11 +235,18 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
             'title' => Mage::helper('catalog')->__('Default value'),
             'value' => $model->getDefaultValue(),
         ));
-        
+
         $fieldset->addField('is_visible_on_front', 'select', array(
             'name'      => 'is_visible_on_front',
             'label'     => Mage::helper('catalog')->__('Visible on Front-end'),
             'title'     => Mage::helper('catalog')->__('Visible on Front-end'),
+            'values'    => $yesno,
+        ));
+
+        $fieldset->addField('is_editable_on_front', 'select', array(
+            'name'      => 'is_editable_on_front',
+            'label'     => Mage::helper('catalog')->__('Editable on Front-end'),
+            'title'     => Mage::helper('catalog')->__('Editable on Front-end'),
             'values'    => $yesno,
         ));
 
@@ -505,36 +512,45 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
 
         $this->setForm($form);
 
-        $dependencies = $this->getLayout()->createBlock('adminhtml/widget_form_element_dependence')
-            // Customer Groups
+        $dependencies = $this->getLayout()->createBlock('adminhtml/widget_form_element_dependence');
+        
+        $dependencies
             ->addFieldMap($groupEnabled->getHtmlId(), $groupEnabled->getName())
             ->addFieldMap($groups->getHtmlId(), $groups->getName())
             ->addFieldMap('show_on_grid','on_grid')
             ->addFieldMap('order_grid_after','grid_after')
+            ->addFieldMap('is_visible_on_front', 'is_visible_on_front')
+            ->addFieldMap('is_editable_on_front', 'is_editable_on_front')
             ->addFieldDependence(
                 $groups->getName(),
                 $groupEnabled->getName(),
                 '1'
             )
-            ->addFieldDependence('grid_after','on_grid','1');
-
-        $dependencies->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
+            ->addFieldDependence('grid_after','on_grid','1')
+            ->addFieldDependence('is_editable_on_front','is_visible_on_front','1');
+        
+        $dependencies
+            ->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
             ->addFieldMap($fileSizeField->getHtmlId(),$fileSizeField->getName())
             ->addFieldDependence($fileSizeField->getName(),$frontendInputField->getName(),'file');
-
-        $dependencies->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
+            
+        $dependencies
+            ->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
             ->addFieldMap($fileTypesField->getHtmlId(),$fileTypesField->getName())
             ->addFieldDependence($fileTypesField->getName(),$frontendInputField->getName(),'file');
-
-        $dependencies->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
-            ->addFieldMap($frontendClassField->getHtmlId(),$frontendClassField->getName())
-            ->addFieldDependence($frontendClassField->getName(),
-                $frontendInputField->getName(),
-                array('textarea', 'text')
-            );
-
+                
+        if (version_compare(Mage::getVersion(), '1.7.0.2', '>=')) { // Dependency from multiple values is not implemented.
+            $dependencies
+                ->addFieldMap($frontendInputField->getHtmlId(),$frontendInputField->getName())
+                ->addFieldMap($frontendClassField->getHtmlId(),$frontendClassField->getName())
+                ->addFieldDependence($frontendClassField->getName(),
+                    $frontendInputField->getName(),
+                    array('textarea', 'text')
+                );
+        }
+        
         $this->setChild('form_after', $dependencies);
-
+            
         return parent::_prepareForm();
     }
 

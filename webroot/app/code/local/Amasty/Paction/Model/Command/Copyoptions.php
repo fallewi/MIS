@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 class Amasty_Paction_Model_Command_Copyoptions extends Amasty_Paction_Model_Command_Abstract 
@@ -140,17 +140,7 @@ class Amasty_Paction_Model_Command_Copyoptions extends Amasty_Paction_Model_Comm
      */
     public function _convertToArray($option)
     {
-        $commonArgs = array(
-            'is_delete',
-            'previous_type',
-            'previous_group',
-            'title',
-            'type',
-            'is_require',
-            'sort_order',
-            //'description', // uncomment if the Aijko_CustomOptionDescription extension enabled
-            'values',
-        );
+        $commonArgs = $this->_getCommonArgs();
 
         $priceArgs = array(
             'price_type',
@@ -194,6 +184,31 @@ class Amasty_Paction_Model_Command_Copyoptions extends Amasty_Paction_Model_Comm
             }
         }
         
+        if (Mage::helper('core')->isModuleEnabled('Amasty_Groption')) {
+            $optionAsArray['customer_group'] = explode(',', $optionAsArray['customer_group']);
+        }
+        
         return $optionAsArray;
+    }
+    
+    protected function _getCommonArgs()
+    {
+        $commonArgs = array(
+            'is_delete',
+            'previous_type',
+            'previous_group',
+            'title',
+            'type',
+            'is_require',
+            'sort_order',
+            'values',
+        );
+        if (Mage::helper('core')->isModuleEnabled('Amasty_Groption')) {
+            $commonArgs[] = 'customer_group';
+        }
+        if (Mage::helper('core')->isModuleEnabled('Aijko_CustomOptionDescription')) {
+            $commonArgs[] = 'description';
+        }
+        return $commonArgs;
     }
 }

@@ -134,6 +134,8 @@ amPgrid.prototype = {
                     td.innerHTML = '';
                     td.appendChild(input);
                     var element = input;
+					element.focus();
+					element.selectionStart = element.value.length;
                     element.style.position = 'relative';
                     element.style.top = '-1px';
                     element.style.left = '-2px';

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_Observer
@@ -14,7 +14,8 @@ class Amasty_Orderattr_Model_Observer
                                      'EM_DeleteOrder_Block_Adminhtml_Sales_Order_Grid',
                                      'MageWorx_Adminhtml_Block_Orderspro_Sales_Order_Grid',
                                      'Excellence_Salesgrid_Block_Adminhtml_Sales_Order_Grid',
-                                     'AW_Ordertags_Block_Adminhtml_Sales_Order_Grid');
+                                     'AW_Ordertags_Block_Adminhtml_Sales_Order_Grid',
+                                     'Raveinfosys_Deleteorder_Block_Adminhtml_Sales_Order_Grid');
     
     protected function _prepareOrderAttributes()
     {
@@ -43,6 +44,9 @@ class Amasty_Orderattr_Model_Observer
         if(!Mage::registry('amorderattr_saved')){
             $this->_prepareOrderAttributes();
             $order = $observer->getOrder();
+            if (!$order->getId()) {
+                return false;
+            }
             $session = Mage::getSingleton('checkout/type_onepage')->getCheckout();
             $orderAttributes = $session->getAmastyOrderAttributes();
             $attributes = Mage::getModel('amorderattr/attribute');
@@ -60,8 +64,7 @@ class Amasty_Orderattr_Model_Observer
                 $attributesList = $collection->load();
                 
                 foreach ($attributesList as $attribute)
-                {
-                   
+                {                   
                     if ('checkboxes' == $attribute->getFrontend()->getInputType())
                     {
                        if (array_key_exists($attribute->getAttributeCode(), $orderAttributes)) {
@@ -123,8 +126,14 @@ class Amasty_Orderattr_Model_Observer
     {
         if (false !== strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order') && 'save' == Mage::app()->getRequest()->getActionName() && !Mage::registry('amorderattr_saved'))
         {
+            $session = Mage::getSingleton('checkout/type_onepage')->getCheckout();
+            $orderAttributes = $session->getAmastyOrderAttributes();
+
             $order = $observer->getOrder();
-            $orderAttributes = Mage::app()->getRequest()->getPost('amorderattr');
+            if (!$order->getId()) {
+                return false;
+            }
+            //$orderAttributes = Mage::app()->getRequest()->getPost('amorderattr');
             
             $attributes = Mage::getModel('amorderattr/attribute');
             $attributes->load($order->getId(), 'order_id');
@@ -142,6 +151,29 @@ class Amasty_Orderattr_Model_Observer
                         if (is_array($val)){
                            $val = implode(', ',$val);
                         }
+                        else {
+                            //for attribute type = file
+                            $dir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'tmp';
+                            $file = $dir . $val;
+                            if (file_exists($file) && $val) {
+                                try {
+                                    $newPath = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $val;
+                                    $pos = strrpos($newPath, "/");
+                                    if ($pos) {
+                                        $destinationDir = substr($newPath, 0, $pos);
+                                        if (!is_dir($destinationDir)) {
+                                            mkdir($destinationDir, 0755, true);
+                                        }
+                                    }
+                                    $result = rename(
+                                        $file, $newPath
+                                    );
+                                } catch (Exception $ex) {
+                                    $val = '';
+                                }
+                            }
+                        }
+
                         $attributes->setData($key, $val);
                     }
                 }
@@ -152,6 +184,8 @@ class Amasty_Orderattr_Model_Observer
             $attributes->save();
             Mage::register('amorderattr_saved', true, true);
             Mage::getSingleton('adminhtml/session')->setAmastyOrderAttributes(null);
+            $session->setAmastyOrderAttributes(array());
+            Mage::register('attributeClear',true, true);
         }
     }
     
@@ -441,8 +475,8 @@ class Amasty_Orderattr_Model_Observer
         if (false === strpos($html, 'BEGIN `Amasty: Order Attributes`')) {
             $list = Mage::app()->getLayout()->createBlock('amorderattr/adminhtml_order_attribute_view_list');
             if (false === strpos($html, 'BEGIN `Amasty: Delivery Date`')) {
-                $html = preg_replace('@<div class="entry-edit">(\s*)<div class="entry-edit-head">(\s*)(.*?)head-products@', 
-                                 $list->toHtml() .'<div class="entry-edit"><div class="entry-edit-head">$3head-products', $html, 1);
+                $html = preg_replace('@<div class="entry-edit">(\s*)<div class="entry-edit-head(.*?)">(\s*)(.*?)head-products@',
+                    $list->toHtml() .'<div class="entry-edit"><div class="entry-edit-head$2">$4head-products', $html, 1);
             } else {
                 $pos = strpos($html, '<!-- BEGIN `Amasty: Delivery Date` -->');
                 $html = substr_replace($html, $list->toHtml(), $pos-1, 0);

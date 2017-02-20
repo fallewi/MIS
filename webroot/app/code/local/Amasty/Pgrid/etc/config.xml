@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Pgrid
  */
 -->
 <config>
     <modules>
         <Amasty_Pgrid>
-            <version>4.12.13</version>
+            <version>4.12.18</version>
         </Amasty_Pgrid>
     </modules>
 
@@ -136,6 +136,7 @@
             
             <adminhtml>
                 <rewrite>
+                    <catalog_product>Amasty_Pgrid_Block_Adminhtml_Catalog_Product</catalog_product>
                     <catalog_product_grid>Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid</catalog_product_grid>
                     <catalog_category_tab_product>Amasty_Pgrid_Block_Adminhtml_Catalog_Category_Tab_Product</catalog_category_tab_product>
                 </rewrite>
@@ -143,49 +144,44 @@
         </blocks>
 
         <events>
+            <checkout_submit_all_after>
+                <observers>
+                    <ampgrid_qty_sold>
+                        <class>ampgrid/observer</class>
+                        <method>checkoutAllSubmitAfter</method>
+                    </ampgrid_qty_sold>
+                </observers>
+            </checkout_submit_all_after>
             <sales_model_service_quote_submit_success>
                 <observers>
                     <ampgrid_qty_sold>
-                        <class>Amasty_Pgrid_Model_Observer</class>
-                        <method>reindexQtySold</method>
+                        <class>ampgrid/observer</class>
+                        <method>reindexQuoteInventory</method>
                     </ampgrid_qty_sold>
                 </observers>
             </sales_model_service_quote_submit_success>
             <sales_order_creditmemo_save_after>
                 <observers>
                     <ampgrid_qty_sold>
-                        <class>Amasty_Pgrid_Model_Observer</class>
-                        <method>refundOrderInventory</method>
+                        <class>ampgrid/observer</class>
+                        <method>refundCreditmemoInventory</method>
                     </ampgrid_qty_sold>
                 </observers>
             </sales_order_creditmemo_save_after>
-            <admin_system_config_section_save_after>
-                <observers>
-                    <ampgrid_qty_sold>
-                        <class>Amasty_Pgrid_Model_Observer</class>
-                        <method>addNoticeIndex</method>
-                    </ampgrid_qty_sold>
-                </observers>
-            </admin_system_config_section_save_after>
         </events>
-
         <helpers>
             <ampgrid>
                 <class>Amasty_Pgrid_Helper</class>
             </ampgrid>
         </helpers>
-
         <index>
             <indexer>
-                <ampgrid_sold>
-                    <model>ampgrid/sold_indexer</model>
-                </ampgrid_sold>
+                <ampgrid_qty_sold>
+                    <model>ampgrid/indexer_qty</model>
+                </ampgrid_qty_sold>
             </indexer>
         </index>
-
     </global>
-    
-    
     <default>
         <ampgrid>
            <general>
@@ -215,6 +211,7 @@
                <thumb>1</thumb>
                <category>0</category>
                <category_filter>0</category_filter>
+			   <category_anchor>0</category_anchor>
                <special_price_dates>0</special_price_dates>
                <created_at>1</created_at>
                <qty_sold>1</qty_sold>

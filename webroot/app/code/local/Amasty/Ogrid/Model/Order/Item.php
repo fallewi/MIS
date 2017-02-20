@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Model_Order_Item extends Mage_Core_Model_Abstract
@@ -500,4 +500,3 @@ class Amasty_Ogrid_Model_Order_Item extends Mage_Core_Model_Abstract
         return $collection;
     }
 }
-?>

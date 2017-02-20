@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Rolepermissions
  */
 
@@ -39,7 +39,7 @@ class Amasty_Rolepermissions_Helper_Data extends Mage_Core_Helper_Abstract
             ->setRedirect($url)
             ->sendResponse();
 
-        exit(0);
+        Mage::helper('ambase/utils')->_exit(0);
     }
 
     public function restrictObjectByStores($data)

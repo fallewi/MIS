@@ -252,6 +252,9 @@ body:not(.customer-account) .block:first-child .block-title {
         line-height: 33px;
         margin-right: 5px;
     }
+    .banner-250x250 img{
+        margin:1em auto;
+    }
 }
 
 @include bp(max-width, $bp-medium) {
@@ -399,6 +402,19 @@ $button-padding: 17px 60px 16px;
     &:focus {
         background: $c-button-cart-active;
         outline: none;
+    }
+
+    &.small{
+        background-color: $white;
+        border:4px solid $c-button-cart;
+        color:#000;
+        font-size:2em;
+        margin:20px;
+        &:hover{
+            background-color: $c-button-cart-hover;
+            border:4px solid #000;
+            color: $white;
+        }
     }
 }
 
@@ -659,6 +675,9 @@ a.button:hover {
             display: none;
         }
     }
+  span {
+    color : $c-red;
+  }
 }
 
 .ie8 .breadcrumbs li{
@@ -673,10 +692,16 @@ a.button:hover {
     float: left;
     font-size: 13px;
     color: #002178;
+  span{
+    color: $brand-primary;
+  }
 }
 
 .breadcrumbs a:hover {
     color: $c-action;
+  span{
+    text-decoration: underline;
+  }
 }
 
 .breadcrumbs strong {
@@ -864,7 +889,7 @@ a.button:hover {
 
     .main,
     .footer-container {
-        padding: $trim;
+    padding: $trim-small $trim;
     }
 }
 
@@ -1113,6 +1138,24 @@ a.button:hover {
     text-transform: uppercase;
     font-family: $f-stack-special;
 }
+
+
+.banner-250x250{
+    img{
+        background-position: 0px 0px;
+        background-repeat: no-repeat;
+        height:250px;
+        margin:1em;
+        width:250px;
+    }
+    &:hover{
+        img{
+            background-position: -250px 0px;
+        }
+    }
+}
+
+
 
 /* -------------------------------------------- *
  * Grid

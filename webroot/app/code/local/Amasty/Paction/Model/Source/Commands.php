@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Paction
  */
 class Amasty_Paction_Model_Source_Commands
@@ -16,7 +16,8 @@ class Amasty_Paction_Model_Source_Commands
         '', 'changeattributeset',
         '', 'delete',
         '', 'appendtext', 'replacetext',
-        ''
+        '', 'visibility',
+        '',
     );
 
     public function toOptionArray()

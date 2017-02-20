@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Grid_Renderer_File extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Text
@@ -9,9 +9,11 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Grid_Renderer_File extends Mage_Adm
     public function render(Varien_Object $row)
     {
         $value = $this->_getValue($row);
+
         if ($value) {
             $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
-            $url  = Mage::getBaseUrl('media') . 'amorderattr' . DS . 'original' . $value;
+            $url = Mage::helper('amorderattr')->getDownloadFileUrl($row->getEntityId(), $this->getColumn()->getIndex());
+
             if (file_exists($path)) {
                 $pos = strrpos($value, "/");
                 if ($pos) {

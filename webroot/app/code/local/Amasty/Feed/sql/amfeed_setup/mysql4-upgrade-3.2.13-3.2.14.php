@@ -1,7 +1,7 @@
 <?php
     /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
     $installer = $this;
@@ -14,4 +14,3 @@
         `csv_delimiter` = '" . ord("\t") . "'
         where title= 'Bing.com';
     ");
-?>

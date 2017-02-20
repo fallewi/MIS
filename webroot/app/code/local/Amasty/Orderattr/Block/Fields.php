@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template        
@@ -9,9 +9,13 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
     protected $_entityTypeId; 
     
     protected $_formElements = array();
+
+    protected $_attributeCollection = array();
     
     protected $_requiredCheckboxes = array();
-    
+
+    protected $_requiredRadios = array();
+
     protected $_step;
     
     protected $_attributeCode;
@@ -50,6 +54,9 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
     {
         switch ($this->getStep())
         {
+            case 'frontend_edit':
+                return -1;
+            break;
             case 'billing':
                 return 2;
             break;
@@ -70,29 +77,40 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
             break;
         }
     }
-    
+
+    public function getAttributeCollection()
+    {
+        if ($this->_attributeCollection) {
+            return $this->_attributeCollection;
+        }
+
+        $collection = Mage::getModel('eav/entity_attribute')->getCollection();
+        $collection->addFieldToFilter('is_visible_on_front', 1);
+        $collection->addFieldToFilter('entity_type_id', $this->_entityTypeId);
+
+        if ($this->getStepCode() > 0){
+            $collection->addFieldToFilter('checkout_step', $this->getStepCode());
+        } elseif ($this->getStepCode() == -1){
+            $collection->addFieldToFilter('is_editable_on_front', 1);
+        }
+
+        if ($this->getAttributeCode()){
+            $collection->addFieldToFilter('attribute_code', $this->getAttributeCode());
+        }
+        $collection->getSelect()->order('sorting_order');
+
+        $this->_attributeCollection =  $collection->load();
+        return $this->_attributeCollection;
+
+    }
     public function getFormElements()
     {
         if ($this->_formElements)
         {
             return $this->_formElements;
         }
-        
-        $collection = Mage::getModel('eav/entity_attribute')->getCollection();        
-        $collection->addFieldToFilter('is_visible_on_front', 1);
-        $collection->addFieldToFilter('entity_type_id', $this->_entityTypeId);
-        
-        if ($this->getStepCode() > 0){
-        $collection->addFieldToFilter('checkout_step', $this->getStepCode());
-        }
-        
-        if ($this->getAttributeCode()){
-            $collection->addFieldToFilter('attribute_code', $this->getAttributeCode());
-        }
-        
-        $collection->getSelect()->order('sorting_order');
-          
-        $attributes = $collection->load();
+
+        $attributes = $this->getAttributeCollection();
 
         $form = new Varien_Data_Form();
         $fieldset = $form->addFieldset('amorderattr', array());
@@ -100,7 +118,7 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
 
         $currentStore = Mage::app()->getStore()->getId();
         $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
-
+        
         foreach ($attributes as $attribute)
         {
             $storeIds = explode(',', $attribute->getData('store_ids'));
@@ -131,7 +149,7 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
                 $fieldName = 'amorderattr[' . $attribute->getAttributeCode(). ']';
                                     
                 // default_value
-                $attributeValue = Mage::helper('amorderattr')->getAttributeValue($attribute);
+                $attributeValue = Mage::helper('amorderattr')->getAttributeValue($attribute, $this->getOrder());
                 
                 // applying translations
                 $translations = $attribute->getStoreLabels();
@@ -211,12 +229,40 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
                 }
                 if( 'radios' == $inputType){
                     if ($required) {
-                        $this->_requiredCheckboxes[] = $attribute->getAttributeCode();
-                        $elementOptions['class'] = ' validate-checkboxgroup-required';
+                        $this->_requiredRadios[] = $attribute->getAttributeCode();
+                        $elementOptions['class'] .= ' validate-one-required-by-name';
                     }
 
                     $elementOptions['name'] .= '[]';
                     $elementOptions['values'] = $options;
+                }
+                if ( 'file' == $inputType && $this->getStepCode() == -1 && $this->getOrder()) {
+                    $orderData = Mage::getModel('amorderattr/attribute')
+                        ->load($this->getOrder()->getId(), 'order_id');
+                    if (isset($orderData[$attribute->getAttributeCode()])) {
+                        $value = $orderData[$attribute->getAttributeCode()];
+                        if ($value) {
+                            $afterElementHtml .= $this->__('Uploaded file: ');
+                            $path = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'original' . $value;
+                            $url = Mage::helper('amorderattr')->getDownloadFileUrl($orderData['order_id'], $attribute->getAttributeCode());
+                            if (file_exists($path)) {
+                                $pos = strrpos($value, "/");
+                                if ($pos) {
+                                    $value = substr($value, $pos + 1, strlen($value));
+                                }
+                                $value = '<a href="' . $url . '" download target="_blank">' . $value . '</a>';
+                                if ($elementOptions['required'] == 0) {
+                                    $value .= '<span style="padding-left: 20px">' . $this->__('Delete') . ' </span>'
+                                       . '<input type="checkbox" value="1" name="amorderattr_delete[' . $attribute->getAttributeCode() . ']">';
+                                }
+                                $elementOptions['required'] = 0;
+                                $elementOptions['class'] = str_replace('required-entry', '', $elementOptions['class']);
+                            } else {
+                                $value = $this->__('none.');
+                            }
+                            $afterElementHtml .= $value . '<br>';
+                        }
+                    }
                 }
                 else {
                      $afterElementHtml .= '<div style="padding: 4px;"></div>';
@@ -342,6 +388,11 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
                  $pattern = '/(input id="'.$value.'_[0-9]*")/';
                  $replacement = '${1} class="validate-checkboxgroup-required"';
                  $html = preg_replace($pattern, $replacement, $html);
+        }
+        foreach ($this->_requiredRadios as $key=>$value) {
+            $pattern = '/(input id="'.$value.'_[0-9]*")/';
+            $replacement = '${1} class="validate-one-required-by-name"';
+            $html = preg_replace($pattern, $replacement, $html, 1);
         }
 
         $html = str_replace('type="file"', 'type="file" onchange="amFileUploaderObject.sendFileWithAjax(this)"', $html);
