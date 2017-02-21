@@ -27,9 +27,9 @@ class BlueAcorn_CsvExport_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**Used to send
      * @param $fileName
-     * @param null $manualFlag
+     * @param $manualFlag
      */
-    public function sendMail($newFileName, $manualFlag = null)
+    public function sendMail($newFileName, $manualFlag)
     {
         $directory = (string)$this->getFileLocation();
         $path = Mage::getBaseDir('var') . DS . $directory;
@@ -40,7 +40,7 @@ class BlueAcorn_CsvExport_Helper_Data extends Mage_Core_Helper_Abstract
         $mailBody = $this->getEmailBody();
         $mailSubject = $this->getEmailSubject();
 
-        if($manualFlag && $this->sendManEmail()){
+        if((boolean)$manualFlag && $this->sendManEmail()){
             $recipients[$this->getManualEmailName()] = $this->getManualEmailAddress();
         }
         else{
@@ -66,7 +66,7 @@ class BlueAcorn_CsvExport_Helper_Data extends Mage_Core_Helper_Abstract
             );
 
             $mail->send();
-            if($manualFlag){
+            if((boolean)$manualFlag){
                 Mage::getSingleton('core/session')->addSuccess('The Marketing CSV was sent to ' . $this->getManualEmailAddress());
             }
         } catch (Exception $e) {
