@@ -133,7 +133,7 @@
                     <fields>
                         <from_datetime>
                             <label>From Date</label>
-                            <comment>Start time is 5:00pm</comment>
+                            <comment>Start time is 12:00am</comment>
                             <frontend_type>text</frontend_type>
                             <frontend_model>blueacorn_csvexport/adminhtml_system_config_date</frontend_model>
                             <sort_order>10</sort_order>
@@ -143,7 +143,7 @@
                         </from_datetime>
                         <to_datetime>
                             <label>To Date</label>
-                            <comment>End time is 4:59:59pm</comment>
+                            <comment>End time is 11:59:59pm</comment>
                             <frontend_type>text</frontend_type>
                             <frontend_model>blueacorn_csvexport/adminhtml_system_config_date</frontend_model>
                             <sort_order>20</sort_order>
