@@ -15,7 +15,8 @@ class BlueAcorn_CsvExport_Adminhtml_MarketingController extends Mage_Adminhtml_C
     {
         $helper = Mage::helper('blueacorn_csvexport');
         if ($helper->isEnabled()) {
-            Mage::getModel('blueacorn_csvexport/observer')->createMarketingCsv(true);
+            Mage::getSingleton('core/session')->setManualRunFlag(1);
+            Mage::getModel('blueacorn_csvexport/observer')->createMarketingCsv();
             $this->_redirectReferer();
         } else {
             Mage::getSingleton('core/session')->addError("The Blue Acorn Automated Marketing CSV module is not enabled");
