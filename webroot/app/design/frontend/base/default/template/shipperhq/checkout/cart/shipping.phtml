@@ -108,6 +108,13 @@
                         <label for="inside_delivery"><?php echo $this->__('Inside Delivery?') ?></label>
                     </div>
                 <?php endif; ?>
+                <?php if ($this->helper('shipperhq_freight')->isLimitedDeliveryEnabled()): ?>
+                    <div class="a-left input-checkbox">
+                        <input type="checkbox" name="limited_delivery" id="limited_delivery"
+                               value="1" <?php if ($this->helper('shipperhq_freight')->getLimitedDelivery()): ?> checked="checked"<?php endif; ?> />
+                        <label for="limited_delivery"><?php echo $this->__('Limited Access Delivery?') ?></label>
+                    </div>
+                <?php endif; ?>
             <?php else: ?>
                 </ul>
             <?php endif; ?>

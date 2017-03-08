@@ -57,29 +57,21 @@ class Shipperhq_Freight_Model_Observer extends Mage_Core_Model_Abstract
 
     }
 
-    /*
-     * Set selected options
-     */
-    public function saveOptionsSelected($observer)
+    public function saveShippingOptionsSelected($observer)
     {
-        $shippingmethod = $observer->getEvent()->getRequest()->getParam('shipping_method');
-        if($shippingmethod == '' || is_null($shippingmethod)
-            || !Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Freight')) {
-            return;
-        }
+        $shippingmethod = $observer->getShippingMethod();
+        $shippingAddress = $observer->getShippingAddress();
+        $params = $observer->getParams();
+        $carrierGroupInfo = $shippingAddress->getCarriergroupShippingDetails();
+        $carrierGroupShippingDetail = Mage::helper('shipperhq_shipper')->decodeShippingDetails($carrierGroupInfo);
 
-        $shippingAddress = $observer->getEvent()->getQuote()->getShippingAddress();
-        $params = $observer->getEvent()->getRequest()->getParams();
-        $options = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
-        $carrierCodeSplit = explode('_', $shippingmethod);
-        $carrierCode = $carrierCodeSplit[0];
-        foreach($options as $optionCode) {
-            if (array_key_exists($optionCode  .'_' .$carrierCode, $params)) {
-                $shippingAddress->setData($optionCode, $params[$optionCode  .'_' .$carrierCode]);
-            }
-        }
+        //SHQ16-1605
+        $this->saveAccessorialsToCarrierGroupData($carrierGroupShippingDetail,
+            $shippingmethod, $params);
+
+        $encodedDetails = Mage::helper('shipperhq_shipper')->encodeShippingDetails($carrierGroupShippingDetail);
+        $shippingAddress->setCarriergroupShippingDetails($encodedDetails);
         $shippingAddress->save();
-
     }
 
     public function saveOptionsSelectedInAdmin($observer)
@@ -99,6 +91,13 @@ class Shipperhq_Freight_Model_Observer extends Mage_Core_Model_Abstract
             $shippingmethod = $orderData['shipping_method'];
             $quote = $observer->getOrderCreateModel();
             $shippingAddress = $quote->getShippingAddress();
+            //SHQ16-1605
+            $carrierGroupInfo = $shippingAddress->getCarriergroupShippingDetails();
+            $carrierGroupShippingDetail = Mage::helper('shipperhq_shipper')->decodeShippingDetails($carrierGroupInfo);
+            $this->saveAccessorialsToCarrierGroupData($carrierGroupShippingDetail,
+                $shippingmethod, $orderData);
+            $encodedDetails = Mage::helper('shipperhq_shipper')->encodeShippingDetails($carrierGroupShippingDetail);
+            $shippingAddress->setCarriergroupShippingDetails($encodedDetails);
 
             $options = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
             $carrierCodeSplit = explode('_', $shippingmethod);
@@ -137,19 +136,17 @@ class Shipperhq_Freight_Model_Observer extends Mage_Core_Model_Abstract
             ->setRegionId($regionId)
             ->setRegion($region)
             ->setCollectShippingRates(true);
-        if(isset($params['liftgate_required'])) {
-            $shipAddress->setLiftgateRequired((string)$params['liftgate_required']);
+
+        $selectedFreightOptions = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getSelectedFreightCarrier();
+        $allAccessorials = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
+        foreach($allAccessorials as $accessorial_code) {
+            $value = array_key_exists($accessorial_code, $params) ? $params[$accessorial_code] : null;
+            if(!is_null($value)) {
+                $selectedFreightOptions[$accessorial_code] = $value;
+                $shipAddress->setData($accessorial_code, $value);
+            }
         }
-        if(isset($params['notify_required'])) {
-            $shipAddress->setNotifyRequired((string)$params['notify_required']);
-        }
-        if(isset($params['inside_delivery'])) {
-            $shipAddress->setInsideDelivery((string)$params['inside_delivery']);
-        }
-        if(isset($params['destination_type'])) {
-            $shipAddress->setDestinationType((string)$params['destination_type']);
-        }
-        $this->getQuote()->getShippingAddress()->save();
+        Mage::helper('shipperhq_shipper')->getQuoteStorage()->setSelectedFreightCarrier($selectedFreightOptions);
     }
 
     protected function getQuote()
@@ -171,5 +168,40 @@ class Shipperhq_Freight_Model_Observer extends Mage_Core_Model_Abstract
     {
         return $this->_getAdminSession()->getQuote();
     }*/
+
+  protected function saveAccessorialsToCarrierGroupData(&$carrierGroupShippingDetail, $shippingmethod, $params)
+  {
+      $options = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
+      $carrierCodeSplit = explode('_', $shippingmethod);
+      $carrierCode = $carrierCodeSplit[0];
+
+      foreach($carrierGroupShippingDetail as $key => $shipDetail) {
+          //SHQ16-1605 handle merged rates accessorials
+          if ($carrierCode == 'multicarrier') {
+              $subcarriercode = $shipDetail['carrier_code'];
+              $carrierGroupAccessorials = Mage::helper('shipperhq_freight')->getFreightAccessorials(
+                  $shipDetail['carrierGroupId'], $subcarriercode);
+              if ($carrierGroupAccessorials) {
+                  foreach ($carrierGroupAccessorials as $accessorial) {
+                      if (isset($params[$accessorial['code'] . '_' . $carrierCode])) {
+                          $shipDetail[$accessorial['code']] = $params[$accessorial['code'] . '_' . $carrierCode];
+                      }
+                  }
+              }
+          }
+          else {
+              if($shipDetail['carrier_code'] != $carrierCode) {
+                  continue;
+              }
+              foreach($options as $optionCode) {
+                  if(isset($params[$optionCode .'_' .$carrierCode])) {
+                      $shipDetail[$optionCode] = $params[$optionCode .'_' .$carrierCode];
+                  }
+
+              }
+          }
+          $carrierGroupShippingDetail[$key] = $shipDetail;
+      }
+  }
 
 }

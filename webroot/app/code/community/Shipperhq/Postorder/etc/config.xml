@@ -92,6 +92,7 @@
                     </shipperhq_postorder_adminhtml_shipment_grid_before_observer>
                 </observers>
             </sales_order_shipment_grid_collection_load_before>
+
         </events>
         <resources>
             <shipperhq_postorder_setup>
@@ -148,5 +149,16 @@
                 </Shipperhq_Postorder>
             </modules>
         </translate>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <shipperhq_test>
+                        <type>singleton</type>
+                        <class>shipperhq_postorder/observer</class>
+                        <method>insertAdminBlock</method>
+                    </shipperhq_test>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
     </adminhtml>
 </config>

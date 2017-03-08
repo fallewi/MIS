@@ -235,6 +235,10 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
      */
     public function getAllShippingMethods()
     {
+        //SHQ16-1708
+        Mage::helper('shipperhq_shipper')->saveConfig(
+            Shipperhq_Shipper_Helper_Data::SHIPPERHQ_INVALID_CREDENTIALS_SUPPLIED,
+            0);
         $ourCarrierCode = $this->getId();
         $result = array();
         $allowedMethods = array();
@@ -282,6 +286,13 @@ class Shipperhq_Shipper_Model_Carrier_Shipper
                 }
                 elseif(isset($anError->externalErrorMessage) && $anError->externalErrorMessage != '') {
                     $error .=  ' ' .$anError->externalErrorMessage;
+                }
+
+                //SHQ16-1708
+                if(isset($anError->errorCode) && $anError->errorCode == '3') {
+                    Mage::helper('shipperhq_shipper')->saveConfig(
+                    Shipperhq_Shipper_Helper_Data::SHIPPERHQ_INVALID_CREDENTIALS_SUPPLIED,
+                        1);
                 }
             }
             $result['result'] = false;

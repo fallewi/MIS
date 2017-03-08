@@ -32,7 +32,7 @@
 <config>
     <modules>
         <Shipperhq_Freight>
-            <version>0.0.9</version>
+            <version>0.0.10</version>
         </Shipperhq_Freight>
     </modules>
     <global>
@@ -76,14 +76,14 @@
                     </shipperhq_splitrates_onestepcheckout_ajax_setmethodsseparate>
                 </observers>
             </controller_action_predispatch_onestepcheckout_ajax_set_methods_separate -->
-            <checkout_controller_onepage_save_shipping_method>
+            <shipperhq_save_shipping_method>
                 <observers>
-                    <shipperhq_freight_save_shipping_method_observer>
+                    <shipperhq_freight_shq_save_shipping_method_observer>
                         <class>shipperhq_freight/observer</class>
-                        <method>saveOptionsSelected</method>
-                    </shipperhq_freight_save_shipping_method_observer>
+                        <method>saveShippingOptionsSelected</method>
+                    </shipperhq_freight_shq_save_shipping_method_observer>
                 </observers>
-            </checkout_controller_onepage_save_shipping_method>
+            </shipperhq_save_shipping_method>
            <adminhtml_sales_order_create_process_data>
                 <observers>
                     <shipperhq_freight_save_shipping_method_admin_observer>
@@ -115,6 +115,9 @@
                 <inside_delivery>
                     <to_order>*</to_order>
                 </inside_delivery>
+                <limited_delivery>
+                    <to_order>*</to_order>
+                </limited_delivery>
                 <destination_type>
                     <to_order>*</to_order>
                 </destination_type>
@@ -138,6 +141,9 @@
                 <inside_delivery>
                     <to_quote_address_shipping>*</to_quote_address_shipping>
                 </inside_delivery>
+                <limited_delivery>
+                    <to_quote_address_shipping>*</to_quote_address_shipping>
+                </limited_delivery>
                 <liftgate_required>
                     <to_quote_address_shipping>*</to_quote_address_shipping>
                 </liftgate_required>
