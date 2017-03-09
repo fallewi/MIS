@@ -39,7 +39,7 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_accessorials;
 
     protected $_allOptions = array('liftgate_required', 'inside_delivery', 'destination_type', 'notify_required',
-                                    'customer_carrier', 'customer_carrier_ph', 'customer_carrier_account');
+                                    'customer_carrier', 'customer_carrier_ph', 'customer_carrier_account',  'limited_delivery');
     protected $_allNamedOptions = array(
         'liftgate_required' => 'Liftgate Required',
         'inside_delivery' => 'Inside Delivery',
@@ -47,7 +47,8 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
         'notify_required' => 'Notify Required',
         'customer_carrier' => 'Customer Carrier',
         'customer_carrier_ph' => 'Customer Carrier Phone',
-        'customer_carrier_account' => 'Customer Carrier Account Number');
+        'customer_carrier_account' => 'Customer Carrier Account Number',
+        'limited_delivery' => 'Limited Access for Delivery');
 
     protected static $CUSTOMERACCOUNTCARRIERTYPE = 'customerAccount';
 
@@ -150,6 +151,16 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
         return $carrierType == self::$CUSTOMERACCOUNTCARRIERTYPE;
     }
 
+    public function isLimitedDeliveryEnabled($carrierGroupId = null, $carrierCode = null)
+    {
+        return $this->isAccessorialEnabled('limited_delivery', $carrierGroupId, $carrierCode);
+    }
+
+    public function getLimitedDelivery($carrierGroupId = null, $carrierCode = null)
+    {
+        return $this->getOptionValue('limited_delivery', $carrierGroupId, $carrierCode);
+    }
+
     public function isAccessorialEnabled($accessorialCode, $carrierGroupId = null, $carrierCode = null)
     {
         $accessorials = $this->getFreightAccessorials($carrierGroupId, $carrierCode);
@@ -192,7 +203,10 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
                 $storedAccessorials = $this->getFreightAccessorials(
                     $selectedFreightOptions['carriergroup_id'],$selectedFreightOptions['carrier_code'] );
                 if($storedAccessorials && array_key_exists('carrier_id', $storedAccessorials)) {
-                    $request->setCarrierId($storedAccessorials['carrier_id']);
+                    if($selectedFreightOptions['carrier_code'] != 'multicarrier') //SHQ16-1605 don't specify a carrier when its merged rates
+                    {
+                        $request->setCarrierId($storedAccessorials['carrier_id']);
+                    }
                 }
                 $request->setCarriergroupId($selectedFreightOptions['carriergroup_id']);
             }
@@ -209,7 +223,13 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->_allNamedOptions;
     }
 
-    protected function getFreightAccessorials($carrierGroupId = null, $carrierCode = null)
+    public function isFreightEnabledMergedRate($carrierCode)
+    {
+        $accessorials = $this->getFreightAccessorials('', $carrierCode);
+        return count($accessorials) > 0;
+    }
+
+    public function getFreightAccessorials($carrierGroupId = null, $carrierCode = null)
     {
         $storedAcc = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getFreightAccessorials();
         $acc = false;
@@ -224,12 +244,14 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
                 && array_key_exists($carrierCode, $storedAcc[$carrierGroupId])) {
                 $carrierAcc = $storedAcc[$carrierGroupId][$carrierCode];
                 $acc = array();
-                $acc['carrier_id'] = array_key_exists('carrier_id', $carrierAcc) ? $carrierAcc['carrier_id'] : false;
                 foreach ($carrierAcc as $accessorial) {
                     $accessorialArray = (array)$accessorial;
                     if(array_key_exists('code', $accessorialArray))  {
                         $acc[$accessorialArray['code']] = $accessorialArray;
                     }
+                }
+                if(count($acc) > 0) {
+                    $acc['carrier_id'] = array_key_exists('carrier_id', $carrierAcc) ? $carrierAcc['carrier_id'] : false;
                 }
             }
         }

@@ -103,10 +103,10 @@ class Shipperhq_Freight_Model_Service_Accessorials
             }
             return false;
         }
+        $availableOptions = array();
 
         if(isset($response->carrierGroups)) {
             $carrierGroups = $response->carrierGroups;
-            $availableOptions = array();
             $single = count($carrierGroups) == 1;
             foreach($carrierGroups as $carrierGroup)
             {
@@ -122,11 +122,33 @@ class Shipperhq_Freight_Model_Service_Accessorials
                     }
                 }
             }
-            if(count($availableOptions) > 0) {
-                $result = $availableOptions;
-            }
         }
 
+        //SHQ16-1605 merged rates
+        if(isset($response->mergedRateResponse)) {
+            foreach($response->mergedRateResponse->carrierRates as $carrierRate) {
+                if (isset($carrierRate->rates)) {
+                    foreach ($carrierRate->rates as $oneRate) {
+                        $options = array();
+                        if (isset($oneRate->rateBreakdownList)) {
+                            $rateBreakdown = $oneRate->rateBreakdownList;
+                            foreach ($rateBreakdown as $rateInMergedRate) {
+                                if (array_key_exists($rateInMergedRate->carrierGroupId, $availableOptions)) {
+                                    if (array_key_exists($rateInMergedRate->carrierCode, $availableOptions[$rateInMergedRate->carrierGroupId])) {
+                                        $options = array_merge($options, $availableOptions[$rateInMergedRate->carrierGroupId][$rateInMergedRate->carrierCode]);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    $availableOptions[0][$carrierRate->carrierCode] = $options;
+                }
+            }
+        }
+        if(count($availableOptions) > 0) {
+            $result = $availableOptions;
+        }
         return $result;
     }
 
@@ -198,9 +220,15 @@ class Shipperhq_Freight_Model_Service_Accessorials
         $allAccessorials = Mage::helper('shipperhq_freight')->getAllPossibleOptions();
         $address = $quote->getShippingAddress();
         $billingAddress = $quote->getBillingAddress();
+        //SHQ16-1605
+        $selectedFreightOptions = array('carriergroup_id' => $requestCarrierGroup,
+            'carrier_code' => $requestedCode);
         foreach ($allAccessorials as $accessorial_code) {
             $value = array_key_exists($accessorial_code, $params) ? $params[$accessorial_code] : null;
             $this->cacheSelectedAccessorialValue($accessorial_code, $requestCarrierGroup, $requestedCode, $value);
+            if(!is_null($value)) {
+                $selectedFreightOptions[$accessorial_code] = $value;
+            }
             if ($accessorial_code == 'destination_type') {
                 $billingAddress->setDestinationType($value);
                 $address->setDestinationType($value);
@@ -215,8 +243,6 @@ class Shipperhq_Freight_Model_Service_Accessorials
             }
         }
 
-        $selectedFreightOptions = array('carriergroup_id' => $requestCarrierGroup,
-            'carrier_code' => $requestedCode);
         Mage::helper('shipperhq_shipper')->getQuoteStorage()->setSelectedFreightCarrier($selectedFreightOptions);
 
         //SHQ16-1726 explicitly add selected date if present to request

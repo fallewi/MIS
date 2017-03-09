@@ -55,13 +55,13 @@
         <div class="shq-title" id="calendar_date_label<?php echo $carrierCodeInsert. $carriergroupInsert; ?>">
             <label for="del_date_select" id="del_date_select_label<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" class="shq-title">
                 <?php echo $this->__('Choose Delivery Date') ?>
-	            <span class="shq-ico-calendar"></span>
+                <span class="shq-ico-calendar"></span>
             </label>
         </div>
         <div class="shq-input">
             <label id="del_date_report<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" class="shq-input">
                 <input type="text" class="shq-input datepickercalendar" readonly="readonly" value="" id="del_date_select<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" name="del_date<?php echo $carrierCodeInsert . $carriergroupInsert;?>" />
-	            <span class="shq-ico-calendar shq-ico-r"></span>
+                <span class="shq-ico-calendar shq-ico-r"></span>
             </label>
         </div>
     </div>
@@ -70,7 +70,7 @@
         <div class="shq-title">
             <label for="del_slot_select" id="del_slot_select_label<?php echo $carrierCodeInsert. $carriergroupInsert; ?>" class="shq-title shq-input">
                 <?php echo $this->__('Choose Delivery Time') ?>
-	            <span class="shq-ico-clock"></span>
+                <span class="shq-ico-clock"></span>
             </label>
         </div>
         <div class="shq-input">
@@ -229,7 +229,7 @@
                             $j('#del_date_select'+ carrierCodeInsert + carriergroupInsert).datepicker('setDate', selectedDate);
                         }
                         else {
-                        //    $j('#del_date_select'+ carrierCodeInsert + carriergroupInsert).datepicker('setDate', minDate);
+                            //    $j('#del_date_select'+ carrierCodeInsert + carriergroupInsert).datepicker('setDate', minDate);
                         }
                         $j('#del_date_select'+carrierCodeInsert + carriergroupInsert).datepicker( "option", "minDate", minDate );
                         $j('#del_date_select'+carrierCodeInsert + carriergroupInsert).datepicker( "option", "maxDate", maxDate );
@@ -413,6 +413,7 @@
                         $('ship_options'+carriergroupInsert + "_" + carrierCode).insert(radOptions);
                         var radioText ='';
                         checkedFlag = false;
+                        var count = 0;
                         for (code in data) {
                             if(code == selectedMethod) {
                                 checkedFlag = true;
@@ -427,12 +428,17 @@
                     <label for="s_method_'+addressId+'_'+code+'">'+element.label+'</label></li>';
                             }
                             radioText += radioIndText;
+                            count++;
 
                         }
+
                         $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML=radioText;
                         for(code in data)
                         {
                             var el = document.getElementById('s_method_'+addressId+'_'+code);
+                            if(count == 1) {
+                                el.checked = true;
+                            }
                             el.addEventListener("click", shippingMethodEvent, false);
                         }
                     }
@@ -465,6 +471,7 @@
                         $('ship_options'+carriergroupInsert + "_" + carrierCode).insert(radOptions);
                         var radioText ='';
                         checkedFlag = false;
+                        var count = 0;
                         for (code in data) {
                             if(code == selectedMethod) {
                                 checkedFlag = true;
@@ -491,6 +498,7 @@
                                 }
                             }
                             radioText += radioIndText;
+                            count++;
                         }
                         $('radio_choices'+carriergroupInsert + "_" + carrierCode).innerHTML=radioText;
 
@@ -501,6 +509,9 @@
                                 el.addEventListener("click", shippingMethodChosenEvent, false);
                             }
                             el.addEventListener("click", shippingMethodEvent, false);
+                            if(count == 1) {
+                                el.checked = true;
+                            }
                         }
                         if(is_osc) {
                             var url = '<?php echo $this->getUrl('onestepcheckout/ajax/set_methods_separate', array('_secure'=>true)); ?>';
@@ -650,13 +661,14 @@
                     var methodCarriergroupId = lastPartMethodName.substr(0, indexOfWarehouseEnd);
                     var multipleCheckout = document.getElementsByClassName("multiple-checkout");
                     var carriergroupId = methodCarriergroupId;
+                    var splitSGroup = methodCarriergroupId.indexOf('XXXX');
                     if(multipleCheckout.length > 0) {
                         var carriergroupInsert = '_'+ 'ma'+ methodCarriergroupId;
                         var methodCarriergroupId = 'ma'+ methodCarriergroupId;
 
                     }
                     else {
-                        if (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId))) {
+                        if (splitSGroup < 1 && (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId)))) {
                             var carriergroupInsert = '';
                             carriergroupId = '';
                             var methodCarriergroupId = '';

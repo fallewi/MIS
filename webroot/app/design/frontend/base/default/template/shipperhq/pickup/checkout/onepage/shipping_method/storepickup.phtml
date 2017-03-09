@@ -515,7 +515,14 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 var parameters = {
                     shipping_method: shipping_method,
                     payment_method: payment_method
+                };
+
+                parameters['location_id_'+carrierCode] = locationDetails.location_id;
+                if(selectedDate != '' && selectedDate != null) {
+                    parameters['pickup_date_' + carrierCode] = selectedDate;
+                    parameters['pickup_slot_' + carrierCode] = timeSlotSelect.value;
                 }
+
                 new Ajax.Request(url, {
                     method: 'post',
                     onSuccess: function(transport)    {
@@ -559,6 +566,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
             if(oscelements.length > 0) {
                 is_osc = true;
                 dropdowns = '<?php echo Mage::helper('shipperhq_shipper')->isOscDropdowns(); ?>';
+                onestepcheckout = true;
             }
 
             var multishipelements = document.getElementsByClassName('multiple-checkout');
@@ -655,7 +663,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 var parameters = {
                     shipping_method: shipping_method,
                     payment_method: payment_method
-                }
+                };
                 new Ajax.Request(url, {
                     method: 'post',
                     onSuccess: function(transport)    {
@@ -852,6 +860,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
 
                 var dropdown = document.getElementById('osc_dropdown_flag');
                 if(oscelements.length > 0) {
+                    onestepcheckout = true;
                     var shipMethodRadios = document.getElementsByClassName('shipping-method-radio');
                     countShipMethods = shipMethodRadios.length;
                     if(dropdown) {
@@ -877,7 +886,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 }
 
             }
-        }
+        };
         var carriergroupId = "<?php echo $this->getCarriergroupId(); ?>";
         var carrierCode = "<?php echo $this->getCarrierCode(); ?>";
 
@@ -906,13 +915,14 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 var methodCarriergroupId = lastPartMethodName.substr(0, indexOfWarehouseEnd);
                 var multipleCheckout = document.getElementsByClassName("multiple-checkout");
                 var carriergroupId = methodCarriergroupId;
+                var splitSGroup = methodCarriergroupId.indexOf('XXXX');
                 if(multipleCheckout.length > 0) {
                     var carriergroupInsert = '_'+ 'ma'+ methodCarriergroupId;
                     var methodCarriergroupId = 'ma'+ methodCarriergroupId;
 
                 }
                 else {
-                    if (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId))) {
+                    if (splitSGroup < 1 && (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId)))) {
                         var carriergroupInsert = '';
                         carriergroupId = '';
                         var methodCarriergroupId = '';

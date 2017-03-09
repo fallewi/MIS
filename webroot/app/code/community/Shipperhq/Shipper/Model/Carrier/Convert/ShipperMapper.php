@@ -79,7 +79,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
         'package_type' // royal mail
     );
 
-    protected static $_shippingOptions = array('liftgate_required', 'notify_required', 'inside_delivery', 'destination_type');
+    protected static $_shippingOptions = array('liftgate_required', 'notify_required', 'inside_delivery', 'destination_type', 'limited_delivery');
 
     protected static $_prodAttributes;
 
@@ -359,8 +359,8 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 'discountPercent'             => $magentoItem->getDiscountPercent(),
                 'discountedBasePrice'         => $magentoItem->getBasePrice() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()),
                 'discountedStorePrice'        => $magentoItem->getPrice() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()),
-                'discountedTaxInclBasePrice'  => $magentoItem->getBasePrice() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()) + ($magentoItem->getBaseTaxAmount()/$magentoItem->getQty()),
-                'discountedTaxInclStorePrice' => $magentoItem->getPrice() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()) +  ($magentoItem->getTaxAmount()/$magentoItem->getQty()),
+                'discountedTaxInclBasePrice'  => $magentoItem->getBasePriceInclTax() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()),//SHQ16-1893
+                'discountedTaxInclStorePrice' => $magentoItem->getPriceInclTax() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()),//SHQ16-1893
                 'attributes'                  => $options? array_merge(self::populateAttributes($stdAttributes, $magentoItem), $options) : self::populateAttributes($stdAttributes, $magentoItem),
                 'baseCurrency'                => $request->getBaseCurrency()->getCurrencyCode(),
                 'packageCurrency'             => $request->getPackageCurrency()->getCurrencyCode(),
@@ -652,10 +652,12 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
     {
         $shippingOptions = array();
         if($request->getQuote() && $shippingAddress = $request->getQuote()->getShippingAddress()) {
+            $selectedFreightOptions = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getSelectedFreightCarrier();
             foreach(self::$_shippingOptions as $option) {
                 //destination type is case sensitive in SHQ
-                if(!is_null($shippingAddress->getData($option)) && $shippingAddress->getData($option) != '') {
-                    $shippingOptions[] = array('name'=> $option, 'value' => strtolower($shippingAddress->getData($option)));
+                if(isset($selectedFreightOptions[$option]) && $selectedFreightOptions[$option] != '') {
+                    //SHQ16-1605
+                    $shippingOptions[] = array('name'=> $option, 'value' => strtolower($selectedFreightOptions[$option]));
                 }
                 elseif($option == 'destination_type') {
                     $destType =  Mage::registry('Shipperhq_Destination_Type');
@@ -665,7 +667,6 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 }
             }
         }
-
         $selectedOptions = new \ShipperHQ\Shipping\SelectedOptions(
             $shippingOptions
         );
