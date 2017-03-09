@@ -67,7 +67,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     CONST SHIPPERHQ_SHIPPER_CARRIERGROUP_DESC_PATH = 'carriers/shipper/carriergroup_describer';
     CONST SHIPPERHQ_SHIPPER_ALLOWED_METHODS_PATH = 'carriers/shipper/allowed_methods';
     CONST SHIPPERHQ_LAST_SYNC = 'carriers/shipper/last_sync';
-
+    CONST SHIPPERHQ_INVALID_CREDENTIALS_SUPPLIED = 'carriers/shipper/invalid_credentials_supplied';
 
     /**
      * Check is module exists and enabled in global config.
@@ -134,7 +134,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Returns an instance of storage manager
-     * 
+     *
      * @return Shipperhq_Shipper_Model_Storage_Manager
      */
     public function storageManager()
@@ -142,13 +142,13 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         if ($this->_storageManager === null) {
             $this->_storageManager = Mage::getModel('shipperhq_shipper/storage_manager');
         }
-        
+
         return $this->_storageManager;
     }
 
     /**
      * Returns a storage for a quote
-     * 
+     *
      * @param Mage_Sales_Model_Quote|null $quote
      * @return Shipperhq_Shipper_Model_Storage|bool
      */
@@ -157,7 +157,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         if ($quote === null) {
             $quote = $this->getQuote();
         }
-        
+
         return $this->storageManager()->findByQuote($quote);
     }
 
@@ -320,6 +320,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             'weight' => 'weight',
             'surcharge_price' => 'surchargePrice',
             'declared_value' => 'declaredValue',
+            'volume' => 'volume',
             'items'         => 'boxedItems'
         );
     }
@@ -351,6 +352,9 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 $boxText .= 'x'. $box['height'] ;
                 $boxText .= ': W='.$box['weight'] . ':' ;
                 $boxText .= ' Value='.$box['declared_value']. ':';
+                if(isset($box['volume'])) {
+                    $boxText .= ' Volume=' .$box['volume'].':';
+                }
                 $boxText .= $this->getProductBreakdownText($box);
             }
             $boxText .= '</br>';
@@ -368,7 +372,14 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         if (array_key_exists('items',$box)  || (is_object($box) && !is_null($box->getItems()))) {
             if (is_array($box['items'])) {
                 foreach ($box['items'] as $item) {
-                    $productText .= ' SKU=' .$item['qtyPacked'] .' * '.$item['sku'] .' ' .$item['weightPacked'] .$weightUnit .';  ';
+                    $productText .= ' SKU=' .$item['qtyPacked'] .' * '.$item['sku'] .' ' .$item['weightPacked'] .$weightUnit;
+                    if(isset($item['indVolume'])) {
+                        $productText .= ': Individual Volume =' .$box['indVolume'].':';
+                    }
+                    if(isset($item['volumePacked'])) {
+                        $productText .= ': Volume Packed =' .$item['volumePacked'].':';
+                    }
+                    $productText .=';  ';
                 }
             } else {
                 $productText = $box['items'];
@@ -657,7 +668,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Overrides quote model
-     * 
+     *
      * @param Mage_Sales_Model_Quote|null $quote
      * @return $this
      */
@@ -817,6 +828,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function mapToMagentoCarrierCode($carrierType, $carrierCode)
     {
+        $carrierType = strstr($carrierType, "shqshared_") ? str_replace('shqshared_', '', $carrierType) : $carrierType;
         if(array_key_exists($carrierType, $this->magentoCarrierCodes)) {
             return $this->magentoCarrierCodes[$carrierType];
         }
@@ -869,6 +881,27 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             $title = '<span class="method-title">'.$truncatedTitle.'</span> <span class="method-extra">'.$methodDescription.'</span>';
         }
         return $title;
+    }
+
+    /**
+     * Returns price formatted with OSC design elements
+     *
+     * @param $price
+     */
+    public function getOscFormattedPrice($price)
+    {
+        $title = '<strong><span class="price">'.$price.'</span></strong>';
+
+        return $title;
+    }
+
+    public function getOscFormattedTooltip($tooltip)
+    {
+        $formattedTooltip = '<span style="float:right;" class="helpcursor" title="'.$tooltip.'">
+                                <img src="http://www.localhost.com/92/shqclient/skin/frontend/base/default/images/shipperhq/tooltip.jpg">
+                             </span>';
+
+        return $formattedTooltip;
     }
 
     /**
@@ -1015,10 +1048,10 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             if(is_array($carrierGroupDetail) && array_key_exists('carrierTitle', $carrierGroupDetail)) {
                 $carrierGroupId = $carrierGroupDetail['carrierGroupId'];
                 $shippingText = $carrierGroupDetail['carrierTitle'] .' - ' .$carrierGroupDetail['methodTitle'];
-                if(array_key_exists('delivery_date', $carrierGroupDetail)) {
+                if(array_key_exists('delivery_date', $carrierGroupDetail) && $carrierGroupDetail['delivery_date'] != '') {
                     $shippingText .= ' Delivery: ' .$carrierGroupDetail['delivery_date'];
                 }
-                if(array_key_exists('dispatch_date', $carrierGroupDetail)) {
+                if(array_key_exists('dispatch_date', $carrierGroupDetail) && $carrierGroupDetail['dispatch_date'] != '') {
                     $shippingText .= ' Dispatch: ' .$carrierGroupDetail['dispatch_date'];
                 }
                 // if(array_key_exists('time_slot'))

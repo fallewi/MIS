@@ -29,17 +29,15 @@
  */
 
 
-class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_Adminhtml_Block_Sales_Order_View_Info
+class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_Adminhtml_Block_Sales_Order_View_Info//Mage_Adminhtml_Block_Sales_Order_Abstract
 {
     public function getCarriergroupInfoHtml()
     {
         $displayValues = array('destination_type', 'customer_carrier', 'customer_carrier_ph', 'customer_carrier_account');
-
         $order = $this->getOrder();
         $htmlOutput='';
         $cginfo = Mage::helper('shipperhq_shipper')->decodeShippingDetails($order->getCarriergroupShippingDetails());
         $deliveryComments = $order->getShqDeliveryComments();
-
         if (!empty($cginfo)) {
             $carriergroupText='';
             if($order->getConfirmationNumber() != '') {
@@ -113,9 +111,10 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_A
                         if (array_key_exists($code, $cgrp) && $cgrp[$code]!='') {
                             $value = $cgrp[$code];
                         }
-                        elseif($order->getData($code)) {
-                            $value = $order->getData($code);
-                        }
+                        //SHQ16-1605 limit to display to selected carrier group only
+//                        elseif($order->getData($code)) {
+//                            $value = $order->getData($code);
+//                        }
                         if($value) {
                             $carriergroupText .= '</br>'. $name;
                             if(in_array($code, $displayValues)) {
@@ -129,8 +128,7 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_A
                     $carriergroupText .= '<br/><br/>';
                 }
             }
-
-            $htmlOutput = '<div class="box-right"><div class="clear"></div><div class="entry-edit">';
+            $htmlOutput = '<div class="box-right"><div class="entry-edit">';
             $htmlOutput.= '<div class="entry-edit-head">';
             $htmlOutput.= '<h4 class="icon-head head-shipping-method">';
             if($desc = Mage::getStoreConfig(Shipperhq_Shipper_Helper_Data::SHIPPERHQ_SHIPPER_CARRIERGROUP_DESC_PATH)) {
@@ -146,7 +144,7 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_A
             if(!empty($deliveryComments)){
                 $htmlOutput.= Mage::helper('shipperhq_shipper')->__('Delivery Comments') .' : ' . $order->getShqDeliveryComments();
             }
-            $htmlOutput.= '</fieldset> <div class="clear"/></div></div>';
+            $htmlOutput.= '</fieldset></div></div>';
 
         } else if (!empty($deliveryComments)) {
             $htmlOutput = '<div class="box-right"><div class="clear"></div><div class="entry-edit">';
@@ -159,7 +157,7 @@ class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Drinfo extends Mage_A
             $htmlOutput .= Mage::helper('shipperhq_shipper')->__('Delivery Comments') .' : ' . $order->getShqDeliveryComments();
             $htmlOutput.= '</fieldset> <div class="clear"/></div></div>';
         }
-
-        return "'".$htmlOutput."'";
+        return $htmlOutput;
     }
+
 }

@@ -141,7 +141,8 @@ class Shipperhq_Pickup_Helper_Date {
             {
                 return false;
             }
-         $today = date('m/d/Y');
+        $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
+        $today = date($dateFormat);
          $isToday = false;
          if($today == $date) {
              $isToday = true;
@@ -155,7 +156,6 @@ class Shipperhq_Pickup_Helper_Date {
             $sortTime[$key] = $values['timeStart'];
             $timeSlotDetail[$key] = $values;
         }
-
         array_multisort($sortTime, SORT_ASC, $timeSlotDetail);
 
         //for implementation of date/day based slot detail in future
@@ -164,13 +164,12 @@ class Shipperhq_Pickup_Helper_Date {
              $end =  $timeSlotDetail['timeEnd'];
              $interval = $timeSlotDetail['interval'];
 
-
              $startTime = strtotime($start);
              $endTime = strtotime($end);
 
-            if(!$startTime || !$endTime) {
+             if(!$startTime || !$endTime) {
                 continue;
-            }
+             }
 
              $currentTime = 0;
              //if we are generating slots for today, make sure we don't offer any in the past
@@ -186,7 +185,6 @@ class Shipperhq_Pickup_Helper_Date {
              $intStartTime = $startTime;
              $intEndTime = $startTime;
              $intervalString = '+' . $interval . ' minutes';
-
              while ($endTime > $intStartTime) {
                  $intEndTime = strtotime($intervalString, $intStartTime);
                  if ($intEndTime > $endTime) {

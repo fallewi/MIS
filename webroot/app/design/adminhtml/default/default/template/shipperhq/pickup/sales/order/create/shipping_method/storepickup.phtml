@@ -718,11 +718,27 @@ storePickup = new StorePickup('co-store-pickup-form',
     {
         if (el.checked == true) {
             var methodName = el.id;
+
             var lastPartMethodName = methodName.substr(9);
-            var groups = extractCarrierGroup($(el).readAttribute('name'));
-            var carriergroupInsert = groups[1];
-            var methodCarriergroupId = groups[0];
+            var indexOfWarehouseEnd = lastPartMethodName.indexOf('_');
+            var methodCarriergroupId = lastPartMethodName.substr(0, indexOfWarehouseEnd);
+            var multipleCheckout = document.getElementsByClassName("multiple-checkout");
             var carriergroupId = methodCarriergroupId;
+            var splitSGroup = methodCarriergroupId.indexOf('XXXX');
+            if(multipleCheckout.length > 0) {
+                var carriergroupInsert = '_'+ 'ma'+ methodCarriergroupId;
+                var methodCarriergroupId = 'ma'+ methodCarriergroupId;
+
+            }
+            else {
+                if (splitSGroup < 1 && (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId)))) {
+                    var carriergroupInsert = '';
+                    carriergroupId = '';
+                    var methodCarriergroupId = '';
+                } else {
+                    var carriergroupInsert = '_' + methodCarriergroupId;
+                }
+            }
 
             if(carriergroupId != '') {
                 var carrierPart = lastPartMethodName.replace(carriergroupId +'_', '');
@@ -730,6 +746,7 @@ storePickup = new StorePickup('co-store-pickup-form',
             else {
                 var carrierPart = lastPartMethodName;
             }
+
 
             var indexOfcarrierUnderscore = carrierPart.indexOf('_');
             if(indexOfcarrierUnderscore < 0 ) {

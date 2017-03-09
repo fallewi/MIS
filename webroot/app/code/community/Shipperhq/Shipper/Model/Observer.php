@@ -64,6 +64,23 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
         }
     }
 
+    public function oscUpdateCart($observer)
+    {
+        $body = $observer->getControllerAction()->getResponse()->getBody();
+        $decodedBody = json_decode($body);
+
+        $shqMethodHtml = Mage::app()->getLayout()
+            ->createBlock('shipperhq_pickup/checkout_onepage_shipping_method_available')
+            ->setTemplate('shipperhq/checkout/onestepcheckout/shipping_method_osc_shq_radio.phtml')
+            ->toHtml();
+
+        $decodedBody->shipping_method = $shqMethodHtml;
+
+        $encodedBody = json_encode($decodedBody);
+
+        $observer->getControllerAction()->getResponse()->setBody($encodedBody);
+    }
+
     /*
      * Set renderer for dimensional shipping product attributes
      *
@@ -171,6 +188,13 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
 
     public function saveOrderAfter($observer)
     {
+        $order = $observer->getOrder();
+
+        if(Mage::getStoreConfig('carriers/shipper/active'))
+        {
+            $this->processSharedCarrier($order);
+        }
+
         try
         {
             //  $recordOrderPackages = Mage::helper('shipperhq_shipper')->recordOrderPackages();
@@ -178,7 +202,6 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
 
             if ($recordOrderPackages)
             {
-                $order = $observer->getOrder();
                 $quote = $order->getQuote();
 
                 $shippingAddress = $quote->getShippingAddress();
@@ -410,6 +433,40 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
         foreach ($storageList as $storage) {
             if ($storage->hasDataChanges() && $storage->getId()) {
                 $this->_saveStorageInstance($storage);
+            }
+        }
+    }
+
+    protected function processSharedCarrier($order)
+    {
+        if(strstr($order->getCarrierType(), 'shqshared_')) {
+            $original  = $order->getCarrierType();
+            $carrierTypeArray = explode('_', $order->getCarrierType());
+
+            if(is_array($carrierTypeArray)) {
+                $order->setCarrierType($carrierTypeArray[1]);
+                //SHQ16-1026
+                $carrierGroupDetail = $order->getCarriergroupShippingDetails();
+                $currentShipDescription = $order->getShippingDescription();
+                $shipDescriptionArray = explode('-', $currentShipDescription);
+                $cgArray = Mage::helper('shipperhq_shipper')->decodeShippingDetails($carrierGroupDetail);
+                foreach($cgArray as $key => $cgDetail) {
+                    if(isset($cgDetail['carrierType']) && $cgDetail['carrierType'] == $original) {
+                        $cgDetail['carrierType'] = $carrierTypeArray[1];
+                    }
+                    if(is_array($shipDescriptionArray) && isset($cgDetail['carrierTitle'])) {
+                        $shipDescriptionArray[0] = $cgDetail['carrierTitle'] .' ';
+                        $newShipDescription = implode('-', $shipDescriptionArray);
+                        $order->setShippingDescription($newShipDescription);
+                    }
+                    $cgArray[$key] = $cgDetail;
+                }
+                $order->setCarriergroupShippingDetails(Mage::helper('shipperhq_shipper')->encodeShippingDetails($cgArray));
+                $order->save();
+                if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                    Mage::helper('wsalogger/log')->postDebug('Shipperhq_Shipper', 'Rates displayed as single carrier',
+                        'Resetting carrier type on order to be ' .$carrierTypeArray[1]);
+                }
             }
         }
     }
