@@ -40,8 +40,16 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
         if ($eventName == 'sales_order_place_after') {
             $order = $observer->getEvent()->getOrder();
         } else {
-            $orderId = $observer->getEvent()->getInvoice()->getOrder()->getIncrementId();
+            $invoice = $observer->getEvent()->getInvoice();
+            $orderId = $invoice->getOrder()->getIncrementId();
             $order = $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+
+            /**
+             * If this a new invoice, or a comment on existing? Magento throws same event
+             */
+            if ($invoice->getUpdatedAt() != $invoice->getCreatedAt()) {
+                return null;
+            }
         }
 
         if($order->getIsVirtual()) { //DROP-91

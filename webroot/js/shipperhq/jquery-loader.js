@@ -4,7 +4,7 @@ if (!window.ShipperHQ) {
 
 /**
  * Init data for loading jQuery
- * 
+ *
  * @param versionRequires
  * @param urlPlaceholders
  * @constructor
@@ -37,7 +37,7 @@ ShipperHQ.JQueryLoader.prototype.loadJquery = function () {
 
 /**
  * Requires script tag with jquery
- * 
+ *
  */
 ShipperHQ.JQueryLoader.prototype.requireJquery = function () {
     var realVersion = this.versionMap['jquery']['default'];
@@ -56,11 +56,11 @@ ShipperHQ.JQueryLoader.prototype.requireUi = function () {
     if (this.jquery) {
          version = this.jquery().jquery.split('.').slice(0, 2).join('.');
     }
-    
+
     if (!this.versionMap['ui'][version]) {
         version = 'default';
     }
-    
+
     var realVersion = this.versionMap['ui'][version];
     var scriptUrl = this.urlPlaceholders['ui'].replace('{version}', realVersion);
     var styleUrl = this.urlPlaceholders['ui-style'].replace('{version}', realVersion);
@@ -73,12 +73,12 @@ ShipperHQ.JQueryLoader.prototype.requireUi = function () {
 
 ShipperHQ.JQueryLoader.prototype.requireJavaScript = function (url, callback, styleUrl) {
     var script = document.createElement("script");
-    script.type = "text/javascript";
+    script.setAttribute('type', "text/javascript");
     var loadScope = this;
 
     if (script.readyState){  //IE
         script.onreadystatechange = function() {
-            var state = script.readyState
+            var state = script.readyState;
             if (state == "loaded" ||
                 state == "complete"){
                 script.onreadystatechange = null;
@@ -91,7 +91,8 @@ ShipperHQ.JQueryLoader.prototype.requireJavaScript = function (url, callback, st
         };
     }
 
-    script.src = url;
+    script.setAttribute('src', url);
+    //script.src = url;
     this.addHeadElement(script);
 };
 
@@ -139,7 +140,7 @@ ShipperHQ.JQueryLoader.instance = function () {
     if (!this.__instance) {
         return false;
     }
-    
+
     return this.__instance;
 };
 

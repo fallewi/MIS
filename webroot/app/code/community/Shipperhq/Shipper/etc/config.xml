@@ -33,7 +33,7 @@
     <modules>
         <Shipperhq_Shipper>
             <version>0.0.34</version>
-            <extension_version>2.118</extension_version>
+            <extension_version>2.134</extension_version>
             <!-- implemented in module file -->
             <!--  <active>true</active>
               <codePool>community</codePool>
@@ -148,6 +148,15 @@
                     </shipperhq_shipper_cart_estimate_display>
                 </observers>
             </core_block_abstract_to_html_before>
+            <!--OSC Generate Block on the fly. We need to replace with ours-->
+            <controller_action_postdispatch_onestepcheckout_ajax_updatecart>
+                <observers>
+                    <shipperhq_shipper_osc_update_cart>
+                        <class>shipperhq_shipper/observer</class>
+                        <method>oscUpdateCart</method>
+                    </shipperhq_shipper_osc_update_cart>
+                </observers>
+            </controller_action_postdispatch_onestepcheckout_ajax_updatecart>
             <!-- set checkout flag for rates processing -->
             <controller_action_predispatch_checkout_onepage_saveBilling>
                 <observers>
@@ -517,6 +526,7 @@
                 <password backend_model="adminhtml/system_config_backend_encrypted">
                     DTAzdo8+0u4DbuvI5NgP8V711uNH6COXD/e821CQSmY6gfOzH1enxEVmexG2sPbEQQGDbEelSQ4=
                 </password>
+                <invalid_credentials_supplied>0</invalid_credentials_supplied>
                 <url>http://sandbox.shipperhq.com/v1/</url>
                 <live_url>http://api.shipperhq.com/v1/</live_url>
                 <secure_url>https://api.shipperhq.com/v1/</secure_url>

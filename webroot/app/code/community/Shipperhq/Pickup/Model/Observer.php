@@ -100,10 +100,27 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
 
     public function savePickupLocation($observer)
     {
-        $shipping_method = $observer->getEvent()->getRequest()->getParam('shipping_method');
-        $quote = $observer->getEvent()->getQuote();
+        if (Mage::helper('shipperhq_shipper')->isModuleEnabled('Idev_OneStepCheckout', 'onestepcheckout/general/rewrite_checkout_links')) {
+            if($observerObj = $observer->getControllerAction()) {
+                $quote = Mage::getSingleton('checkout/session')->getQuote();
+            }
+            else {
+                $observerObj = $observer->getEvent();
+                $quote = $observer->getEvent()->getQuote();
+            }
+        } else {
+            $observerObj = $observer->getEvent();
+            $quote = $observer->getEvent()->getQuote();
+        }
+
+        if(!is_object($observerObj)) {
+            return null;
+        }
+
+        $shipping_method = $observerObj->getRequest()->getParam('shipping_method');
         $carrierCode = Mage::helper('shipperhq_shipper')->isPickupRate($quote->getShippingAddress(), $shipping_method);
         $shippingAddress = $quote->getShippingAddress();
+
         if($shipping_method == '' || !$carrierCode) {
             /**
              * SHQ16-1467 - Revert address to customer entered one if pickup is deselected.
@@ -113,9 +130,10 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             }
             return;
         }
-        $pickupLocationId = $observer->getEvent()->getRequest()->getParam('location_id_'.$carrierCode);
-        $pickupDate = $observer->getEvent()->getRequest()->getParam('pickup_date_'.$carrierCode);
-        $pickupSlot = $observer->getEvent()->getRequest()->getParam('pickup_slot_'.$carrierCode);
+
+        $pickupLocationId = $observerObj->getRequest()->getParam('location_id_'.$carrierCode);
+        $pickupDate = $observerObj->getRequest()->getParam('pickup_date_'.$carrierCode);
+        $pickupSlot = $observerObj->getRequest()->getParam('pickup_slot_'.$carrierCode);
         if (!Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup') || !$pickupLocationId) {
             return;
         }

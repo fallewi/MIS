@@ -381,13 +381,14 @@
                 var methodCarriergroupId = lastPartMethodName.substr(0, indexOfWarehouseEnd);
                 var multipleCheckout = document.getElementsByClassName("multiple-checkout");
                 var carriergroupId = methodCarriergroupId;
+                var splitSGroup = methodCarriergroupId.indexOf('XXXX');
                 if(multipleCheckout.length > 0) {
                     var carriergroupInsert = '_'+ 'ma'+ methodCarriergroupId;
                     var methodCarriergroupId = 'ma'+ methodCarriergroupId;
 
                 }
                 else {
-                    if (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId))) {
+                    if (splitSGroup < 1 && (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId)))) {
                         var carriergroupInsert = '';
                         carriergroupId = '';
                         var methodCarriergroupId = '';
