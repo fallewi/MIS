@@ -3,47 +3,54 @@
 /**
  * Schedule
  *
- * @method string getExecutedAt()
- * @method string getFinishedAt()
- * @method string getStatus()
- * @method string getMessages()
- * @method string getCreatedAt()
- * @method string getScheduledAt()
  * @method string setJobCode($jobCode)
  * @method string getJobCode()
- * @method $this setMessages()
- * @method $this setExecutedAt()
- * @method $this setCreatedAt()
- * @method $this setScheduledAt()
- * @method $this setStatus()
- * @method $this setFinishedAt()
- * @method $this setParameters()
- * @method $this setEta()
+ * @method $this setMessages($messages)
+ * @method string getMessages()
+ * @method $this setExecutedAt($executedAt)
+ * @method string getExecutedAt()
+ * @method $this setCreatedAt($createdAt)
+ * @method string getCreatedAt()
+ * @method $this setScheduledAt($scheduledAt)
+ * @method string getScheduledAt()
+ * @method $this setStatus($status)
+ * @method string getStatus()
+ * @method $this setFinishedAt($finishedAt)
+ * @method string getFinishedAt()
+ * @method $this setParameters($parameters)
+ * @method $this setEta($eta)
  * @method string getEta()
- * @method $this setHost()
+ * @method $this setHost($host)
  * @method string getHost()
- * @method $this setPid()
+ * @method $this setPid($pid)
  * @method string getPid()
- * @method $this setProgressMessage()
+ * @method $this setProgressMessage($progressMessage)
  * @method string getProgressMessage()
+ * @method $this setLastSeen($lastSeen)
  * @method string getLastSeen()
- * @method $this setLastSeen()
- * @method string getScheduledBy()
  * @method $this setScheduledBy($scheduledBy)
- * @method string getScheduledReason()
+ * @method string getScheduledBy()
  * @method $this setScheduledReason($scheduledReason)
- * @method string getKillRequest()
+ * @method string getScheduledReason()
  * @method $this setKillRequest($killRequest)
+ * @method string getKillRequest()
+ * @method $this setRepetition($repetition)
+ * @method string getRepetition()
+ * @method Aoe_Scheduler_Model_Resource_Schedule getResource()
+ * @method Aoe_Scheduler_Model_Resource_Schedule _getResource()
  */
 class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
 {
+    // if a job returns 'repeat' it will be re-executed right away
+    const STATUS_REPEAT = 'repeat';
 
     const STATUS_KILLED = 'killed';
     const STATUS_DISAPPEARED = 'gone';
     const STATUS_DIDNTDOANYTHING = 'nothing';
 
-    const STATUS_SKIP_LOCKED = 'locked';
     const STATUS_SKIP_OTHERJOBRUNNING = 'other_job_running';
+    const STATUS_SKIP_WRONGUSER = 'wrong_user';
+    const STATUS_SKIP_PILINGUP = 'skipped';
 
     const STATUS_DIED = 'died'; // note that died != killed
 
@@ -57,6 +64,8 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
     const REASON_DEPENDENCY_ALL = 'dependency_all';
     const REASON_DEPENDENCY_SUCCESS = 'dependency_success';
     const REASON_DEPENDENCY_FAILURE = 'dependency_failure';
+    const REASON_ALWAYS = 'always';
+    const REASON_REPEAT = 'repeat';
 
     /**
      * Event name prefix for events that are dispatched by this class
@@ -131,6 +140,12 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
      */
     public function runNow($tryLockJob = true, $forceRun = false)
     {
+        // Check the user running the cron is the one defined in config
+        if (!$this->checkRunningAsCorrectUser()) {
+            $this->setStatus(self::STATUS_SKIP_WRONGUSER)->save();
+            return $this;
+        }
+
         // if this schedule doesn't exist yet, create it
         if (!$this->getCreatedAt()) {
             $this->schedule();
@@ -141,7 +156,11 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
             // the following check will prevent multiple schedules of the same type to be run in parallel
             $processManager = Mage::getModel('aoe_scheduler/processManager'); /* @var $processManager Aoe_Scheduler_Model_ProcessManager */
             if ($processManager->isJobCodeRunning($this->getJobCode(), $this->getId())) {
-                $this->setStatus(self::STATUS_SKIP_OTHERJOBRUNNING);
+                $this->getResource()->trySetJobStatusAtomic(
+                    $this->getId(),
+                    Aoe_Scheduler_Model_Schedule::STATUS_SKIP_OTHERJOBRUNNING,
+                    Aoe_Scheduler_Model_Schedule::STATUS_PENDING
+                );
                 $this->log(sprintf('Job "%s" (id: %s) will not be executed because there is already another process with the same job code running. Skipping.', $this->getJobCode(), $this->getId()));
                 return $this;
             }
@@ -151,7 +170,6 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         // workaround could be to do this: $this->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_PENDING)->save();
         $this->jobWasLocked = false;
         if ($tryLockJob && !$this->tryLockJob()) {
-            $this->setStatus(self::STATUS_SKIP_LOCKED);
             // another cron started this job intermittently, so skip it
             $this->jobWasLocked = true;
             $this->log(sprintf('Job "%s" (id: %s) is locked. Skipping.', $this->getJobCode(), $this->getId()));
@@ -159,6 +177,9 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         }
 
         try {
+            // Track the last user to run a job
+            $this->setLastRunUser();
+
             $job = $this->getJob();
 
             if (!$job) {
@@ -214,7 +235,8 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
                 $this->addMessages(PHP_EOL . '---RETURN_VALUE---' . PHP_EOL . $messages);
             }
 
-            // schedules can report an error state by returning a string that starts with "ERROR:"
+            // schedules can report an error state by returning a string that starts with "ERROR:", "NOTHING", or "REPEAT"
+            // or they can set set the status directly to the schedule object that's passed as a parameter
             if ((is_string($messages) && strtoupper(substr($messages, 0, 6)) == 'ERROR:') || $this->getStatus() === Aoe_Scheduler_Model_Schedule::STATUS_ERROR) {
                 $this->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_ERROR);
                 Mage::helper('aoe_scheduler')->sendErrorMail($this, $messages);
@@ -224,10 +246,16 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
                 $this->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_DIDNTDOANYTHING);
                 Mage::dispatchEvent('cron_' . $this->getJobCode() . '_after_nothing', array('schedule' => $this));
                 Mage::dispatchEvent('cron_after_nothing', array('schedule' => $this));
+            } elseif ((is_string($messages) && strtoupper(substr($messages, 0, 6)) == 'REPEAT') || $this->getStatus() === Aoe_Scheduler_Model_Schedule::STATUS_REPEAT) {
+                $this->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_REPEAT);
+                Mage::dispatchEvent('cron_' . $this->getJobCode() . '_after_repeat', array('schedule' => $this));
+                Mage::dispatchEvent('cron_after_repeat', array('schedule' => $this));
             } else {
                 $this->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS);
                 Mage::dispatchEvent('cron_' . $this->getJobCode() . '_after_success', array('schedule' => $this));
                 Mage::dispatchEvent('cron_after_success', array('schedule' => $this));
+
+                $this->scheduleOnSuccessDependencies();
             }
 
         } catch (Exception $e) {
@@ -239,6 +267,7 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         }
 
         $this->setFinishedAt(strftime('%Y-%m-%d %H:%M:%S', time()));
+        $this->setMemoryUsage(memory_get_peak_usage(true) / pow(1024, 2));  // convert bytes to megabytes
         Mage::dispatchEvent('cron_' . $this->getJobCode() . '_after', array('schedule' => $this));
         Mage::dispatchEvent('cron_after', array('schedule' => $this));
 
@@ -246,6 +275,18 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         Mage::unregister('currently_running_schedule');
 
         return $this;
+    }
+
+    protected function scheduleOnSuccessDependencies()
+    {
+        $onSuccess = $this->getJob()->getOnSuccess();
+        foreach(Mage::helper('aoe_scheduler')->trimExplode(',', $onSuccess, true) as $jobCode) {
+            $schedule = Mage::getModel('cron/schedule')
+                ->setJobCode($jobCode)
+                ->setScheduledReason(Aoe_Scheduler_Model_Schedule::REASON_DEPENDENCY_SUCCESS)
+                ->schedule()
+                ->save();
+        }
     }
 
 
@@ -391,7 +432,7 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
             ->setFinishedAt($this->getLastSeen())
             ->save();
 
-        $this->log(sprintf('Job "%s" (id: %s) disappeared. Message: ', $this->getJobCode(), $this->getId(), $message));
+        $this->log(sprintf('Job "%s" (id: %s) disappeared. Message: %s', $this->getJobCode(), $this->getId(), $message));
     }
 
     /**
@@ -666,7 +707,6 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
 
     /**
      * Redirect all output to the messages field of this Schedule.
-     *
      * We use ob_start with `_addBufferToMessages` to redirect the output.
      *
      * @return $this
@@ -689,11 +729,12 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         );
 
         $this->_redirect = true;
+
+        return $this;
     }
 
     /**
      * Stop redirecting all output to the messages field of this Schedule.
-     *
      * We use ob_end_flush to stop redirecting the output.
      *
      * @return $this
@@ -712,6 +753,8 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         $this->addMessages('---END---' . PHP_EOL);
 
         $this->_redirect = false;
+
+        return $this;
     }
 
     /**
@@ -758,8 +801,8 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
             return $this->save();
         }
 
-        $connection = Mage::getSingleton('core/resource')
-            ->getConnection('core_write');
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        /* @var $connection Varien_Db_Adapter_Interface */
 
         $count = $connection
             ->update(
@@ -793,13 +836,9 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
     protected function _getPdoWarning(PDO $pdo)
     {
         $originalErrorMode = $pdo->getAttribute(PDO::ATTR_ERRMODE);
-
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-
         $stm = $pdo->query('SHOW WARNINGS');
-
         $pdo->setAttribute(PDO::ATTR_ERRMODE, $originalErrorMode);
-
         return $stm->fetchObject();
     }
 
@@ -842,4 +881,84 @@ class Aoe_Scheduler_Model_Schedule extends Mage_Cron_Model_Schedule
         }
         return $statusArray;
     }
+
+    /**
+     * Get fresh version of this object
+     *
+     * @return $this
+     */
+    public function refresh()
+    {
+        return $this->load($this->getId());
+    }
+
+    public function getAllStatuses()
+    {
+        $reflect = new ReflectionClass(get_class($this));
+        $constants = $reflect->getConstants();
+        $statuses = array();
+        foreach ($constants as $key => $value) {
+            if (strpos($key, 'STATUS_') === 0) {
+                $statuses[$value] = $value;
+            }
+        }
+        return $statuses;
+    }
+
+    /**
+     * Check if the user running the process matches the configured user. Message will capture
+     * cases where the user is not set too in its response message. Process may optionally be
+     * killed, or may be allowed to continue.
+     * @return bool
+     */
+    public function checkRunningAsCorrectUser()
+    {
+        if (Mage::helper('aoe_scheduler')->runningAsConfiguredUser()) {
+            return true;
+        }
+
+        // We may decide that these processes should be killed, or they may continue...
+        $kill = Mage::helper('aoe_scheduler')->getShouldKillOnWrongUser();
+        $optionalKillMessage = ($kill) ? ' Schedule will not run until this is addressed.' : '';
+
+        $this->log(
+            sprintf(
+                'Job "%s" (id: %s) is running as %s, but this doesn\'t match the configuration. You can disable this'
+                . ' message by setting the default user in configuration.' . $optionalKillMessage,
+                $this->getJobCode(),
+                $this->getId(),
+                Mage::helper('aoe_scheduler')->getRunningUser()
+            )
+        );
+
+        if ($kill) {
+            return false;
+        }
+
+        // Allow it to run anyway
+        return true;
+    }
+
+    /**
+     * Set the user who ran the last successfully started schedule into a core variable
+     * @param  string|null $user Optional: if specified, overrides the default
+     * @return self
+     */
+    public function setLastRunUser($user = null)
+    {
+        if (is_null($user)) {
+            $user = Mage::helper('aoe_scheduler')->getRunningUser();
+        }
+
+        // Log the current user running the schedule if it's executed
+        Mage::getModel('core/variable')
+            ->loadByCode(Aoe_Scheduler_Helper_Data::VAR_LAST_RUN_USER_CODE)
+            ->setCode(Aoe_Scheduler_Helper_Data::VAR_LAST_RUN_USER_CODE)
+            ->setName('Scheduler - User Last Run As')
+            ->setPlainValue((string) $user)
+            ->save();
+
+        return $this;
+    }
+
 }

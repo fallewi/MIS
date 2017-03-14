@@ -8,10 +8,16 @@
 class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
-    const XML_PATH_MAX_RUNNING_TIME = 'system/cron/max_running_time';
-    const XML_PATH_EMAIL_TEMPLATE = 'system/cron/error_email_template';
-    const XML_PATH_EMAIL_IDENTITY = 'system/cron/error_email_identity';
-    const XML_PATH_EMAIL_RECIPIENT = 'system/cron/error_email';
+    const XML_PATH_MAX_RUNNING_TIME    = 'system/cron/max_running_time';
+    const XML_PATH_EMAIL_TEMPLATE      = 'system/cron/error_email_template';
+    const XML_PATH_EMAIL_IDENTITY      = 'system/cron/error_email_identity';
+    const XML_PATH_EMAIL_RECIPIENT     = 'system/cron/error_email';
+    const XML_PATH_CRON_USER           = 'system/cron/cronUser';
+    const XML_PATH_KILL_ON_WRONG_USER  = 'system/cron/killOnIncorrectUser';
+    const XML_PATH_SHOW_WRONG_USER_MSG = 'system/cron/showCronUserMessage';
+    const XML_PATH_RUN_ONLY_IF_CACHE_PREFIX_ID_MATCHES = 'system/cron/runOnlyIfCachePrefixIdMatches';
+
+    const VAR_LAST_RUN_USER_CODE       = 'aoescheduler_lastrunuser';
 
     protected $groupsToJobsMap = null;
 
@@ -54,6 +60,7 @@ class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
     {
         switch ($status) {
             case Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS:
+            case Aoe_Scheduler_Model_Schedule::STATUS_REPEAT:
             case Aoe_Scheduler_Model_Schedule::STATUS_DIDNTDOANYTHING:
                 $result = '<span class="bar-green"><span>' . $status . '</span></span>';
                 break;
@@ -64,8 +71,8 @@ class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
                 $result = '<span class="bar-yellow"><span>' . $status . '</span></span>';
                 break;
             case Aoe_Scheduler_Model_Schedule::STATUS_SKIP_OTHERJOBRUNNING:
-            case Aoe_Scheduler_Model_Schedule::STATUS_SKIP_LOCKED:
             case Aoe_Scheduler_Model_Schedule::STATUS_MISSED:
+            case Aoe_Scheduler_Model_Schedule::STATUS_SKIP_PILINGUP:
                 $result = '<span class="bar-orange"><span>' . $status . '</span></span>';
                 break;
             case Aoe_Scheduler_Model_Schedule::STATUS_ERROR:
@@ -137,7 +144,14 @@ class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
         }
         $schedules = Mage::getModel('cron/schedule')->getCollection(); /* @var $schedules Mage_Cron_Model_Mysql4_Schedule_Collection */
         $schedules->getSelect()->limit(1)->order('executed_at DESC');
-        $schedules->addFieldToFilter('status', Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS);
+        $schedules->addFieldToFilter(
+            array('status'),
+            array(
+                array('eq' => Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS),
+                array('eq' => Aoe_Scheduler_Model_Schedule::STATUS_REPEAT)
+            )
+        );
+
         $schedules->addFieldToFilter('job_code', $jobCode);
         $schedules->load();
         if (count($schedules) == 0) {
@@ -267,18 +281,22 @@ class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
             return;
         }
 
+        $recipients = $this->trimExplode(',', Mage::getStoreConfig(self::XML_PATH_EMAIL_RECIPIENT), true);
+
         $translate = Mage::getSingleton('core/translate'); /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
 
-        $emailTemplate = Mage::getModel('core/email_template'); /* @var $emailTemplate Mage_Core_Model_Email_Template */
-        $emailTemplate->setDesignConfig(array('area' => 'backend'));
-        $emailTemplate->sendTransactional(
-            Mage::getStoreConfig(self::XML_PATH_EMAIL_TEMPLATE),
-            Mage::getStoreConfig(self::XML_PATH_EMAIL_IDENTITY),
-            Mage::getStoreConfig(self::XML_PATH_EMAIL_RECIPIENT),
-            null,
-            array('error' => $error, 'schedule' => $schedule)
-        );
+        foreach ($recipients as $recipient) {
+            $emailTemplate = Mage::getModel('core/email_template'); /* @var $emailTemplate Mage_Core_Model_Email_Template */
+            $emailTemplate->setDesignConfig(array('area' => 'backend'));
+            $emailTemplate->sendTransactional(
+                Mage::getStoreConfig(self::XML_PATH_EMAIL_TEMPLATE),
+                Mage::getStoreConfig(self::XML_PATH_EMAIL_IDENTITY),
+                $recipient,
+                null,
+                array('error' => $error, 'schedule' => $schedule)
+            );
+        }
 
         $translate->setTranslateInline(true);
     }
@@ -294,8 +312,11 @@ class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
         if (!preg_match(Mage_Cron_Model_Observer::REGEX_RUN_MODEL, (string) $runModel, $run)) {
             Mage::throwException(Mage::helper('cron')->__('Invalid model/method definition, expecting "model/class::method", got "' . $runModel . '" instead.'));
         }
-        if (!($model = Mage::getModel($run[1])) || !method_exists($model, $run[2])) {
-            Mage::throwException(Mage::helper('cron')->__('Invalid callback: %s::%s does not exist', $run[1], $run[2]));
+        if (!($model = Mage::getModel($run[1]))) {
+            Mage::throwException(Mage::helper('cron')->__('Invalid callback: Model for %s::%s does not exist', $run[1], $run[2]));
+        }
+        if (!method_exists($model, $run[2])) {
+            Mage::throwException(Mage::helper('cron')->__('Invalid callback: Method for %s::%s does not exist', $run[1], $run[2]));
         }
         $callback = array($model, $run[2]);
         return $callback;
@@ -317,5 +338,92 @@ class Aoe_Scheduler_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
         return true;
+    }
+
+    /**
+     * Return the current system user running this process
+     * @return string
+     */
+    public function getRunningUser()
+    {
+        return trim(shell_exec('whoami'));
+    }
+
+    /**
+     * Return the configured cron user
+     * @return string|null
+     */
+    public function getConfiguredUser()
+    {
+        return Mage::getStoreConfig(self::XML_PATH_CRON_USER);
+    }
+
+    /**
+     * Should processes not running the configured user be killed?
+     * @return bool
+     */
+    public function getShouldKillOnWrongUser()
+    {
+        return (bool) Mage::getStoreConfig(self::XML_PATH_KILL_ON_WRONG_USER);
+    }
+
+    /**
+     * Check the configuration value for which user the cron should be run as, and check if it matches the actual user.
+     * Skip if the warning should be ignored.
+     * @param  bool $useRunningUser If true, use the user running the web server, otherwise use the last run user from
+     *                              core_variable storage
+     * @return bool
+     */
+    public function runningAsConfiguredUser($useRunningUser = true)
+    {
+        if (!$this->getShowUserCronMessage()) {
+            return true;
+        }
+
+        $getUserMethod = ($useRunningUser) ? 'getRunningUser' : 'getLastRunUser';
+
+        return ($this->{$getUserMethod}() === $this->getConfiguredUser());
+    }
+
+    /**
+     * Should we warn the user if the schedule is being run as the wrong user?
+     * @return bool
+     */
+    public function getShowUserCronMessage()
+    {
+        return (bool) Mage::getStoreConfig(self::XML_PATH_SHOW_WRONG_USER_MSG);
+    }
+
+    /**
+     * Get the last user who ran a schedule from core variables
+     * @return string|null
+     */
+    public function getLastRunUser()
+    {
+        $var = Mage::getModel('core/variable')->loadByCode(self::VAR_LAST_RUN_USER_CODE);
+        if ($var) {
+            return $var->getPlainValue();
+        }
+        return null;
+    }
+
+    /**
+     * Check if the cache prefix from the database matches the cache prefix from the local.xml file
+     *
+     * @return bool
+     */
+    public function checkCachePrefix()
+    {
+        $dbCachePrefix = $this->getDbCachePrefix();
+        if (empty($dbCachePrefix)) {
+            return true;
+        }
+        $localXmlCachePrefix = Mage::app()->getCache()->getOption('cache_id_prefix');
+        return ($localXmlCachePrefix == $dbCachePrefix);
+    }
+
+    public function getDbCachePrefix()
+    {
+        return Mage::getStoreConfig(self::XML_PATH_RUN_ONLY_IF_CACHE_PREFIX_ID_MATCHES);
     }
 }
