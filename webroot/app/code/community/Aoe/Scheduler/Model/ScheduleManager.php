@@ -15,25 +15,41 @@ class Aoe_Scheduler_Model_ScheduleManager
      * Mark missed schedule records by changing status
      *
      * @return $this
+     * @throws Exception
      */
-    public function cleanMissedSchedules()
+    public function skipMissedSchedules()
     {
         $schedules = Mage::getModel('cron/schedule')->getCollection()
             ->addFieldToFilter('status', Aoe_Scheduler_Model_Schedule::STATUS_PENDING)
             ->addFieldToFilter('scheduled_at', array('lt' => strftime('%Y-%m-%d %H:%M:%S', time())))
-            ->addOrder('scheduled_at', 'DESC');
+            ->addOrder('scheduled_at', 'DESC')
+            ->load();
 
-        $seenJobs = array();
-        foreach ($schedules as $key => $schedule) {
-            /* @var Aoe_Scheduler_Model_Schedule $schedule */
-            if (isset($seenJobs[$schedule->getJobCode()])) {
-                $schedule
-                    ->setMessages('Multiple tasks with the same job code were piling up. Skipping execution of duplicates.')
-                    ->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_MISSED)
-                    ->save();
-            } else {
-                $seenJobs[$schedule->getJobCode()] = 1;
+        Mage::getSingleton('cron/schedule')->getResource()->beginTransaction(TRUE);
+        try {
+            $seenJobs = array();
+            foreach ($schedules as $key => $schedule) {
+                /* @var Aoe_Scheduler_Model_Schedule $schedule */
+                if (isset($seenJobs[$schedule->getJobCode()])) {
+                    $schedule
+                        ->setMessages('Multiple tasks with the same job code were piling up. Skipping execution of duplicates.')
+                        ->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_SKIP_PILINGUP);
+                    $updated = $schedule->getResource()->trySetJobStatusAtomic(
+                        $schedule->getId(),
+                        $schedule->getStatus(),
+                        Aoe_Scheduler_Model_Schedule::STATUS_PENDING
+                    );
+                    if ($updated) {
+                        $schedule->save();
+                    }
+                } else {
+                    $seenJobs[$schedule->getJobCode()] = 1;
+                }
             }
+            Mage::getSingleton('cron/schedule')->getResource()->commit();
+        } catch (Exception $e) {
+            Mage::getSingleton('cron/schedule')->getResource()->rollBack();
+            throw $e;
         }
 
         return $this;
@@ -75,12 +91,14 @@ class Aoe_Scheduler_Model_ScheduleManager
      * @param $jobCode
      * @return Aoe_Scheduler_Model_Schedule|false
      */
-    public function getScheduleForAlwaysJob($jobCode)
+    public function getScheduleForAlwaysJob($jobCode, $reason=null)
     {
         $processManager = Mage::getModel('aoe_scheduler/processManager'); /* @var $processManager Aoe_Scheduler_Model_ProcessManager */
         if (!$processManager->isJobCodeRunning($jobCode)) {
             $ts = strftime('%Y-%m-%d %H:%M:00', time());
-            $schedule = Mage::getModel('cron/schedule') /* @var $schedule Aoe_Scheduler_Model_Schedule */
+            $schedule = Mage::getModel('cron/schedule'); /* @var $schedule Aoe_Scheduler_Model_Schedule */
+            $schedule
+                ->setScheduledReason($reason ? $reason : Aoe_Scheduler_Model_Schedule::REASON_ALWAYS)
                 ->setJobCode($jobCode)
                 ->setStatus(Aoe_Scheduler_Model_Schedule::STATUS_RUNNING)
                 ->setCreatedAt($ts)
@@ -236,7 +254,7 @@ class Aoe_Scheduler_Model_ScheduleManager
         $schedule->initializeFromJob($job);
         $schedule->setScheduledReason(Aoe_Scheduler_Model_Schedule::REASON_GENERATESCHEDULES);
 
-        for ($time = $now; $time < $timeAhead; $time += 60) {
+        for ($time = $now + 60; $time < $timeAhead; $time += 60) {
             $ts = strftime('%Y-%m-%d %H:%M:00', $time);
             if (!empty($exists[$job->getJobCode().'/'.$ts])) {
                 // already scheduled
@@ -280,10 +298,11 @@ class Aoe_Scheduler_Model_ScheduleManager
             Aoe_Scheduler_Model_Schedule::STATUS_DISAPPEARED =>     Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
             Aoe_Scheduler_Model_Schedule::STATUS_DIDNTDOANYTHING => Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_SUCCESS)*60,
             Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS =>         Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_SUCCESS)*60,
+            Aoe_Scheduler_Model_Schedule::STATUS_REPEAT =>          Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_SUCCESS)*60,
             Aoe_Scheduler_Model_Schedule::STATUS_MISSED =>          Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
+            Aoe_Scheduler_Model_Schedule::STATUS_SKIP_PILINGUP =>   Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
             Aoe_Scheduler_Model_Schedule::STATUS_ERROR =>           Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
             Aoe_Scheduler_Model_Schedule::STATUS_DIED =>            Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
-            Aoe_Scheduler_Model_Schedule::STATUS_SKIP_LOCKED =>     Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
             Aoe_Scheduler_Model_Schedule::STATUS_SKIP_OTHERJOBRUNNING => Mage::getStoreConfig(Mage_Cron_Model_Observer::XML_PATH_HISTORY_FAILURE)*60,
         );
 
@@ -304,7 +323,13 @@ class Aoe_Scheduler_Model_ScheduleManager
         $maxNo = Mage::getStoreConfig(self::XML_PATH_HISTORY_MAXNO);
         if ($maxNo) {
             $history = Mage::getModel('cron/schedule')->getCollection()
-                ->addFieldToFilter('status', Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS)
+                ->addFieldToFilter(
+                    array('status'),
+                    array(
+                        array('eq' => Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS),
+                        array('eq' => Aoe_Scheduler_Model_Schedule::STATUS_REPEAT)
+                    )
+                )
                 ->setOrder('finished_at', 'desc')
                 ->load();
             $counter = array();

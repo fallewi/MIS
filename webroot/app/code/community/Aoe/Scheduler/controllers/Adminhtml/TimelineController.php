@@ -2,10 +2,22 @@
 /**
  * Timeline controller
  *
- * @author Fabrizio Branca <fabrizio.branca@aoemedia.de>
+ * @author Fabrizio Branca
  */
 class Aoe_Scheduler_Adminhtml_TimelineController extends Aoe_Scheduler_Controller_AbstractController
 {
+    /**
+     * Index action
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        $this->_initAction()
+            ->_addBreadcrumb($this->__('Timeline View'), $this->__('Timeline View'))
+            ->_title($this->__('Timeline View'))
+            ->renderLayout();
+    }
 
     /**
      * Acl checking
