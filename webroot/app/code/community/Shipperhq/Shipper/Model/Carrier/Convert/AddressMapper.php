@@ -173,8 +173,8 @@ class Shipperhq_Shipper_Model_Carrier_Convert_AddressMapper extends Shipperhq_Sh
                 'discountPercent'             => $magentoItem->getDiscountPercent(),
                 'discountedBasePrice'         => $magentoItem->getBasePrice() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()),
                 'discountedStorePrice'        => $magentoItem->getPrice() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()),
-                'discountedTaxInclBasePrice'  => $magentoItem->getBasePrice() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()) + ($magentoItem->getBaseTaxAmount()/$magentoItem->getQty()),
-                'discountedTaxInclStorePrice' => $magentoItem->getPrice() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()) +  ($magentoItem->getTaxAmount()/$magentoItem->getQty()),
+                'discountedTaxInclBasePrice'  => $magentoItem->getBasePriceInclTax() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()),//SHQ16-1893
+                'discountedTaxInclStorePrice' => $magentoItem->getPriceInclTax() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()),//SHQ16-1893
                 'attributes'                  => self::populateAttributes($stdAttributes, $magentoItem),
                 'legacyAttributes'            => self::populateAttributes(self::$_legacyAttributeNames, $magentoItem),
                 'baseCurrency'                => Mage::app()->getBaseCurrencyCode(),//$request->getBaseCurrency()->getCurrencyCode(),

@@ -39,6 +39,7 @@
     <default>
         <reference name="notifications">
                 <block type="shipperhq_shipper/adminhtml_synchronize_notify" name="synchronize_notify" template="shipperhq/shipper/synchronize/notify.phtml"></block>
+                <block type="shipperhq_shipper/adminhtml_carrier_notify" name="carrier_notify" template="shipperhq/shipper/carrier/notify.phtml"></block>
         </reference>
     </default>
     <adminhtml_catalog_product_edit>

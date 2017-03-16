@@ -142,3 +142,19 @@
 2.116 - SHQ16-1748 explicitly set collect rates to false on submit, SHQ16-1357 dont show any date for custom calendar carriers on inital load, SHQ16-1750 remove legacy attributes from request
 2.117 - SHQ16-1690 Added section specific classes and removed inline styles
 2.118 - SHQ16-1768 item detail added when merged rates enabled for MAC
+2.119 - SHQ16-1791 Admin order view update improvements. SHQ16-1792 Fixed shipping and handling column in order view 
+2.120 - SHQ16-1777 Admin layout refactor. SHQ16-1792 Resolved issue with dates showing when not applicable in admin
+2.121 - SHQ16-1825 Added further checks to ensure attribute is included in indexer
+2.122 - SHQ16-1831 Method styling on OSC for pickup/access point methods
+2.123 - SHQ16-1834 Autoselect single calendar rate and SHQ16-1791 order email correction for single carrier
+2.124 - SHQ16-1837 Further improvements for OneStepCheckout and pickup functionality. Ensured rendering correct block and template  when using + - item qty in checkout
+2.125 - SHQ16-1804 - support for limited access delivery accesorial
+2.126 - SHQ16-1804 - support for limited access delivery accesorial
+2.127 - SHQ16-1791 refactor order event processing, SHQ16-1834 autoselect single rate on rerequest
+2.128 - SHQ16-1873 Updated extension to handle split shipping groups and store pickup
+2.129 - SHQ16-1873 Updated extension to handle split shipping groups and store pickup
+2.130 - SHQ16-1873 Further work on split shipping groups with one step checkout
+2.131 - SHQ16-1873 Further work on split shipping groups with one step checkout
+2.132 - SHQ16-1605 Additional accessorial support
+2.133 - SHQ16-1893 Work around for Magento issue with taxed discounted base totals
+2.134 - SHQ16-1837 Resolved so OSC single methods are saved, SHQ16-1926 support for shqshared carrier in default carrier code logic

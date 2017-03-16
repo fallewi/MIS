@@ -78,6 +78,14 @@
                        for="liftgate_required_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__('Liftgate Required?') ?></label>
             </li>
         <?php endif;?>
+        <?php if($this->helper('shipperhq_freight')->isLimitedDeliveryEnabled($carrierGroup, $carrierCode)): ?>
+            <li class="a-left input-checkbox" id="limited_delivery_div_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>">
+                <input class="accessorial" type="checkbox" name="limited_delivery_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" id="limited_delivery_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>" value="1"
+                    <?php if ($this->helper('shipperhq_freight')->getLimitedDelivery($carrierGroup, $carrierCode)): ?> checked="checked"<?php endif; ?> />
+                <label id="limited_delivery_label_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
+                       for="limited_delivery_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"><?php echo $this->__('Limited Access Delivery?') ?></label>
+            </li>
+        <?php endif;?>
         <?php if($this->helper('shipperhq_freight')->isCustomerAccountCarrier($carrierGroup, $carrierCode, $carrierType)): ?>
             <li class="a-left input-box">
                 <label id="customer_carrier_<?php echo $carrierCode; ?><?php echo $carrierGroupInsert; ?>"
@@ -147,6 +155,7 @@ FreightListener.prototype = {
         var notify_required = false;
         var destination_type = false;
         var inside_delivery = false;
+        var limited_delivery = false;
         var date_selected = false; //SHQ16-1726 explicitly add selected date if present to request
 
 
@@ -165,6 +174,11 @@ FreightListener.prototype = {
         if($('inside_delivery_' +carrierCode+carrierGroupInsert)) {
             inside_delivery = $('inside_delivery_' +carrierCode+carrierGroupInsert).checked;
         }
+
+        if($('limited_delivery_' +carrierCode+carrierGroupInsert)) {
+            limited_delivery = $('limited_delivery_' +carrierCode+carrierGroupInsert).checked;
+        }
+
         if($('del_date_select_' + carrierCode + carrierGroupInsert)) {
             date_selected = $('del_date_select_' + carrierCode + carrierGroupInsert).value;
         }
@@ -185,6 +199,7 @@ FreightListener.prototype = {
                     destination_type: destination_type,
                     inside_delivery: inside_delivery,
                     date_selected: date_selected,
+                    limited_delivery: limited_delivery,
                     onestepcheckout: false
                 }
             }
@@ -205,6 +220,7 @@ FreightListener.prototype = {
         var notify_required = false;
         var destination_type = false;
         var inside_delivery = false;
+        var limited_delivery = false;
         var date_selected = false; //SHQ16-1726 explicitly add selected date if present to request
 
         if($('liftgate_required_'+carrierCode+carrierGroupInsert)) {
@@ -221,6 +237,10 @@ FreightListener.prototype = {
 
         if($('inside_delivery_' +carrierCode+carrierGroupInsert)) {
             inside_delivery = $('inside_delivery_' +carrierCode+carrierGroupInsert).checked;
+        }
+
+        if($('limited_delivery_' +carrierCode+carrierGroupInsert)) {
+            limited_delivery = $('limited_delivery_' +carrierCode+carrierGroupInsert).checked;
         }
 
         if($('del_date_select_' + carrierCode + carrierGroupInsert)) {
@@ -243,6 +263,7 @@ FreightListener.prototype = {
                 notify_required: notify_required,
                 destination_type: destination_type,
                 inside_delivery: inside_delivery,
+                limited_delivery: limited_delivery,
                 date_selected: date_selected,
                 onestepcheckout: true
             }
