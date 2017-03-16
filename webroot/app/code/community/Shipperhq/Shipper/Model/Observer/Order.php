@@ -52,6 +52,11 @@ class Shipperhq_Shipper_Model_Observer_Order extends Mage_Core_Model_Abstract
         $quote = $observer->getEvent()->getQuote();
         $helper = Mage::getSingleton('shipperhq_shipper/checkout_helper');
         $helper->saveSingleShippingMethod($quote->getShippingAddress(), $shippingMethod);
+        $params = $observer->getEvent()->getRequest()->getParams();
+        Mage::dispatchEvent('shipperhq_save_shipping_method',
+            array('shipping_address'=>$quote->getShippingAddress(),
+                'shipping_method' => $shippingMethod,
+                'params' => $params));
 
         $rate = $quote->getShippingAddress()->getShippingRateByCode($shippingMethod);
         if(!$rate) {
@@ -314,6 +319,7 @@ class Shipperhq_Shipper_Model_Observer_Order extends Mage_Core_Model_Abstract
 
     protected function confirmOrder($order)
     {
+        
         $confirm = false;
         $customOrderId = null;
         $pitney = false;
@@ -364,35 +370,6 @@ class Shipperhq_Shipper_Model_Observer_Order extends Mage_Core_Model_Abstract
                 }
             }
 
-        }
-        if(strstr($order->getCarrierType(), 'shqshared_')) {
-            $original  = $order->getCarrierType();
-            $carrierTypeArray = explode('_', $order->getCarrierType());
-            if(is_array($carrierTypeArray)) {
-                $order->setCarrierType($carrierTypeArray[1]);
-                //SHQ16-1026
-                $carrierGroupDetail = $order->getCarriergroupShippingDetails();
-                $currentShipDescription = $order->getShippingDescription();
-                $shipDescriptionArray = explode('-', $currentShipDescription);
-                $cgArray = Mage::helper('shipperhq_shipper')->decodeShippingDetails($carrierGroupDetail);
-                foreach($cgArray as $key => $cgDetail) {
-                    if(isset($cgDetail['carrierType']) && $cgDetail['carrierType'] == $original) {
-                        $cgDetail['carrierType'] = $carrierTypeArray[1];
-                    }
-                    if(is_array($shipDescriptionArray) && isset($cgDetail['carrierTitle'])) {
-                        $shipDescriptionArray[0] = $cgDetail['carrierTitle'] .' ';
-                        $newShipDescription = implode('-', $shipDescriptionArray);
-                        $order->setShippingDescription($newShipDescription);
-                    }
-                    $cgArray[$key] = $cgDetail;
-                }
-                $order->setCarriergroupShippingDetails(Mage::helper('shipperhq_shipper')->encodeShippingDetails($cgArray));
-                $order->save();
-                if (Mage::helper('shipperhq_shipper')->isDebug()) {
-                    Mage::helper('wsalogger/log')->postDebug('Shipperhq_Shipper', 'Rates displayed as single carrier',
-                        'Resetting carrier type on order to be ' .$carrierTypeArray[1]);
-                }
-            }
         }
     }
 

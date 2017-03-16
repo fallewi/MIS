@@ -61,7 +61,7 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
         return $configuredMergedCheckout;
     }
 
-   
+
     /**
      * Retrieve checkout quote model object
      *
@@ -188,10 +188,14 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
         {
             $mergedCarrierResultWithRates = Mage::helper('shipperhq_shipper')->chooseCarrierAndProcess($carrierRate);
            if(isset($carrierRate->rates)) {
+               if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Freight')) {
+                   $freightRate = Mage::helper('shipperhq_freight')->isFreightEnabledMergedRate($carrierRate->carrierCode);
+               }
                 foreach($carrierRate->rates as $oneRate) {
                     if(isset($oneRate->rateBreakdownList)){
                         $carrierGroupShippingDetail = array();
                         $rateBreakdown = $oneRate->rateBreakdownList;
+
                         foreach($rateBreakdown as $rateInMergedRate) {
                             if(array_key_exists($rateInMergedRate->carrierGroupId, $splitRateCarriergroupDetail)) {
                                 if(array_key_exists($rateInMergedRate->carrierCode, $splitRateCarriergroupDetail[$rateInMergedRate->carrierGroupId])
@@ -206,6 +210,9 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
                                 continue;
                             }
                             $rateToAdd['carriergroup_detail'] = $carrierGroupShippingDetail;
+                            if($freightRate) {
+                                $rateToAdd['freight_rate'] = $freightRate;
+                            }
                             $mergedCarrierResultWithRates['rates'][$key] = $rateToAdd;
                         }
                     }
@@ -267,6 +274,19 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
         return $shipping->getResult();
     }
 
+    private function isValidCarrierGroup($carrierGroupId, $carrierGroupCountArry)
+    {
+        if (is_numeric($carrierGroupId) && !in_array($carrierGroupId,$carrierGroupCountArry)) {
+            return true;
+        }
+
+        if (strpos($carrierGroupId, 'XXXX')) {
+            return true;
+        }
+
+        return false;
+    }
+
     /*
      *
      *
@@ -276,13 +296,17 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
         $shipMethodCount=0;
         $shippingDetails = array();
         $carrierGroupCountArry=array();
+
         foreach ($shippingRateGroups as $rates) {
             foreach ($rates as $rate) {
-                if (is_numeric($rate->getCarriergroupId()) && !in_array($rate->getCarriergroupId(),$carrierGroupCountArry)) {
+                if($this->isValidCarrierGroup($rate->getCarriergroupId(), $carrierGroupCountArry)){
                     $carrierGroupCountArry[] = $rate->getCarriergroupId();
                 }
             }
         }
+
+        $carrierGroupCountArry = array_unique($carrierGroupCountArry);
+
         if (Mage::helper('shipperhq_shipper')->isDebug()) {
             Mage::helper('wsalogger/log')->postDebug('Shipperhq_Splitrates', 'Manually merging shipping rates',
                 $shippingMethod);
