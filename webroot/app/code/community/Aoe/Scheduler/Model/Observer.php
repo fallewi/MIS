@@ -31,7 +31,7 @@ class Aoe_Scheduler_Model_Observer /* extends Mage_Cron_Model_Observer */
         $excludeJobs = $helper->addGroupJobs((array) $observer->getExcludeJobs(), (array) $observer->getExcludeGroups());
 
         // Coalesce all jobs that should have run before now, by job code, by marking the oldest entries as missed.
-        $scheduleManager->cleanMissedSchedules();
+        $scheduleManager->skipMissedSchedules();
 
         // Iterate over all pending jobs
         foreach ($scheduleManager->getPendingSchedules($includeJobs, $excludeJobs) as $schedule) {
@@ -74,11 +74,18 @@ class Aoe_Scheduler_Model_Observer /* extends Mage_Cron_Model_Observer */
         foreach ($jobs as $job) {
             /* @var Aoe_Scheduler_Model_Job $job */
             if ($job->isAlwaysTask() && $job->getRunModel()) {
-                $schedule = $scheduleManager->getScheduleForAlwaysJob($job->getJobCode());
-                if ($schedule !== false) {
-                    $schedule->process();
-                }
+                $repetition = 0;
+                do {
+                    $reason = ($repetition == 0) ? Aoe_Scheduler_Model_Schedule::REASON_ALWAYS : Aoe_Scheduler_Model_Schedule::REASON_REPEAT;
+                    $schedule = $scheduleManager->getScheduleForAlwaysJob($job->getJobCode(), $reason);
+                    if ($schedule !== false) {
+                        $schedule->setRepetition($repetition); // this is not persisted, but can be access from within the callback
+                        $schedule->process();
+                    }
+                    $repetition++;
+                } while ($repetition < 10 && $schedule && ($schedule->getStatus() == Aoe_Scheduler_Model_Schedule::STATUS_REPEAT));
             }
         }
     }
+
 }

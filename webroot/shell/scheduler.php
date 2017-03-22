@@ -82,7 +82,12 @@ class Aoe_Scheduler_Shell_Scheduler extends Mage_Shell_Abstract
         $jobs = Mage::getSingleton('aoe_scheduler/job')->getCollection();
         foreach ($jobs as $job) {
             /* @var $job Aoe_Scheduler_Model_Job */
-            echo sprintf("%-50s %-20s %s\n", $job->getJobCode(), $job->getCronExpression(), $job->getIsActive() ? 'Enabled' : 'Disabled');
+            echo sprintf("%-50s %-20s %-13s %-20s\n",
+                $job->getJobCode(),
+                $job->getCronExpression(),
+                $job->getIsActive() ? 'Enabled' : 'Disabled',
+                $job->getGroups()
+            );
         }
     }
 
@@ -103,7 +108,13 @@ class Aoe_Scheduler_Shell_Scheduler extends Mage_Shell_Abstract
         $collection = Mage::getModel('cron/schedule')->getCollection(); /* @var $collection Mage_Cron_Model_Resource_Schedule_Collection */
 
         $collection->addFieldToFilter('job_code', $code)
-            ->addFieldToFilter('status', Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS)
+            ->addFieldToFilter(
+                array('status'),
+                array(
+                    array('eq' => Aoe_Scheduler_Model_Schedule::STATUS_SUCCESS),
+                    array('eq' => Aoe_Scheduler_Model_Schedule::STATUS_REPEAT)
+                )
+            )
             ->addOrder('finished_at', Varien_Data_Collection_Db::SORT_ORDER_DESC)
             ->getSelect()->limit(1);
         $schedule = $collection->getFirstItem(); /* @var $schedule Aoe_Scheduler_Model_Schedule */
@@ -217,6 +228,108 @@ class Aoe_Scheduler_Shell_Scheduler extends Mage_Shell_Abstract
         return "--code <code> [--tryLock] [--force]	        Run a job directly";
     }
 
+
+    /**
+     * Disable job
+     *
+     * @return void
+     */
+    public function disableJobAction()
+    {
+        $code = $this->getArg('code');
+        if (empty($code)) {
+            echo "\nNo code found!\n\n";
+            echo $this->usageHelp();
+            exit(1);
+        }
+
+        $allowedCodes = Mage::getSingleton('aoe_scheduler/job')->getResource()->getJobCodes();
+        if (!in_array($code, $allowedCodes)) {
+            echo "\nNo valid job found!\n\n";
+            echo $this->usageHelp();
+            exit(1);
+        }
+
+        $job = Mage::getModel('aoe_scheduler/job')->load($code); /* @var Aoe_Scheduler_Model_Job $job */
+        if (!$job->getJobCode()) {
+            echo "Job '$code' not found\n";
+            exit(1);
+        }
+
+        if (!$job->getIsActive()) {
+            echo "Job '$code' is already disabled. Skipping.'";
+            return;
+        }
+
+        $job->setIsActive(false)->save();
+
+        $scheduleManager = Mage::getModel('aoe_scheduler/scheduleManager'); /* @var Aoe_Scheduler_Model_ScheduleManager $scheduleManager */
+        $scheduleManager->flushSchedules($job->getJobCode());
+
+        echo "Disabled job $code and flushed all its schedules\n";
+    }
+
+    /**
+     * Display extra help
+     *
+     * @return string
+     */
+    public function disableJobActionHelp()
+    {
+        return "--code <code> 	        Disable job";
+    }
+
+
+    /**
+     * Enable job
+     *
+     * @return void
+     */
+    public function enableJobAction()
+    {
+        $code = $this->getArg('code');
+        if (empty($code)) {
+            echo "\nNo code found!\n\n";
+            echo $this->usageHelp();
+            exit(1);
+        }
+
+        $allowedCodes = Mage::getSingleton('aoe_scheduler/job')->getResource()->getJobCodes();
+        if (!in_array($code, $allowedCodes)) {
+            echo "\nNo valid job found!\n\n";
+            echo $this->usageHelp();
+            exit(1);
+        }
+
+        $job = Mage::getModel('aoe_scheduler/job')->load($code); /* @var Aoe_Scheduler_Model_Job $job */
+        if (!$job->getJobCode()) {
+            echo "Job '$code' not found\n";
+            exit(1);
+        }
+
+        if ($job->getIsActive()) {
+            echo "Job '$code' is already active. Skipping.'";
+            return;
+        }
+
+        $job->setIsActive(true)->save();
+
+        $scheduleManager = Mage::getModel('aoe_scheduler/scheduleManager'); /* @var Aoe_Scheduler_Model_ScheduleManager $scheduleManager */
+        $scheduleManager->generateSchedulesForJob($job);
+
+        echo "Enabled job $code and generated schedules\n";
+    }
+
+    /**
+     * Display extra help
+     *
+     * @return string
+     */
+    public function enableJobActionHelp()
+    {
+        return "--code <code> 	        Enable job";
+    }
+
     /**
      * Active wait until no schedules are running
      */
@@ -265,7 +378,7 @@ class Aoe_Scheduler_Shell_Scheduler extends Mage_Shell_Abstract
      */
     public function waitActionHelp()
     {
-        return "[--timout <timeout=60>]	        Active wait until no schedules are running.";
+        return "[--timeout <timeout=60>]	        Active wait until no schedules are running.";
     }
 
     /**
@@ -325,6 +438,28 @@ class Aoe_Scheduler_Shell_Scheduler extends Mage_Shell_Abstract
     }
 
     /**
+     * Print all running schedules
+     *
+     * @return void
+     */
+    public function listGroupsAction()
+    {
+        $helper = Mage::helper('aoe_scheduler'); /* @var $helper Aoe_Scheduler_Helper_Data */
+        echo sprintf(
+            "%-30s %s\n",
+            'Group',
+            'Jobs'
+        );
+        foreach ($helper->getGroupsToJobsMap() as $group => $jobs) {
+            echo sprintf(
+                "%-30s %s\n",
+                $group,
+                implode(', ', $jobs)
+            );
+        }
+    }
+
+    /**
      * Kill all
      *
      * @return void
@@ -361,6 +496,13 @@ class Aoe_Scheduler_Shell_Scheduler extends Mage_Shell_Abstract
      */
     public function cronAction()
     {
+
+        $helper = Mage::helper('aoe_scheduler'); /* @var $helper Aoe_Scheduler_Helper_Data */
+        if (!$helper->checkCachePrefix()) {
+            echo "Cache prefix in db doesn't match the one in local.xml\n";
+            return;
+        }
+
         $mode = $this->getArg('mode');
         switch ($mode) {
             case 'always':

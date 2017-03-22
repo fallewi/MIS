@@ -41,7 +41,7 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
     protected static $_debug;
     protected $quote;
     protected $quoteStorage;
-    
+
     public function getLocationResults($quote, $selectedLocation, $carriergroupId, $carrierCode, $dateSelected, $carrierType, $loadOnly, $addressId, &$resultSet, $isOsc = false)
     {
         self::$_debug = Mage::helper('shipperhq_pickup')->isDebug();
@@ -80,12 +80,28 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
                                 $_excl = $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), false);
                                 $_incl = $this->_getShippingPrice($rate->getPrice(), true, false);
 
-                                $label = $_excl;
-                                if (Mage::helper('tax')->displayShippingBothPrices() && $_incl != $_excl)
-                                {
-                                    $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
+                                if($isOsc) {
+                                    $label = $this->getMethodTitle( $rate->getMethodTitle(),  $rate->getMethodDescription(), !$isOsc);
+
+                                    $label .= ' '.$this->getOscFormattedPrice($_excl);
+
+                                    if (Mage::helper('tax')->displayShippingBothPrices() && $_incl != $_excl)
+                                    {
+                                        $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
+                                    }
+
+                                    if($rate['tooltip'] != '') {
+                                        $label .= ' '.$this->getOscFormattedTooltip($rate['tooltip']);
+                                    }
+                                } else {
+                                    $label = $_excl;
+                                    if (Mage::helper('tax')->displayShippingBothPrices() && $_incl != $_excl)
+                                    {
+                                        $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
+                                    }
+                                    $label .=  ' ' .$this->getMethodTitle( $rate->getMethodTitle(),  $rate->getMethodDescription(), !$isOsc);
                                 }
-                                $label .=  ' ' .$this->getMethodTitle( $rate->getMethodTitle(),  $rate->getMethodDescription(), !$isOsc);
+
                                 $updatedRates[$rate->getCode()] = array(
                                     //  'code' 			=> ,
                                     'price' 				=> $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), false),
@@ -157,6 +173,14 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
         return Mage::helper('shipperhq_shipper')->getMethodTitle($methodTitle, $methodDescription, $includeContainer);
     }
 
+    protected function getOscFormattedPrice($price){
+        return Mage::helper('shipperhq_shipper')->getOscFormattedPrice($price);
+    }
+
+    protected function getOscFormattedTooltip($tooltip){
+        return Mage::helper('shipperhq_shipper')->getOscFormattedTooltip($tooltip);
+    }
+
     protected function _getShippingPrice($price, $flag,  $includeContainer = true)
     {
         return $this->quote->getStore()->convertPrice(Mage::helper('tax')->
@@ -222,7 +246,7 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
 
     /**
      * Returns mapping field for location object
-     * 
+     *
      * @return array
      */
     protected function _getLocationMapping()
@@ -303,7 +327,7 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
         $resultSet['showTime'] = false;
         $resultSet['addressText'] = Mage::helper('shipperhq_shipper')->__('Address') .':';
         $resultSet['hoursText'] =  Mage::helper('shipperhq_shipper')->__('Hours') .':';
-        
+
         // Map result set of location api to a result set
         $resultSet += Mage::helper('shipperhq_shipper/mapper')->map(
             $this->_getLocationMapping(),
@@ -311,7 +335,7 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
         );
 
 
-        
+
         $resultSet = $this->_getLocationTimeSlots($location, $resultSet);
         if (self::$_debug) {
             Mage::helper('wsalogger/log')->postDebug('ShipperHQ Pickup', 'Result Set from Ajax Callback', $resultSet);
@@ -367,7 +391,7 @@ class Shipperhq_Pickup_Model_Location extends Mage_Core_Model_Abstract
                 $resultSet['showTime'] = false;
             }
         }
-        
+
         return $resultSet;
     }
 

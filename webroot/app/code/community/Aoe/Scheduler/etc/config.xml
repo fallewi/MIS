@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Aoe_Scheduler>
-            <version>1.2.2</version>
+            <version>1.5.1</version>
         </Aoe_Scheduler>
     </modules>
 
@@ -37,6 +37,7 @@
             </cron>
             <cron_resource>
                 <rewrite>
+                    <schedule>Aoe_Scheduler_Model_Resource_Schedule</schedule>
                     <schedule_collection>Aoe_Scheduler_Model_Resource_Schedule_Collection</schedule_collection>
                 </rewrite>
             </cron_resource>
@@ -163,6 +164,9 @@
                 <enableErrorLog>0</enableErrorLog>
                 <errorLevel>-1</errorLevel>
                 <errorLogFilename>###JOBCODE###.log</errorLogFilename>
+                <listCodeFilterType>select</listCodeFilterType>
+                <showCronUserMessage>1</showCronUserMessage>
+                <killOnIncorrectUser>0</killOnIncorrectUser>
             </cron>
         </system>
     </default>

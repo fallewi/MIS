@@ -29,7 +29,7 @@
  */
 
 
-class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Items extends Mage_Adminhtml_Block_Sales_Order_View_Items
+class Shipperhq_Postorder_Block_Adminhtml_Sales_Order_View_Items extends Mage_Adminhtml_Block_Template
 {
     public function _toHtml(){
         $html = parent::_toHtml();
