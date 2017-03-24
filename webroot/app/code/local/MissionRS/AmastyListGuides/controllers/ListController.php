@@ -19,8 +19,11 @@ class MissionRS_AmastyListGuides_ListController extends Amasty_List_ListControll
         $list = Mage::getModel('amlist/list');
         $id = $this->getRequest()->getParam('id');
         if ($id){
-            $list->load($id);
-            if ($list->getCustomerId() != $this->_customerId){
+             $list->load($id);             
+             $sharedListIds = Mage::helper('amlistl')->getSharedListIds($this->_customerId);               
+             $sharedListIds[] = $list->getCustomerId();
+           
+            if (!in_array($list->getCustomerId(), $sharedListIds)){
                 $this->_redirect('*/*/');
                 return;
             }
@@ -41,17 +44,21 @@ class MissionRS_AmastyListGuides_ListController extends Amasty_List_ListControll
             $this->_redirect('*/*/');
             return;
         }
-
+       
         $listId = $this->getRequest()->getParam('list_id');
-
+ 
         $list  = Mage::getModel('amlist/list');
         $list->load($listId);
-        if ($list->getCustomerId() != $this->_customerId){
+        $sharedListIds = Mage::helper('amlistl')->getSharedListIds($this->_customerId);
+        $sharedListIds[] = $list->getCustomerId();
+
+        if (!in_array($list->getCustomerId(), $sharedListIds)) {
             $this->_redirect('*/*/');
             return;
         }
 
         $post = $this->getRequest()->getPost();
+        
         if ($post && isset($post['qty']) && is_array($post['qty']))
         {
             $quote = Mage::getSingleton('checkout/cart'); // create a cart quote
