@@ -16,7 +16,7 @@ class BlueAcorn_CsvExport_Model_Marketingfeed extends Mage_Core_Model_Abstract
     public function marketingCollection($helper, $manualFlag)
     {
         $fileName = false;
-        $excludedGroups = $helper->getExcludedGroups();
+        $excludedGroups = explode(',', $helper->getExcludedGroups());
         $now = Mage::getModel('core/date')->timestamp(time());
         $fromDate = date('Y-m-d H:i:s', strtotime('00:00:00', $now));
         $toDate = date('Y-m-d H:i:s', strtotime('23:59:00', $now));
