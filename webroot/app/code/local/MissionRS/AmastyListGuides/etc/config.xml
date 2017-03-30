@@ -2,7 +2,7 @@
 <config>
     <modules>
         <MissionRS_AmastyListGuides>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </MissionRS_AmastyListGuides>
     </modules>
     <global>
@@ -12,7 +12,54 @@
                     <index>MissionRS_AmastyListGuides_Block_Index</index>
                 </rewrite>
             </amlist>
+            <amlistl>
+                <class>MissionRS_AmastyListGuides_Block</class>
+            </amlistl>
+            <adminhtml>
+                <rewrite>
+                    <customer_grid>MissionRS_AmastyListGuides_Block_Adminhtml_Customer_Grid</customer_grid>
+                </rewrite>                
+            </adminhtml>
         </blocks>
+        <helpers>
+            <amlistl>
+                <class>MissionRS_AmastyListGuides_Helper</class>
+            </amlistl>
+        </helpers>
+        <models>
+            <amlistl>
+                <class>MissionRS_AmastyListGuides_Model</class>
+                <resourceModel>amlistl_mysql4</resourceModel>
+            </amlistl>
+            <amlistl_mysql4>
+                <class>MissionRS_AmastyListGuides_Model_Mysql4</class>
+                <entities>
+                    <shared>
+                        <table>am_list_shared</table>
+                    </shared>                    
+                </entities>
+            </amlistl_mysql4>
+        </models>
+        <resources>
+            <amlistl_setup>
+                <setup>
+                    <module>MissionRS_AmastyListGuides</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </amlistl_setup>            
+            <amlistl_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </amlistl_write>            
+            <amlistl_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </amlistl_read>
+        </resources>
     </global>
     <frontend>
         <routers>
@@ -25,4 +72,28 @@
             </amlist>
         </routers>
     </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <MissionRS_AmastyListGuides after="Mage_Adminhtml">MissionRS_AmastyListGuides_Adminhtml</MissionRS_AmastyListGuides>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>    
+    <adminhtml>
+        <events> 
+           <am_grid_massaction_actions>
+                <observers>
+                    <amoaction>
+                        <type>singleton</type>
+                        <class>MissionRS_AmastyListGuides_Model_Observer</class>
+                        <method>addNewActions</method>
+                    </amoaction>
+                </observers>
+           </am_grid_massaction_actions>
+        </events> 
+    </adminhtml>
 </config>
