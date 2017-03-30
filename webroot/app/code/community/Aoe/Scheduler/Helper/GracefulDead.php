@@ -17,7 +17,7 @@ class Aoe_Scheduler_Helper_GracefulDead
         static $configured = false;
         if (!$configured) {
             register_shutdown_function(array('Aoe_Scheduler_Helper_GracefulDead', 'beforeDyingShutdown'));
-            if (extension_loaded('pcntl')) {
+            if (extension_loaded('pcntl') && function_exists('pcntl_signal')) {
                 declare(ticks = 1);
                 pcntl_signal(SIGINT, array('Aoe_Scheduler_Helper_GracefulDead', 'beforeDyingSigint')); // CTRL + C
                 pcntl_signal(SIGTERM, array('Aoe_Scheduler_Helper_GracefulDead', 'beforeDyingSigterm')); // kill <pid>
@@ -49,7 +49,14 @@ class Aoe_Scheduler_Helper_GracefulDead
      */
     public static function beforeDyingShutdown()
     {
-        self::beforeDying('TRIGGER: shutdown function', false);
+        // Try to find out where (and why) the job died.
+        $e = new Exception();
+
+        $message = 'TRIGGER: shutdown function' . PHP_EOL .
+            'Last error: ' . PHP_EOL . print_r(error_get_last(), true) . PHP_EOL .
+            'Backlog: ' . PHP_EOL . $e;
+
+        self::beforeDying($message, false);
     }
 
     /**
