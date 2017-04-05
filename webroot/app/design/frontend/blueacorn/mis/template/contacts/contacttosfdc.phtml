@@ -49,7 +49,7 @@ else
         $kv[] = "oid=00DA0000000gd0H";
         $kv[] = "lead_source=Web";
 //$kv[] = "00NA000000A7XWq=" . $_COOKIE["mrsc01"]; // Campaign
-        $salesforce_post_url = "https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"; // web to lead post url
+        $salesforce_post_url = "https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"; // web to lead post url
     } else {
         $kv[] = "orgid=00DA0000000gd0H";
         $orderID = "";
@@ -66,7 +66,7 @@ else
             $orderID = $_POST["orderid"];
             $kv[] = "00NA000000A7Y10=".$orderID;
         }
-        $salesforce_post_url = "https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8"; // web to case post url
+        $salesforce_post_url = "https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8"; // web to case post url
     }
 //$kv[] = "00NA000000A7mc9=ckell"; // MRS User
 // Debug options
