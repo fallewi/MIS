@@ -378,7 +378,7 @@ class Amasty_Pgrid_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $attributes = Mage::getResourceModel('catalog/product_attribute_collection')
                          ->addVisibleFilter()
-                         ->addStoreLabel($this->getStore()->getId());
+                         ->addStoreLabel($this->_getStoreId());
 
         $conditions = array(
             'main_table.attribute_id = attribute_columns.attribute_id',

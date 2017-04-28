@@ -125,16 +125,16 @@ class Amasty_Pgrid_Model_Resource_Indexer_Qty extends Mage_Index_Model_Resource_
         $select  = $adapter->select()
             ->from(array('e' => $this->getTable('sales/order_item')), array(
                 'product_id',
-                'sum(qty_ordered)-sum(qty_refunded) as qty_sold'
+                'sum(qty_ordered)-sum(qty_refunded)-sum(qty_canceled) as qty_sold'
             ))
             ->group('product_id');
 
         if ($dateFrom) {
-            $select->where('created_at > ? ', $dateFrom);
+            $select->where('created_at > ? ', date('Y-m-d',strtotime($dateFrom)));
         }
 
         if ($dateTo) {
-            $select->where('created_at < ? ', $dateTo);
+            $select->where('created_at < ? ', date('Y-m-d',strtotime($dateTo)));
         }
 
         if (!is_null($entityIds)) {
