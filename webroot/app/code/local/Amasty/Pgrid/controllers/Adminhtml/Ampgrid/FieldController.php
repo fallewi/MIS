@@ -348,7 +348,7 @@ class Amasty_Pgrid_Adminhtml_Ampgrid_FieldController extends Mage_Adminhtml_Cont
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed(
-            'catalog/ampgrid'
+            'catalog/products'
         );
     }
 }
