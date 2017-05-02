@@ -87,6 +87,11 @@ class Amasty_Ogrid_Adminhtml_Amogrid_SettingsController extends Mage_Adminhtml_C
 
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('system/ogrid_adminsetting');
+        $checkSystem = Mage::getSingleton('admin/session')->isAllowed('system/ogrid_adminsetting');
+        if ($checkSystem) {
+            return $checkSystem;
+        } else {
+            return Mage::getSingleton('admin/session')->isAllowed('sales/amordermanagertoolkit/ogrid_adminsetting');
+        }
     }
 }
