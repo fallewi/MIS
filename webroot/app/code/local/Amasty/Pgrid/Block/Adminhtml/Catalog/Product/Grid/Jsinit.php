@@ -21,8 +21,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Jsinit extends Mage_Admi
     public function getSaveUrl()
     {
         $url = $this->getUrl('adminhtml/ampgrid_field/save');
-        if (Mage::getStoreConfig('web/secure/use_in_adminhtml'))
-        {
+        if (Mage::getStoreConfig('web/secure/use_in_adminhtml')) {
             $url = str_replace(Mage::getStoreConfig('web/unsecure/base_url'), Mage::getStoreConfig('web/secure/base_url'), $url);
         }
         return $url;
@@ -31,8 +30,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Jsinit extends Mage_Admi
     public function getSaveAllUrl()
     {
         $url = $this->getUrl('adminhtml/ampgrid_field/saveall');
-        if (Mage::getStoreConfig('web/secure/use_in_adminhtml'))
-        {
+        if (Mage::getStoreConfig('web/secure/use_in_adminhtml')) {
             $url = str_replace(Mage::getStoreConfig('web/unsecure/base_url'), Mage::getStoreConfig('web/secure/base_url'), $url);
         }
         return $url;
@@ -41,8 +39,7 @@ class Amasty_Pgrid_Block_Adminhtml_Catalog_Product_Grid_Jsinit extends Mage_Admi
     public function getSaveSortingUrl()
     {
         $url = $this->getUrl('adminhtml/ampgrid_field/savesorting');
-        if (Mage::getStoreConfig('web/secure/use_in_adminhtml'))
-        {
+        if (Mage::getStoreConfig('web/secure/use_in_adminhtml')) {
             $url = str_replace(Mage::getStoreConfig('web/unsecure/base_url'), Mage::getStoreConfig('web/secure/base_url'), $url);
         }
         return $url;

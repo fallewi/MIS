@@ -21,10 +21,12 @@ class Amasty_Rolepermissions_Model_Observer
     {
         $block = $observer->getBlock();
 
-        if ($block instanceof Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Websites)
+        if ($block instanceof Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Websites) {
             Mage::helper('amrolepermissions/block')->alterWebsitesBlock($block);
-        else if ($block instanceof Mage_Adminhtml_Block_Store_Switcher)
+        }
+        elseif ($block instanceof Mage_Adminhtml_Block_Store_Switcher) {
             Mage::helper('amrolepermissions/block')->alterStoreSwitcher($block);
+        }
     }
 
     public function blockToHtmlAfter($observer)
@@ -64,14 +66,16 @@ class Amasty_Rolepermissions_Model_Observer
         if ($block instanceof Mage_Adminhtml_Block_Catalog_Product_Attribute_Edit_Tab_Options) {
             $rule = Mage::helper('amrolepermissions')->currentRule();
             $allowedStoreviews = $rule->getScopeStoreviews();
-            $allowedStoreviews[] = 0;
-            $stores = clone($block->getStores());
-            foreach ($stores->getItems() as $key => $item) {
-                if (!in_array($key, $allowedStoreviews)) {
-                    $stores->removeItemByKey($key);
+            if (!is_null($allowedStoreviews)) {
+                $allowedStoreviews[] = 0;
+                $stores = clone($block->getStores());
+                foreach ($stores->getItems() as $key => $item) {
+                    if (!in_array($key, $allowedStoreviews)) {
+                        $stores->removeItemByKey($key);
+                    }
                 }
+                $block->setStores($stores);
             }
-            $block->setStores($stores);
         }
 
         if ($block instanceof Mage_Adminhtml_Block_Store_Switcher_Form_Renderer_Fieldset) {
@@ -359,7 +363,7 @@ class Amasty_Rolepermissions_Model_Observer
         $rule = $hlp->currentRule();
 
         if ($collection instanceof Mage_Catalog_Model_Resource_Category_Collection && $rule->getCategories()) {
-            $collection->getSelect()->where('entity_id IN (?)', $rule->getCategories());
+            $collection->getSelect()->where('e.entity_id IN (?)', $rule->getCategories());
         }
 
         if (Mage::helper('core')->isModuleEnabled('Amasty_Xlanding')
@@ -375,6 +379,34 @@ class Amasty_Rolepermissions_Model_Observer
         {
             $internal['Mage_Sales_Model_Mysql4_Order_Grid_Collection'] = 'main_table.store_id';
             $internal['Mage_Sales_Model_Mysql4_Order_Collection'] = 'main_table.store_id';
+
+            //for categories and products on orders grid
+            if ($hlp->checkClass($collection, 'Mage_Sales_Model_Resource_Order_Grid_Collection')) {
+                $ruleCategories = Mage::helper('amrolepermissions')->currentRule()->getCategories();
+                if (!empty($ruleCategories)) {
+                    $ruleCategoriesString = implode(',', $ruleCategories);
+
+                    $defaultWhere = $collection->getSelect()->getPart(Zend_Db_Select::WHERE);
+
+                    $collection->getSelect()->joinLeft(Mage::getConfig()->getTablePrefix().'sales_flat_order_item','main_table.entity_id ='
+                        .Mage::getConfig()->getTablePrefix().'sales_flat_order_item.order_id',
+                        array('product_id'))
+                        ->joinLeft(Mage::getConfig()->getTablePrefix().'catalog_category_product','sales_flat_order_item.product_id ='
+                            .Mage::getConfig()->getTablePrefix().'catalog_category_product.product_id',
+                            array('category_id'))
+                        ->where("catalog_category_product.category_id not in (?)", $ruleCategoriesString)
+                    ;
+
+                    $notInIds = array_unique($collection->getAllIds());
+
+                    $collection->getSelect()->setPart(Zend_Db_Select::WHERE, $defaultWhere);
+
+                    $collection->getSelect()
+                        ->where("catalog_category_product.category_id in (?)", $ruleCategoriesString)
+                        ->where("main_table.entity_id not in (?)", $notInIds)
+                    ;
+                }
+            }
         }
 
         if ($rule->getLimitInvoices())
