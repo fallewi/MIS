@@ -193,14 +193,9 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
     public function addParentIdToSelect()
     {
         $this->getSelect()
-            ->joinLeft(
-                array('relation_table' => $this->getTable('catalog/product_relation')),
+             ->joinLeft(array('relation_table' => $this->getTable('catalog/product_relation')),
                 'relation_table.child_id = e.entity_id',
-                array(
-                    'parent_id' => 'relation_table.parent_id',
-                    'parent_ids' => 'GROUP_CONCAT(relation_table.parent_id)'
-                    )
-            );
+                        array('parent_id' => 'relation_table.parent_id'));
     }
     
     protected function _checkJoin($alias){
@@ -361,8 +356,9 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
         return $this->_productLimitationPrice(true);
     }
     
-    public function joinTaxPercents()
+    public function joinTaxPercents($store)
     {
+        $countryId = Mage::getStoreConfig('general/country/default', $store->getStoreId());
         $this->joinPrice();
             
         if (!$this->_checkJoin('tax_table')){
@@ -374,7 +370,7 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
                 ->joinLeft(array('rate_table' => $this->getTable('tax/tax_calculation_rate')),
                            'rate_table.tax_calculation_rate_id = tax_table.tax_calculation_rate_id',
                            array('tax_percents' => 'rate_table.rate'));
-
+            $this->getSelect()->where('rate_table.tax_country_id = ?', $countryId);
         }
     }
 

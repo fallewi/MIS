@@ -29,7 +29,7 @@
             <action method="addItem"><type>js_css</type><name>amasty/ampgrid/lightbox/css/lightbox.css</name><params/></action>
             <action method="addItem"><type>js_css</type><name>amasty/ampgrid/chosen/chosen.css</name><params/></action>
         </reference>
-        <reference name="content">
+       <reference name="content">
             <block type="ampgrid/adminhtml_catalog_product_grid_jsinit" name="ampgrid_jsinit"></block>
         </reference>
         <block type="ampgrid/adminhtml_catalog_product_grid_template_switcher" name="grid_template_switcher" />

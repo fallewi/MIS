@@ -9,7 +9,7 @@
 <config>
     <modules>
         <Amasty_Productmanagerbundle>
-            <version>1.7.1</version>
+            <version>1.7.4</version>
         </Amasty_Productmanagerbundle>
     </modules>
 

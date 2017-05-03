@@ -9,7 +9,7 @@
 <config>
     <modules>
         <Amasty_Pgrid>
-            <version>4.12.18</version>
+            <version>4.12.20</version>
         </Amasty_Pgrid>
     </modules>
 
@@ -168,6 +168,15 @@
                     </ampgrid_qty_sold>
                 </observers>
             </sales_order_creditmemo_save_after>
+            <admin_user_save_after>
+                <observers>
+                    <ampgrid_qty_sold>
+                        <type>singleton</type>
+                        <class>ampgrid/observer</class>
+                        <method>adminUserSaveAfter</method>
+                    </ampgrid_qty_sold>
+                </observers>
+            </admin_user_save_after>
         </events>
         <helpers>
             <ampgrid>

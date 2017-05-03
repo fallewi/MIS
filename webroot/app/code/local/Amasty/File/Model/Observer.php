@@ -195,6 +195,11 @@ class Amasty_File_Model_Observer
 
             if ($file->getFileUrl() || $file->getFileLink())
             {
+                if ($file->getVisible() === null) {
+                    $visibility = Mage::getStoreConfigFlag('amfile/additional/default_file_visibility');
+                    $file->setVisible($visibility);
+                }
+
                 $storeId = $file->getOrigData() === null ? 0 : +Mage::app()->getRequest()->getParam('store', 0); // New object. Can't use isObjectNew
                 $file->save();
                 $result['updated'][]= $file->getId();
@@ -296,7 +301,7 @@ class Amasty_File_Model_Observer
                         $attachmentsBlock,
                         $sibling,
                         $insertAfter,
-                        'amfile.files'
+                        'amfile_files'
                     );
                 }
                 break;
@@ -308,7 +313,7 @@ class Amasty_File_Model_Observer
 
                     if ($tabsBlock instanceof Amasty_File_Block_Rewrite_Product_View_Tabs) {
                         $tabsBlock->addTab(
-                            'amfile.files',
+                            'amfile_files',
                             $title,
                             $attachmentsBlock,
                             $attachmentsBlock->getTemplate(),
@@ -318,7 +323,7 @@ class Amasty_File_Model_Observer
                     }
                     else {
                         $tabsBlock->addTab(
-                            'amfile.files',
+                            'amfile_files',
                             $title,
                             $attachmentsBlock,
                             $attachmentsBlock->getTemplate()

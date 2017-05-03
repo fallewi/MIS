@@ -207,6 +207,7 @@ class Amasty_Rolepermissions_Helper_Block extends Mage_Core_Helper_Abstract
 
         if ($rule->getScopeStoreviews()) {
             $html = preg_replace('|<option value="">[^<]*</option>|', '', $html);
+            $html = preg_replace('|<option .*value=".,.*">[^<]*</option>|', '', $html);
         }
 
         return $html;

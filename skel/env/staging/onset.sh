@@ -34,6 +34,39 @@ for N98_BIN in $N98_TESTS; do
   $N98_BIN config:set web/secure/base_media_url "{{secure_base_url}}media/"
   $N98_BIN config:set web/secure/base_js_url "{{secure_base_url}}js/"
 
+  # Custom stuff for staging
+
+  $N98_BIN config:set carriers/flatrate/type "I"
+
+  $N98_BIN config:set carriers/flatrate/price "NULL"
+  $N98_BIN config:set payment/verisign/sandbox_flag "1"
+  $N98_BIN config:set dev/log/active "1"
+  $N98_BIN config:set crontab/jobs/sli_search/schedule/cron_expr "00 01 * * *"
+  $N98_BIN config:set crontab/jobs/sli_search/run/model "sli_search/cron::generateFeeds"
+  $N98_BIN config:set sli_search/general/log_level "1"
+  $N98_BIN config:set sli_search/general/feed_enabled "0"
+  $N98_BIN config:set shiphawk/order/active "0"
+  $N98_BIN config:set shiphawk/order/gateway_url "https://sandbox.shiphawk.com/api/v4/"
+  $N98_BIN config:set shiphawk/order/status "0"
+  $N98_BIN config:set carriers/tablerate/import "tablerates.csv"
+  $N98_BIN config:set carriers/shipper/active "0"
+  $N98_BIN config:set carriers/tablerate/active "1"
+  $N98_BIN config:set yotpo/yotpo_general_group/yotpo_appkey "'l0RvJ5Ad4XXVZmT0ndFhHHmn85B5TmYk4Hlk6A3y'"
+  $N98_BIN config:set yotpo/yotpo_general_group/yotpo_secret "'eqfw0Yf3ekcBSSPoXLHuel6hzWYW8kYSgrUQBx3K'"
+  $N98_BIN config:set yotpo/yotpo_general_group/custom_order_status "'complete'"
+  $N98_BIN config:set payment/pbridge/verifyssl "0"
+  $N98_BIN config:set google/analytics/account "UA-465912-7"
+  $N98_BIN config:set analytictracking/settings/web_property_id "UA-465912-7"
+
+  # Adds ShipperHQ Configuration
+
+  $N98_BIN config:set carriers/shipper/active "1"
+  $N98_BIN config:set carriers/shipper/title "Shipping Rates"
+  $N98_BIN config:set carriers/shipper/environment_scope "LIVE"
+  $N98_BIN config:set carriers/shipper/api_key "0:2:3308b5775935babc:ar7s+8XzxGV+zqa+VjWugMFaxSF3xrnY8b/XV8HCR/k="
+  $N98_BIN config:set carriers/shipper/password "0:2:9ace620173dfc84d:ILmjBzD8YMn4ioFgS3Q9XOXmNmCzlMza1gGJmoSfZnXG+1NyLVUPgC2mjf5F1pf+MNyBKvPO69qWllpnzeAXyQ=="
+  $N98_BIN config:set carriers/shipper/backup_carrier "NULL"
+
   # This will remove any admin url configurations in the db so it will work natively from the settings in app/etc/local.xml
   $N98_BIN config:delete admin/url/custom
   $N98_BIN config:set admin/url/use_custom 0

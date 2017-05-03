@@ -63,4 +63,24 @@ class Amasty_File_Helper_Data extends Mage_Core_Helper_Abstract
         $groups = Mage::getStoreConfig('amfile/block/customer_group');
         return $groups !== null ? explode(',',$groups) : array();
     }
+
+    public function getMimeType($path)
+    {
+        $type = 'application/octet-stream';
+
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $finfoType = finfo_file($finfo, $path);
+
+            finfo_close($finfo);
+
+            if ($finfoType !== false) {
+                $type = $finfoType;
+            }
+        } else if (function_exists('mime_content_type')) {
+            $type = mime_content_type($path);
+        }
+
+        return $type;
+    }
 }
