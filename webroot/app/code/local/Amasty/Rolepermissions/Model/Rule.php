@@ -91,6 +91,9 @@ class Amasty_Rolepermissions_Model_Rule extends Mage_Core_Model_Abstract
 
     public function restrictProductCollection($collection)
     {
+        if (Mage::registry('amrolepermissions_resticted')) {
+            return;
+        }
         $ruleConditions = array();
         $adapter = $this->getResource()->getReadConnection();
         $userId = Mage::getSingleton('admin/session')->getUser()->getId();
@@ -197,6 +200,7 @@ class Amasty_Rolepermissions_Model_Rule extends Mage_Core_Model_Abstract
         }
 
         $collection->getSelect()->distinct();
+        Mage::register('amrolepermissions_resticted', true);
     }
 
     public function getAllowedProductIds()

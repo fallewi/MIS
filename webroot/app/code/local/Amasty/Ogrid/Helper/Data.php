@@ -182,7 +182,22 @@ class Amasty_Ogrid_Helper_Data extends Mage_Core_Helper_Abstract
         
         Mage::getConfig()->cleanCache();
     }
-    
-    
-    
+
+    /**
+     * Check new fields which were chosen in Order Grid module and return true/false for show/hide message
+     */
+    public function checkNewFields()
+    {
+        $columns = $this->getColumns();
+        $ignoredTypes = array('default', 'static');
+        if ($columns) {
+            foreach ($columns as $key => $column) {
+                if (!in_array($column['type'], $ignoredTypes) && $column['available']) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

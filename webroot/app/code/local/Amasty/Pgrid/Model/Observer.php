@@ -71,4 +71,28 @@ class Amasty_Pgrid_Model_Observer
             $observer->getProduct()->setData('created_at', strtotime($date));
         }
     }
+
+    public function adminUserSaveAfter($observer)
+    {
+        $adminId = $observer->getEvent()->getObject()->getUserId();
+        $columns = Mage::getModel('ampgrid/column')->getCollection();
+
+        $currentGroup = Mage::getModel('ampgrid/group');
+        $currentGroup->setData('title', 'Default');
+        $currentGroup->setData('user_id', $adminId);
+        $currentGroup->save();
+
+        Mage::getConfig()->saveConfig('ampgrid/attributes/ongrid' . $adminId, $currentGroup->getId());
+        Mage::getModel('core/config')->cleanCache();
+
+        foreach ($columns as $columnData) {
+            $columnModel = Mage::getModel('ampgrid/groupcolumn');
+            $columnModel->setData('column_id', $columnData['entity_id']);
+            $columnModel->setData('group_id', $currentGroup->getId());
+            $columnModel->setData('is_editable', $columnData['editable']);
+            $columnModel->setData('is_visible', $columnData['visible']);
+            $columnModel->setData('custom_title', $columnData['title']);
+            $columnModel->save();
+        }
+    }
 }

@@ -10,7 +10,7 @@
         protected $_applyTaxAfterDiscount;
         function prepareCollection($collection)
         {
-            $collection->joinTaxPercents();
+            $collection->joinTaxPercents($this->getFeed()->getStore());
         }
 
         protected function _applyTaxAfterDiscount()
