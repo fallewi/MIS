@@ -6,11 +6,12 @@ if(isset($_POST['g-recaptcha-response']))
 
 if(!$captcha)
 {
-    $strResponse = "<h2>Thank You For Trying to Contact Us</h2>";
-    $strResponse .= "<p>Unfortunately your form submission did not go through, please click back and try again. Pay special attention to the box just above the submit button.</p>";
+    $strResponse = "<div id=\"content\" class=\"error-msg\">";
+    $strResponse .= "<h2>Thank You For Trying to Contact Us</h2>";
+    $strResponse .= "<p>Unfortunately your form submission did not go through, please try again. Pay special attention to the reCAPTCHA box near the submit button.</p>";
     $strResponse .= "<p>If you continue to have this problem, please call us toll free at <strong>1-800-319-0690</strong>.</p>";
+    $strResponse .= "</div>";
     echo $strResponse;
-    exit;
 }
 
 $secretKey = "6LeNFsUSAAAAAOqA-NrvC8MYaGSqJPTmUaKrNsVp";
@@ -21,7 +22,6 @@ $responseKeys = json_decode($response,true);
 if(intval($responseKeys["success"]) !== 1)
 {
     echo '<h2>Something went wrong.</h2>';
-    exit;
 }
 else
 {
@@ -107,18 +107,20 @@ else
 
     if($result == 1)
     {
-        $strResponse = "<h2>Thank You For Contacting Us</h2>";
+        $strResponse = "<div id=\"content\" class=\"success-msg\">";
+        $strResponse .= "<h2>Thank You For Contacting Us</h2>";
         $strResponse .= "<p>We love to hear from you.We will do our best to respond within 24 business hours.</p>";
         $strResponse .= "<p>If you need a response sooner, please call us toll free at <strong>1-800-319-0690</strong>.</p>";
+        $strResponse .= "</div>";
         echo $strResponse;
-        exit;
     }
     else
     {
-        $strResponse = "<h2>Thank You For Trying to Contact Us</h2>";
-        $strResponse .= "<p>Unfortunately your form submission did not go through, please click back and try again.</p>";
+        $strResponse = "<div id=\"content\" class=\"notice-msg\">";
+        $strResponse .= "<h2>Thank You For Trying to Contact Us</h2>";
+        $strResponse .= "<p>Unfortunately your form submission did not go through, please try again.</p>";
         $strResponse .= "<p>If you continue to have this problem, please call us toll free at <strong>1-800-319-0690</strong>.</p>";
+        $strResponse .= "</div>";
         echo $strResponse;
-        exit;
     }
 }
