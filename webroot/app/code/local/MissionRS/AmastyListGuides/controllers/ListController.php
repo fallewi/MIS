@@ -93,4 +93,56 @@ class MissionRS_AmastyListGuides_ListController extends Amasty_List_ListControll
         }
         $this->_redirect('checkout/cart');
     }
+    
+    public function exportCsvAction()
+    {
+        $exportData = Mage::helper('amlistl')->exportGuides();
+        $this->_prepareDownloadResponse("order_guide_{$this->_customerId}.csv", $exportData);
+    }
+
+    public function importCsvAction()
+    {
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            try {
+                /**
+                 * @var $helper Amasty_List_Helper_Data
+                 */
+                $helper = Mage::helper('amlist/data');
+                /**
+                 * @var $listModel Amasty_List_Model_List
+                 */
+                $listModel = Mage::getModel('amlist/list');
+
+                //Init Uploader
+                try {
+                    $uploader = new Varien_File_Uploader('file');
+                    $uploader->setAllowedExtensions(array('csv'));
+                    $uploader->setAllowRenameFiles(true);
+                    $uploader->setFilesDispersion(false);
+
+                    $folderPath = Mage::getBaseDir('media') . $helper::CSV_FOLDER_PATH;
+                    $fileName = 'import_' . date('Y-m-d') . '.csv';
+
+                    // Upload the file
+                    $uploader->save($folderPath, $fileName);
+                } catch (\Exception $e) {
+                    throw new Exception($this->__('check uploaded file'));
+                }
+
+                $fileName = $uploader->getUploadedFileName();
+                $productData = $helper->parseProductCsv($fileName);                
+                Mage::getModel('amlistl/list')->createListFromCsv($productData, $this->_customerId);
+                Mage::getSingleton('customer/session')->addSuccess('Import from CSV was successfully finished');
+              
+            } catch (Exception $e) {
+                Mage::getSingleton('customer/session')->addError(
+                        $this->__('There was an error while uploading CSV: %s', $e->getMessage())
+                );
+            }
+        }
+
+        $this->_redirect('*/*/index');
+    }
 }

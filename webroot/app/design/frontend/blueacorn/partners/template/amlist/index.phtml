@@ -38,9 +38,14 @@
 <?php else: ?>
     <p><?php echo $this->__('Fill in your favorites products to be able to purchase all of them with one click!'); ?></p>
 <?php endif; ?>
-<div class="buttons-set">
+<?php if($this->helper('amlistl')->isImportExportAllowed()): ?>
+<div class="buttons-set">    
+       <form id="exportFavoriteProductsForm" action="<?php echo $this->getUrl('*/*/exportCsv') ?>" method="post">
+                <button class="button" type="submit"><span><?php echo $this->__('Export CSV') ?></span></button>
+	</form>
 	<form id="importFavoriteProductsForm" action="<?php echo $this->getUrl('*/*/importCsv') ?>" method="post" enctype="multipart/form-data">
 		<button class="button" type="button"><span><?php echo $this->__('Import CSV') ?></span></button>
 		<input type="file" name="file" onChange="document.getElementById('importFavoriteProductsForm').submit()"><br>
 	</form>
 </div>    
+<?php endif; ?>
