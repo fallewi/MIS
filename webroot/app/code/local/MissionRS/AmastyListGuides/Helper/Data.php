@@ -20,7 +20,9 @@ class MissionRS_AmastyListGuides_Helper_Data extends Mage_Core_Helper_Abstract
     protected function _getCsvHeaders($lists)
     {       
         foreach($lists as $list) {
-            return array_keys($list->getData());
+            $keys = array_keys($list->getData());
+            array_push($keys, 'product_price');
+            return $keys;
         }
     }
     
@@ -54,8 +56,10 @@ class MissionRS_AmastyListGuides_Helper_Data extends Mage_Core_Helper_Abstract
        
         $io->streamWriteCsv($this->_getCsvHeaders($lists));
 
-        foreach ($lists as $list) {
-            $list->setData('customer_id', null);
+        foreach ($lists as $list) {                
+            $product = Mage::getModel('catalog/product')->load($list->getProductId());            
+            $list->setProductId($product->getSku());            
+            $list->setProductPrice($product->getFinalPrice());
             $io->streamWriteCsv($list->getData());
         }
 

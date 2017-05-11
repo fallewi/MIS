@@ -27,8 +27,10 @@
                     <td><a href="<?php echo $this->getUrl('*/*/order', array('id'=>$row->getId()))?>"><?php echo $this->htmlEscape($row->getTitle()) ?></a></td>
                     <td class="last a-center">
                         <button onclick="setLocation('<?php echo $this->getUrl('*/*/order', array('id'=>$row->getId())) ?>')" class="button" type="button"><span>Order</span></button>
-                        <a href="<?php echo $this->getUrl('*/*/edit', array('id'=>$row->getId()))?>"><?php echo $this->__('Edit Guide') ?></a><br />
-                        <a class="link-remove" href="<?php echo $this->getUrl('*/*/remove', array('id'=>$row->getId()))?>"  onclick="return confirm('<?php echo $this->__('Are you sure?') ?>')" ><?php echo $this->__('Remove') ?></a>
+                        <?php if($this->helper('amlistl')->isImportExportAllowed()): ?>
+                            <a href="<?php echo $this->getUrl('*/*/edit', array('id'=>$row->getId()))?>"><?php echo $this->__('Edit Guide') ?></a><br />
+                            <a class="link-remove" href="<?php echo $this->getUrl('*/*/remove', array('id'=>$row->getId()))?>"  onclick="return confirm('<?php echo $this->__('Are you sure?') ?>')" ><?php echo $this->__('Remove') ?></a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
