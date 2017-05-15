@@ -18,7 +18,7 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     enterprise_default
+ * @package     enterprise_iphone
  * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
