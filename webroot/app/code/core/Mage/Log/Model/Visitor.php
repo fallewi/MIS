@@ -28,7 +28,6 @@
 /**
  * Enter description here ...
  *
- * @method Mage_Log_Model_Resource_Visitor _getResource()
  * @method Mage_Log_Model_Resource_Visitor getResource()
  * @method string getSessionId()
  * @method Mage_Log_Model_Visitor setSessionId(string $value)
