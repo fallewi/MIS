@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <amlist>
+            <groups>
+                <general>
+                    <fields>
+                        <special_user translate="label">
+                            <label>Special users</label>
+                            <frontend_type>text</frontend_type>                           
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </special_user>
+                        <import_export translate="label">
+                            <label><![CDATA[Import/Export users]]></label>
+                            <frontend_type>text</frontend_type>                           
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </import_export>
+                    </fields>
+                </general>
+            </groups>
+        </amlist>
+    </sections>
+</config>

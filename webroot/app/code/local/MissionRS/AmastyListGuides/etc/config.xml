@@ -18,7 +18,7 @@
             <adminhtml>
                 <rewrite>
                     <customer_grid>MissionRS_AmastyListGuides_Block_Adminhtml_Customer_Grid</customer_grid>
-                </rewrite>
+                </rewrite>                
             </adminhtml>
         </blocks>
         <helpers>
@@ -36,7 +36,7 @@
                 <entities>
                     <shared>
                         <table>am_list_shared</table>
-                    </shared>
+                    </shared>                    
                 </entities>
             </amlistl_mysql4>
         </models>
@@ -48,12 +48,12 @@
                 <connection>
                     <use>core_setup</use>
                 </connection>
-            </amlistl_setup>
+            </amlistl_setup>            
             <amlistl_write>
                 <connection>
                     <use>core_write</use>
                 </connection>
-            </amlistl_write>
+            </amlistl_write>            
             <amlistl_read>
                 <connection>
                     <use>core_read</use>
@@ -82,18 +82,18 @@
                 </args>
             </adminhtml>
         </routers>
-    </admin>
+    </admin>    
     <adminhtml>
-        <events>
-            <am_grid_massaction_actions>
+        <events> 
+           <am_grid_massaction_actions>
                 <observers>
-                    <am_grid_massaction_actions>
+                      <am_grid_massaction_actions>
                         <type>singleton</type>
                         <class>MissionRS_AmastyListGuides_Model_Observer</class>
                         <method>addNewActions</method>
-                    </am_grid_massaction_actions>
+                      </am_grid_massaction_actions>
                 </observers>
-            </am_grid_massaction_actions>
-        </events>
+           </am_grid_massaction_actions>
+        </events> 
     </adminhtml>
 </config>
