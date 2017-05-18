@@ -1208,17 +1208,20 @@ a.button:hover {
     margin-top: -6px;
 }
 
-.messages .error-msg li {
+.messages .error-msg li,
+div.messages div.error-msg{
     color: $white;
     background-color: $black;
 }
 
-.messages .notice-msg li {
+.messages .notice-msg li,
+div.messages div.notice-msg{
     color: $white;
     background-color: #909090;
 }
 
-.messages .success-msg li {
+.messages .success-msg li,
+div.messages div.success-msg {
     height: auto;
     color: $white;
     background-color: $c-success;

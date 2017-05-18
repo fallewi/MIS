@@ -146,7 +146,7 @@ abstract class Zend_Pdf_Annotation
 
     /**
      * Return text to be displayed for the annotation or, if this type of annotation
-     * does not display text, an alternate description of the annotationâ€™s contents
+     * does not display text, an alternate description of the annotation’s contents
      * in human-readable form.
      *
      * @return string
@@ -161,7 +161,7 @@ abstract class Zend_Pdf_Annotation
 
     /**
      * Set text to be displayed for the annotation or, if this type of annotation
-     * does not display text, an alternate description of the annotationâ€™s contents
+     * does not display text, an alternate description of the annotation’s contents
      * in human-readable form.
      *
      * @param string $text
