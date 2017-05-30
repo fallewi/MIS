@@ -1,19 +1,13 @@
 {
   "name": "blueacorn_green_pistachio",
-  "version": "4.3.2",
+  "version": "4.5.0",
   "description": "Rapid Development Boilerplate for Responsive Magento Enterprise Websites",
   "private": "true",
   "namespace": "BlueAcorn",
   "module": "Green Pistachio",
   "homepage": "http://www.blueacorn.com",
   "bugs": "code@blueacorn.com",
-  "author": {
-    "name": "Blue Acorn, Inc.",
-    "email": "code@blueacorn.com",
-    "twitter": "blueacorn",
-    "url": "http://www.blueacorn.com",
-    "copyright": "Copyright © 2016 Blue Acorn, Inc."
-  },
+  "author": "Blue Acorn, Inc. <code@blueacorn.com> (http://www.blueacorn.com)",
   "keywords": [
     "grunt",
     "sass",
@@ -21,31 +15,36 @@
     "compass"
   ],
   "dependencies": {
-    "autoprefixer": "^6.3.3",
-    "glob": "^7.0.3",
-    "grunt": "^0.4.5",
-    "grunt-banner": "^0.6.0",
-    "grunt-bless": "^0.2.0",
-    "grunt-concurrent": "^2.3.0",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-postcss": "^0.8.0",
-    "grunt-sass": "^1.1.0",
-    "grunt-shell": "^1.3.0",
-    "grunt-usebanner": "^0.3.1",
-    "jit-grunt": "^0.10.0",
-    "load-grunt-config": "^0.19.2",
-    "path": "^0.12.7",
-    "time-grunt": "^1.3.0",
-    "underscore": "^1.8.3"
+    "autoprefixer": "*",
+    "glob": "*",
+    "grunt": "^1.0.1",
+    "grunt-banner": "*",
+    "grunt-bless": "^1.0.2",
+    "grunt-concurrent": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-compress": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-postcss": "*",
+    "grunt-sass": "^2.0.0",
+    "grunt-shell": "^2.1.0",
+    "grunt-svgmin": "^4.0.0",
+    "grunt-usebanner": "*",
+    "jit-grunt": "*",
+    "load-grunt-config": "*",
+    "path": "*",
+    "time-grunt": "*",
+    "underscore": "*"
   },
   "devDependencies": {
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-githooks": "^0.6.0",
-    "grunt-newer": "^1.2.0",
-    "grunt-contrib-imagemin": "^1.0.0",
-    "grunt-svgmin": "^3.2.0",
-    "grunt-browser-sync": "^2.2.0"
-  }
+    "grunt-browser-sync": "*",
+    "grunt-contrib-imagemin": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-githooks": "*",
+    "grunt-newer": "*",
+    "grunt-svgmin": "*"
+  },
+  "main": "index.js",
+  "license": "MIT"
 }

@@ -1,6 +1,6 @@
 /**
 * @package     BlueAcorn/GreenPistachio
-* @version     4.3.0
+* @version     4.5.0
 * @author      Blue Acorn, Inc. <code@blueacorn.com>
 * @copyright   Copyright © 2016 Blue Acorn, Inc.
 */
@@ -20,7 +20,8 @@ module.exports = function(grunt) {
         taskDir + '/staging',
         taskDir + '/production',
         taskDir + '/qc',
-        taskDir + '/githooks'
+        taskDir + '/githooks',
+        taskDir + '/payload'
     ].forEach(function (task) {
         require(task)(grunt);
     });
@@ -30,7 +31,8 @@ module.exports = function(grunt) {
         init: true,
         jitGrunt: {
             staticMappings: {
-                usebanner: 'grunt-banner'
+                usebanner: 'grunt-banner',
+                browsersync: 'browserSync'
             }
         }
     });
