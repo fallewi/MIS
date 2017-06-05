@@ -47,7 +47,7 @@ class Levementum_GroupDisplay_Helper_Data extends Mage_Core_Helper_Abstract
 
 		if(!empty($groupImage))
 		{
-			$groupImageTag = "<img src=\"".Mage::getUrl('media').$groupImage."\" alt=\"\" style=\"max-width:150px;\" />";
+			$groupImageTag = "<img src=\"".Mage::getUrl('media').$groupImage."\" alt=\"\" style=\"max-height:60px;max-width:150px;\" />";
 		}
 		return $groupImageTag;
 	}
