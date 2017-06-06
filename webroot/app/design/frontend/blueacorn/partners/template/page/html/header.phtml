@@ -26,8 +26,11 @@
 /**
  * @var Mage_Page_Block_Html_Header $this
  */
-$_helper = Mage::helper('levementum_groupdisplay');
-$groupimage = $_helper->getgroupimage();
+if(Mage::getSingleton('customer/session')->isLoggedIn())
+{
+    $_helper = Mage::helper('levementum_groupdisplay');
+    $groupimage = $_helper->getgroupimage();
+}
 ?>
 
 <header id="header" class="page-header">
@@ -38,7 +41,7 @@ $groupimage = $_helper->getgroupimage();
         </a>
 
         <?php if (!empty($groupimage)): ?>
-           <a href="/amlist/list/"style="display:inline-block;margin:.5rem;"><?php echo $groupimage; ?></a>
+           <a href="/amlist/list/" class="group-logo"><?php echo $groupimage; ?></a>
         <?php endif; ?>
 
         <!-- Skip Links -->
