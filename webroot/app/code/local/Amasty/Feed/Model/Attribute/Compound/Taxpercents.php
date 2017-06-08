@@ -8,7 +8,7 @@
     class Amasty_Feed_Model_Attribute_Compound_Taxpercents extends Amasty_Feed_Model_Attribute_Compound_Abstract
     {
         function prepareCollection($collection){
-            $collection->joinTaxPercents();
+            $collection->joinTaxPercents($this->getFeed()->getStore());
         }
         
         function getCompoundData($productData){

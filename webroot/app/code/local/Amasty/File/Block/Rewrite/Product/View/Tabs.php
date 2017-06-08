@@ -33,8 +33,10 @@ class Amasty_File_Block_Rewrite_Product_View_Tabs extends Mage_Catalog_Block_Pro
 
         $this->_titles[$alias] = $title;
 
-        $block = $this->getLayout()->createBlock($block, $alias)
-            ->setTemplate($template);
+        $block = $this->getLayout()->createBlock($block, $alias);
+        if ($block) {
+            $block->setTemplate($template);
+        }
 
         $this->insert(
             $block,

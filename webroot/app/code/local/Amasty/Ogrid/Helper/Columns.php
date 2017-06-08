@@ -22,17 +22,18 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
     
     protected static $_collectionModified  = FALSE;    
     
-    protected function _getColumns(){
-        if (!$this->_columns){
+    protected function _getColumns()
+    {
+        if (!$this->_columns) {
             $sorted = array();
             $columns = Mage::helper('amogrid')->getColumns();
             
-            foreach($columns as $column){
-                if (isset($column['available']) && $column['available'] == 1){
+            foreach ($columns as $column) {
+                if (isset($column['available']) && $column['available'] == 1) {
                     
                     $position = $column['position'];
                     
-                    while(isset($sorted[$position])){
+                    while (isset($sorted[$position])) {
                         $position++;
                     }
                     $sorted[$position] = $column;
@@ -48,12 +49,13 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $this->_columns;
     }
     
-    protected function _getStaticColumns(){
-        if (!$this->_staticColumns){
+    protected function _getStaticColumns()
+    {
+        if (!$this->_staticColumns) {
             $columns = Mage::helper('amogrid')->getColumns();
             
-            foreach($columns as $column){
-                if ($column['type'] == 'static' && !empty($column['relation'])){
+            foreach ($columns as $column) {
+                if ($column['type'] == 'static' && !empty($column['relation'])) {
                     $this->_staticColumns[$column['key']] = $column;
                 }
             }
@@ -61,21 +63,24 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $this->_staticColumns;
     }
     
-    protected function _getColumn($key, $def = NULL){
+    protected function _getColumn($key, $def = NULL)
+    {
         $columns = $this->_getColumns();
         return isset($columns[$key]) ? $columns[$key] : $def;
     }
     
-    protected function _isColumnAvailable($key){
+    protected function _isColumnAvailable($key)
+    {
         $ret = FALSE;
         $column = $this->_getColumn($key);
-        if ($column){
+        if ($column) {
             $ret = TRUE;
         }
         return $ret;
     }
     
-    function prepareOrderCollectionJoins(&$collection, $orderItemsColumns = array()){
+    function prepareOrderCollectionJoins(&$collection, $orderItemsColumns = array())
+    {
         if (self::$_collectionModified)
             return ;
         self::$_collectionModified = TRUE;
@@ -93,9 +98,8 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
                 $this->_isColumnAvailable('am_shipping_street') ||
                 $this->_isColumnAvailable('am_shipping_company') ||
                 $this->_isColumnAvailable('am_shipping_telephone') ||
-                $this->_isColumnAvailable('am_shipping_city')
-                
-                ;
+                $this->_isColumnAvailable('am_shipping_city');
+
         $showBillingAddress = $this->_isColumnAvailable('am_billing_address') ||
                 $this->_isColumnAvailable('am_billing_country_id') || 
                 $this->_isColumnAvailable('am_billing_region') ||
@@ -118,7 +122,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
             array()
         );
         
-        if ($showCoupon || $showShipping || $showCustomerEmail || $showWeight){
+        if ($showCoupon || $showShipping || $showCustomerEmail || $showWeight) {
             $collection->getSelect()->join(
                 array(
                     'order' => $collection->getTable('sales/order')
@@ -133,7 +137,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
             );
         }
         
-        if ($showPayment){
+        if ($showPayment) {
             $collection->getSelect()->joinLeft(
                 array(
                     'order_payment' => $collection->getTable('sales/order_payment')
@@ -143,7 +147,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
             );
         }
         
-        if ($showShippingAddress){
+        if ($showShippingAddress) {
             $collection->getSelect()->joinLeft(
                 array(
                     'shipping_order_address' => $collection->getTable('sales/order_address')
@@ -161,7 +165,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
             );
         }
         
-        if ($showBillingAddress){
+        if ($showBillingAddress) {
             $collection->getSelect()->joinLeft(
                 array(
                     'billing_order_address' => $collection->getTable('sales/order_address')
@@ -179,7 +183,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
             );
         }
         
-        if ($this->_isColumnAvailable('am_customer_group')){
+        if ($this->_isColumnAvailable('am_customer_group')) {
             $collection->getSelect()->joinLeft(
                 array(
                     'customer' => $collection->getTable('customer/entity')
@@ -197,7 +201,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
             );
         }
 
-        if ($showTrackInfo){
+        if ($showTrackInfo) {
             $collection->getSelect()->joinLeft(
                 array(
                     'shipment_track' => $collection->getTable('sales/shipment_track')
@@ -219,7 +223,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         );
 
         $collection->getSelect()->group('main_table.entity_id');
-        if (count($excludeStatuses) > 0){
+        if (count($excludeStatuses) > 0) {
             $collection->getSelect()->where(
                 $collection->getConnection()->quoteInto('main_table.status NOT IN (?)', $excludeStatuses)
             );
@@ -232,7 +236,7 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
     protected function _getActivePaymentMethods()
     {
         $paymentList = array();
-        foreach(Mage::getModel('payment/config')->getActiveMethods() as $method){
+        foreach (Mage::getModel('payment/config')->getActiveMethods() as $method) {
 
             $code = $method->getId();
 
@@ -244,7 +248,8 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $paymentList;
     }
 
-    protected function _getShippingMethods(){
+    protected function _getShippingMethods()
+    {
         $methods = array();
         $carriers = Mage::getSingleton('shipping/config')->getAllCarriers();
         foreach ($carriers as $carrierCode=>$carrierModel) {
@@ -252,9 +257,9 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
 //                continue;
 //            }
             $carrierMethods = array();
-            try{
+            try {
                 $carrierMethods = $carrierModel->getAllowedMethods();
-            } catch(Exception $e){
+            } catch (Exception $e) {
 
             }
 
@@ -272,10 +277,11 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $methods;
     }
     
-    protected function getCustomerGroupList(){
+    protected function getCustomerGroupList()
+    {
         $ret = array();
         
-        foreach(Mage::getModel('customer/group')->getCollection() as $group){
+        foreach (Mage::getModel('customer/group')->getCollection() as $group) {
             $ret[$group->getId()] = $group->getCustomerGroupCode();
             
         }
@@ -283,8 +289,9 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $ret;
     }
     
-    function getConfigurableFields(){
-        if (!$this->_configurableFields){
+    function getConfigurableFields()
+    {
+        if (!$this->_configurableFields) {
             
             $this->_configurableFields = array(
                 'am_product_images' => array(
@@ -483,23 +490,26 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $this->_configurableFields;
         }
         
-    protected function _prepareConfigurableField(&$grid, $key){
+    protected function _prepareConfigurableField(&$grid, $key)
+    {
         $config = $this->getConfigurableFields();
         
-        if (isset($config[$key])){
+        if (isset($config[$key])) {
             $grid->addColumn($key, $config[$key]);
         }
     }
     
-    protected function _prepareDefaultField(&$grid, $key){
+    protected function _prepareDefaultField(&$grid, $key)
+    {
         $config = $this->getDefaultFields();
         
-        if (isset($config[$key])){
+        if (isset($config[$key])) {
             $grid->addColumn($key, $config[$key]);
         }
     }
     
-    protected function _prepareAttributeField(&$grid, $column, $export = FALSE){
+    protected function _prepareAttributeField(&$grid, $column, $export = FALSE)
+    {
 
         $key = $this->_extrOrderColumnPrefix.$column['key'];
 
@@ -514,30 +524,34 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
 
         }
         
-    function prepareGrid(&$grid, $export = FALSE){
+    function prepareGrid(&$grid, $export = FALSE)
+    {
         
         $columns = $this->_getColumns();
         $after = NULL;
-        
-        foreach($columns as $key => $column){
-            switch ($column['type']){
-                case "configurable":
+
+        if ($columns) {
+            foreach ($columns as $key => $column) {
+                switch ($column['type']) {
+                    case "configurable":
                         $this->_prepareConfigurableField($grid, $key);
-                    break;
-                case "default":
+                        break;
+                    case "default":
                         $this->_prepareDefaultField($grid, $key);
-                    break;
-                case "attribute":
+                        break;
+                    case "attribute":
                         $this->_prepareAttributeField($grid, $column, $export);
-                    break;
+                        break;
+                }
+
+                $after = $key;
             }
-            
-            $after = $key;
         }
     }
     
-    function getDefaultFields(){
-        if (!$this->_defaultField){
+    function getDefaultFields()
+    {
+        if (!$this->_defaultField) {
             $this->_defaultField = array(
                 'am_real_order_id' => array(
                     'header'=> Mage::helper('sales')->__('Order #'),
@@ -622,106 +636,20 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $this->_defaultField;
     }
     
-//    protected function addDefaultColumns(&$grid){
-//        $grid->addColumn('am_real_order_id', array(
-//            'header'=> Mage::helper('sales')->__('Order #'),
-//            'width' => '80px',
-//            'type'  => 'text',
-//            'index' => 'increment_id',
-//            'filter_index' => 'main_table.increment_id'
-//        ));
-//
-//        if (!Mage::app()->isSingleStoreMode()) {
-//            $grid->addColumn('am_store_id', array(
-//                'header'    => Mage::helper('sales')->__('Purchased From (Store)'),
-//                'index'     => 'store_id',
-//                'type'      => 'store',
-//                'store_view'=> true,
-//                'display_deleted' => true,
-//                'filter_index' => 'main_table.store_id'
-//            ));
-//        }
-//
-//        $grid->addColumn('am_created_at', array(
-//            'header' => Mage::helper('sales')->__('Purchased On'),
-//            'index' => 'created_at',
-//            'type' => 'datetime',
-//            'width' => '100px',
-//            'filter_index' => 'main_table.created_at'
-//        ));
-//
-//        $grid->addColumn('am_billing_name', array(
-//            'header' => Mage::helper('sales')->__('Bill to Name'),
-//            'index' => 'billing_name',
-//            'filter_index' => 'main_table.billing_name'
-//        ));
-//
-//        $grid->addColumn('am_shipping_name', array(
-//            'header' => Mage::helper('sales')->__('Ship to Name'),
-//            'index' => 'shipping_name',
-//            'filter_index' => 'main_table.shipping_name'
-//        ));
-//
-//        $grid->addColumn('am_base_grand_total', array(
-//            'header' => Mage::helper('sales')->__('G.T. (Base)'),
-//            'index' => 'base_grand_total',
-//            'type'  => 'currency',
-//            'currency' => 'base_currency_code',
-//            'filter_index' => 'main_table.base_grand_total'
-//        ));
-//
-//        $grid->addColumn('am_grand_total', array(
-//            'header' => Mage::helper('sales')->__('G.T. (Purchased)'),
-//            'index' => 'grand_total',
-//            'type'  => 'currency',
-//            'currency' => 'order_currency_code',
-//            'filter_index' => 'main_table.grand_total'
-//        ));
-//
-//        $grid->addColumn('am_status', array(
-//            'header' => Mage::helper('sales')->__('Status'),
-//            'index' => 'status',
-//            'type'  => 'options',
-//            'width' => '70px',
-//            'filter_index' => 'main_table.status',
-//            'options' => Mage::getSingleton('sales/order_config')->getStatuses(),
-//        ));
-//
-////        if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
-////            $grid->addColumn('am_action',
-////                array(
-////                    'header'    => Mage::helper('sales')->__('Action'),
-////                    'width'     => '50px',
-////                    'type'      => 'action',
-////                    'getter'     => 'getId',
-////                    'actions'   => array(
-////                        array(
-////                            'caption' => Mage::helper('sales')->__('View'),
-////                            'url'     => array('base'=>'*/sales_order/view'),
-////                            'field'   => 'order_id'
-////                        )
-////                    ),
-////                    'filter'    => false,
-////                    'sortable'  => false,
-////                    'index'     => 'stores',
-////                    'is_system' => true,
-////            ));
-////        }
-//    }
-    
-    
-    public function removeColumns($grid){
+    public function removeColumns($grid)
+    {
         $this->_removeDefaultColumns($grid);
         $this->_removeStaticColumns($grid);
     }
   
-    protected function _removeStaticColumns($grid){
+    protected function _removeStaticColumns($grid)
+    {
         $staticColumns = $this->_getStaticColumns();
                 
-        if (is_array($staticColumns)){
-            foreach($staticColumns as $key => $column){
+        if (is_array($staticColumns)) {
+            foreach ($staticColumns as $key => $column) {
                 $available = isset($column['available']) && $column['available'] == 1;
-                if (!$available){
+                if (!$available) {
                     
                     $this->_removeColumn($grid, $column['relation']);
                 }
@@ -729,7 +657,8 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         }
     }
     
-    protected function _removeDefaultColumns($grid){
+    protected function _removeDefaultColumns($grid)
+    {
         $mainTableColumns = array(
             'real_order_id', 'store_id',
             'created_at', 'billing_name', 'shipping_name', 'base_grand_total',
@@ -738,17 +667,17 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         
         $columns = $grid->getColumns();
 
-        foreach($columns as $column){
+        foreach ($columns as $column) {
 
             $columnId = $column->getId();
-            if (in_array($columnId, $mainTableColumns))
-            {
+            if (in_array($columnId, $mainTableColumns)) {
                 $this->_removeColumn($grid, $columnId);
             }
         }
     }
     
-    protected function _removeColumn($grid, $columnId){
+    protected function _removeColumn($grid, $columnId)
+    {
         if (method_exists($grid, 'removeColumn'))
             $grid->removeColumn($columnId);
         else
@@ -760,10 +689,11 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         ));   
     }
     
-    protected function _getColumnKey($column){
+    protected function _getColumnKey($column)
+    {
         $key = $column['key'];
 
-        switch ($column['type']){
+        switch ($column['type']) {
             case self::$_TYPE_ATTRIBUTE:
                 $key = $this->_extrOrderColumnPrefix.$column['key'];
                 break;
@@ -775,21 +705,24 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         return $key;
     }
     
-    function reorder($grid){
-        if (method_exists($grid, 'addColumnsOrder')){
+    function reorder($grid)
+    {
+        if (method_exists($grid, 'addColumnsOrder')) {
            $grid->sortColumnsByOrder();
         
             $columns = $this->_getColumns();
             $after = null;
-            foreach($columns as $column){
-                $key = $this->_getColumnKey($column);
+            if ($columns) {
+                foreach ($columns as $column) {
+                    $key = $this->_getColumnKey($column);
 
-                $gridColumn = $grid->getColumn($key);
-                
-                if ($gridColumn){
-                $grid->addColumnsOrder($key, $after);//->sortColumnsByOrder();
-                $after = $key;
-            }
+                    $gridColumn = $grid->getColumn($key);
+
+                    if ($gridColumn) {
+                        $grid->addColumnsOrder($key, $after);//->sortColumnsByOrder();
+                        $after = $key;
+                    }
+                }
             }
 
             $grid->sortColumnsByOrder(); 
@@ -798,15 +731,18 @@ class Amasty_Ogrid_Helper_Columns extends Mage_Core_Helper_Abstract
         }
     }
     
-    function restyle($grid){
+    function restyle($grid)
+    {
         $columns = $this->_getColumns();
-        foreach($columns as $column){
-            $key = $this->_getColumnKey($column);
-            
-            $gridColumn = $grid->getColumn($key);
-            
-            if (!empty($column['width']) && $gridColumn){
-                $gridColumn->setData('width', $column['width']);
+        if ($columns) {
+            foreach ($columns as $column) {
+                $key = $this->_getColumnKey($column);
+
+                $gridColumn = $grid->getColumn($key);
+
+                if (!empty($column['width']) && $gridColumn) {
+                    $gridColumn->setData('width', $column['width']);
+                }
             }
         }
     }

@@ -8,7 +8,8 @@ class Amasty_Ogrid_Model_Observer
 {
     protected static $_grid;
 
-    public function onSalesOrderItemSaveAfter($observer){
+    public function onSalesOrderItemSaveAfter($observer)
+    {
         
         $orderItem = $observer->getEvent()->getItem();
         
@@ -21,20 +22,20 @@ class Amasty_Ogrid_Model_Observer
     
     public function modifyOrderCollection($observer)
     {
-        
+
         $collection = $observer->getCollection();
-        
-        
+
+
         if ($collection instanceof Mage_Sales_Model_Mysql4_Order_Grid_Collection
                 || $collection instanceof Mage_Sales_Model_Resource_Order_Grid_Collection
-                ){
+                ) {
             
             $permissibleActions = array('index', 'grid', 'exportCsv', 'exportExcel');
             
             $noneSalesOrder = !(strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order') !== false ||
                 strpos(Mage::app()->getRequest()->getControllerName(), 'adminhtml_order') !== false);
             if ($noneSalesOrder  ||
-                 !in_array(Mage::app()->getRequest()->getActionName(), $permissibleActions) ){
+                 !in_array(Mage::app()->getRequest()->getActionName(), $permissibleActions) ) {
 
                 return;
             }
@@ -43,17 +44,17 @@ class Amasty_Ogrid_Model_Observer
             $grid = $layout->getBlock('sales_order.grid');
 
             if (!$grid) {
-                foreach($layout->getAllBlocks() as $block){
+                foreach ($layout->getAllBlocks() as $block) {
 //                    var_dump(get_class($block));
                     if ($block instanceof  Mage_Adminhtml_Block_Sales_Order_Grid ||
-                        $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid){
+                        $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid) {
                         $grid = $block;
                         break;
                     }
                 }
             }
-            
-            if ($grid){
+
+            if ($grid) {
                 
                 $columns = Mage::helper("amogrid/columns");
                 
@@ -71,7 +72,8 @@ class Amasty_Ogrid_Model_Observer
     
     
     
-    public function modifyOrderGridAfterBlockGenerate($observer){    
+    public function modifyOrderGridAfterBlockGenerate($observer)
+    {
         $permissibleActions = array('index', 'grid', 'exportCsv', 'exportExcel');
         $exportActions = array('exportCsv', 'exportExcel');
 //        var_dump(Mage::app()->getRequest()->getControllerName(), Mage::app()->getRequest()->getControllerName());
@@ -81,31 +83,36 @@ class Amasty_Ogrid_Model_Observer
                 Mage::app()->getRequest()->getControllerName() == 'sales_order' ||
                 Mage::app()->getRequest()->getControllerName() == 'adminhtml_sales_order') ||
                 
-             !in_array(Mage::app()->getRequest()->getActionName(), $permissibleActions) ){
+             !in_array(Mage::app()->getRequest()->getActionName(), $permissibleActions) ) {
              
             return;
         }
         
-        $export = in_array(
-                    Mage::app()->getRequest()->getActionName(), $exportActions);
+        $export = in_array(Mage::app()->getRequest()->getActionName(), $exportActions);
         
         $block = $observer->getBlock();
 
-        if ($block instanceof Mage_Adminhtml_Block_Widget_Grid || $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid){
+        if ($block instanceof Mage_Adminhtml_Block_Widget_Grid || $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid) {
             
             self::$_grid = $block;
             $columns = Mage::helper("amogrid/columns");
             $columns->prepareGrid($block, $export);
+
+            $showMessage = Mage::helper('amogrid')->checkNewFields();
+            if ($showMessage) {
+                $urlAmogridSettings = Mage::helper("adminhtml")->getUrl("adminhtml/amogrid_settings");
+                $link = '<a href=' . $urlAmogridSettings . ' target="_blank">Order Grid Columns</a>';
+                $message = 'You can add new fields to this grid on the following page: ' . $link;
+                Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('amogrid')->__($message));
+            }
         }
         
-        if ($block instanceof Mage_Adminhtml_Block_Widget_Grid_Column && $export){
-            if (self::$_grid){
+        if ($block instanceof Mage_Adminhtml_Block_Widget_Grid_Column && $export) {
+            if (self::$_grid) {
                 $columns = Mage::helper("amogrid/columns");
                 $columns->removeColumns(self::$_grid);
             }
         }
     }
-    
-    
     
 }

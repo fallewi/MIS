@@ -15,4 +15,4 @@ commands:
 
       - id: basnapshots
         description: https://github.com/netz98/n98-magerun/wiki/Stripped-Database-Dumps
-        tables: @development
+        tables: @development wisepricer_syncer_hits_counter bronto_reminder_delivery_log bronto_email_log am_file_stat bronto_order_queue legacy_*

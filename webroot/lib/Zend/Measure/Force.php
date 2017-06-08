@@ -102,7 +102,7 @@ class Zend_Measure_Force extends Zend_Measure_Abstract
         'KIP'             => array('4448.2216',   'kip'),
         'MEGANEWTON'      => array('1000000',     'Mp'),
         'MEGAPOND'        => array('9806.65',     'MN'),
-        'MICRONEWTON'     => array('0.000001',    'ÂµN'),
+        'MICRONEWTON'     => array('0.000001',    'µN'),
         'MILLINEWTON'     => array('0.001',       'mN'),
         'NANONEWTON'      => array('0.000000001', 'nN'),
         'NEWTON'          => array('1',           'N'),

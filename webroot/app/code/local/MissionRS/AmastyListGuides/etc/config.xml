@@ -87,11 +87,11 @@
         <events> 
            <am_grid_massaction_actions>
                 <observers>
-                    <amoaction>
+                      <am_grid_massaction_actions>
                         <type>singleton</type>
                         <class>MissionRS_AmastyListGuides_Model_Observer</class>
                         <method>addNewActions</method>
-                    </amoaction>
+                      </am_grid_massaction_actions>
                 </observers>
            </am_grid_massaction_actions>
         </events> 
