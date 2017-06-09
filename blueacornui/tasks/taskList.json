@@ -1,0 +1,38 @@
+{
+    "qc": [
+        {"jshint":       ""}
+    ],
+    "githooks": [
+        {"githooks":     "dev"}
+    ],
+    "compile": [
+        {"clean":        "Prepare"},
+        {"sass":         "Dev"},
+        {"postcss":      "Dev"},
+        {"jshint":       ""},
+        {"copy":         ["BuildFallback","BuildTheme"]},
+        {"uglify":       "Dev"},
+        {"concurrent":   "Images"},
+        {"clean":        "Prepare"}
+    ],
+    "staging": [
+        {"clean":        "Prepare"},
+        {"sass":         "Production"},
+        {"postcss":      "Production"},
+        {"jshint":       ""},
+        {"copy":         ["BuildFallback","BuildTheme"]},
+        {"uglify":       "Production"},
+        {"concurrent":   "UseBanner"},
+        {"clean":        "Prepare"}
+    ],
+    "production": [
+        {"clean":        "Prepare"},
+        {"sass":         "Production"},
+        {"postcss":      "Production"},
+        {"jshint":       ""},
+        {"copy":         ["BuildFallback","BuildTheme"]},
+        {"uglify":       "Production"},
+        {"concurrent":   "UseBanner"},
+        {"clean":        "Prepare"}
+    ]
+}

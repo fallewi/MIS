@@ -1,0 +1,129 @@
+#!/usr/bin/env shell-helpers
+p/help_main() {
+  cat <<-EOF
+
+m1 pipeline compilation.
+uses a cross-site cache for dependencies.
+
+Usage:
+  compile [--dest <dest>]
+
+Examles:
+  compile --dest /tmp
+
+Options:
+  --dest <destination>
+    Destination of payload-approot.sh
+
+  --packager <cmd>
+    Packager command. 'npm' or 'yarn' are supported.
+    [$packager]
+
+  --deps-source <source file>
+    Source file used for fingerprinting node_modules
+    [$deps_source]
+
+EOF
+}
+
+main(){
+  set -eo pipefail
+  local path="${BASH_SOURCE[0]}"
+  while [ -L "$path" ] ; do path="$(readlink "$path")" ; done
+  readonly CWD="$( pwd -P )"
+  readonly SCRIPT_CWD="$( cd $(dirname ${path}) ; pwd -P )"
+
+  # defaults
+  SKIP_BOOTSTRAP=${SKIP_BOOTSTRAP:-false}
+  BADEVOPS_CACHE="${BADEVOPS_CACHE:-$HOME/.badevops/cache}"
+  local packager="yarn"
+  local deps_source="yarn.lock"
+  local dest="/tmp"
+  local ref=
+  local fingerprint=
+
+  args/normalize "" "$@"
+  set -- "${__argv[@]}"
+  while [ $# -ne 0 ]; do
+    case $1 in
+      -h|--help)
+        die/help ;;
+      --dest)
+        dest="$2" ; shift ;;
+      --packager)
+        packager="$2" ; shift ;;
+      --deps-source)
+        deps_source="$2" ; shift ;;
+      --)
+        shift ; list=( "$@" ) ; break ;;
+      -*)
+        args/unknown "$1" "flag" ;;
+      *)
+        ref="$1" ;;
+    esac
+    shift
+  done
+
+  #
+  # sanity
+  #
+
+  $SKIP_BOOTSTRAP && __cmd_prefix="" || __cmd_prefix="badevops-"
+  cop=$(get/cmd cop) || die "missing cop" "run bootstrap?"
+  cachedir="$BADEVOPS_CACHE/blueacornui/$(uname -s)-$(uname -m)/$packager"
+
+  is/cmd "shasum" || die "compile needs the shasum tool"
+  mkdir -p "$cachedir/bower_components" "$cachedir/node_modules"
+
+  #
+  # runtime
+  #
+
+  # enter blueacornui directory
+  cd "$SCRIPT_CWD/.."
+
+  p/log "preparing dependencies using cachedir:" "$cachedir"
+  rm -rf bower_components node_modules
+
+  fingerprint="$(shasum $deps_source | awk '{print $1}')"
+  if [ -d "$cachedir/node_modules/$fingerprint" ]; then
+    p/success "cache-hit - using node_modules $fingerprint"
+    cp -a "$cachedir/node_modules/$fingerprint" "node_modules"
+  else
+    p/warn "cache miss - building node_modules $fingerprint"
+    $packager install --production
+    cp -a "node_modules" "$cachedir/node_modules/$fingerprint"
+  fi
+
+  fingerprint=$(shasum bower.json | awk '{print $1}')
+  if [ -d "$cachedir/bower_components/$fingerprint" ]; then
+    p/success "cache hit - using bower_components $fingerprint"
+    cp -a "$cachedir/bower_components/$fingerprint" "bower_components"
+  else
+    p/warn "cache miss - building bower_components $fingerprint"
+    bower --allow-root --config.interactive=false install
+    cp -a "bower_components" "$cachedir/bower_components/$fingerprint"
+  fi
+
+  p/notice "compiling assets"
+  # pass relevant envars to 'grunt payload'
+  TARGET_NAME="$target" \
+  APP_ROOT="" \
+  APP_REF="$ref" \
+    grunt payload --dest="$dest"
+
+  p/notice "generating payload"
+
+  DEX_DOCKER_FLAGS="-v $dest:$dest:rw" \
+    $cop --render-template lib/prex.j2 "$dest/payload.json" > "$dest/prex.sh"
+
+  cd "$dest"
+  cat prex.sh payload.tar.gz > payload-approot.sh
+  chmod +x payload-approot.sh
+  rm payload.json prex.sh payload.tar.gz
+
+  p/success "built payload"
+  p/header "$dest/payload-approot.sh"
+}
+
+main "$@"
