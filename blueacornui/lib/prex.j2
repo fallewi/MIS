@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# prex.sh - self extracting .tar.gz payload.
+# usage: concatenate .tar.gz contents and make executable:
+#   cat prex.sh /path/to/tar.gz > payload.sh && chmod +x payload.sh
+
+#
+# pre-extract routines
+#
+
+# out with the old
+echo "resetting assets back to default"
+rm -rf{% for dir in dirs %} {{ dir }}{% endfor %}
+
+{% for dir in dirs -%}
+git checkout -- {{ dir }}
+{% endfor %}
+
+#
+# extract payload assets -- do not modify below
+#
+printf "\n\nextracting $0 payload...\n\n"
+__start_line=$(awk '/^#@TARGZ@/ { print NR + 2; exit 0; }' $0)
+tail -n +$__start_line $0 | tar -xz
+exit $?
+#@TARGZ@ - do NOT add any newline characters below.

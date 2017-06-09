@@ -1,6 +1,6 @@
 /**
 * @package     BlueAcorn/GreenPistachio
-* @version     4.3.0
+* @version     4.5.0
 * @author      Blue Acorn, Inc. <code@blueacorn.com>
 * @copyright   Copyright © 2016 Blue Acorn, Inc.
 */
@@ -24,14 +24,6 @@ _.each(themes, function(theme, name) {
             files: combo.scssFiles(name)
         };
 
-        themeOptions[name + 'IE'] = {
-            options: {
-                sourceMap: false,
-                includePaths: combo.themeFallback(name)
-            },
-            files: combo.ieFiles(name)
-        };
-
         themeOptions[name + 'Production'] = {
             options: {
                 sourceMap: false,
@@ -47,7 +39,7 @@ var sassOptions = {
     options: {
         sourceComments: false,
         precision: 4,
-        outputStyle: 'nested',
+        outputStyle: 'expanded',
         sourceMapContents: true
     }
 };

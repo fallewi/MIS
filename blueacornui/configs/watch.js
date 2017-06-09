@@ -1,6 +1,6 @@
 /**
 * @package     BlueAcorn/GreenPistachio
-* @version     4.3.0
+* @version     4.5.0
 * @author      Blue Acorn, Inc. <code@blueacorn.com>
 * @copyright   Copyright © 2016 Blue Acorn, Inc.
 */
@@ -26,7 +26,7 @@ _.each(themes, function(theme, name) {
             files: [
                 combo.themeFallbackSass(name)
             ],
-            tasks: ['concurrent:' + name + 'Sass', 'concurrent:' + name + 'Postcss'],
+            tasks: ['sass:' + name + 'Dev', 'postcss:' + name + 'Dev'],
             options: {
                 sourceMap: true
             }
@@ -40,10 +40,8 @@ _.each(themes, function(theme, name) {
         };
 
         themeOptions[name + 'Js'] = {
-            files: [
-                combo.autopath(name, 'skin') + 'js/**/*.js'
-            ],
-            tasks: ['jshint:' + name, 'uglify:' + name + 'Dev']
+            files: combo.themeFallbackJs(name),
+            tasks: combo.themeTasksJs(name)
         };
 
         themeOptions[name + 'Livereload'] = {
