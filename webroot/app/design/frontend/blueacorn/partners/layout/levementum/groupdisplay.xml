@@ -3,24 +3,15 @@
     <customer_logged_in>
         <reference name="top.links">
             <action method="addLink" translate="label title">
-                <label helper="levementum_groupdisplay/getgroupimage" />
-                <url helper="levementum_groupdisplay/getcategoryurl" />
-            </action>
-        </reference>
-    </customer_logged_in>
-
-    <customer_logged_out>
-        <reference name="top.links">
-            <action method="addLink" translate="label title">
-                <label>PARTNERS</label>
-                <url>https://partners.missionrs.com/</url>
-                <title>PARTNERS</title>
+                <label>ORDER GUIDES</label>
+                <url>/amlist/list/</url>
+                <title>ORDER GUIDES</title>
                 <prepare/>
                 <urlParams/>
                 <position>1</position>
             </action>
         </reference>
-    </customer_logged_out>
+    </customer_logged_in>
 
     <customer_account>
         <reference name="left">
