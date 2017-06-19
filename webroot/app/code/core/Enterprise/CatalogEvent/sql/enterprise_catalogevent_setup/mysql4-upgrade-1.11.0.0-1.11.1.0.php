@@ -18,45 +18,19 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magento.com for more information.
  *
- * @category    Unserialize
- * @package     Unserialize_Parser
+ * @category    Enterprise
+ * @package     Enterprise_CatalogEvent
  * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
-/**
- * Class Unserialize_Parser
- */
-class Unserialize_Parser
-{
-    const TYPE_STRING = 's';
-    const TYPE_INT = 'i';
-    const TYPE_DOUBLE = 'd';
-    const TYPE_ARRAY = 'a';
-    const TYPE_BOOL = 'b';
-    const TYPE_NULL = 'N';
+/** @var $installer Mage_Core_Model_Resource_Setup */
+$installer = $this;
+$installer->startSetup();
 
-    const SYMBOL_QUOTE = '"';
-    const SYMBOL_SEMICOLON = ';';
-    const SYMBOL_COLON = ':';
+$installer->getConnection()->insertIgnore(
+    $installer->getTable('admin/permission_block'),
+    array('block_name' => 'enterprise_catalogevent/event_lister', 'is_allowed' => 1)
+);
 
-    /**
-     * @param $str
-     * @return array|null
-     * @throws Exception
-     */
-    public function unserialize($str)
-    {
-        $reader = new Unserialize_Reader_Arr();
-        $prevChar = null;
-        for ($i = 0; $i < strlen($str); $i++) {
-            $char = $str[$i];
-            $arr = $reader->read($char, $prevChar);
-            if (!is_null($arr)) {
-                return $arr;
-            }
-            $prevChar = $char;
-        }
-        throw new Exception('Error during unserialization');
-    }
-}
+$installer->endSetup();
