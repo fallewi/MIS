@@ -212,7 +212,7 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 			return true;
 		}
 
-		$formattingFile = Mage::getModuleDir('', 'Fishpig_Wordpress') . DS . 'formatting.php';
+		$formattingFile = Mage::getModuleDir('', 'Fishpig_Wordpress') . DS . 'lib' . DS . 'wp' . DS . 'formatting.php';
 #		$formattingFile = Mage::helper('wordpress')->getWordPressPath() . 'wp-includes' . DS . 'formatting.php';
 		
 		if (!is_file($formattingFile)) {

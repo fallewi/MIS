@@ -42,11 +42,16 @@
 							<Fishpig_Wordpress_Addon_Multisite />
 							<Fishpig_Wordpress_Addon_Root />
 							<Fishpig_Wordpress_Addon_VisualComposer />
-							<Fishpig_Wordpress_Addon_GravityForms />
-							<Fishpig_Wordpress_Addon_Tablepress />
+							<Fishpig_Wordpress_Addon_AMP />
+							<Fishpig_Wordpress_Addon_BBPress />
 							<Fishpig_Wordpress_Addon_CPT />
 							<Fishpig_Wordpress_Addon_ACF />
 							<Fishpig_Wordpress_Addon_CS />
+							<Fishpig_Wordpress_Addon_GravityForms />
+							<Fishpig_Wordpress_Addon_ContactForm7 />
+							<Fishpig_Wordpress_Addon_EventsCalendar />
+							<Fishpig_Wordpress_Addon_RevolutionSlider />
+							<Fishpig_Wordpress_Addon_Tablepress />
 							<Fishpig_Wordpress_Addon_IntegratedSearch />
 							<Fishpig_Bolt />
 							<Fishpig_Opti />

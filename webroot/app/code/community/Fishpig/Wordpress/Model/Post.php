@@ -61,13 +61,14 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 	public function getPostFormat()
 	{
 		if (!$this->hasPostFormat()) {
-			$this->setPostFormat(false);
-			
+			$this->setPostFormat('');
+
 			$formats = Mage::getResourceModel('wordpress/term_collection')
 				->addTaxonomyFilter('post_format')
 				->setPageSize(1)
+				->addObjectIdFilter($this->getId())
 				->load();
-			
+
 			if (count($formats) > 0) {
 				$this->setPostFormat(
 					str_replace('post-format-', '', $formats->getFirstItem()->getSlug())
@@ -91,6 +92,9 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 		else if ($this->getPostType() === 'post') {
 			return Mage::helper('wordpress')->getUrl() . '?p=' . $this->getId();
 		}
+		else if ($this->getPostType() === 'attachment') {
+			return $this->getData('guid');
+		}
 		
 		return Mage::helper('wordpress')->getUrl() . '?p=' . $this->getId() . '&post_type=' . $this->getPostType();
 	}
@@ -110,6 +114,7 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 			else if ((int)$maxWords > 1) {
 				$excerpt = trim(strip_tags(str_replace(array("\n", '  ', '  '), ' ', $this->_getData('post_content'))));
 				$excerpt = preg_replace('/\[[\/]{0,1}[^\]]{1,}\]/', '', $excerpt);
+				$excerpt = preg_replace('/[\s]{1,}/', " ", $excerpt);
 				$excerpt = explode(' ', $excerpt);
 
 				if (count($excerpt) > $maxWords) {
@@ -122,7 +127,7 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 				return $excerpt;
 			}
 			else {
-				$this->setPostExcerpt($this->getPostContent('excerpt'));
+				return $this->getPostContent('excerpt');
 			}
 		}
 
@@ -389,6 +394,24 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 		
 		return $this->getData('images');
 	}
+	
+	/**
+	 * Get images embedded in the post
+	 *
+	 * @return false|array
+	**/
+	public function getEmbeddedImages()
+	{
+		if (!$this->hasEmbeddedImages()) {
+			$this->setEmbeddedImages(false);
+
+			if (preg_match_all('/<img[^>]{1,}src=([\'"]{1})(.*)\1/U', $this->getPostContent(), $matches)) {
+				$this->setEmbeddedImages(array_unique($matches[2]));
+			}
+		}
+		
+		return $this->_getData('embedded_images');
+	}
 
 	/**
 	 * Returns the featured image for the post
@@ -554,7 +577,7 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 					$this->_urlEncode($this->_getData('permalink'))
 				));
 			}
-			else if ($this->getTypeInstance()->isHierarchical()) {
+			else if ($this->getTypeInstance() && $this->getTypeInstance()->isHierarchical()) {
 				if ($uris = $this->getTypeInstance()->getAllRoutes()) {
 					if (isset($uris[$this->getId()])) {
 						$this->setUrl(Mage::helper('wordpress')->getUrl($uris[$this->getId()] . '/'));
@@ -677,5 +700,10 @@ class Fishpig_Wordpress_Model_Post extends Fishpig_Wordpress_Model_Abstract
 	public function isBlogListingPage()
 	{
 		return $this->isType('page') && (int)$this->getId() === (int)Mage::helper('wordpress/router')->getBlogPageId();
+	}
+	
+	public function getMetaDescription($maxWords = 30)
+	{
+		return strip_tags($this->getPostExcerpt($maxWords));
 	}
 }
