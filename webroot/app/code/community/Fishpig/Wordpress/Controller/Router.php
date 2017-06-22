@@ -209,7 +209,6 @@ class Fishpig_Wordpress_Controller_Router extends Mage_Core_Controller_Varien_Ro
 		}
 
 		foreach($routes as $routeId => $route) {
-
 			$this->addRoute(rtrim($route, '/'), '*/post/view', array('id' => $routeId));
 			$this->addRoute(rtrim($route, '/') . '/all', '*/post/view', array('id' => $routeId));
 		}

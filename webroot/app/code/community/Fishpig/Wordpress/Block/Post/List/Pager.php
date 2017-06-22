@@ -18,18 +18,29 @@ class Fishpig_Wordpress_Block_Post_List_Pager extends Mage_Page_Block_Html_Pager
 
 		$this->setPageVarName('page');
 
-		$baseLimit = $this->helper('wordpress')->getWpOption('posts_per_page', 10);
-
-		$this->setDefaultLimit($baseLimit);
-		$this->setLimit($baseLimit);
-		
-		$this->setAvailableLimit(array(
-			$baseLimit => $baseLimit,
-		));
+		$this->updatePageSize((int)$this->helper('wordpress')->getWpOption('posts_per_page', 10));
 		
 		$this->setFrameLength(5);
 	}
 	
+	/**
+	 * Update the number of items to display per page
+	 *
+	 * @param int $size
+	 * @return $this
+	**/
+	public function updatePageSize($size)
+	{
+		$this->setDefaultLimit($size);
+		$this->setLimit($size);
+		
+		$this->setAvailableLimit(array(
+			$size => $size
+		));
+		
+		return $this;
+	}
+
 	/**
 	 * Return the URL for a certain page of the collection
 	 *

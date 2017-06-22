@@ -29,7 +29,7 @@ class Fishpig_Wordpress_Helper_Shortcode_Youtube extends Fishpig_Wordpress_Helpe
 	{
 		if (preg_match_all('/\[youtube=(.*)\]/iU', $content, $matches)) {
 			foreach($matches[1] as $key => $match) {
-				$content = str_replace($matches[0][$key], sprintf('[%s url=%s]', $this->getTag(), str_replace('&', ' ', $match)), $content);
+				$content = str_replace($matches[0][$key], sprintf('[%s url="%s"]', $this->getTag(), str_replace('&', ' ', $match)), $content);
 			}		
 		}
 

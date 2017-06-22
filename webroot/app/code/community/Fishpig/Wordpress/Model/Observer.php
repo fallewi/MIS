@@ -16,6 +16,11 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 	static protected $_singleton = array();
 
 	/**
+	 * Determine emulation method
+	**/
+	protected $_canEmulate = null;
+	
+	/**
 	 * Save the associations
 	 *
 	 * @param Varien_Event_Observer $observer
@@ -94,8 +99,7 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 		}
 
 		try {
-			$appEmulation = Mage::getSingleton('core/app_emulation');
-			$initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($sitemap->getStoreId());
+			$emulationData = $this->_startEmulation($sitemap->getStoreId());
 	
 			if (!Mage::getStoreConfigFlag('wordpress/module/enabled', $sitemap->getStoreId())) {
 				return false;
@@ -120,12 +124,12 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 				'daily',
 				'1.0'
 			);
-	
+
 			$posts = Mage::getResourceModel('wordpress/post_collection')
 				->addIsViewableFilter()
 				->setOrderByPostDate()
 				->load();
-			
+
 			foreach($posts as $post) {
 				$xml .= sprintf(
 					'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq><priority>%.1f</priority></url>',
@@ -141,16 +145,76 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 			@file_put_contents($sitemapFilename, $xml);
 		}
 		catch (Exception $e) {
-			if (isset($initialEnvironmentInfo)) {
-				$appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
-			}
-			
 			Mage::helper('wordpress')->log($e);
 		}
+		
+		$this->_endEmulation($emulationData);
 
 		return $this;
 	}
 
+	/**
+	 * Emulate $storeId
+	 *
+	 * @param int $storeId
+	 * @return array
+	**/
+	protected function _startEmulation($storeId)
+	{
+		if ($this->_canStartEnvironmentEmulation()) {
+			return Mage::getSingleton('core/app_emulation')->startEnvironmentEmulation($storeId);
+		}
+		else {
+			$store = Mage::app()->getStore();
+			
+			$emulationData = array(
+				'id' => $store->getId(),
+				'code' => $store->getCode()
+			);
+
+			$store->setId($storeId)->setCode('anything');
+			
+			return $emulationData;
+		}
+	}
+	
+	/**
+	 * End emulation
+	 *
+	 * @param array $emulationData
+	 * @return $this
+	**/
+	protected function _endEmulation($emulationData)
+	{
+		if ($this->_canStartEnvironmentEmulation()) {
+			Mage::getSingleton('core/app_emulation')->stopEnvironmentEmulation($emulationData);
+		}
+		else {
+			Mage::app()->getStore()->setId($emulationData['id'])->setCode($emulationData['code']);
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * Determine emulation method
+	 *
+	 * @return bool
+	**/
+	protected function _canStartEnvironmentEmulation()
+	{
+		if ($this->_canEmulate === null) {
+			try {
+				$this->_canEmulate = Mage::getSingleton('core/app_emulation') instanceof Mage_Core_Model_App_Emulation;
+			}
+			catch (Exception $e) {
+				$this->_canEmulate = false;
+			}
+		}
+		
+		return $this->_canEmulate;
+	}
+	
 	/**
 	 * Initialise the configuration for the extension
 	 *

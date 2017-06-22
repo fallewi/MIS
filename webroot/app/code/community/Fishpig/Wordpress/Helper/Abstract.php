@@ -49,7 +49,16 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 				}
 			}
 			
-			$url = $this->_getUrl('', $params);
+			$url = Mage::getSingleton('core/url')->getUrl('', $params);
+			
+			// Remove store code if 'Force Single Store' is set in configuration
+			if (Mage::getStoreConfigFlag('wordpress/integration/force_single_store')) {
+				$storeCode = Mage::getSingleton('core/url')->getStore()->getCode();
+				
+				if (strpos($url, '/' . $storeCode . '/') !== false) {
+					$url = str_replace('/' . $storeCode . '/', '/', $url);
+				}
+			}
 		}
 		else {
 			$url = $this->getWpOption('home') . '/' . ltrim($extra, '/');
