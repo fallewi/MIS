@@ -38,7 +38,7 @@ abstract class Fishpig_Wordpress_Block_Post_View_Comment_Abstract extends Fishpi
 	 */
 	public function getCommentCount()
 	{
-		return $this->getPost()->getCommentCount();
+		return $this->getPost() ? $this->getPost()->getCommentCount() : 0;
 	}
 	
 	/**
@@ -48,7 +48,7 @@ abstract class Fishpig_Wordpress_Block_Post_View_Comment_Abstract extends Fishpi
 	 */
 	public function isCommentsEnabled()
 	{
-		return $this->getPost()->getCommentStatus() !== 'closed';
+		return $this->getPost() && $this->getPost()->getCommentStatus() !== 'closed';
 	}
 		
 	/**

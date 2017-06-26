@@ -29,17 +29,11 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 	public function getPost()
 	{
 		if (!$this->hasPost()) {
-			$this->setPost(false);
+			$post = Mage::getModel('wordpress/post')
+				->setPostType('*')
+				->load((int)$this->getData('comment_post_ID'));
 
-			$posts = Mage::getResourceModel('wordpress/post_collection')
-				->addPostTypeFilter(array('post', 'page'))
-				->addFieldToFilter('ID', $this->getData('comment_post_ID'))
-				->setPageSize(1)
-				->load();
-				
-			if (count($posts) > 0) {
-				$this->setPost($posts->getFirstItem());
-			}
+			$this->setPost($post->getId() ? $post : false);
 		}
 		
 		return $this->getData('post');
