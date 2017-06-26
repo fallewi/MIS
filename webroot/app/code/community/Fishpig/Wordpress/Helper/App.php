@@ -49,7 +49,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 *
 	 * @var int
 	 */
-	static protected $_blogId = 1;
+	static protected $_blogId = array();
 
 	/**
 	 * Content taken from WordPress to be injected into Magento
@@ -58,6 +58,16 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */	
 	protected $_contentHolder = array();
 
+	/**
+	 * Table prefix is incorrect flag
+	 *
+	 * @var bool
+	 */
+	static protected $_tablePrefixIsWrong = false;
+	
+	/**
+	 *
+	 */
 	public function __construct()
 	{
 		/**
@@ -66,12 +76,9 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 		$this->getStore();
 
 		/**
-		 * Set the blog ID
-		 * This is taken from Fishpig_Wordpress_Addon_Multisite
-		 */
-		if ($blogId = (int)Mage::getStoreConfig('wordpress/mu/blog_id', $this->getStore()->getId())) {
-			self::$_blogId = $blogId;
-		}
+		 * Determine the blog ID (if Multisite)
+		**/
+		$this->getBlogId();
 		
 		/**
 		 * Initialise the DB
@@ -102,7 +109,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 		if (isset(self::$_db[$this->_getStoreId()]) && !is_null(self::$_db[$this->_getStoreId()])) {
 			return $this;
 		}
-		
+
 		self::$_db[$this->_getStoreId()] = false;
 		
 		/**
@@ -175,6 +182,8 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 			);
 		}
 		catch (Exception $e) {
+			self::$_tablePrefixIsWrong = true;
+
 			return $this->addError($e->getMessage())
 				->addError(sprintf('Unable to query WordPress database. Is the table prefix (%s) correct?', $tablePrefix));
 		}
@@ -340,6 +349,14 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 					$bases[$baseType] = substr($base, strlen('/blog'));	
 				}
 			}
+			
+			if (!$bases['category']) {
+				$bases['category'] = 'category';
+			}
+			
+			if (!$bases['post_tag']) {
+				$bases['post_tag'] = 'tag';
+			}
 
 			self::$_taxonomies[$this->_getStoreId()] = array(
 				'category' => Mage::getModel('wordpress/term_taxonomy')->setData(array(
@@ -413,7 +430,13 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function getBlogId()
 	{
-		return self::$_blogId;
+		$storeId = $this->getStore()->getId();
+		
+		if (!isset(self::$_blogId[$storeId])) {
+			self::$_blogId[$storeId] = (int)Mage::getStoreConfig('wordpress/mu/blog_id', $this->getStore()->getId());
+		}
+
+		return (int)self::$_blogId[$storeId] > 0 ? self::$_blogId[$storeId] : 1;
 	}
 	
 	/**
@@ -428,7 +451,7 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 		
 		return $this;
 	}
-	
+
 	/**
 	 * Get a table name
 	 *
@@ -534,5 +557,13 @@ class Fishpig_Wordpress_Helper_App extends Fishpig_Wordpress_Helper_Abstract
 	protected function _getStoreId()
 	{
 		return (int)Mage::app()->getStore()->getId();
+	}
+	
+	/**
+	 * @return bool
+	 */
+	public function isTablePrefixWrong()
+	{
+		return self::$_tablePrefixIsWrong === true;
 	}
 }

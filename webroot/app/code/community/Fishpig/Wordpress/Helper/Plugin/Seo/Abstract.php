@@ -108,10 +108,12 @@ abstract class Fishpig_Wordpress_Helper_Plugin_Seo_Abstract extends Fishpig_Word
 				}
 
 				if (($value = $this->_rewriteString($value)) !== false) {
-					$headBlock->setData($key, $value);
+					if ($value) {
+						$headBlock->setData($key, $value);
 					
-					if ($key === 'title') {
-						$this->_action->ignoreAutomaticTitles();
+						if ($key === 'title') {
+							$this->_action->ignoreAutomaticTitles();
+						}
 					}
 				}
 			}

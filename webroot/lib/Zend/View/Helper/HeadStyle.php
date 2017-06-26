@@ -31,6 +31,10 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @method $this appendStyle($content, array $attributes = array())
+ * @method $this offsetSetStyle($index, $content, array $attributes = array())
+ * @method $this prependStyle($content, array $attributes = array())
+ * @method $this setStyle($content, array $attributes = array())
  */
 class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_Standalone
 {
@@ -370,6 +374,9 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
               . '</style>';
 
         if (null == $escapeStart && null == $escapeEnd) {
+            if (str_replace(' ', '', $item->attributes['conditional']) === '!IE') {
+                $html = '<!-->' . $html . '<!--';
+            }
             $html = '<!--[if ' . $item->attributes['conditional'] . ']> ' . $html . '<![endif]-->';
         }
 

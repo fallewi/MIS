@@ -61,6 +61,15 @@ class Fishpig_Wordpress_Block_Post_List extends Fishpig_Wordpress_Block_Post_Abs
 		return $this->setData('wrapper_block', $wrapper);
 	}
 	
+	public function setPageSize($size)
+	{
+		if ($pager = $this->getPagerBlock()) {
+			$pager->updatePageSize($size);
+		}
+		
+		return $this;
+	}
+	
 	/**
 	 * Get the pager block
 	 * If the block isn't set in the layout XML, it will be created and will use the default template
