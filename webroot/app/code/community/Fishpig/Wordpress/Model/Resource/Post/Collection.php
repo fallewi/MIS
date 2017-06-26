@@ -350,7 +350,7 @@ class Fishpig_Wordpress_Model_Resource_Post_Collection extends Fishpig_Wordpress
 				$conditions = array();
 
 				foreach($fields as $key => $field) {
-					$conditions[] = $this->getConnection()->quoteInto('`main_table`.`' . $field . '` LIKE ?', '%' . $word . '%');
+					$conditions[] = $this->getConnection()->quoteInto('`main_table`.`' . $field . '` LIKE ?', '%' . $this->_escapeSearchString($word) . '%');
 				}
 
 				$this->getSelect()->where(join(' ' . Zend_Db_Select::SQL_OR . ' ', $conditions));
@@ -363,6 +363,17 @@ class Fishpig_Wordpress_Model_Resource_Post_Collection extends Fishpig_Wordpress
 		}
 
 		return $this;
+	}
+	
+	/**
+	 * Fix search issue when searching for: "%FF%FE"
+	 *
+	 * @param string
+	 * @return string
+	**/
+	protected function _escapeSearchString($s)
+	{
+		return htmlspecialchars($s);
 	}
 	
 	/**

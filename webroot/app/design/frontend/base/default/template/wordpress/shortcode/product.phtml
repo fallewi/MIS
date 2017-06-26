@@ -20,6 +20,9 @@
                         <?php if (trim($_item->getShortDescription()) !== ''): ?><p><?php echo trim($_item->getShortDescription()) ?></p><?php endif; ?>
                     </div>
                 </div>
+                <?php if (false): ?>
+	                <button type="button" class="button" onclick="setLocation('<?php echo $this->getAddToCartUrl($_item) ?>');"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+	            <?php endif; ?>
             </li>
         <?php endforeach ?>
         </ul>

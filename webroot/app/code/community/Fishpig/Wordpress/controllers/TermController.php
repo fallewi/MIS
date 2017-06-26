@@ -36,8 +36,18 @@ class Fishpig_Wordpress_TermController extends Fishpig_Wordpress_Controller_Abst
 	{
 		parent::preDispatch();
 		
-		$term = $this->_initTerm();		
-
+		if (!($term = $this->_initTerm())) {
+			return false;
+		}
+		
+		$taxonomy = $term->getTaxonomyInstance();
+		
+		if ($taxonomy->getCustomRoute()) {
+			list($module, $controller, $action) = explode('/', $taxonomy->getCustomRoute());
+			
+			return $this->_forward($action, $controller, $module);
+		}
+	
 		return $this;	
 	}
 	
