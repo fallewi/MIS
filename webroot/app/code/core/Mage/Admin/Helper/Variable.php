@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+<?php
 /**
  * Magento Enterprise Edition
  *
@@ -20,32 +19,41 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    Mage
- * @package     Errors
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     Mage_Admin
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
--->
-<config>
-    <skin>default</skin>
-    <report>
-        <!--
-            "action" can be set to "print" to show exception on screen and "email"
-            to send exception on specified email
-        -->
-        <action>print</action>
-        <!--
-            in "subject" you can set subject of email
-        -->
-        <subject>Store Debug Information</subject>
-        <!--
-            "email_address" admin email address
-        -->
-        <email_address></email_address>
-        <!--
-            "trash" is handle about trace info
-            value "leave" is for store on disk
-            value "delete" is for cleaning
-        -->
-        <trash>leave</trash>
-    </report>
-</config>
+
+/**
+ * Admin Variable Helper
+ *
+ * @category    Mage
+ * @package     Mage_Admin
+ * @author      Magento Core Team <core@magentocommerce.com>
+ */
+class Mage_Admin_Helper_Variable
+{
+    /**
+     * Paths cache
+     *
+     * @var array
+     */
+    protected $_allowedPaths;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->_allowedPaths = Mage::getResourceModel('admin/variable')->getAllowedPaths();
+    }
+
+    /**
+     * @param string $path
+     * @return bool
+     */
+    public function isPathAllowed($path)
+    {
+        return isset($this->_allowedPaths[$path]);
+    }
+}
