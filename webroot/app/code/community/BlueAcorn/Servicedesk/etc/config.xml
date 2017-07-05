@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BlueAcorn_Servicedesk>
+            <version>0.1.0</version>
+        </BlueAcorn_Servicedesk>
+    </modules>
+    <global>
+        <helpers>
+            <blueacorn_servicedesk>
+                <class>BlueAcorn_Servicedesk_Helper</class>
+            </blueacorn_servicedesk>
+        </helpers>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <blueacorn_servicedesk>
+                    <file>blueacorn/servicedesk.xml</file>
+                </blueacorn_servicedesk>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <admin>
+            <baservicedesk>
+                <active>1</active>
+                <license>8680856</license>
+            </baservicedesk>
+        </admin>
+    </default>
+    
+</config>
