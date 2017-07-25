@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+             name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="subAccountData">
+                <all>
+                    <element name="website_id" type="xsd:string"/>
+                    <element name="store_id" type="xsd:string"/>
+                    <element name="firstname" type="xsd:string"/>
+                    <element name="lastname" type="xsd:string"/>
+                    <element name="email" type="xsd:string"/>
+                    <element name="password" type="xsd:string"/>
+                    <element name="parent_customer_id" type="xsd:string"/>
+                    <element name="permission" type="xsd:string"/>
+                    <element name="view_all_orders" type="xsd:string"/>
+                    <element name="can_see_cart" type="xsd:string"/>
+                    <element name="have_access_checkout" type="xsd:string"/>
+                    <element name="get_order_email" type="xsd:string"/>
+                    <element name="get_order_invoice" type="xsd:string"/>
+                    <element name="get_order_shipment" type="xsd:string"/>
+                </all>
+            </complexType>
+            <complexType name="subAccountEntity">
+                <all>
+                    <element name="website_id" type="xsd:string"/>
+                    <element name="store_id" type="xsd:string"/>
+                    <element name="firstname" type="xsd:string"/>
+                    <element name="lastname" type="xsd:string"/>
+                    <element name="email" type="xsd:string"/>
+                    <element name="password" type="xsd:string"/>
+                    <element name="parent_customer_id" type="xsd:string"/>
+                    <element name="permission" type="xsd:string"/>
+                    <element name="view_all_orders" type="xsd:string"/>
+                    <element name="can_see_cart" type="xsd:string"/>
+                    <element name="have_access_checkout" type="xsd:string"/>
+                    <element name="get_order_email" type="xsd:string"/>
+                    <element name="get_order_invoice" type="xsd:string"/>
+                    <element name="get_order_shipment" type="xsd:string"/>
+                    <element name="customer_id" type="xsd:string"/>
+                    <element name="entity_id" type="xsd:string"/>
+                </all>
+            </complexType>
+            <complexType name="subAccountEditData">
+                <all>
+                    <element name="firstname" type="xsd:string"/>
+                    <element name="lastname" type="xsd:string"/>
+                    <element name="email" type="xsd:string"/>
+                    <element name="password" type="xsd:string"/>
+                    <element name="permission" type="xsd:string"/>
+                    <element name="view_all_orders" type="xsd:string"/>
+                    <element name="can_see_cart" type="xsd:string"/>
+                    <element name="have_access_checkout" type="xsd:string"/>
+                    <element name="get_order_email" type="xsd:string"/>
+                    <element name="get_order_invoice" type="xsd:string"/>
+                    <element name="get_order_shipment" type="xsd:string"/>
+                    <element name="customer_id" type="xsd:string"/>
+                </all>
+            </complexType>
+            <complexType name="subAccountEditEntity">
+                <all>
+                    <element name="firstname" type="xsd:string"/>
+                    <element name="lastname" type="xsd:string"/>
+                    <element name="email" type="xsd:string"/>
+                    <element name="password" type="xsd:string"/>
+                    <element name="permission" type="xsd:string"/>
+                    <element name="view_all_orders" type="xsd:string"/>
+                    <element name="can_see_cart" type="xsd:string"/>
+                    <element name="have_access_checkout" type="xsd:string"/>
+                    <element name="get_order_email" type="xsd:string"/>
+                    <element name="get_order_invoice" type="xsd:string"/>
+                    <element name="get_order_shipment" type="xsd:string"/>
+                    <element name="customer_id" type="xsd:string"/>
+                </all>
+            </complexType>
+            <complexType name="subAccountId">
+                <all>
+                    <element name="subaccount_id" type="xsd:string"/>
+                </all>
+            </complexType>
+            <complexType name="salesOrderEntity">
+                <all>
+                    <element name="subaccount_id" type="xsd:string" minOccurs="0" />
+                    <element name="parent_customer_id" type="xsd:string" minOccurs="0" />
+                    <element name="parent_customer_firstname" type="xsd:string" minOccurs="0" />
+                    <element name="parent_customer_lastname" type="xsd:string" minOccurs="0" />
+                    <element name="parent_customer_email" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="subAccountDataArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:subAccountData[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+            <complexType name="subAccountEntityId">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:subAccountId[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+        </schema>
+    </types>
+    <message name="subaccountCreateRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="args" type="typens:subAccountData" />
+    </message>
+    <message name="subaccountCreateResponse">
+        <part name="result" type="typens:subAccountEntity" />
+    </message>
+    <message name="subaccountEditRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="args" type="typens:subAccountEditData" />
+    </message>
+    <message name="subaccountEditResponse">
+        <part name="result" type="typens:subAccountEditEntity" />
+    </message>
+    <message name="subaccountDeleteRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="args" type="typens:subAccountId" />
+    </message>
+    <message name="subaccountDeleteResponse">
+        <part name="result" type="typens:subAccountEntityId" />
+    </message>
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="subaccountCreate">
+            <documentation>test ?</documentation>
+            <input message="typens:subaccountCreateRequest" />
+            <output message="typens:subaccountCreateResponse" />
+        </operation>
+        <operation name="subaccountEdit">
+            <documentation>test ?</documentation>
+            <input message="typens:subaccountEditRequest" />
+            <output message="typens:subaccountEditResponse" />
+        </operation>
+        <operation name="subaccountDelete">
+            <documentation>test ?</documentation>
+            <input message="typens:subaccountDeleteRequest" />
+            <output message="typens:subaccountDeleteResponse" />
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="subaccountCreate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="subaccountEdit">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="subaccountDelete">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+    <service name="{{var wsdl.name}}Service">
+        <port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}" />
+        </port>
+    </service>
+</definitions>

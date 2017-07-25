@@ -1,0 +1,39 @@
+<?php
+$items = $this->getItems();
+
+?>
+<div class="dashboard">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('pager'); ?>
+<?php if (count($items)) : ?>
+    <table class="data-table" id="manage-cart-transfers">
+        <thead>
+        <tr>
+            <th style="white-space: normal"><?php echo $this->__('Email') ?></th>
+            <th style="white-space: normal"><?php echo $this->__('Name') ?></th>
+            <th style="white-space: normal"><?php echo $this->__('Items') ?></th>
+            <th style="white-space: normal"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($items as $item): ?>
+            <?php $subAccount = $this->getSubAccount($item->getCreatorId()); ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($subAccount->getEmail()) ?></td>
+                <td><?php echo $this->escapeHtml($subAccount->getName()) ?></td>
+                <td><?php echo $this->escapeHtml((float)$this->getQtyItems($item)); ?></td>
+                <td>
+                    <a href="<?php echo $this->getViewCartUrl($item); ?>"><?php echo $this->__('View Cart') ?></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script
+        type="text/javascript">decorateTable('manage-cart-transfers')</script>
+<?php else: ?>
+    <p style="padding: 20px;"><?php echo $this->__('No Carts to Transfer') ?></p>
+<?php endif; ?>
+
+</div>

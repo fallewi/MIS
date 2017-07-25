@@ -1,0 +1,8 @@
+<div class="button" onclick="ShowLoginPopup('sub-users-popup')">
+    <?php echo Mage::helper('cminds_multiuseraccounts')->__('Transfer Cart'); ?>
+</div>
+<div id="sub-users-popup" class="popup" style="display:none;">
+    <div class="popup-content" id="popup-content">
+        <?php echo $this->getChildHtml('send_cart_form'); ?>
+    </div>
+</div>

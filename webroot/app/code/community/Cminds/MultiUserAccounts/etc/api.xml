@@ -1,0 +1,45 @@
+<config>
+    <api>
+        <resources>
+            <multiuseraccounts translate="title" module="cminds_multiuseraccounts">
+                <title>CM MultiUserAccounts API calls</title>
+                <model>cminds_multiuseraccounts/customer_api</model>
+                <acl>multiuseraccounts/api</acl>
+                <methods>
+                    <create translate="title" module="cminds_multiuseraccounts">
+                        <title>Create SubAccount</title>
+                        <method>createSubAccount</method>
+                    </create>
+                    <edit translate="title" module="cminds_multiuseraccounts">
+                        <title>Edit SubAccount</title>
+                        <method>editSubAccount</method>
+                    </edit>
+                    <delete translate="title" module="cminds_multiuseraccounts">
+                        <title>Delete SubAccount</title>
+                        <method>deleteSubAccount</method>
+                    </delete>
+                </methods>
+            </multiuseraccounts>
+        </resources>
+        <resources_alias>
+            <cminds_multiuseraccounts_create_subaccount>multiuseraccounts</cminds_multiuseraccounts_create_subaccount>
+        </resources_alias>
+        <v2>
+            <resources_function_prefix>
+                <multiuseraccounts>subaccount</multiuseraccounts>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <cminds_multiuseraccounts translate="title" module="cminds_multiuseraccounts">
+                    <title>CM MultiUserAccounts</title>
+                    <sort_order>100</sort_order>
+                    <api translate="title" module="cminds_multiuseraccounts">
+                        <title>MultiUserAccounts Connector APIs</title>
+                        <sort_order>100</sort_order>
+                    </api>
+                </cminds_multiuseraccounts>
+            </resources>
+        </acl>
+    </api>
+</config>
