@@ -1,0 +1,73 @@
+@function pxtoem($pixels, $context: 16) {
+  @return #{$pixels/$context}em
+}
+
+@mixin breakpoint($point) {
+  @if $point == small {
+    @media only screen and (max-width: 40em) { @content; }
+  } @else if $point == medium {
+    @media only screen and (max-width: 64.063em) { @content; }
+  }
+}
+
+$white10: white;
+$white8: rgba(255,255,255,0.8);
+$white6: rgba(255,255,255,0.6);
+$white4: rgba(255,255,255,0.4);
+$white3: rgba(255,255,255,0.3);
+$white2: rgba(255,255,255,0.2);
+$white1: rgba(255,255,255,0.1);
+$white05: rgba(255,255,255,0.05);
+$white03: rgba(255,255,255,0.03);
+
+$black2: rgba(0,0,0,0.2);
+$black4: rgba(0,0,0,0.4);
+$black6: rgba(0,0,0,0.6);
+$black8: rgba(0,0,0,0.8);
+$black9: rgba(0,0,0,0.9);
+$black1: rgba(0,0,0,0.1);
+$black05: rgba(0,0,0,0.05);
+$black03: rgba(0,0,0,0.03);
+$black02: rgba(0,0,0,0.02);
+
+$header-color: #222;
+$bourbon-color: #2F2F36;
+
+$blue: #030071;
+$cyan: rgb(48, 245, 247);
+
+$yellow: #F2E0CE;
+$gold: rgb(186, 127, 85);
+$gray: rgb(244, 244, 244);
+
+$trans: all 200ms ease-out;
+$radius: 0;
+
+$color1: #46351d; //rgba(70, 53, 29, 100)
+
+$gold_old: #a38560;
+
+$gold:adjust-color($gold_old, $saturation: 10%) ; //rgba(163, 133, 96, 100)
+$color3: #edbc52; //rgba(237, 188, 82, 100)
+$color5: #5e5768; //rgba(94, 87, 104, 100)
+
+
+
+$gray: #EAE7E3;
+$color-back: rgb(30, 30, 30);
+
+$color-links: $gold;
+$color-links-hover: adjust-color($color-links, $saturation: 10%);
+
+$color-button: lighten($gray,3%);
+$color-button-hover: adjust-color($gray, $saturation: 10%);
+$color-button-border: lighten($gold, 40%);
+
+$color-hot: rgb(206, 53, 22);
+
+// Woocommerce
+$primary:$color-button;
+$primarytext:$color-links;
+
+$secondary: $color-button-hover;
+$secondarytext: $color-links-hover;

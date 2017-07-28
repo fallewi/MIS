@@ -1,0 +1,94 @@
+/**
+ * Gallery
+ */
+
+.gallery__wrap {
+    position: relative;
+    background-color: #fff;
+    padding-bottom: 2rem;
+    &:hover {
+        .gallery__slick_next, .gallery__slick_prev {
+            opacity: 1;
+        }
+    }
+}
+
+.clearing__caption {
+    padding-top: 10px;
+    display: inline-block;
+    line-height: 1.4;
+    font-size: ms(-2);
+}
+
+.clearing-thumbs {
+    ul {
+        margin-bottom: 0;
+    }
+    li {
+        padding: 5px 5px 30px 0;
+    }
+}
+
+.gallery__slick_next,
+.gallery__slick_prev {
+    position: absolute;
+    opacity: 0.1;
+    display: inline-block;
+    transition: $trans;
+    background-color: rgba(25, 25, 25, 0.05);
+    display: block;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 50px;
+    &:hover {
+        background-color: rgba(25, 25, 25, 0.2);
+    }
+}
+
+.gallery__slick_prev {
+    top: 50%;
+    left: 25px;
+    margin-top: -10px;
+    &:after {
+        margin-left: 3px;
+        display: block;
+        width: 11px;
+        height: 20px;
+        content: '';
+        background: url('data:image/svg+xml;utf8,<svg width=\'11px\' height=\'20px\' viewBox=\'0 0 11 20\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xmlns:sketch=\'http://www.bohemiancoding.com/sketch/ns\'> <g id=\'Page-1\' stroke=\'none\' stroke-width=\'1\' fill=\'none\' fill-rule=\'evenodd\' sketch:type=\'MSPage\'> <path d=\'M9.60856228,10.3156691 L1.14644661,1.85355339 L0.792893219,1.5 L1.5,0.792893219 L1.85355339,1.14644661 L10.4848915,9.77778473 L10.8384449,10.1313381 L10.654114,10.3156691 L10.8384449,10.5 L10.4848915,10.8535534 L1.85355339,19.4848915 L1.5,19.8384449 L0.792893219,19.1313381 L1.14644661,18.7777847 L9.60856228,10.3156691 Z\' id=\'left\' fill=\'#ffffff\' sketch:type=\'MSShapeGroup\' transform=\'translate(5.815669, 10.315669) rotate(-180.000000) translate(-5.815669, -10.315669) \'></path> </g> </svg>');
+    }
+}
+
+.gallery__slick_next {
+    top: 50%;
+    right: 25px;
+    margin-top: -10px;
+    &:after {
+        display: block;
+        margin-left: 6px;
+        width: 11px;
+        height: 20px;
+        content: '';
+        cursor: pointer;
+        background: url('data:image/svg+xml;utf8,<svg width=\'11px\' height=\'20px\' viewBox=\'0 0 11 20\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xmlns:sketch=\'http://www.bohemiancoding.com/sketch/ns\'> <g id=\'Page-1\' stroke=\'none\' stroke-width=\'1\' fill=\'none\' fill-rule=\'evenodd\' sketch:type=\'MSPage\'> <path d=\'M9.60856228,10.3156691 L1.14644661,1.85355339 L0.792893219,1.5 L1.5,0.792893219 L1.85355339,1.14644661 L10.4848915,9.77778473 L10.8384449,10.1313381 L10.654114,10.3156691 L10.8384449,10.5 L10.4848915,10.8535534 L1.85355339,19.4848915 L1.5,19.8384449 L0.792893219,19.1313381 L1.14644661,18.7777847 L9.60856228,10.3156691 Z\' id=\'right\' fill=\'#ffffff\' sketch:type=\'MSShapeGroup\'></path> </g> </svg>');
+    }
+}
+
+
+/**
+ * Lightbox
+ */
+.lightbox {
+  margin: 0;
+  margin-bottom: 1.5rem;
+}
+li.lightbox__item {
+    padding: 0;
+    opacity: 1;
+    transition: $trans;
+    &:hover {
+        opacity: .8;
+    }
+}

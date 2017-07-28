@@ -1,0 +1,18 @@
+/**
+ * Section Recent
+ */
+ .recent__title {
+   @extend .best__title;
+   font-size: ms(6);
+   color: $color-links;
+   @include breakpoint(small) {
+     font-size: ms(3);
+   }
+ }
+ .recent__content p {
+   @extend .best_content;
+   color: $white6;
+   @include breakpoint(small) {
+     font-size: ms(-1);
+   }
+ }

@@ -1,0 +1,19 @@
+/**
+ * BB Press
+ */
+#bbpress-forums div.odd, #bbpress-forums ul.odd {
+  background-color: white;
+}
+
+#bbpress-forums ul.bbp-lead-topic, #bbpress-forums ul.bbp-topics, #bbpress-forums ul.bbp-forums, #bbpress-forums ul.bbp-replies, #bbpress-forums ul.bbp-search-results {
+  border: none;
+}
+
+#bbpress-forums li.bbp-header, #bbpress-forums li.bbp-footer {
+  padding: 0;
+  padding-bottom: 40px;
+}
+
+#bbpress-forums li.bbp-body ul.forum, #bbpress-forums li.bbp-body ul.topic {
+  padding: 0;
+}
