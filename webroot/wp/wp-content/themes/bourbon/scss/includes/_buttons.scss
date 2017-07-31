@@ -1,0 +1,201 @@
+/**
+* Buttons
+*/
+input.submit,
+input[type='submit'] {
+  padding: 13px 23px;
+  display: inline-block;
+  color: $color-links;
+  font-size: ms(-3);
+  margin: 0;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
+  font-weight: normal;
+  border: 0;
+  outline: none;
+  background-color: $color-button;
+  transition: $trans;
+  &:hover {
+    color: $color-links-hover;
+    background-color: $color-button-hover;
+  }
+  .fa {
+    padding-left: 5px;
+  }
+}
+
+.more-link {
+  padding: 13px 23px;
+  display: inline-block;
+  color: $color-links;
+  font-size: ms(-3);
+  background-color: $color-button;
+  transition: $trans;
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: .1rem;
+  &:hover {
+    color: $color-links-hover;
+    border-bottom: 1px solid transparent;
+    background-color: $color-button-hover;
+  }
+  @include breakpoint(small) {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+//
+// Navigation
+//
+.navigation {
+  padding-bottom: 2rem;
+}
+
+.nav__wrap {
+  overflow: hidden;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+.post__navigation .nav__wrap {
+  border-top: 1px solid $color-button-hover;
+  border-bottom: 1px solid $color-button-hover;
+}
+.page-numbers {
+  @extend .more-link;
+  padding: 15px;
+  @media only screen and (max-width: 40em) {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+// POST navigation
+.nav__post--next,
+.nav__post--previous {
+  padding: 1rem 0;
+  font-size: ms(1);
+  font-family: $font-title;
+  transition: $trans;
+}
+.nav__name {
+  display: block;
+  color: $color-links;
+  font-size: ms(-3);
+  // transition: $trans;
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: .1rem;
+  padding-bottom: .3rem;
+  font-family: $font-menu;
+}
+.nav__post--previous {
+  float: left;
+  width: 50%;
+  @media only screen and (max-width: 40em) {
+    width: 100%;
+  }
+}
+.nav__post--next {
+  float: right;
+  width: 50%;
+  text-align: right;
+  @media only screen and (max-width: 40em) {
+    width: 100%;
+  }
+}
+// POSTS navigation
+.nav__older a, .nav__newer a {
+  @extend .more-link;
+}
+.nav__older {
+  float: left;
+}
+.nav__newer {
+  float: right;
+}
+
+// Pagination
+.page-numbers.current {
+  background-color: transparentize($color-button, .5);;
+  border: 1px solid transparent;
+  &:hover {
+    background-color: transparentize($color-button, .5);;
+    border: 1px solid transparent;
+
+  }
+}
+
+
+#searchinput {
+  border: 1px solid transparent;
+  padding-left: 20px;
+  background-color: $color-button;
+  &:hover {
+    background-color: $color-button-hover;
+  }
+  &:focus {
+    background-color: transparentize($color-button, .4);
+    // border: 1px solid $color-button-border;
+    border-right-color: transparent;
+  }
+}
+
+#searchsubmit {
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDcwIDcwIiBoZWlnaHQ9IjcwcHgiIGlkPSJJY29ucyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNzAgNzAiIHdpZHRoPSI3MHB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEuOTU3LDQ5LjEyOWwtOC43MTMtOC43MTNjMS43NS0yLjMzNywyLjc5OS01LjIyOSwyLjc5OS04LjM3M2MwLTcuNzMyLTYuMjY4LTE0LTE0LTE0cy0xNCw2LjI2OC0xNCwxNHM2LjI2OCwxNCwxNCwxNCAgYzMuMTQ0LDAsNi4wMzYtMS4wNDksOC4zNzMtMi43OTlsOC43MTMsOC43MTNMNTEuOTU3LDQ5LjEyOXogTTIyLjA0MywzMi4wNDNjMC01LjUxNCw0LjQ4Ni0xMCwxMC0xMGM1LjUxNCwwLDEwLDQuNDg2LDEwLDEwICBjMCw1LjUxNC00LjQ4NiwxMC0xMCwxMEMyNi41MjksNDIuMDQzLDIyLjA0MywzNy41NTcsMjIuMDQzLDMyLjA0M3oiLz48L3N2Zz4=');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: $color-button;
+  background-size: 1.7em;
+  border-left: 0;
+  &:hover {
+    background-color: $color-button-hover;
+  }
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+//  Textarea
+input[type="text"], input[type="password"], input[type="date"],
+input[type="datetime"], input[type="datetime-local"], input[type="month"],
+input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"],
+input[type="time"], input[type="url"], input[type="color"], textarea {
+  border: transparent;
+  background-color: $color-button;
+}
+
+// Extra button
+.extralink {
+  // border: 1px solid $black2;
+  border-radius: 30px;
+  margin-top: 2rem;
+  @extend .more-link;
+  background-color: transparent;
+  border: 1px solid $black2;
+  color: $black4;
+    &:hover {
+      background-color: transparent;
+      border: 1px solid $black4;
+      color: $black8;
+    }
+}
+
+.inverse {
+    p, h1, .page__description {
+        color: white;
+        border-color: white;
+    }
+    .extralink {
+      border: 1px solid $white2;
+      color: $white6;
+        background-color: transparent;
+        &:hover {
+          border: 1px solid $white4;
+          color: $white8;
+      }
+    }
+}

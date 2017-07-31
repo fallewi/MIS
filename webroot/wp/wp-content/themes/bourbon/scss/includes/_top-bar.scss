@@ -1,0 +1,378 @@
+/**
+* Top Bar
+*/
+
+.top-bar {
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 2.8rem;
+}
+.top-bar__logo {
+  padding-right: .5rem;
+  img {max-height: 2.7rem;}
+}
+
+.top-bar-background {
+  background-color: $color-back;
+}
+
+.site-title a {
+  letter-spacing: .2rem;
+  font-family: $font-logo;
+  text-transform: uppercase;
+  font-size: ms(1);
+  @include breakpoint(small){
+    font-size: ms(-2);
+  }
+  color: white;
+  border-bottom: 0;
+  &:hover, &:focus {
+    border-bottom: 0;
+  }
+}
+.top-bar__logo {
+  // padding-left: 10px;
+}
+.top-bar .name h1 a {
+  font-weight: 800;
+  padding-left: 0;
+}
+
+.site-header {}
+
+.primary {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  .top-bar {
+    background-color: transparent;
+    margin-top: 10px;
+    li {
+      background-color: transparent;
+    }
+  }
+}
+/**
+* Top-bar Section
+*/
+// TODO: Inverse
+.top-bar:not(.expanded) .top-bar-section > ul > li {
+  position: relative;
+  &:not(:first-child)::before {
+    position: absolute;
+    content: '';
+    height: 20px;
+    left: 0;
+    display:block;
+    width: 1px;
+    top: 11px;
+    background-color: rgba(163, 133, 96, 0.44);
+  }
+}
+.top-bar-section {
+  ul {
+
+    // DEFAULT
+    li:not(.has-form) a:not(.button),
+    li.active:not(.has-form) a:not(.button) {
+      letter-spacing: .1rem;
+      // word-spacing: -5px;
+      font-family: $font-menu;
+      font-weight: bold;
+      border-bottom: 0;
+      background-color: transparent;
+      transition: $trans;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      font-size: ms(-3);
+      font-weight: normal;
+    }
+    // HOVER
+    li:not(.has-form):not(.active):hover > a:not(.button) {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    // ACTIVE
+    li.active:not(.has-form) > a:not(.button) {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    // ACTIVE :hover
+    li.active:not(.has-form):hover > a:not(.button) {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
+  /**
+  * DROPDOWN
+  */
+
+  ul.dropdown {
+    padding-top: 30px;
+    border-bottom: 5px solid $black1;
+    // border-left: 5px solid $black02;
+    // border-right: 5px solid $black02;
+    // box-shadow: 0px 0px 10px 12px $black03;
+    ul {
+      padding-top: 0px;
+    } // Second level
+    // ALL
+    li:not(.has-form) > a:not(.button) {
+      background: white;
+      color: black;
+      font-size: ms(-4);
+      word-spacing: inherit;
+      letter-spacing: .1rem;
+      padding-left: 18px;
+      padding-right: 18px;
+      border-bottom: 1px solid $black05;
+      background: $color-button;
+    }
+    // NOT ACTIVE
+    li:not(.has-form):not(.active) > a:not(.button) {
+      background: white;
+      color: black;
+      background: $color-button;
+    }
+    // NOT ACTIVE :hover
+    li:not(.has-form):not(.active):hover > a:not(.button) {
+      background: white;
+      color: $color-links-hover;
+      background: $color-button;
+      color: $color-links-hover;
+    }
+    // ACTIVE
+    li.active:not(.has-form) > a:not(.button) {
+      background: rgba(247, 247, 247, 1);
+      color: $color-links-hover;
+      font-weight: bold;
+      background: $color-button;
+    }
+  }
+}
+
+
+// Arrow
+.top-bar-section > ul > li.has-dropdown:hover {
+  background-color: transparent;
+  color: $black6;
+  &:after {
+    bottom: -30px;
+    right: 45%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: white;
+    border-width: 3px;
+    margin-left: -8px;
+    border-bottom-color: $color-button;
+  }
+}
+
+
+/**
+* EXPANDED
+*/
+.top-bar .toggle-topbar.menu-icon a span::after {
+  right: 0;
+}
+.top-bar.expanded .title-area {
+  background-color: transparent;
+}
+
+.top-bar .name h1,
+.top-bar .name h2,
+.top-bar .name h3,
+.top-bar .name h4,
+.top-bar .name p,
+.top-bar .name span {
+  display: inline-block;
+}
+
+.top-bar.expanded .toggle-topbar a span::after {
+    box-shadow: 0 0 0 1px $gold, 0 7px 0 1px $gold, 0 14px 0 1px $gold;
+}
+
+.top-bar.expanded .top-bar-section ul > li:not(.has-form) a:not(.button) {
+  padding-right: 1.5rem;
+}
+
+.primary .top-bar li .back h5 a {
+  color: $white4;
+}
+/**
+* MEDIA
+*/
+
+@media only screen and (max-width: 64.063em) {
+  .top-bar-section {
+    padding-top: 20px;
+    text-align: right;
+  }
+  .top-bar-section > ul > li.has-dropdown:hover {
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.back {
+  a {
+    font-size: ms(-2);
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+    // margin-left: 5px;
+    font-family: $font-menu;
+  }
+}
+.top-bar .toggle-topbar.menu-icon a {
+  border-bottom: none;
+}
+
+/**
+* Topbar Search
+*/
+.top-bar__search {
+  padding-left: 15px;
+  input[type="search"] {
+    border-radius: 25px;
+    background-color: $white1;
+    padding-left: 5px;
+    font-size: ms(-2);
+    border: transparent;
+    color: white;
+    line-height: 1.6;
+    &:focus,&:active {
+      background-color: $white8;
+      color:black;
+    }
+  }
+  button[type="submit"] {
+    background-color: transparent;
+    position: absolute;
+    right: 0px;
+    background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDcwIDcwIiBoZWlnaHQ9IjcwcHgiIGlkPSJJY29ucyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNzAgNzAiIHdpZHRoPSI3MHB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEuOTU3LDQ5LjEyOWwtOC43MTMtOC43MTNjMS43NS0yLjMzNywyLjc5OS01LjIyOSwyLjc5OS04LjM3M2MwLTcuNzMyLTYuMjY4LTE0LTE0LTE0cy0xNCw2LjI2OC0xNCwxNHM2LjI2OCwxNCwxNCwxNCAgYzMuMTQ0LDAsNi4wMzYtMS4wNDksOC4zNzMtMi43OTlsOC43MTMsOC43MTNMNTEuOTU3LDQ5LjEyOXogTTIyLjA0MywzMi4wNDNjMC01LjUxNCw0LjQ4Ni0xMCwxMC0xMGM1LjUxNCwwLDEwLDQuNDg2LDEwLDEwICBjMCw1LjUxNC00LjQ4NiwxMC0xMCwxMEMyNi41MjksNDIuMDQzLDIyLjA0MywzNy41NTcsMjIuMDQzLDMyLjA0M3oiLz48L3N2Zz4=') no-repeat;
+    background-position: 50% 50%;
+    background-color: transparent;
+    background-size: 1.5rem;
+    border-left: 0;
+    &:hover {
+      background-color: transparent;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+
+/**
+* INVERT TOPBAR
+*/
+.invert__topbar {
+
+  .top-bar .toggle-topbar.menu-icon a span::after {
+    box-shadow: 0 0 0 1px #000000, 0 7px 0 1px #000000, 0 14px 0 1px #000000;
+  }
+
+  .site-title a {
+    color: black;
+  }
+
+  .top-bar .name h1 a {
+    color: black;
+  }
+
+  .site-header {
+    // background-color: white;
+  }
+
+  .top-bar {
+    background-color: transparent;
+    li {
+      background-color: transparent;
+    }
+    a {
+      color: black;
+    }
+  }
+
+  .top-bar-section {
+    ul {
+
+      // DEFAULT
+      li:not(.has-form) a:not(.button) {
+        background-color: transparent;
+
+      }
+      // HOVER
+      li:not(.has-form):not(.active):hover > a:not(.button) {
+        // background-color: transparent;
+        // color: rgba(255, 255, 255, 0.8);
+        color: rgba(0, 0, 0, 0.8);
+      }
+      // ACTIVE
+      li.active:not(.has-form) > a:not(.button) {
+        // background: transparent;
+        // color: rgba(255, 255, 255, 0.5);
+        color: rgba(0, 0, 0, 0.5);
+      }
+      // ACTIVE :hover
+      li.active:not(.has-form):hover > a:not(.button) {
+        // background: transparent;
+        // color: rgba(255, 255, 255, 0.5);
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+    ul.dropdown {
+      // padding-top: 25px;
+      ul {
+        // padding-top: 0px;
+      } // Second level
+      // ALL
+      li:not(.has-form) > a:not(.button) {
+        background: $color-button;
+      }
+      // NOT ACTIVE
+      li:not(.has-form):not(.active) > a:not(.button) {
+        background: $color-button;
+      }
+      // NOT ACTIVE :hover
+      li:not(.has-form):not(.active):hover > a:not(.button) {
+        background: $color-button-hover;
+        color: $color-links-hover;
+      }
+      // ACTIVE
+      li.active:not(.has-form) > a:not(.button) {
+        background: $color-button;
+      }
+    }
+  }
+
+}
+.invert__topbar .top-bar-section > ul > li.has-dropdown:hover {
+  &:after {
+    border-bottom-color: $color-button;
+  }
+}
+.top-bar__search {
+  input[type="search"] {
+    background-color: $color-button;
+    border: transparent;
+    color: black;
+    &:focus,&:active {
+      background-color: $white8;
+      color:black;
+    }
+  }
+  button[type="submit"] {
+    background-color: transparent;
+    background-color: transparent;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+/**
+ * Fonts
+ */
+@import url(http://fonts.googleapis.com/css?family=Domine|Slabo+27px|Noto+Sans:400|Open+Sans:300,400,600,800);
+
+
+$font-title: 'Domine', Georgia, Bookman Old Style, Times, serif;
+$font-menu: 'Noto Sans', Arial, Helvetica, sans-serif;
+$font-widget: 'Noto Sans', Arial, Helvetica, sans-serif;
+$font-content: 'Open Sans', Arial, Helvetica, sans-serif;
+$font-script: 'Slabo 27px', Georgia, Bookman Old Style, Times, serif;
+$font-logo: $font-content;
+
+body
+{
+    font-family: $font-content;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    font-family: $font-title;
+    // font-weight: bold;
+}

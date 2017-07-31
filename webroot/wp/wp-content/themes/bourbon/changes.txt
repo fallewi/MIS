@@ -1,0 +1,17 @@
+1.0
+- Initial Release
+1.1
+— Fixed: Translation File .po
+- Added: Post Author Section
+- Fixed: Topbar Active Menu Bug
+1.3
+- Fixed: Small Notice fixed
+1.4
+- Added: Post Share Icons checkbox
+- Added: Single Posts Layout options
+- Fixed: Twitter Share
+- Fixed: Slider 1px-line Safari Bug
+1.5
+- Added: Categories Template (Classic & Grid)
+- Added: Top Menu Font settings
+- Fixed: Mobile Pagination

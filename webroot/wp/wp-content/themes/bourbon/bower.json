@@ -1,0 +1,12 @@
+{
+  "name": "bourbon",
+  "version": "1.4.0",
+  "dependencies": {
+    "foundation": "zurb/bower-foundation#~5.5.1",
+    "fontawesome": "~4.4.0",
+    "slick.js": "~1.5.0"
+  },
+  "devDependencies": {
+    "modular-scale": "~2.1.1"
+  }
+}
