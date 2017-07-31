@@ -1,0 +1,41 @@
+<?php
+$cartReceivers = $this->getCartReceivers();
+?>
+
+<div class="transfer-cart-popup">
+    <div class="page-title">
+        <h1><?php echo $this->__('Send Your Cart') ?></h1>
+    </div>
+    <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="form-validate">
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Choose Cart receivers') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <?php if($cartReceivers->getSize() > 0): ?>
+                        <?php foreach($cartReceivers as $subAccount): ?>
+                            <div class="field">
+                                <div class="input-box">
+                                    <input type="checkbox" name="cart_receivers[]" id="cart_receivers"
+                                           value="<?php echo $this->escapeHtml($subAccount->getId()); ?>"
+                                           title="<?php echo $this->escapeHtml($subAccount->getName()) ?>" class="checkbox"
+                                    />
+                                    <label for="cart_receivers"><?php echo $this->escapeHtml($subAccount->getName() . ' ' . $subAccount->getEmail()); ?></label>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php echo Mage::helper('cminds_multiuseraccounts')->__('Currently none of other Sub Users is available to get your Cart'); ?>
+                    <?php endif; ?>
+                </li>
+            </ul>
+        </div>
+        <div class="buttons-set">
+            <button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+        </div>
+    </form>
+    <script type="text/javascript">
+        //<![CDATA[
+        var dataForm = new VarienForm('form-validate', true);
+        //]]>
+    </script>
+</div>

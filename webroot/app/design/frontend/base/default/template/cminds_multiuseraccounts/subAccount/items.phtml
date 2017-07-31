@@ -1,0 +1,66 @@
+<?php
+$quote = $this->getItems();
+$items = $quote->getAllItems();
+$subAccountId = $this->getRequest()->getParam('id');
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Items in Cart') ?></h1>
+</div>
+<?php if($this->hasNeedApprovalPermission($subAccountId)): ?>
+    <?php if(!Mage::helper('cminds_multiuseraccounts')->isQuoteApproved($quote->getId())): ?>
+        <form name="send_for_approve" id="send_for_approve" action="<?php echo $this->getUrl("multiuseraccounts/approve/approvequote", array('quote_id' => $quote->getId() , 'subaccount_id' => $subAccountId))?>" method="post" style="display: inline-block">
+            <input type="submit" class="button" value="approve this cart" />
+        </form>
+    <?php else: ;?>
+        <span style="color: green">Quote is approved</span>
+    <?php endif; ?>
+<?php endif; ?>
+<?php if (count($items)): ?>
+    <table class="data-table" id="manage-wishlist-subaccounts-table">
+        <col width="0.2" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+        <tr>
+            <th><?php echo $this->__('Product') ?></th>
+            <th></th>
+            <th><?php echo $this->__('Price') ?></th>
+            <th><?php echo $this->__('Qty') ?></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($items as $item): ?>
+            <?php if($item->getParentItemId() == null): ?>
+                <?php $product = $item->getProduct(); ?>
+                <?php $options = $product->getTypeInstance(true)->getOrderOptions($item->getProduct());?>
+                <tr>
+                    <td><a href="<?php echo $this->escapeHtml($product->getProductUrl()); ?>"><img src="<?php echo (string) Mage::helper('catalog/image')->init($product, 'thumbnail')->resize(150); ?>" alt=""/></a></td>
+                    <td><a href="<?php echo $this->escapeHtml($product->getProductUrl()); ?>"><?php echo $this->escapeHtml($product->getName()) ?></a></td>
+                    <td><?php echo Mage::helper('core')->currency($product->getFinalPrice(), true, false); ?></td>
+                    <td><?php echo $this->escapeHtml((float) $item->getQty()); ?></td>
+                    <td>
+                        <?php if(isset($options['attributes_info'])): ?>
+                            <dl>
+                                <?php foreach($options['attributes_info'] AS $attribute): ?>
+                                    <dt><strong><?php echo $this->escapeHtml($attribute['label'] . ':'); ?></strong></dt>
+                                    <dd><?php echo $this->escapeHtml($attribute['value']); ?></dd>
+                                <?php endforeach; ?>
+                            </dl>
+                        <?php endif;?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('manage-wishlist-subaccounts-table')</script>
+<?php else: ?>
+    <p style="padding: 20px;"><?php echo $this->__('No Items in Cart') ?></p>
+<?php endif; ?>
+<?php //echo $this->getChildHtml('pager'); ?>
+
+<p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>">
+        <small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

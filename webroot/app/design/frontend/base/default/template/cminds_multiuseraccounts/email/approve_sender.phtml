@@ -1,0 +1,12 @@
+<?php
+$approvers = $this->getApprovers();
+?>
+<?php echo Mage::helper('cminds_multiuseraccounts')->__('Users Allowed to Approve your Cart:'); ?>
+<ul>
+    <?php foreach($approvers as $approver): ?>
+        <li>
+        <?php echo $this->escapeHtml($approver->getName() . ' (' .  $approver->getEmail() . ')'); ?>
+        </li>
+    <?php endforeach; ?>
+</ul>
+

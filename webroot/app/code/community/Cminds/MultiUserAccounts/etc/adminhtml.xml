@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <subAccount translate="title" module="customer">
+                                        <title>Sub Account Section</title>
+                                        <sort_order>50</sort_order>
+                                    </subAccount>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <sales>
+            <children>
+                <cminds_multiuseraccounts translate="title" module="cminds_multiuseraccounts">
+                    <sort_order>200</sort_order>
+                    <title>Send to approval carts</title>
+                    <action>adminhtml/approval</action>
+                </cminds_multiuseraccounts>
+            </children>
+        </sales>
+        <customer>
+            <children>
+                <cminds_multiuseraccounts translate="title" module="cminds_multiuseraccounts">
+                    <sort_order>200</sort_order>
+                    <title>Import Accounts</title>
+                    <action>adminhtml/importAccounts</action>
+                </cminds_multiuseraccounts>
+            </children>
+        </customer>
+    </menu>
+</config>

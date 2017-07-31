@@ -1,0 +1,60 @@
+<?php
+$quote = $this->getItems();
+$items = $quote->getAllItems();
+$subAccountId = $this->getRequest()->getParam('id');
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Items in Cart') ?></h1>
+</div>
+<?php if (count($items)): ?>
+    <a class="button" href="<?php echo $this->getAddToCartViewUrl($quote->getId()); ?>" style="float: right;margin-bottom: 10px;"><?php echo $this->getHelper()->__('Add to Cart'); ?></a>
+    <?php if($this->hasNeedApprovalPermission($subAccountId)): ?>
+        <?php if(!Mage::helper('cminds_multiuseraccounts')->isQuoteApproved($quote->getId())): ?>
+            <form name="send_for_approve" id="send_for_approve" action="<?php echo $this->getUrl("multiuseraccounts/approve/approvequote", array('quote_id' => $quote->getId() , 'subaccount_id' => $subAccountId))?>" method="post" style="display: inline-block">
+                <input type="submit" class="button" value="approve this cart" />
+            </form>
+        <?php else: ;?>
+            <span style="color: green">Quote is approved</span>
+        <?php endif; ?>
+    <?php endif; ?>
+    <?php if($this->hasNeedApprovalPermission($subAccountId)): ?>
+        <?php if(!Mage::helper('cminds_multiuseraccounts')->isQuoteApproved($quote->getId())): ?>
+            <form name="place_order" id="place_order" action="<?php echo $this->getUrl("multiuseraccounts/approve/placeorder", array('quote_id' => $quote->getId() , 'subaccount_id' => $subAccountId))?>" method="post" style="display: inline-block">
+                <input type="submit" class="button" value="place order" />
+            </form>
+        <?php endif; ?>
+    <?php endif; ?>
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post">
+        <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+        <input type="hidden" name="quote_id" value="<?php echo $this->escapeHtml($quote->getId()); ?>" />
+        <table class="data-table" id="manage-wishlist-subaccounts-table">
+            <col width="0.2" />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+        <thead>
+        <tr>
+            <th style="width: 20%;"><?php echo $this->__('Product') ?></th>
+            <th style="width: 40%;"></th>
+            <th style="width: 10%;"><?php echo $this->__('Price') ?></th>
+            <th style="width: 10%;"><?php echo $this->__('Qty') ?></th>
+            <th style="width: 20%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($items as $item): ?>
+            <?php $itemHtml = $this->getChild('items_subaccount_default')->setItem($item); ?>
+            <?php echo $itemHtml->toHtml();?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    </form>
+    <script type="text/javascript">decorateTable('manage-wishlist-subaccounts-table')</script>
+<?php else: ?>
+    <p style="padding: 20px;"><?php echo $this->__('No Items in Cart') ?></p>
+<?php endif; ?>
+<?php //echo $this->getChildHtml('pager'); ?>
+
+<p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>">
+        <small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

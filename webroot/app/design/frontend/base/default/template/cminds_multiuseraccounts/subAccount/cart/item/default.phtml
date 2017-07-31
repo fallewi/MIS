@@ -1,0 +1,28 @@
+<?php $item = $this->getItem(); ?>
+<?php if($item->getParentItemId() == null): ?>
+    <?php $product = $item->getProduct(); ?>
+    <?php $options = $product->getTypeInstance(true)->getOrderOptions($item->getProduct());?>
+    <tr>
+        <td><a href="<?php echo $product->getProductUrl(); ?>"><img src="<?php echo (string) Mage::helper('catalog/image')->init($product, 'thumbnail')->resize(150); ?>" alt=""/></a></td>
+        <td>
+            <a href="<?php echo $product->getProductUrl(); ?>"><?php echo $this->escapeHtml($product->getName()) ?></a>
+            <?php if(isset($options['attributes_info'])): ?>
+                <dl>
+                    <?php foreach($options['attributes_info'] AS $attribute): ?>
+                        <dt><strong><?php echo $attribute['label'] . ':'; ?></strong></dt>
+                        <dd><?php echo $attribute['value']; ?></dd>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endif;?>
+        </td>
+        <td><?php echo Mage::helper('core')->currency($product->getFinalPrice(), true, false); ?></td>
+        <td class="a-center">
+            <input style="text-align: center;" name="cart[<?php echo $item->getId() ?>][qty]"
+                   data-cart-item-id="<?php echo $this->jsQuoteEscape($item->getSku()) ?>"
+                   value="<?php echo $item->getQty() ?>" size="4" title="<?php echo $this->__('Qty') ?>" class="input-text qty" maxlength="12" />
+            <button style="margin-top: 10px;" type="submit" name="update_cart_action" data-cart-item-update value="update_qty" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Update')); ?>" class="button btn-update"><span><span><?php echo $this->__('Update'); ?></span></span>
+            </button>
+        </td>
+        <td class="a-center"><a  href="<?php echo $this->getDeleteUrl($item->getId())?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove item')) ?>" class="btn-remove btn-remove2"><?php echo $this->__('Remove item')?></a></td>
+    </tr>
+<?php endif; ?>

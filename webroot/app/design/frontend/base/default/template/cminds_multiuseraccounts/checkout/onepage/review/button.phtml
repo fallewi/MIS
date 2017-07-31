@@ -1,0 +1,11 @@
+<?php
+$hasNeedApprovalPermission = Mage::helper('cminds_multiuseraccounts')->hasNeedApprovalPermission();
+?>
+    <button type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Place Order')) ?>" class="button btn-checkout" onclick="review.save();"><span><span><?php echo $this->__('Place Order') ?></span></span></button>
+<?php if($hasNeedApprovalPermission): ;?>
+<!--    --><?php //if(!Mage::helper('cminds_multiuseraccounts')->isQuoteApproved($quoteId)): ?>
+        <form name="send_for_approve" id="send_for_approve" action="<?php echo $this->getUrl("multiuseraccounts/approve/sendaskforapprove")?>" method="post">
+            <input type="submit" class="button" value="send for approval" />
+        </form>
+<!--    --><?php //endif; ?>
+<?php endif; ?>
