@@ -1,0 +1,60 @@
+<?php
+$items = $this->getItems();
+$helper = Mage::helper('cminds_multiusersubaccounts');
+?>
+<div class="dashboard">
+    <?php echo $this->getMessagesBlock()->toHtml(); ?>
+    <div class="page-title">
+        <h1><?php echo $this->__('Choose Customer to Switch') ?></h1>
+    </div>
+    <span><?php echo $this->__('You are logged in as: ') . Mage::getSingleton('customer/session')->getCustomer()->getEmail(); ?></span>
+    <?php echo $this->getChildHtml('pager'); ?>
+    <?php if (count($items)) : ?>
+        <table class="data-table" id="manage-bind-table">
+            <thead>
+            <tr>
+                <th style="white-space: normal"><?php echo $this->__('Email') ?></th>
+                <th style="white-space: normal"><?php echo $this->__('Name') ?></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <?php if($masterId = $this->isParentInSession()): ?>
+                    <?php $customer = Mage::getModel('customer/customer')->load($this->isParentInSession()); ?>
+                    <td><?php echo $this->escapeHtml($customer->getEmail()) ?></td>
+                    <td><?php echo $this->escapeHtml($customer->getName()) ?></td>
+                    <td>
+                        <a href="<?php echo $this->getUrl('customer/account/switchCustomer', array(
+                            'binded_customer_id' => $masterId
+                        )); ?>"
+                           title="<?php echo $this->__('Login to Master') ?>"
+                           style="display:block;"><?php echo $this->__('Login to Master') ?></a>
+                    </td>
+                <?php endif ; ?>
+            </tr>
+            <?php $_odd = ''; ?>
+            <?php foreach ($items as $item): ?>
+                <?php $customerId = $item->getCustomerId() ?>
+                <?php $customer = Mage::getModel('customer/customer')->load($customerId); ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($customer->getEmail()) ?></td>
+                    <td><?php echo $this->escapeHtml($customer->getName()) ?></td>
+                    <td>
+                        <a href="<?php echo $this->getUrl('customer/account/switchCustomer', array(
+                            'binded_customer_id' => $customerId
+                        )); ?>"
+                           title="<?php echo $this->__('Login') ?>"
+                           style="display:block;"><?php echo $this->__('Login') ?></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        <script
+            type="text/javascript">decorateTable('manage-bind-table')</script>
+    <?php else: ?>
+        <p style="padding: 20px;"><?php echo $this->__('No User Found') ?></p>
+    <?php endif; ?>
+    <?php echo $this->getChildHtml('pager'); ?>
+</div>

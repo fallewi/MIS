@@ -1,0 +1,311 @@
+<?php
+/**
+ *
+ * /* @var $this Mage_Customer_Block_Widget_Name
+ */
+?>
+<li class="fields">
+    <div class="field name-firstname">
+        <label for="firstname>"
+               class="required"><em>*</em><?php echo $this->__('First Name') ?></label>
+
+        <div class="input-box">
+            <input type="text" id="firstname" name="firstname"
+                   value="<?php echo $this->escapeHtml($this->getObject()->getFirstname()) ?>"
+                   title="<?php echo $this->__('First Name') ?>" maxlength="64"
+                   class="input-text required-entry"/>
+        </div>
+    </div>
+    <div class="field name-lastname">
+        <label for="lastname"
+               class="required"><em>*</em><?php echo $this->__('Last Name') ?></label>
+
+        <div class="input-box">
+            <input type="text" id="lastname" name="lastname"
+                   value="<?php echo $this->escapeHtml($this->getObject()->getLastname()) ?>"
+                   title="<?php echo $this->__('Last Name') ?>" maxlength="64"
+                   class="input-text required-entry"/>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?>
+        </label>
+
+        <div class="input-box">
+            <input type="text" name="email" id="email_address"
+                   value="<?php echo $this->escapeHtml($this->getObject()->getEmail()) ?>"
+                   title="<?php echo $this->__('Email Address') ?>" maxlength="128"
+                   class="input-text validate-email required-entry"/>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('An email with Login information would be sent to the email address you have provided by clicking ADD USER.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="permission" class="required"><em>*</em><?php echo $this->__('Permission') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="permission" id="permission" class="required-entry"/>
+            <?php foreach ($this->getPermissionOptions() as $permission): ?>
+                <option label="<?php echo $this->escapeHtml($permission['label']) ?>"
+                        value="<?php echo $this->escapeHtml($permission['value']) ?>"
+                    <?php echo ($permission['value'] == $this->getObject()->getPermission()) ? 'selected' : '' ?> ><?php echo $this->escapeHtml($permission['label']) ?></option>
+            <?php endforeach; ?>
+            </select>
+            <div class="tip">
+                <a href="#" title="
+                <?php echo $this->__('Read Only') ?>
+                    <?php echo $this->__(' - Users can view information but cannot make modifications.') ?>
+                <?php echo $this->__('Modify Account') ?>
+                    <?php echo $this->__(' – User can only modify general profile information.') ?>
+                <?php echo $this->__('Order Creation') ?>
+                    <?php echo $this->__(' - User can create orders, but cannot modify profile information.') ?>
+                <?php echo $this->__('Order Creation & Modify Account') ?>
+                    <?php echo $this->__(' – User can create orders and modify profile information.') ?>
+                <?php echo $this->__('Order Approval needed') ?>
+                    <?php echo $this->__(' – User can add items to cart, but account owner must approve them.') ?>
+                    " class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="field" <?php echo ($this->getObject()->hasNeedApprovalPermission()) ? '' : 'style="display: none"'?>>
+        <label for="assigned_approvers" class="required"><em>*</em><?php echo $this->__('Assigned Approvers') ?>
+        </label>
+        <div class="input-box">
+            <select multiple name="assigned_approvers[]" id="assigned_approvers" class="required-entry">
+                <?php foreach($this->getObject()->getApprovers() as $approver): ?>
+                    <option
+                        value="<?php echo $this->escapeHtml($approver->getId()); ?>"
+                        <?php echo ($this->getSelectedApprover($this->getObject(), $approver->getId())) ? 'selected' : '' ?>
+                    >
+                        <?php echo $this->escapeHtml($approver->getName()); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="field" <?php echo ($this->getObject()->getPermission() == $this->getOrderWritePermission()) ? '' : 'style="display: none"'?>>
+        <label for="is_approver" class="required"><em>*</em><?php echo $this->__('Can approve shopping carts') ?>
+        </label>
+        <div class="input-box">
+            <select name="is_approver" id="is_approver" class="">
+            <option label="<?php echo $this->__('No') ?>"
+                    value="0"
+                <?php echo (0 == $this->getObject()->getIsApprover()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+            <option label="<?php echo $this->__('Yes') ?>"
+                    value="1"
+                <?php echo (1 == $this->getObject()->getIsApprover()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="view_all_orders" class="required"><em>*</em><?php echo $this->__('View All Orders') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="view_all_orders" id="view_all_orders" class="required-entry"/>
+                <option label="<?php echo $this->__('No') ?>"
+                        value="0"
+                    <?php echo (0 == $this->getObject()->getViewAllOrders()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+                <option label="<?php echo $this->__('Yes') ?>"
+                        value="1"
+                    <?php echo (1 == $this->getObject()->getViewAllOrders()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('Define if sub account can view all account order or only his sub account orders.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="can_see_cart" class="required"><em>*</em><?php echo $this->__('Can See to Cart Page') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="can_see_cart" id="can_see_cart" class="required-entry"/>
+                <option label="<?php echo $this->__('No') ?>"
+                        value="0"
+                    <?php echo (0 == $this->getObject()->getCanSeeCart()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+                <option label="<?php echo $this->__('Yes') ?>"
+                        value="1"
+                    <?php echo (1 == $this->getObject()->getCanSeeCart()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('Define if sub account can view cart page.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="have_access_checkout" class="required"><em>*</em><?php echo $this->__('Have Access to Checkout') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="have_access_checkout" id="have_access_checkout" class="required-entry"/>
+                <option label="<?php echo $this->__('No') ?>"
+                        value="0"
+                    <?php echo (0 == $this->getObject()->getHaveAccessCheckout()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+                <option label="<?php echo $this->__('Yes') ?>"
+                        value="1"
+                    <?php echo (1 == $this->getObject()->getHaveAccessCheckout()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('Define if sub account have access to checkout.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="order_amount_limit" class="required"><em>*</em><?php echo $this->__('Limit Order Amount per:') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="order_amount_limit" id="order_amount_limit" class="required-entry"/>
+            <?php foreach ($this->getLimitsOptions() as $limits) : ?>
+                <option label="<?php echo $limits['label'] ?>"
+                        value="<?php echo $limits['value'] ?>"
+                    <?php echo ($limits['value'] == $this->getObject()->getOrderAmountLimit()) ? 'selected' : '' ?> ><?php echo $limits['label'] ?>
+                </option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="field" <?php echo (!in_array($this->getObject()->getOrderAmountLimit(), $this->getLimitsAvailable(false))) ? 'style="display: none"' : ''?>>
+        <label for="order_amount_limit_value" class="required"><em>*</em><?php echo $this->__('Limit Order Amount Value') ?>
+        </label>
+        <div class="input-box">
+            <input type="text" id="order_amount_limit_value" name="order_amount_limit_value"
+                   value="<?php echo $this->escapeHtml($this->getObject()->getOrderAmountLimitValue()) ?>"
+                   title="<?php echo $this->__('Limit Order Amount Value') ?>" maxlength="64"
+                   class="input-text required-entry"/>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="have_access_checkout" class="required"><em>*</em><?php echo $this->__('Get Order notification emails') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="get_order_email" id="get_order_email" class="required-entry"/>
+            <option label="<?php echo $this->__('No') ?>"
+                    value="0"
+                <?php echo (0 == $this->getObject()->getGetOrderEmail()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+            <option label="<?php echo $this->__('Yes') ?>"
+                    value="1"
+                <?php echo (1 == $this->getObject()->getGetOrderEmail()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('Define if sub account will receive order notifications emails when he creates an order.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="get_order_invoice" class="required"><em>*</em><?php echo $this->__('Get Invoice notification emails') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="get_order_invoice" id="get_order_invoice" class="required-entry"/>
+            <option label="<?php echo $this->__('No') ?>"
+                    value="0"
+                <?php echo (0 == $this->getObject()->getGetOrderInvoice()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+            <option label="<?php echo $this->__('Yes') ?>"
+                    value="1"
+                <?php echo (1 == $this->getObject()->getGetOrderInvoice()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('Define if sub account will receive invoice notifications emails when he creates an order.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="get_order_shipment" class="required"><em>*</em><?php echo $this->__('Get Shipment notification emails') ?>
+        </label>
+
+        <div class="input-box">
+            <select name="get_order_shipment" id="get_order_shipment" class="required-entry"/>
+            <option label="<?php echo $this->__('No') ?>"
+                    value="0"
+                <?php echo (0 == $this->getObject()->getGetOrderShipment()) ? 'selected' : '' ?> ><?php echo $this->__('No') ?></option>
+            <option label="<?php echo $this->__('Yes') ?>"
+                    value="1"
+                <?php echo (1 == $this->getObject()->getGetOrderShipment()) ? 'selected' : '' ?> ><?php echo $this->__('Yes') ?></option>
+            </select>
+            <div class="tip">
+                <a href="#" title="<?php echo $this->__('Define if sub account will receive shipment notifications emails when he creates an order.') ?>" class="tooltip">.</a>
+            </div>
+        </div>
+    </div>
+</li>
+
+<script type="text/javascript">
+    //<![CDATA[
+
+    $('permission').observe('change', function() {
+        setApproverForm(this.value);
+        setApproversMultiSelect(this.value);
+    });
+
+    $('order_amount_limit').observe('change', function() {
+        setOrderAmountForm(this.value);
+    });
+
+    function setApproverForm(permission){
+        var approver_value = '<?php echo $this->getOrderWritePermission(); ?>';
+        if(permission == approver_value){
+            new Effect.Appear($('is_approver').up(1),
+                {duration:1});
+            $('is_approver').addClassName('required-entry');
+
+        }else{
+            new Effect.Fade($('is_approver').up(1),
+                { duration:1});
+            $('is_approver').removeClassName('required-entry');
+        }
+    }
+
+    function setApproversMultiSelect(permission)
+    {
+        var needApproval = '<?php echo $this->getNeedApprovalPermission(); ?>';
+        if(permission == needApproval){
+            new Effect.Appear($('assigned_approvers').up(1),
+                {duration:1});
+            $('assigned_approvers').addClassName('required-entry');
+
+        }else{
+            new Effect.Fade($('assigned_approvers').up(1),
+                { duration:1});
+            $('assigned_approvers').removeClassName('required-entry');
+        }
+    }
+
+    function setOrderAmountForm(limits){
+        var limits_values = '<?php echo $this->getLimitsAvailable(true); ?>';
+
+        if(limits_values.indexOf(limits) != -1) {
+            new Effect.Appear($('order_amount_limit_value').up(1),
+                {duration:1});
+            $('is_approver').addClassName('required-entry');
+        } else {
+            new Effect.Fade($('order_amount_limit_value').up(1),
+                { duration:1});
+            $('is_approver').removeClassName('required-entry');
+        }
+    }
+    //]]>
+</script>

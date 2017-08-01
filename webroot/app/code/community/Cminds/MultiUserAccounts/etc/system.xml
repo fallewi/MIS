@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <customer translate="label" module="customer">
+            <label>Customers</label>
+            <sort_order>300</sort_order>
+        </customer>
+    </tabs>
+    <sections>
+        <subAccount translate="label" module="customer">
+            <class>separator-top</class>
+            <label>Sub Account Configuration</label>
+            <tab>customer</tab>
+            <sort_order>130</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General Options</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable>
+                        <customer_group_manageable translate="label">
+                            <label>Groups of Customer able to Manage Sub Users</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>cminds_multiuseraccounts/config_source_groups</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </customer_group_manageable>
+                        <if_customer_share_session translate="label">
+                            <label>Share Sub Accounts Cart</label>
+                            <comment>
+                                <![CDATA[When select No, Sub Accounts will have their own cart]]>
+                            </comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </if_customer_share_session>
+                        <send_copy_to_subaccount translate="label">
+                            <label>Send order/invoice/shipment mails to: </label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>cminds_multiuseraccounts/subAccount_emails</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </send_copy_to_subaccount>
+                        <allow_cart_transfers>
+                            <label>Allow Sub Accounts to Transfer Carts</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <comment>
+                                <![CDATA[Sub-accounts not allowed to create Orders will able to send their cart to any sibling sub-account with at least "Order Creation" permission who does not require order approvals.
+                                </br><strong>Warning:</strong> Works only when "Share Sub Accounts Cart" is set to "No"]]>
+                            </comment>
+                            <depends><if_customer_share_session>0</if_customer_share_session></depends>
+                        </allow_cart_transfers>
+                    </fields>
+                </general>
+                <create_subAccount translate="label">
+                    <label>Create New Sub-Account Options</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <confirm translate="label">
+                            <label>Require Emails Confirmation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </confirm>
+                    </fields>
+                </create_subAccount>
+            </groups>
+        </subAccount>
+    </sections>
+</config>

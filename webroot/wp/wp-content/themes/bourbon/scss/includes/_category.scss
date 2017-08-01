@@ -1,0 +1,60 @@
+//
+// Categories
+//
+
+.category__hero {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  @include breakpoint(small) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  background-color: adjust-color($color-button, $green:5%);
+}
+.category__image {
+  text-align: center;
+  padding-bottom: 3rem;
+  animation: page__title 300ms 1 ease-in;
+  @include breakpoint(small) {
+    width: 30%;
+    padding-bottom: 1rem;
+    margin: 0 auto;
+  }
+}
+.category__header {
+  text-align: center;
+  animation: page__title 300ms 1 ease-in;
+}
+.category__title {
+  font-family: $font-content;
+  font-size: ms(4);
+  letter-spacing: .4rem;
+  margin-right: -.4rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+  color: $black8;
+  @include breakpoint(small) {
+    font-size: ms(0);
+  }
+}
+.category__description {
+  width: 70%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0 auto;
+  text-align: center;
+  p {
+    font-size: ms(-1);
+    color: $black4;
+  }
+  @include breakpoint(small) {
+    width: 95%;
+    p {
+      font-size: ms(-2);
+    }
+  }
+  animation: page__description 300ms 1 ease-in;
+}

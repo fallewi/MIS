@@ -1,0 +1,60 @@
+.admin-color-fresh .redux-container-switch .cb-enable.selected,
+.admin-color-fresh .redux-container .ui-buttonset .ui-state-active {
+  background-color: black !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  border-color: #000 !important;
+  box-shadow: none !important;
+}
+
+.admin-color-fresh .redux-container-switch .cb-disable.selected {
+    background-color: silver !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  border-color: silver !important;
+  box-shadow: none !important;
+}
+
+.admin-color-fresh .redux-container-switch .cb-disable,
+.admin-color-fresh .redux-container-switch .cb-enable,
+.admin-color-fresh .ui-state-default,
+.admin-color-fresh .ui-widget-content .ui-state-default,
+.admin-color-fresh .ui-widget-header .ui-state-default {
+  background-color: white !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  border-color: silver !important;
+  box-shadow: none !important;
+}
+
+
+.wp-core-ui .button-primary, .wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus,
+.admin-color-fresh .redux-sidebar .redux-group-menu li.activeChild.hasSubSections ul.subsection li.active a,
+.admin-color-fresh .redux-sidebar .redux-group-menu li.active.hasSubSections a {
+  background-color:#000CB4;/* #04DAD5*/
+  border: 0;
+  border-radius: 0;
+}
+
+.admin-color-fresh #redux-header {
+  background: #000870;
+  border-color: #000870;
+}
+#redux-share i {
+    color: #000CB4;
+}
+
+.redux-container #redux-header .display_header h2 {
+  letter-spacing: 10px;
+  padding-left: 20px;
+}
+
+.redux-main {
+  border-left: 0;
+}
+.redux-sidebar {
+  margin-top: 44px;
+}
+.redux-container #info_bar {
+  border-bottom: 0;
+}

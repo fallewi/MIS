@@ -1,0 +1,64 @@
+<?php
+$items = $this->getItems();
+$helper = Mage::helper('cminds_multiuseraccounts');
+?>
+<div class="page-title">
+    <h1><?php echo $helper->__('Add to Cart') ?></h1>
+</div>
+<form action="<?php echo $this->getSearchActionUrl(Mage::registry('quote_id')); ?>" method="get">
+    <input type="text" name="name" value="<?= Mage::registry('name') ?>" placeholder="Search by Name"/>
+    <input type="text" name="sku"  value="<?= Mage::registry('sku') ?>" placeholder="Search by Sku"/>
+    <button type="submit"  title="<?php echo $helper->__('Search'); ?>" class="button btn-update"><span><span><?php echo $helper->__('Serach'); ?></span></span>
+    </button>
+</form>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php echo $this->getChildHtml('pager'); ?>
+<?php if (count($items)): ?>
+    <table class="data-table" id="items-add-to-subbaccount">
+        <col width="0.2" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+        <tr>
+            <th style="width: 20%;"><?php echo $this->__('Product') ?></th>
+            <th style="width: 40%;"></th>
+            <th style="width: 10%;"><?php echo $this->__('Price') ?></th>
+            <th style="width: 10%;"><?php echo $this->__('Qty') ?></th>
+            <th style="width: 20%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($items as $item): ?>
+            <?php $options = $item->getTypeInstance(true)->getOrderOptions($item);?>
+                <form action="<?php echo $this->getAddToCartActionUrl(); ?>" method="post">
+                    <input type="hidden" name="product_id"    value="<?=$item->getId()?>" />
+                    <input type="hidden" name="quote_id"      value="<?=Mage::registry('quote_id')?>" />
+                    <input type="hidden" name="subaccount_id" value="<?=Mage::registry('subaccount_id')?>" />
+                    <tr>
+                        <td><a href="<?php echo $item->getProductUrl(); ?>"><img src="<?php echo (string) Mage::helper('catalog/image')->init($item, 'thumbnail')->resize(150); ?>" alt=""/></a></td>
+                        <td><a href="<?php echo $item->getProductUrl(); ?>"><?php echo $this->escapeHtml($item->getName()) ?></a></td>
+                        <td><?php echo Mage::helper('core')->currency($item->getFinalPrice(), true, false); ?></td>
+                        <td>
+                            <input name="qty"
+                                   data-cart-item-id="<?php echo $this->jsQuoteEscape($item->getSku()) ?>"
+                                   value="1" style="text-align:center;" size="4" title="<?php echo $this->__('Qty') ?>" class="input-text qty" maxlength="12" />
+                        </td>
+                        <td>
+                            <button type="submit" class="button" style="float: right;" ><span><?php echo $this->__('Add to Cart'); ?></span></button>
+                        </td>
+                    </tr>
+                </form>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <div style="margin: 40px 0 40px 0;">
+        Products doesnt found.
+    </div>
+<?php endif; ?>
+<?php echo $this->getChildHtml('pager'); ?>
+<p class="back-link"><a href="<?php echo '123'; ?>">
+        <small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

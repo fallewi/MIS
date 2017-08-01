@@ -1,0 +1,18 @@
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="email-heading">
+                        <p>Your cart was approved by <span style="font-weight: bold">{{var main_first_name}} {{var main_last_name}}</span> ({{var main_email}}). Remember that when you will edit your cart you'll need to ask for approve again</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

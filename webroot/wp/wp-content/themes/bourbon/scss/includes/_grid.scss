@@ -1,0 +1,144 @@
+/**
+ * Grid
+ */
+
+.grid {
+  margin-bottom: 0;
+  padding: 1rem 0 1rem;
+  @include breakpoint(small){
+    padding-left: 0;
+    padding-right: 0;
+  }
+  // background-color: transparentize($color-button, .5);
+}
+
+.grid__thumbnail {
+  margin-bottom: 1rem;
+  position: relative;
+  opacity: .9;
+  transition: $trans;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.grid__header {}
+.grid__title {
+  font-size: ms(4);
+  font-weight: bold;
+}
+
+
+.grid__content p {
+  color: $black8;
+  font-size: ms(0);
+}
+
+.grid__meta {
+  font-size: ms(-2);
+  color: $black6;
+  transition: $trans;
+  padding-bottom: 1rem;
+  a {
+    color: $gold;
+  }
+}
+
+.grid__category {
+  display: inline-block;
+  padding-right: 10px;
+  a {
+    color: $color-links;
+  }
+  .category_link {
+    display: inline-block;
+  }
+}
+.grid__author {
+  display: inline-block;
+  font-style: italic;
+  font-family: $font-script;
+  &--in {
+    padding-left: 4px;
+    padding-right: 2px;
+  }
+}
+.grid__posted_on
+{
+  font-family: $font-script;
+  display: inline-block;
+  font-style: italic;
+  .entry-date {
+    transition: $trans;
+    color: $black6;
+    &:hover {
+      color: $gold;
+    }
+  }
+}
+
+
+.naba {
+  position: relative;
+  display: inline-block;
+}
+
+#infscr-loading {
+  position: absolute;
+  bottom: -2rem;
+  left: 48%;
+  @include breakpoint(small){
+    left: 43%;
+  }
+  p {
+    font-size: ms(-2);
+    margin-left: -20px;
+    padding: 3px 13px;
+    background-color: $color-button;
+    color: $color-links;
+    border-radius: 30px;
+  }
+}
+
+// Grid Template
+.grid__template--2, .grid__template--3 {
+  .entry--quote {
+    padding: 1rem 0;
+    margin: 0;
+    .entry__content {
+      p {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .entry--image {
+    padding: 1rem 0;
+    margin: 0;
+    .thumbnail__wrap {
+      padding-bottom: 1rem;
+    }
+  }
+  .thumbnail__wrap {
+    padding-bottom: 1rem;
+  }
+}
+
+.grid__template--2 {
+  .grid__title,
+  .entry--quote .entry__content p {
+    font-size: ms(7);
+      @include breakpoint(small){
+      font-size: ms(5);
+      }
+  }
+}
+
+.grid__template--3 {
+  .grid__title,
+  .entry--quote .entry__content p {
+    font-size: ms(5);
+      @include breakpoint(small){
+      font-size: ms(5);
+      }
+  }
+}

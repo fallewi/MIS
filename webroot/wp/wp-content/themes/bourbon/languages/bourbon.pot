@@ -1,0 +1,1443 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Bourbon\n"
+"POT-Creation-Date: 2015-08-24 22:43+0300\n"
+"PO-Revision-Date: 2015-08-24 22:42+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: 404.php:22
+msgid "Most Used Categories"
+msgstr ""
+
+#: 404.php:40
+#, php-format
+msgid "Try looking in the monthly archives. %1$s"
+msgstr ""
+
+#: comments.php:28
+#, php-format
+msgctxt "comments title"
+msgid "One comment"
+msgid_plural "%1$s comments"
+msgstr[0] ""
+
+#: comments.php:35 comments.php:57
+msgid "Comment navigation"
+msgstr ""
+
+#: comments.php:38 comments.php:60
+msgid "Older Comments"
+msgstr ""
+
+#: comments.php:39 comments.php:61
+msgid "Newer Comments"
+msgstr ""
+
+#: comments.php:73
+msgid "Comments are closed."
+msgstr ""
+
+#: content-audio.php:34 content-grid.php:71 content-image.php:39
+#: content-page.php:43 content-quote.php:35 content.php:43
+msgid "Pages:"
+msgstr ""
+
+#: content-gallery.php:33 content-image.php:33 content-page.php:37
+#: content-quote.php:29 content.php:37 inc/extras.php:182
+#, php-format
+msgid "Continue %s <i class=\"fa fa-angle-right\"></i>"
+msgstr ""
+
+#: content-grid.php:64
+#, php-format
+msgid "Continue reading %s <i class=\"fa fa-angle-right\"></i>"
+msgstr ""
+
+#: content-none.php:16
+msgid "Nothing Found"
+msgstr ""
+
+#: content-none.php:23
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: content-none.php:27
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: content-none.php:32
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: functions.php:58
+msgid "Primary Menu"
+msgstr ""
+
+#: functions.php:110 lib/options-init.php:882
+msgid "Sidebar"
+msgstr ""
+
+#: functions.php:120
+msgid "Shop Sidebar"
+msgstr ""
+
+#: functions.php:130
+msgid "Footer left"
+msgstr ""
+
+#: functions.php:139
+msgid "Footer center"
+msgstr ""
+
+#: functions.php:148
+msgid "Footer right"
+msgstr ""
+
+#: header.php:38
+msgid "Skip to content"
+msgstr ""
+
+#: inc/extras.php:52
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#: inc/extras.php:125
+#, php-format
+msgid "<h1 class=\"category__title\">%s</h1>"
+msgstr ""
+
+#: inc/extras.php:127
+#, php-format
+msgid ""
+"<h2 class=\"archive__name\">Tag</h2><h1 class=\"archive__title\">%s</h1>"
+msgstr ""
+
+#: inc/extras.php:129
+#, php-format
+msgid ""
+"<h2 class=\"archive__name\">Author</h2><h1 class=\"archive__title\">%s</h1>"
+msgstr ""
+
+#: inc/extras.php:131
+#, php-format
+msgid ""
+"<h2 class=\"archive__name\">Year</h2><h1 class=\"archive__title\">%s</h1>"
+msgstr ""
+
+#: inc/extras.php:131
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr ""
+
+#: inc/extras.php:133
+#, php-format
+msgid ""
+"<h2 class=\"archive__name\">Month</h2><h1 class=\"archive__title\">%s</h1>"
+msgstr ""
+
+#: inc/extras.php:133
+msgctxt "monthly archives date format"
+msgid "F Y"
+msgstr ""
+
+#: inc/extras.php:135
+#, php-format
+msgid ""
+"<h2 class=\"archive__name\">Day</h2><h1 class=\"archive__title\">%s</h1>"
+msgstr ""
+
+#: inc/extras.php:135
+msgctxt "daily archives date format"
+msgid "F j, Y"
+msgstr ""
+
+#: inc/extras.php:138
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Asides</"
+"h1>"
+msgstr ""
+
+#: inc/extras.php:140
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title"
+"\">Galleries</h1>"
+msgstr ""
+
+#: inc/extras.php:142
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Images</"
+"h1>"
+msgstr ""
+
+#: inc/extras.php:144
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Videos</"
+"h1>"
+msgstr ""
+
+#: inc/extras.php:146
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Quotes</"
+"h1>"
+msgstr ""
+
+#: inc/extras.php:148
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Links</h1>"
+msgstr ""
+
+#: inc/extras.php:150
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Statuses</"
+"h1>"
+msgstr ""
+
+#: inc/extras.php:152
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Audio</h1>"
+msgstr ""
+
+#: inc/extras.php:154
+msgctxt "post format archive title"
+msgid ""
+"<h3 class=\"page__subtitle\">Type</h3><h1 class=\"archive__title\">Chats</h1>"
+msgstr ""
+
+#: inc/extras.php:157
+#, php-format
+msgid "Archives: %s"
+msgstr ""
+
+#: inc/extras.php:161
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+#: inc/extras.php:163 lib/options-init.php:855
+msgid "Archives"
+msgstr ""
+
+#: inc/extras.php:236
+msgid "Post label:"
+msgstr ""
+
+#: inc/extras.php:238
+msgid "Example: HOT"
+msgstr ""
+
+#: inc/extras.php:245
+msgid "Post color:"
+msgstr ""
+
+#: inc/extras.php:247
+msgid "The background color of the post. Shows in the Best Section"
+msgstr ""
+
+#: inc/extras.php:260
+msgid "Best section:"
+msgstr ""
+
+#: inc/extras.php:261
+msgid "Default"
+msgstr ""
+
+#: inc/extras.php:262
+msgid "Best Post"
+msgstr ""
+
+#: inc/extras.php:263
+msgid "Shows the post in the Best Slider"
+msgstr ""
+
+#: inc/extras.php:283
+msgid "This Section shows only in Templates with Hero"
+msgstr ""
+
+#: inc/extras.php:284 inc/widgets.php:92 inc/widgets.php:163
+#: lib/options-init.php:540
+msgid "Title"
+msgstr ""
+
+#: inc/extras.php:286 lib/options-init.php:546
+msgid "Description"
+msgstr ""
+
+#: inc/extras.php:290
+msgid "Hero text:"
+msgstr ""
+
+#: inc/extras.php:292
+msgid " Default"
+msgstr ""
+
+#: inc/extras.php:293
+msgid " Inverse"
+msgstr ""
+
+#: inc/extras.php:297
+msgid "Hero color:"
+msgstr ""
+
+#: inc/extras.php:299
+msgid "The background color of the Hero"
+msgstr ""
+
+#: inc/extras.php:309
+msgid "Hero opacity (ex: .5):"
+msgstr ""
+
+#: inc/extras.php:356
+msgid "Title color"
+msgstr ""
+
+#: inc/extras.php:359
+msgid "Select category link color and Hero Line color"
+msgstr ""
+
+#: inc/extras.php:372
+msgid "Category image"
+msgstr ""
+
+#: inc/extras.php:380
+msgid "Category Text"
+msgstr ""
+
+#: inc/extras.php:382
+msgid " Black"
+msgstr ""
+
+#: inc/extras.php:383
+msgid " White"
+msgstr ""
+
+#: inc/extras.php:390 lib/options-init.php:211 lib/options-init.php:235
+#: lib/options-init.php:677
+msgid "Background Color"
+msgstr ""
+
+#: inc/extras.php:393
+msgid " Opacity"
+msgstr ""
+
+#: inc/extras.php:394
+msgid "Select Hero Mask color and change opacity"
+msgstr ""
+
+#: inc/template-tags.php:23
+msgid "Posts navigation"
+msgstr ""
+
+#: inc/template-tags.php:27
+msgid "Older posts"
+msgstr ""
+
+#: inc/template-tags.php:31
+msgid "Newer posts"
+msgstr ""
+
+#: inc/template-tags.php:54
+msgid "Post navigation"
+msgstr ""
+
+#: inc/template-tags.php:57
+msgid "Previous"
+msgstr ""
+
+#: inc/template-tags.php:58
+msgid "Next"
+msgstr ""
+
+#: inc/template-tags.php:84
+#, php-format
+msgctxt "post date"
+msgid "%s"
+msgstr ""
+
+#: inc/template-tags.php:107
+#, php-format
+msgctxt "post author"
+msgid "%s"
+msgstr ""
+
+#: inc/template-tags.php:159
+msgid "1 <i class=\"fa fa-comment-o\"></i>"
+msgstr ""
+
+#: inc/template-tags.php:159
+msgid "% <i class=\"fa fa-comment-o\"></i>"
+msgstr ""
+
+#: inc/template-tags.php:173 inc/template-tags.php:179
+msgid ", "
+msgstr ""
+
+#: inc/template-tags.php:175
+#, php-format
+msgid "Posted in %1$s"
+msgstr ""
+
+#: inc/template-tags.php:181
+#, php-format
+msgid "Tagged %1$s"
+msgstr ""
+
+#: inc/template-tags.php:187
+msgid "Leave a comment"
+msgstr ""
+
+#: inc/template-tags.php:187
+msgid "1 Comment"
+msgstr ""
+
+#: inc/template-tags.php:187
+msgid "% Comments"
+msgstr ""
+
+#: inc/template-tags.php:191
+msgid "Edit"
+msgstr ""
+
+#: inc/template-tags.php:450 inc/template-tags.php:490
+#: inc/template-tags.php:502
+msgid "Nothing there"
+msgstr ""
+
+#: inc/template-tags.php:527
+msgid "Click to share this post on Facebook"
+msgstr ""
+
+#: inc/template-tags.php:528
+msgid "Currently reading "
+msgstr ""
+
+#: inc/template-tags.php:528
+msgid "Click to share this post on Twitter"
+msgstr ""
+
+#: inc/template-tags.php:529
+msgid "Click to share this post on LinkedIn"
+msgstr ""
+
+#: inc/template-tags.php:530
+msgid "Click to share this post on Google Plus"
+msgstr ""
+
+#: inc/template-tags.php:531
+msgid "Click to share this post on Pinterest"
+msgstr ""
+
+#: inc/template-tags.php:568 templates/template-homepage-best-grid.php:145
+#: templates/template-homepage-hero-featured-grid.php:168
+msgid "All loaded"
+msgstr ""
+
+#: inc/template-tags.php:610
+msgid "Media Library"
+msgstr ""
+
+#: inc/template-tags.php:613
+msgid "Select image or enter URL"
+msgstr ""
+
+#: inc/widgets.php:25
+msgid "Display recent posts with thumbnails"
+msgstr ""
+
+#: inc/widgets.php:96 inc/widgets.php:175
+msgid "Limit"
+msgstr ""
+
+#: inc/widgets.php:130
+msgid "Show Instagram recent photos"
+msgstr ""
+
+#: inc/widgets.php:167
+msgid "User ID* "
+msgstr ""
+
+#: inc/widgets.php:167 inc/widgets.php:171
+msgid "Look here"
+msgstr ""
+
+#: inc/widgets.php:179
+msgid "Background (CSS)"
+msgstr ""
+
+#: inc/widgets.php:243
+msgid "A simple widget to show social icons"
+msgstr ""
+
+#: inc/widgets.php:263
+msgid "Full path (with"
+msgstr ""
+
+#: inc/widgets.php:318
+msgid "Advertise widget"
+msgstr ""
+
+#: inc/widgets.php:333
+msgid "Image Url"
+msgstr ""
+
+#: inc/widgets.php:338
+msgid "Link"
+msgstr ""
+
+#: lib/options-init.php:128
+msgid "<p>This is the sidebar content, HTML is allowed.</p>"
+msgstr ""
+
+#: lib/options-init.php:147 lib/options-init.php:398
+msgid "Information"
+msgstr ""
+
+#: lib/options-init.php:156
+msgid "More settings"
+msgstr ""
+
+#: lib/options-init.php:157
+msgid ""
+"You can also use the WordPress Customizer for some standard settings. "
+"( Appearance / Customize )"
+msgstr ""
+
+#: lib/options-init.php:167
+msgid "Global"
+msgstr ""
+
+#: lib/options-init.php:175
+msgid "Pagination"
+msgstr ""
+
+#: lib/options-init.php:176
+msgid ""
+"Select Pagination for shows page numbers. Select Navigation for \"Next/"
+"Previous\" buttons only."
+msgstr ""
+
+#: lib/options-init.php:194
+msgid "Infinite scroll"
+msgstr ""
+
+#: lib/options-init.php:195
+msgid "Will be shown only in Grid Templates."
+msgstr ""
+
+#: lib/options-init.php:202
+msgid "Human date"
+msgstr ""
+
+#: lib/options-init.php:203
+msgid "Human date in articles footer"
+msgstr ""
+
+#: lib/options-init.php:212
+msgid ""
+"You can change the background color in the standard WordPress Customizer "
+"( Appearance / Customize / Colors )"
+msgstr ""
+
+#: lib/options-init.php:219
+msgid "Background Image"
+msgstr ""
+
+#: lib/options-init.php:220
+msgid ""
+"You can change the background image in the standard WordPress Customizer "
+"( Appearance / Customize / Background )"
+msgstr ""
+
+#: lib/options-init.php:228
+msgid "Buttons"
+msgstr ""
+
+#: lib/options-init.php:236 lib/options-init.php:257
+msgid "Select Buttons global hover color"
+msgstr ""
+
+#: lib/options-init.php:246 lib/options-init.php:690
+msgid "Text Color"
+msgstr ""
+
+#: lib/options-init.php:247 lib/options-init.php:268
+msgid "Select Buttons global hover text color"
+msgstr ""
+
+#: lib/options-init.php:256
+msgid "Hover Background Color"
+msgstr ""
+
+#: lib/options-init.php:267
+msgid "Hover Text Color"
+msgstr ""
+
+#: lib/options-init.php:280
+msgid "Links"
+msgstr ""
+
+#: lib/options-init.php:287
+msgid "Links Color"
+msgstr ""
+
+#: lib/options-init.php:288
+msgid "Select Buttons global links color"
+msgstr ""
+
+#: lib/options-init.php:300
+msgid "Fonts"
+msgstr ""
+
+#: lib/options-init.php:307
+msgid "Body font"
+msgstr ""
+
+#: lib/options-init.php:319
+msgid "Post Title"
+msgstr ""
+
+#: lib/options-init.php:347
+msgid "Hero Title"
+msgstr ""
+
+#: lib/options-init.php:359
+msgid "Widget Title"
+msgstr ""
+
+#: lib/options-init.php:371
+msgid "Category link"
+msgstr ""
+
+#: lib/options-init.php:388
+msgid "Home Page"
+msgstr ""
+
+#: lib/options-init.php:390
+msgid "Home Page layout settings"
+msgstr ""
+
+#: lib/options-init.php:399
+msgid ""
+"The section will not be shown if it is added to the column Disabled or shown "
+"in the settings Hero (Hero Slider Inside)"
+msgstr ""
+
+#: lib/options-init.php:405
+msgid "Organize how you want the layout to appear on the homepage."
+msgstr ""
+
+#: lib/options-init.php:421
+msgid "Homepage Template"
+msgstr ""
+
+#: lib/options-init.php:422
+msgid "Select the template for displaying Posts."
+msgstr ""
+
+#: lib/options-init.php:436
+msgid "Sidebar Position"
+msgstr ""
+
+#: lib/options-init.php:437
+msgid "Select the sidebar position (only in Classic Template)"
+msgstr ""
+
+#: lib/options-init.php:442
+msgid "Sidebar Right"
+msgstr ""
+
+#: lib/options-init.php:446
+msgid "Sidebar Left"
+msgstr ""
+
+#: lib/options-init.php:450
+msgid "Without Sidebar"
+msgstr ""
+
+#: lib/options-init.php:467
+msgid "Topbar"
+msgstr ""
+
+#: lib/options-init.php:475
+msgid "Topbar background color"
+msgstr ""
+
+#: lib/options-init.php:484
+msgid "Invert Text"
+msgstr ""
+
+#: lib/options-init.php:485
+msgid "Topbar invert text"
+msgstr ""
+
+#: lib/options-init.php:498 lib/options-init.php:651 lib/options-init.php:731
+msgid "Fullwidth"
+msgstr ""
+
+#: lib/options-init.php:499
+msgid "Topbar fullwidth"
+msgstr ""
+
+#: lib/options-init.php:505
+msgid "Sticky Topbar"
+msgstr ""
+
+#: lib/options-init.php:506
+msgid "Select the display type for the Sticky Topbar"
+msgstr ""
+
+#: lib/options-init.php:522
+msgid "Hero"
+msgstr ""
+
+#: lib/options-init.php:523
+msgid "Homepage Hero settings."
+msgstr ""
+
+#: lib/options-init.php:532
+msgid "Hero Picture"
+msgstr ""
+
+#: lib/options-init.php:541
+msgid "Welcome"
+msgstr ""
+
+#: lib/options-init.php:547
+msgid "Hero description text"
+msgstr ""
+
+#: lib/options-init.php:553
+msgid "Divider Color"
+msgstr ""
+
+#: lib/options-init.php:554
+msgid "Divider color on the home page Hero"
+msgstr ""
+
+#: lib/options-init.php:560
+msgid "Extra button"
+msgstr ""
+
+#: lib/options-init.php:561
+msgid "Extra Button text"
+msgstr ""
+
+#: lib/options-init.php:562
+msgid "BUY THEME"
+msgstr ""
+
+#: lib/options-init.php:567
+msgid "Extra Button url"
+msgstr ""
+
+#: lib/options-init.php:574
+msgid "Hero Background Image"
+msgstr ""
+
+#: lib/options-init.php:577
+msgid "Upload any media using uploader"
+msgstr ""
+
+#: lib/options-init.php:583
+msgid "Hero Background Color"
+msgstr ""
+
+#: lib/options-init.php:593
+msgid "Inverse Text"
+msgstr ""
+
+#: lib/options-init.php:618
+msgid "Sliders"
+msgstr ""
+
+#: lib/options-init.php:628 lib/options-init.php:899 lib/options-init.php:942
+msgid "More color settings"
+msgstr ""
+
+#: lib/options-init.php:629 lib/options-init.php:900 lib/options-init.php:943
+msgid "You can change Link and Title color in ( Global / Links ) "
+msgstr ""
+
+#: lib/options-init.php:634
+msgid "Best Slider"
+msgstr ""
+
+#: lib/options-init.php:635
+msgid ""
+"Best slider shows only the Best posts. To mark post as Best see in the edit "
+"post "
+msgstr ""
+
+#: lib/options-init.php:641 lib/options-init.php:699 lib/options-init.php:798
+msgid "Items"
+msgstr ""
+
+#: lib/options-init.php:642 lib/options-init.php:700
+msgid "Number of items. "
+msgstr ""
+
+#: lib/options-init.php:652 lib/options-init.php:732
+msgid "Slider fullwidth"
+msgstr ""
+
+#: lib/options-init.php:658 lib/options-init.php:738
+msgid "Autoplay"
+msgstr ""
+
+#: lib/options-init.php:670
+msgid "Featured Slider"
+msgstr ""
+
+#: lib/options-init.php:671 lib/options-init.php:834 lib/options-init.php:856
+msgid "Featured Slider shows the latest posts in the current category"
+msgstr ""
+
+#: lib/options-init.php:709
+msgid "Columns"
+msgstr ""
+
+#: lib/options-init.php:710
+msgid "Number of columns "
+msgstr ""
+
+#: lib/options-init.php:724
+msgid "Padding"
+msgstr ""
+
+#: lib/options-init.php:725
+msgid "Padding between columns"
+msgstr ""
+
+#: lib/options-init.php:753
+msgid "Posts"
+msgstr ""
+
+#: lib/options-init.php:760
+msgid "Post Label Background Color"
+msgstr ""
+
+#: lib/options-init.php:761
+msgid "Pick a color for the Post Label"
+msgstr ""
+
+#: lib/options-init.php:768
+msgid "Quote"
+msgstr ""
+
+#: lib/options-init.php:769
+msgid "Quote Post Format settings"
+msgstr ""
+
+#: lib/options-init.php:775
+msgid "Quote Background Color"
+msgstr ""
+
+#: lib/options-init.php:776 lib/options-init.php:784
+msgid "Pick a color for the Quote post format"
+msgstr ""
+
+#: lib/options-init.php:783
+msgid "Quote Text Color"
+msgstr ""
+
+#: lib/options-init.php:791
+msgid "News Section"
+msgstr ""
+
+#: lib/options-init.php:792
+msgid "Recent posts of category displayed under each article"
+msgstr ""
+
+#: lib/options-init.php:799
+msgid "The number of items"
+msgstr ""
+
+#: lib/options-init.php:800
+msgid "0 items will be removed section"
+msgstr ""
+
+#: lib/options-init.php:809
+msgid "News type"
+msgstr ""
+
+#: lib/options-init.php:810
+msgid "Select type Section of News"
+msgstr ""
+
+#: lib/options-init.php:824
+msgid "Archives & Categories"
+msgstr ""
+
+#: lib/options-init.php:827
+msgid "Archives and Categories settings"
+msgstr ""
+
+#: lib/options-init.php:833
+msgid "Categories"
+msgstr ""
+
+#: lib/options-init.php:840
+msgid "Categories Template"
+msgstr ""
+
+#: lib/options-init.php:841
+msgid "Select the template for displaying Categories."
+msgstr ""
+
+#: lib/options-init.php:844 lib/options-init.php:866
+msgid "Rows"
+msgstr ""
+
+#: lib/options-init.php:845 lib/options-init.php:867
+msgid "Classic"
+msgstr ""
+
+#: lib/options-init.php:846 lib/options-init.php:868
+msgid "1-Column"
+msgstr ""
+
+#: lib/options-init.php:847 lib/options-init.php:869
+msgid "2-Columns Grid"
+msgstr ""
+
+#: lib/options-init.php:848 lib/options-init.php:870
+msgid "3-Columns Grid"
+msgstr ""
+
+#: lib/options-init.php:862
+msgid "Archives Template"
+msgstr ""
+
+#: lib/options-init.php:863
+msgid "Select the template for displaying Archives."
+msgstr ""
+
+#: lib/options-init.php:890
+msgid "Sidebar Inverse Text"
+msgstr ""
+
+#: lib/options-init.php:891
+msgid "Inverse text for the sidebar widgets."
+msgstr ""
+
+#: lib/options-init.php:910
+msgid "Footer"
+msgstr ""
+
+#: lib/options-init.php:918
+msgid "Footer Text Color"
+msgstr ""
+
+#: lib/options-init.php:925
+msgid "Footer Link Color"
+msgstr ""
+
+#: lib/options-init.php:932
+msgid "Footer Background Color"
+msgstr ""
+
+#: lib/options-init.php:933
+msgid "Pick a background color for the Footer"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:333
+msgid "Install Required Plugins"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:334
+msgid "Install Plugins"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:335
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:336
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:338
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:343
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:348
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %1$s "
+"plugin."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to install the %1$s "
+"plugins."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:353
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:358
+#, php-format
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:363
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %1$s plugin."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to update the %1$s "
+"plugins."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:368
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:373
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:378
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %1$s "
+"plugin."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to activate the %1$s "
+"plugins."
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:383
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:388
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:393
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:397
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:398
+msgid "Return to the dashboard"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:399
+#: lib/tgm/class-tgm-plugin-activation.php:3029
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:400
+#: lib/tgm/class-tgm-plugin-activation.php:2832
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:401
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:402
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:403
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:404
+msgid "Dismiss this notice"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:405
+msgid "Please contact the administrator of this site for help."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:520
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:521
+msgid "Update Required"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:635
+msgid "Set the parent_slug config variable instead."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:828
+#: lib/tgm/class-tgm-plugin-activation.php:3438
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:935
+msgid ""
+"The remote plugin package does not contain a folder with the desired slug "
+"and renaming did not work."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:935
+#: lib/tgm/class-tgm-plugin-activation.php:938
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:938
+msgid ""
+"The remote plugin package consists of more than one file, but the files are "
+"not packaged in a folder."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:1116
+#: lib/tgm/class-tgm-plugin-activation.php:2828
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:1881
+#, php-format
+msgctxt "%s = version number"
+msgid "TGMPA v%s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2167
+msgid "Required"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2170
+msgid "Recommended"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2186
+msgid "WordPress Repository"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2189
+msgid "External Source"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2192
+msgid "Pre-Packaged"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2209
+msgid "Not Installed"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2213
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2215
+msgid "Active"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2221
+msgid "Required Update not Available"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2224
+msgid "Requires Update"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2227
+msgid "Update recommended"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2235
+#, php-format
+msgctxt "%1$s = install status, %2$s = update status"
+msgid "%1$s, %2$s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2280
+#, php-format
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2283
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2286
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2289
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2371
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2379
+msgid "Installed version:"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2387
+msgid "Minimum required version:"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2399
+msgid "Available version:"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2422
+#, php-format
+msgid ""
+"No plugins to install, update or activate. <a href=\"%1$s\">Return to the "
+"Dashboard</a>"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2436
+msgid "Plugin"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2437
+msgid "Source"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2438
+msgid "Type"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2442
+msgid "Version"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2443
+msgid "Status"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2491
+#, php-format
+msgctxt "%2$s = plugin name in screen reader markup"
+msgid "Install %2$s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2495
+#, php-format
+msgctxt "%2$s = plugin name in screen reader markup"
+msgid "Update %2$s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2500
+#, php-format
+msgctxt "%2$s = plugin name in screen reader markup"
+msgid "Activate %2$s"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2570
+msgid "Upgrade message from the plugin author:"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2603
+msgid "Install"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2609
+msgid "Update"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2612
+msgid "Activate"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2643
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2645
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2681
+msgid "No plugins are available to be installed at this time."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2683
+msgid "No plugins are available to be updated at this time."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2788
+msgid "No plugins were selected to be activated. No action taken."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:2814
+msgid "No plugins are available to be activated at this time."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3028
+msgid "Plugin activation failed."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3362
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3364
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3365
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3369
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3370
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3370
+#: lib/tgm/class-tgm-plugin-activation.php:3376
+msgid "Show Details"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3370
+#: lib/tgm/class-tgm-plugin-activation.php:3376
+msgid "Hide Details"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3371
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3372
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3375
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3376
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3377
+msgid "All installations have been completed."
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:3378
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: parts/section-hero.php:83
+#, php-format
+msgid ""
+"<h2 class=\"archive__name\">Search Results</h2><h1 class=\"search__title\">"
+"%s</h1>"
+msgstr ""
+
+#: parts/section-hero.php:98
+msgid "Oops! That page can&rsquo;t be found."
+msgstr ""
+
+#: searchform.php:15
+msgid "Search for:"
+msgstr ""
+
+#. Theme Name of the plugin/theme
+msgid "Bourbon"
+msgstr ""
+
+#. Theme URI of the plugin/theme
+msgid "http://bourbon.burocrate.com/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Bourbon — Blog Wordpress Responsive Theme"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "burocrate"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://buroctrate.com"
+msgstr ""

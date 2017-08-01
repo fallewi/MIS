@@ -1,0 +1,75 @@
+<?php
+$quote = $this->getCartItems();
+$_quote = $this->getQuote();
+$items = $_quote->getAllItems();
+$shippingMethod = $_quote->getShippingAddress();
+?>
+
+<table class="items" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+    <tr>
+        <th class="cell-name"><?php if(count($items) > 1): ?>
+                <?php echo $this->__('Items in quote'); ?>
+            <?php else: ?>
+                <?php echo $this->__('Item in quote'); ?>
+            <?php endif; ?></th>
+        <th class="cell-name align-center"><?php echo $this->__('Qty') ?></th>
+        <th class="cell-name align-center"><?php echo $this->__('Price') ?></th>
+    </tr>
+    </thead>
+    <!--    <tbody align="center">-->
+    <?php $i=0; foreach($items as $item): ?>
+        <tbody<?php echo $i%2 ? ' bgcolor="#F6F6F6"' : '' ?>>
+        <?php if($item->getParentItemId() == null): ?>
+            <?php $product = $item->getProduct(); ?>
+            <?php $options = $product->getTypeInstance(true)->getOrderOptions($item->getProduct());?>
+            <tr>
+                <td class="cell-content product-info">
+                    <p class="product-name"><?php echo $this->escapeHtml($item->getProduct()->getName()); ?></p>
+                    <p class="sku"> <?php echo $this->__('SKU'); ?>:<?php echo $this->escapeHtml($item->getProduct()->getSku()); ?></p>
+                    <?php if(isset($options['attributes_info'])): ?>
+                    <dl style="margin:0; padding:0;">
+                        <?php foreach($options['attributes_info'] AS $attribute): ?>
+                            <dt><strong><em><?php echo $this->escapeHtml($attribute['label'] . ':'); ?></em></strong></dt>
+                            <dd style="margin:0; padding:0 0 0 9px;"><?php echo $this->escapeHtml($attribute['value']); ?></dd>
+                        <?php endforeach; ?>
+                    </dl>
+                    <?php endif; ?>
+                </td>
+                <td class="cell-content align-center"><?php echo $this->escapeHtml($item->getQty()); ?></td>
+                <td class="cell-content align-right"><?php echo Mage::helper('core')->currency($item->getQty() * $item->getProduct()->getPrice(), true, false); ?></td>
+            </tr>
+        <?php endif;?>
+    <?php endforeach ?>
+        </tbody>
+    <?php $totals = $_quote->getTotals();?>
+    <tfoot>
+    <tr>
+        <td colspan="2" align="right" style="padding:3px 9px"><?php echo Mage::helper('sales')->__('Subtotal') ?></td>
+        <td align="right" style="padding:3px 9px"><?php echo $this->getPriceFormatted($_quote->getSubtotal()) ?></td>
+    </tr>
+    <?php if (!empty($totals['discount'])): ?>
+        <tr>
+            <td colspan="2" align="right" style="padding:3px 9px"><?php echo Mage::helper('sales')->__('Discount') ?></td>
+            <td align="right" style="padding:3px 9px"><?php echo $this->getPriceFormatted($totals['discount']->getData('value')) ?></td>
+        </tr>
+    <?php endif; ?>
+    <?php if (!empty($totals['shipping'])): ?>
+        <tr>
+            <td colspan="2" align="right" style="padding:3px 9px"><?php echo Mage::helper('sales')->__('Shipping Amount') ?></td>
+            <td align="right" style="padding:3px 9px"><?php echo $this->getPriceFormatted($totals['shipping']->getData('value')); ?></td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($_quote->getShippingAddress()->getTaxAmount()): ?>
+        <tr>
+            <td colspan="2" align="right" style="padding:3px 9px"><?php echo Mage::helper('sales')->__('Tax Amount') ?></td>
+            <td align="right" style="padding:3px 9px"><?php echo $this->getPriceFormatted($_quote->getShippingAddress()->getTaxAmount()) ?></td>
+        </tr>
+    <?php endif; ?>
+    <tr bgcolor="#DEE5E8">
+        <td colspan="2" align="right" style="padding:3px 9px"><strong><big><?php echo Mage::helper('sales')->__('Grand Total') ?></big></strong></td>
+        <td align="right" style="padding:6px 9px"><strong><big><?php echo $this->getPriceFormatted($_quote->getGrandTotal()) ?></big></strong></td>
+    </tr>
+    </tfoot>
+</table>
+

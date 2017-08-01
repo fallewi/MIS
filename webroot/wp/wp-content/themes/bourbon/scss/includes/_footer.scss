@@ -1,0 +1,110 @@
+/**
+* Footer
+*/
+
+.footer {
+  background-color: $black9;
+  margin-top: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  color: white;
+  @include breakpoint(small) {
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+  }
+}
+
+.footer__site-info {
+  margin-top: 60px;
+  padding: 30px 20px;
+  font-size: ms(-1);
+  background-color: black;
+  a {
+    color: $white6;
+    border-bottom: 1px dotted $white2;
+  }
+}
+
+.footer-widget,
+.inverse-widget .widget:not(.footer-widget) {
+  padding-left: 0;
+  color: $white6;
+  a {color: $color-links;}
+  .widget__title,
+  caption,
+  table tr th,
+  p,
+  a i,
+  li,
+  .recentcomments {
+    color: $white6;
+  }
+  .widget__social__link {
+    border: 0;
+  }
+  ul li {
+    // border-color: $white2;
+  }
+  &.widget_bourbon_instagram_widget {
+    background-color: transparent;
+  }
+  &.widget_tag_cloud {
+    a {
+      background: transparentize($color-button, .8);
+      border: none;
+      &:hover {
+        background-color: transparentize($color-button, .7);
+      }
+    }
+  }
+  .pp__date, .post-date {
+    color: $white4;
+  }
+  .pp__author {
+    display: none;
+  }
+  abbr {
+    border-bottom: 0;
+    color: inherit;
+  }
+
+  .widget__title,
+  .widgettitle,
+  .widget-title, caption {
+    &:after {
+      background-color: transparentize($color-button, .9);
+    }
+  }
+
+  #searchinput {
+    border: none;
+    color: white;
+    padding-left: 20px;
+    background-color: transparentize($color-button, .8);
+    &:hover {
+      background-color: transparentize($color-button, .7);
+    }
+    &:focus {
+      background-color: white;
+      border-right-color: transparent;
+      color: black;
+    }
+  }
+  #searchsubmit {
+    background-color: transparentize($color-button, .8);
+    background-size: 1.7em;
+    border-left: 0;
+    &:hover {
+      background-color: transparentize($color-button, .7);
+    }
+    .fa {
+      color: $color-links;
+    }
+  }
+  select {
+    transition: $trans;
+    background-color:  transparentize($color-button, .8);
+    &:hover { background-color: transparentize($color-button, .7);}
+  }
+}

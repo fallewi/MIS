@@ -1,0 +1,88 @@
+/**
+* Hero
+*/
+
+.page__hero {
+  padding-top: 12rem;
+  padding-bottom: 12rem;
+  background-size: cover;
+  position: relative;
+  // margin-bottom: 30px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.page__fill {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+.page__header {
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+    @include breakpoint(small) {
+    width: 100%;
+    }
+}
+
+
+.page__title, .page-title {
+  font-family: $font-content;
+  font-size: ms(4);
+  @include breakpoint(small) {
+    font-size: ms(0);
+  }
+  letter-spacing: .4rem;
+  margin-right: -.4rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  position: relative;
+  display: block;
+  color: inherit;
+}
+
+.page__description, p.woocommerce-result-count {
+  color: $black6;
+  font-size: ms(-1);
+  animation: page__description 1.8s 1 ease-in;
+}
+
+@keyframes page__title {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes page__description {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  35% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
