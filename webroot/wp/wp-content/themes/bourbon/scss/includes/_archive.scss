@@ -1,0 +1,36 @@
+/**
+ * Archive
+ */
+.archive__hero {
+  @extend .category__hero;
+}
+
+.archive__header {
+  text-align: center;
+}
+
+.archive__name {
+  font-size: ms(1);
+  font-family: $font-script;
+  font-style: italic;
+  color: $color-links;
+  margin-bottom: 1rem;
+}
+
+.archive__title {
+  font-family: $font-menu;
+  font-size: ms(4);
+  letter-spacing: .4rem;
+  margin-right: -.4rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+  animation: page__title 1.8s 1 ease-in;
+}
+
+.archive__description {
+    margin-bottom: 60px;
+    color: $black6;
+}

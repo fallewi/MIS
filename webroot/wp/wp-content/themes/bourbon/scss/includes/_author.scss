@@ -1,0 +1,45 @@
+/**
+Author Block
+**/
+.section-author {
+
+}
+
+.author__wrap {
+  padding-bottom: 4rem;
+  border-bottom: 8px solid $color-button;
+  // border-top: 8px solid $color-button;
+  // background-color: transparentize($color-button, .5);
+}
+
+.author__avatar {
+  display: inline-block;
+  margin-right: 20px;
+
+  img {
+    border-radius: 30px;
+  }
+}
+
+.author__name {
+  display: inline-block;
+  color: $color-links;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-weight: normal;
+  font-size: ms(-1);
+  // Browser bug?
+  margin-left: -4px;
+}
+
+.author__description {
+  color: inherit;
+  font-weight: 300;
+  margin-left: 80px;
+  padding-right: 80px;
+  font-style: italic;
+  font-size: ms(-1);
+  @include breakpoint(small) {
+    padding-right: 0;
+  }
+}

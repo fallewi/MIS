@@ -1,0 +1,285 @@
+/**
+ * Section Best
+ */
+.section__best {
+  background-color: $color-back;
+}
+
+.best__table {
+  height: 800px;
+  @include breakpoint(small) {
+    height: 600px;
+  }
+  display: table;
+  .best__table--cell {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+.best__wrap
+{
+    text-align: center;
+    padding: 50px 10% 50px;
+    color:inherit;
+    margin: 0 auto;
+}
+
+.best
+{
+  position: relative;
+  color: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  cursor: grab;
+  a {color: inherit;}
+}
+
+
+.best__color
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 10px solid black;
+}
+
+// Header
+.best__header
+{
+    margin-bottom: 2rem;
+}
+
+.best__category
+{
+    font-family: $font-menu;
+    font-size: ms(-2);
+    line-height: .7;
+    letter-spacing: .4rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      height: 2px;
+      width: 2px;
+      display: block;
+      background-color: $white4;
+      border-radius: 50%;
+      top: 4px;
+    }
+    &::after {
+      left: -1rem;
+    }
+    &::before {
+      right: -.6rem;
+    }
+    @include breakpoint(small) {
+      font-size: ms(-4);
+      letter-spacing: .2rem;
+      &::after, &::before {
+        display: none;
+      }
+    }
+}
+
+// Title
+.best__title
+{
+  margin-bottom: 2rem;
+  letter-spacing: .07rem;
+  color: inherit;
+  // line-height: 1.15;
+  font-size: ms(11);
+  @media only screen and (max-width: 40em) {
+    font-size: ms(4);
+  }
+  font-weight: bold;
+  color: $color-links;
+}
+
+.best__line {
+    height: .1rem;
+    // border-radius: 50%;
+    // background-color: transparentize($gold, .8);
+    margin: 1rem auto;
+    width: 8rem;
+}
+
+// Content
+.best__content p
+{
+  font-size: ms(1);
+  @media only screen and (max-width: 40em) {
+    font-size: ms(-1);
+  }
+  font-weight: 400;
+  margin-bottom: 80px;
+  color: $white6;
+}
+
+// Footer
+.best__footer
+{
+    font-family: $font-script;
+    font-size: ms(-1);
+    font-style: italic;
+    color: $white4;
+    @include breakpoint(small) {
+      display: none;
+    }
+}
+
+.best__posted_on
+{
+    display: inline-block;
+        // margin-right: 20px;
+    a {
+      color: inherit;
+    }
+}
+
+.best__comments {
+    display: inline-block;
+    .comments-link a {
+    margin-left: 1rem;
+      color: inherit;
+      &:hover { color: $color-links-hover;}
+    }
+}
+
+
+// Slick
+//
+//
+.best__fullwidth {
+  .best__slick_next {
+    top: 50%;
+    right: 10px;
+    margin-top: -10px;
+    &:after {
+        display: block;
+        margin-left: 6px;
+        width: 11px;
+        height: 20px;
+        content: '';
+        cursor: pointer;
+        background: url('data:image/svg+xml;utf8,<svg width=\'11px\' height=\'20px\' viewBox=\'0 0 11 20\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xmlns:sketch=\'http://www.bohemiancoding.com/sketch/ns\'> <g id=\'Page-1\' stroke=\'none\' stroke-width=\'1\' fill=\'none\' fill-rule=\'evenodd\' sketch:type=\'MSPage\'> <path d=\'M9.60856228,10.3156691 L1.14644661,1.85355339 L0.792893219,1.5 L1.5,0.792893219 L1.85355339,1.14644661 L10.4848915,9.77778473 L10.8384449,10.1313381 L10.654114,10.3156691 L10.8384449,10.5 L10.4848915,10.8535534 L1.85355339,19.4848915 L1.5,19.8384449 L0.792893219,19.1313381 L1.14644661,18.7777847 L9.60856228,10.3156691 Z\' id=\'right\' fill=\'#ffffff\' sketch:type=\'MSShapeGroup\'></path> </g> </svg>');
+    }
+  }
+  .best__slick_prev {
+    top: 50%;
+    left: 10px;
+    margin-top: -10px;
+    &:after {
+        margin-left: 3px;
+        display: block;
+        width: 11px;
+        height: 20px;
+        content: '';
+        background: url('data:image/svg+xml;utf8,<svg width=\'11px\' height=\'20px\' viewBox=\'0 0 11 20\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xmlns:sketch=\'http://www.bohemiancoding.com/sketch/ns\'> <g id=\'Page-1\' stroke=\'none\' stroke-width=\'1\' fill=\'none\' fill-rule=\'evenodd\' sketch:type=\'MSPage\'> <path d=\'M9.60856228,10.3156691 L1.14644661,1.85355339 L0.792893219,1.5 L1.5,0.792893219 L1.85355339,1.14644661 L10.4848915,9.77778473 L10.8384449,10.1313381 L10.654114,10.3156691 L10.8384449,10.5 L10.4848915,10.8535534 L1.85355339,19.4848915 L1.5,19.8384449 L0.792893219,19.1313381 L1.14644661,18.7777847 L9.60856228,10.3156691 Z\' id=\'left\' fill=\'#ffffff\' sketch:type=\'MSShapeGroup\' transform=\'translate(5.815669, 10.315669) rotate(-180.000000) translate(-5.815669, -10.315669) \'></path> </g> </svg>');
+    }
+  }
+}
+.best__slick_next, .best__slick_prev
+{
+    position: absolute;
+    display: inline-block;
+}
+
+.best__slick_prev
+{
+  top: 50%;
+  left: 10px;
+  margin-top: -10px;
+  &:after {
+    display: block;
+    content: '';
+    width: 50px;
+    height: 20px;
+    cursor: pointer;
+    background-image: url('data:image/svg+xml;utf8,<svg width=\'11px\' height=\'20px\' viewBox=\'0 0 11 20\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xmlns:sketch=\'http://www.bohemiancoding.com/sketch/ns\'> <g id=\'Page-1\' stroke=\'none\' stroke-width=\'1\' fill=\'none\' fill-rule=\'evenodd\' sketch:type=\'MSPage\'> <path d=\'M9.60856228,10.3156691 L1.14644661,1.85355339 L0.792893219,1.5 L1.5,0.792893219 L1.85355339,1.14644661 L10.4848915,9.77778473 L10.8384449,10.1313381 L10.654114,10.3156691 L10.8384449,10.5 L10.4848915,10.8535534 L1.85355339,19.4848915 L1.5,19.8384449 L0.792893219,19.1313381 L1.14644661,18.7777847 L9.60856228,10.3156691 Z\' id=\'left\' fill=\'#a38560\' sketch:type=\'MSShapeGroup\' transform=\'translate(5.815669, 10.315669) rotate(-180.000000) translate(-5.815669, -10.315669) \'></path> </g> </svg>');
+    background-repeat: no-repeat;
+    background-position: left;
+    // content: 'previous';
+    // padding-left: 20px;
+    // color: transparentize($color-links, .5);
+    // transition: $trans;
+    // text-transform: uppercase;
+    // font-weight: normal;
+    // letter-spacing: .1rem;
+    // font-size: .5rem;
+    // line-height: 20px;
+  }
+}
+
+.best__slick_next
+{
+    top: 50%;
+    right: 10px;
+    margin-top: -10px;
+    &:after {
+      display: block;
+      content: '';
+      width: 50px;
+      height: 20px;
+      cursor: pointer;
+      background-image: url('data:image/svg+xml;utf8,<svg width=\'11px\' height=\'20px\' viewBox=\'0 0 11 20\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xmlns:sketch=\'http://www.bohemiancoding.com/sketch/ns\'> <g id=\'Page-1\' stroke=\'none\' stroke-width=\'1\' fill=\'none\' fill-rule=\'evenodd\' sketch:type=\'MSPage\'> <path d=\'M9.60856228,10.3156691 L1.14644661,1.85355339 L0.792893219,1.5 L1.5,0.792893219 L1.85355339,1.14644661 L10.4848915,9.77778473 L10.8384449,10.1313381 L10.654114,10.3156691 L10.8384449,10.5 L10.4848915,10.8535534 L1.85355339,19.4848915 L1.5,19.8384449 L0.792893219,19.1313381 L1.14644661,18.7777847 L9.60856228,10.3156691 Z\' id=\'right\' fill=\'#a38560\' sketch:type=\'MSShapeGroup\'></path> </g> </svg>');
+      background-repeat: no-repeat;
+      background-position: right;
+    }
+}
+
+#slick-best {
+  .best__slick_prev:after, .best__slick_next:after {
+    opacity: .1;
+    transition: opacity .5s ease-in-out;
+  }
+  &:hover {
+    .best__slick_prev:after, .best__slick_next:after {
+      opacity: 1;
+    }
+  }
+}
+
+.slick-dots {
+  margin: 0;
+    position: absolute;
+    bottom: 1.5rem;
+    display: block;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    li {
+        position: relative;
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        margin: 0 5px;
+        padding: 0;
+        cursor: pointer;
+        button {
+            font-size: 0;
+            line-height: 0;
+            display: block;
+            width: 5px;
+            height: 5px;
+            padding: 2px;
+            cursor: pointer;
+            color: transparent;
+            border-radius: 50%;
+            outline: none;
+            background: rgba(140, 140, 140, 0.15);
+        }
+    }
+    li.slick-active button {
+      background-color: rgba(240, 240, 240, 0.15);
+    }
+}

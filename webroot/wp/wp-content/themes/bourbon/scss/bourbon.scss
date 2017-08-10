@@ -1,0 +1,137 @@
+@import "../bower_components/modular-scale/stylesheets/modular-scale";
+$ms-base: 1rem;
+$ms-ratio: 1.125;
+
+@import "includes/variables";
+@import "includes/fonts";
+@import "includes/top-bar";
+@import "includes/gallery";
+@import "includes/hero";
+@import "includes/best";
+@import "includes/recent";
+@import "includes/featured";
+@import "includes/sections";
+@import "includes/news";
+@import "includes/rows";
+@import "includes/archive";
+@import "includes/page";
+@import "includes/search";
+@import "includes/category";
+@import "includes/banner";
+@import "includes/thumbnail";
+@import "includes/article";
+@import "includes/grid";
+@import "includes/buttons";
+@import "includes/widget";
+@import "includes/footer";
+@import "includes/comments";
+@import "includes/vcard";
+@import "includes/author";
+@import "includes/bbpress";
+
+
+
+* {outline: none;}
+
+body {
+  background: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+figure {
+  margin: 0;
+}
+a {
+  color: $black8;
+  border-bottom: 1px solid transparent;
+  transition: $trans;
+  &:hover, &:focus {
+    border-bottom: 1px solid transparentize($gold, .8);
+    color: $color-links-hover;
+  }
+
+}
+
+h1,h2,h3,h4,h5,h6 {
+  color: $header-color;
+}
+
+h1 {
+  font-size: ms(9);
+  @include breakpoint(small) {
+    font-size: ms(4);
+  }
+}
+h2 {
+  font-size: ms(6);
+  @include breakpoint(small) {
+    font-size: ms(2);
+  }
+}
+h3 {
+  font-size: ms(5);
+  @include breakpoint(small) {
+    font-size: ms(1);
+  }
+}
+h4 {
+  font-size: ms(4);
+  @include breakpoint(small) {
+    font-size: ms(1);
+  }
+}
+h5 {
+  font-size: ms(3);
+  @include breakpoint(small) {
+    font-size: ms(1);
+  }
+}
+
+
+code {
+  border-style:none;
+}
+table {
+  text-align: left;
+}
+blockquote {
+  padding: 0 2rem;
+   @media only screen and (max-width: 40em) {
+    padding-right: 0;
+    padding-left: 1rem;
+    margin-left: 0;
+   }
+    border-left: 1px solid $color-links;
+  p {
+    color:$black8;
+    // font-family: $font-title;
+    font-size: ms(1);
+    font-weight: 500;
+  }
+}
+p, label, p em {
+  font-size: ms(0);
+  font-weight: 300;
+  a, .logged-in-as {
+    color: $color-links;
+  }
+}
+code {
+  color: $black6;
+}
+.required {
+  color: $gold;
+}
+.flex-video {
+  margin-bottom: 0;
+}
+
+//Masonry
+.masonry-item {
+  float: left;
+}
+
+.fa-comment-o {
+  padding-left: 1px;
+  font-size: ms(-3);
+}
