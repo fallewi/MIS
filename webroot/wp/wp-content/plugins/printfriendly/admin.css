@@ -15,7 +15,7 @@ h3.hndle {
   padding: 7px 5px;
 }
 
-#buttongroup1, #buttongroup2, #buttongroup3, #custom-txt div, #button-positioning div, #button-placement div {
+#buttongroup1, #buttongroup2, #buttongroup3, #button-positioning div, #button-placement div {
   display: block;
   margin-right: 3em;
   float: left;
@@ -25,20 +25,21 @@ h3.hndle {
 }
 
 #custom-button-preview {
-  clear:both;
-  padding-top: 20px;
   margin-left: 2em;
 }
 #custom-button-preview img {
   margin-right: 6px;
 }
-#custom, #placement-adv-options {
+#placement-adv-options {
   float: left;
 }
 
-#custom-txt, #custom-img {
-  margin: 2em 0 2em 2em;
-  clear: both;
+#custom-txt, #custom-img, #custom-button-preview {
+  margin: 0 3em;
+}
+
+#custom-txt>div {
+  margin-bottom: 10px;
 }
 
 .description {
@@ -358,10 +359,40 @@ span.description.pf-help-link {
 	font-style:normal !important 
 }
 
-#custom-txt #txt-enter {
-	margin: 0 0 2em 0;
-}
-
 #margin input[type="number"]{
 	width: 65px;
+}
+
+label.radio-custom-btn {
+  margin-right: 15px;
+}
+
+#custom-btn-group {
+  float: left;
+}
+
+#custom-btn-group b {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#custom-btn-group, h2 {
+  margin-top: 0;
+}
+
+#custom-img h2 {
+  margin-bottom: 0;
+}
+
+#custom-img label, #custom-txt label {
+  margin: 0 0 15px 0;
+}
+
+#txt-color, #txt-size {
+  float: left;
+  margin-right: 20px;
+}
+
+#custom_text {
+  width: 200px;
 }

@@ -5,11 +5,23 @@ Plugin Name: Print, PDF & Email by PrintFriendly
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.8.8
+Version: 3.12.4
 Author: Print, PDF, & Email by PrintFriendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.12.4 - Bug fix, avoid "undefined variable: return"
+3.12.3 - Bug fix, sometimes custom image didn't display correctly after upgrade
+3.12.2 - Add title to Printfriendly button and change button image alt
+3.12.1 - Fix translations
+3.12.0 - Update custom button UI
+3.11.2 - Fix button upgrade for pf-icon-both.gif
+3.11.1 - Bug fix
+3.11.0 - Update buttons
+3.10.0 - Change "leave us a rating" message.
+3.9.2 - Correctly handle spaces in print-only detection
+3.9.1 - Better print-only detection
+3.9.0 - Add new button
 3.8.7 - Bug fix.
 3.8.6 - Allow default image setting to be small medium or large.
 3.8.5 - Bug fix.
@@ -110,7 +122,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Current plugin version.
      * @var string
      */
-    var $plugin_version = '3.8.7';
+    var $plugin_version = '3.12.4';
 
     /**
      * The hook, used for text domain as well as hooks on pages and in get requests for admin.
@@ -134,7 +146,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 12;
+    var $db_version = 16;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -279,8 +291,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     *  @since 3.3.0
     **/
     function print_only_override($content) {
-      $pattern = '/class=[\"]print-only|class=[\']print-only|print-only/';
-      $pf_pattern = '/class=[\"]pf-content|class=[\']pf-content|pf-content/';
+      $pattern = '/class\s*?=\s*?(["\']|["\']([^"\']*?)\s)print-only(["\']|\s([^"\']*?)["\'])/';
+      $pf_pattern = '/class\s*?=\s*?(["\']|["\']([^"\']*?)\s)pf-content(["\']|\s([^"\']*?)["\'])/';
+
       return (preg_match($pattern, $content) || preg_match($pf_pattern, $content)) ;
     }
 
@@ -403,6 +416,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           var pfDisablePDF = '<?php echo esc_js($this->options['pdf']); ?>';
           var pfDisablePrint = '<?php echo esc_js($this->options['print']); ?>';
           var pfCustomCSS = '<?php echo esc_js(esc_url($this->options['custom_css_url'])); ?>';
+          var pfPlatform = 'Wordpress';
       (function() {
             var e = document.createElement('script'); e.type="text/javascript";
             e.src = 'https://cdn.printfriendly.com/printfriendly.js';
@@ -509,7 +523,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         if ( 'none' != $this->options['content_position'] )
           $align = ' pf-align'.$this->options['content_position'];
     $href = str_replace("&", "&amp;", $href );
-        $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.' class="noslimstat">'.$this->button().'</a></div>' );
+        $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.' class="noslimstat" title="Printer Friendly, PDF & Email">'.$this->button().'</a></div>' );
     return $button;
   }
 
@@ -570,32 +584,52 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       $valid_input = $input;
 
-    /* Section 1 options */
+      // Section 1 options
       if ( !isset( $input['button_type'] ) || !in_array( $input['button_type'], array(
-      'pf-button.gif', 'pf-button-both.gif', 'pf-button-big.gif', // buttongroup1
-    'button-print-grnw20.png', 'button-print-blu20.png', 'button-print-gry20.png', // buttongroup2
-    'pf-icon-small.gif', 'pf-icon-both.gif','pf-icon.gif', 'text-only', // buttongroup3
-    'custom-image', // custom
-    'button-print-whgn20.png', 'pf_button_sq_gry_m.png', 'pf_button_sq_gry_l.png', 'pf_button_sq_grn_m.png',
-    'pf_button_sq_grn_l.png', // backward compatibility
-    ) ) )
-        $valid_input['button_type'] = 'pf-button.gif';
+          'buttons/printfriendly-pdf-email-button.png',
+          'buttons/printfriendly-pdf-email-button-md.png',
+          'buttons/printfriendly-pdf-email-button-notext.png', // buttongroup1
+          'buttons/printfriendly-pdf-button.png',
+          'buttons/printfriendly-pdf-button-nobg.png',
+          'buttons/printfriendly-pdf-button-nobg-md.png', // buttongroup2
+          'buttons/printfriendly-button.png',
+          'buttons/printfriendly-button-nobg.png',
+          'buttons/printfriendly-button-md.png',
+          'buttons/printfriendly-button-lg.png', // buttongroup3
+          'buttons/print-button.png',
+          'buttons/print-button-nobg.png',
+          'buttons/print-button-gray.png', // buttongroup3
+          'custom-button' // custom
+        ) ) ) {
+        $valid_input['button_type'] = 'buttons/printfriendly-button.png';
+      }
+
+      if ( !isset( $input['custom_button_icon'] ) || !in_array( $input['custom_button_icon'], array(
+          'https://cdn.printfriendly.com/icons/printfriendly-icon-sm.png',
+          'https://cdn.printfriendly.com/icons/printfriendly-icon-md.png',
+          'https://cdn.printfriendly.com/icons/printfriendly-icon-lg.png',
+          'custom-image',
+          'no-image'
+        ) ) ) {
+        $valid_input['custom_button_icon'] = 'https://cdn.printfriendly.com/icons/printfriendly-icon-md.png';
+      }
 
 // @todo custom image url validation
       if ( !isset( $input['custom_image'] ) || empty( $input['custom_image'] ) )
         $valid_input['custom_image'] = '';
 
+      if ( !isset( $input['custom_button_text'] ) ) {
+        $valid_input['custom_button_text'] = 'custom-text';
+      }
+
 // @todo validate optional custom text
       if ( !isset( $input['custom_text'] ) ) {
-      $valid_input['custom_text'] = 'Print Friendly';
+        $valid_input['custom_text'] = 'Print Friendly';
       }
-/*      else {
-
-      }*/
 
       // Custom button selected, but no url nor text given, reset button type to default
-      if( 'custom-image' === $valid_input['button_type'] && ( '' === $valid_input['custom_image'] && '' === $input['custom_text'] ) ) {
-        $valid_input['button_type'] = 'pf-button.gif';
+      if( 'custom-button' === $valid_input['button_type'] && ( '' === $valid_input['custom_image'] && '' === $input['custom_text'] ) ) {
+        $valid_input['button_type'] = 'buttons/printfriendly-button.png';
         add_settings_error( $this->option_name, 'invalid_custom_image', __( 'No valid custom image url received, please enter a valid url to use a custom image.', $this->hook ) );
       }
 
@@ -831,11 +865,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       try {
         // Set some defaults
         $this->options = array(
-          'button_type' => 'pf-button.gif',
+          'button_type' => 'buttons/printfriendly-button.png',
           'content_position' => 'left',
           'content_placement' => 'after',
-          'custom_image' => 'https://cdn.printfriendly.com/pf-icon.gif',
-          'custom_text' => 'Print Friendly',
+          'custom_button_icon' => 'https://cdn.printfriendly.com/icons/printfriendly-icon-md.png',
+          'custom_button_text' => 'custom-text',
+          'custom_image' => '',
+          'custom_text' => 'PrintFriendly',
           'enable_css' => 'on',
           'margin_top' => '12',
           'margin_right' => '12',
@@ -843,7 +879,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           'margin_left' => '12',
           'show_on_posts' => 'on',
           'show_on_pages' => 'on',
-          'text_color' => '#6D9F00',
+          'text_color' => '#3AAA11',
           'text_size' => 14,
           'logo' => 'favicon',
           'image_url' => '',
@@ -1012,6 +1048,81 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         $this->options['images-size'] = $this->options['hide-images'] == '1' ? 'remove-images' : 'full-size';
       }
 
+      if ($this->options['db_version'] < 13) {
+        switch ($this->options['button_type']) {
+          case 'pf-button.gif':
+            $this->options['button_type'] = 'buttons/printfriendly-button.png';
+            break;
+          case 'pf-button-both.gif':
+            $this->options['button_type'] = 'buttons/printfriendly-pdf-button.png';
+            break;
+          case 'pf-button-big.gif':
+            $this->options['button_type'] = 'buttons/printfriendly-button-lg.png';
+            break;
+          case 'pf-button-print-pdf-mail.png':
+            $this->options['button_type'] = 'buttons/printfriendly-pdf-email-button-notext.png';
+            break;
+          case 'button-print-grnw20.png':
+            $this->options['button_type'] = 'buttons/print-button.png';
+            break;
+          case 'button-print-blu20.png':
+            $this->options['button_type'] = 'buttons/print-button-nobg.png';
+            break;
+          case 'button-print-gry20.png':
+            $this->options['button_type'] = 'buttons/print-button-gray.png';
+            break;
+          case 'pf-icon-small.gif':
+          case 'pf-icon.gif':
+            $this->options['button_type'] = 'custom-button';
+            $this->options['custom_button_icon'] = 'icons/printfriendly-icon-md.png';
+            $this->options['custom_button_text'] = 'custom-text';
+            $this->options['custom_image'] = 'icons/printfriendly-icon-md.png';
+            break;
+          case 'text-only':
+            $this->options['button_type'] = 'custom-button';
+            $this->options['custom_button_icon'] = 'no-image';
+            $this->options['custom_button_text'] = 'custom-text';
+            break;
+        }
+      }
+
+      if ($this->options['db_version'] < 14) {
+        if ($this->options['button_type'] == 'pf-icon-both.gif') {
+          $this->options['button_type'] = 'buttons/printfriendly-pdf-button-nobg.png';
+        }
+      }
+
+      if ($this->options['db_version'] < 15) {
+        if ($this->options['button_type'] == 'custom-image') {
+          $this->options['button_type'] = 'custom-button';
+
+          switch ($this->options['custom_image']) {
+            case 'icons/printfriendly-icon-sm.png':
+            case 'icons/printfriendly-icon-md.png':
+            case 'icons/printfriendly-icon-lg.png':
+              $this->options['custom_button_icon'] = $this->options['custom_image'];
+              break;
+            case '':
+              $this->options['custom_button_icon'] = 'no-image';
+              break;
+            default:
+              $this->options['custom_button_icon'] = 'custom-image';
+          }
+
+          if ($this->options['custom_text'] == '') {
+            $this->options['custom_button_text'] = 'no-text';
+          } else {
+            $this->options['custom_button_text'] = 'custom-text';
+          }
+        }
+      }
+
+      if ($this->options['db_version'] < 16) {
+        if ($this->options['custom_button_icon'] == 'icons/printfriendly-icon-md.png') {
+          $this->options['custom_button_icon'] = 'https://cdn.printfriendly.com/icons/printfriendly-icon-md.png';
+        }
+      }
+
       $this->options['db_version'] = $this->db_version;
 
       update_option( $this->option_name, $this->options );
@@ -1037,6 +1148,21 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     }
 
     /**
+     * Displays radio button in the admin area
+     *
+     * @since 3.12.0
+     * @param string $name the name of the radio button to generate.
+     */
+    function radio_custom_image($value){
+      ?>
+      <label class="radio-custom-btn">
+        <input type="radio" name="<?php echo $this->option_name ?>[custom_button_icon]" value="<?php echo $value ?>" <?php $this->checked( 'custom_button_icon', $value ) ?>>
+        <img src="<?php echo $value ?>" alt="Print Friendly, PDF & Email" style="display: inline" />
+      </label>
+      <?php
+    }
+
+    /**
      * Displays button image in the admin area
      *
      * @since 3.0
@@ -1045,42 +1171,28 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     function button( $name = false ){
       if( !$name )
         $name = $this->options['button_type'];
+
       $button_css  = $this->generic_button_css();
-      /* esc_html was removerd to support custom html, CSRF prevents from attack by using this field */
-      $text = $this->options['custom_text'];
+
       $img_path = 'https://cdn.printfriendly.com/';
 
-      switch($name){
-      case "custom-image":
-        if( '' == trim($this->options['custom_image']) )
-          $return = '';
-        else
-          $return = '<img src="'.esc_url($this->options['custom_image']).'" alt="Print Friendly" />';
+      $return = '';
 
-        $return .= $text;
+      if ($name == "custom-button") {
+        if ($this->options['custom_button_icon'] == 'custom-image' && '' != trim($this->options['custom_image'])) {
+          $return = '<img src="'.esc_url($this->options['custom_image']).'" alt="Print Friendly, PDF & Email" style="display: inline" />';
+        } else if ( $this->options['custom_button_icon'] != 'no-image' ) {
+          $return = '<img src="'.esc_url($this->options['custom_button_icon']).'" alt="Print Friendly, PDF & Email" style="display: inline" />';
+        }
+
+        /* esc_html was removerd to support custom html, CSRF prevents from attack by using this field */
+        if ($this->options['custom_button_text'] == 'custom-text') {
+          $return .= $this->options['custom_text'];
+        }
 
         return $return;
-        break;
-
-      case "text-only":
-        return '<span class="printfriendly-text2">'.$text.'</span>';
-        break;
-
-      case "pf-icon-both.gif":
-        return '<span class="printfriendly-text2 printandpdf"><img style="border:none;margin-right:6px;display:inline-block" src="'.$img_path.'pf-print-icon.gif" width="16" height="15" alt="Print Friendly Version of this page" />Print <img style="'.$button_css.'margin:0 6px;display:inline-block" src="'.$img_path.'pf-pdf-icon.gif" width="12" height="12" alt="Get a PDF version of this webpage" />PDF</span>';
-        break;
-
-      case "pf-icon-small.gif":
-        return '<img style="'.$button_css.'margin-right:4px;display:inline-block" src="'.$img_path.'pf-icon-small.gif" alt="PrintFriendly and PDF" width="18" height="18"><span class="printfriendly-text2">'.$text.'</span>';
-        break;
-
-      case "pf-icon.gif":
-        return '<img style="'.$button_css.'margin-right:6px;display:inline-block" src="'.$img_path.'pf-icon.gif" width="23" height="25" alt="PrintFriendly and PDF"><span class="printfriendly-text2">'.$text.'</span>';
-        break;
-
-      default:
-        return '<img style="'.$button_css.'" src="'.$img_path.$name.'" alt="Print Friendly" />';
-        break;
+      } else {
+        return '<img style="'.$button_css.'" src="'.$img_path.$name.'" alt="Print Friendly, PDF & Email" />';
       }
     }
 
@@ -1100,12 +1212,21 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * @since 3.0.9
      */
     function custom_button_preview() {
-      if( '' == trim($this->options['custom_image']) )
+      if( $this->options['custom_button_icon'] == 'no-image' ) {
         $button_preview = '<span id="pf-custom-button-preview"></span>';
-      else
-        $button_preview = '<span id="pf-custom-button-preview"><img src="'.esc_url($this->options['custom_image']).'" alt="Print Friendly" /></span>';
+      } else if ($this->options['custom_button_icon'] == 'custom-image') {
+        $button_preview = '<span id="pf-custom-button-preview"><img src="'.esc_url($this->options['custom_image']).'" alt="Print Friendly, PDF & Email" /></span>';
+      } else {
+        $button_preview = '<span id="pf-custom-button-preview"><img src="'.esc_url($this->options['custom_button_icon']).'" alt="Print Friendly, PDF & Email" /></span>';
+      }
 
-      $button_preview .= '<span class="printfriendly-text2">'.esc_html($this->options['custom_text']).'</span>';
+      if ($this->options['custom_button_text'] != 'no-text') {
+        $button_text = $this->options['custom_text'];
+      } else {
+        $button_text = '';
+      }
+
+      $button_preview .= '<span class="printfriendly-text2">'.esc_html($button_text).'</span>';
 
       echo $button_preview;
     }
@@ -1273,6 +1394,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         echo '<pre>' . __( 'Options:', $this->hook ) . '<br><br>' . print_r( $this->options, 1 ) . '</pre>';
     }
 ?>
+
+      <style type="text/css">
+        input[type="radio"], img {
+          vertical-align: middle;
+        }
+      </style>
+
       <div id="pf_settings" class="wrap">
 
         <div class="icon32" id="printfriendly"></div>
@@ -1286,53 +1414,88 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
           <fieldset id="button-style">
             <div id="buttongroup1">
-              <?php $this->radio('pf-button.gif'); ?>
-              <?php $this->radio('pf-button-both.gif'); ?>
-              <?php $this->radio('pf-button-big.gif'); ?>
+              <?php $this->radio('buttons/printfriendly-pdf-email-button.png'); ?>
+              <?php $this->radio('buttons/printfriendly-pdf-email-button-md.png'); ?>
+              <?php $this->radio('buttons/printfriendly-pdf-email-button-notext.png'); ?>
             </div>
             <div id="buttongroup2">
-              <?php $this->radio('button-print-grnw20.png'); ?>
-              <?php $this->radio('button-print-blu20.png'); ?>
-              <?php $this->radio('button-print-gry20.png'); ?>
+              <?php $this->radio('buttons/printfriendly-pdf-button.png'); ?>
+              <?php $this->radio('buttons/printfriendly-pdf-button-nobg.png'); ?>
+              <?php $this->radio('buttons/printfriendly-pdf-button-nobg-md.png'); ?>
             </div>
             <div id="buttongroup3">
-              <?php $this->radio('pf-icon-small.gif'); ?>
-              <?php $this->radio('pf-icon-both.gif'); ?>
-              <?php $this->radio('pf-icon.gif'); ?>
-              <?php $this->radio('text-only'); ?>
+              <?php $this->radio('buttons/printfriendly-button.png'); ?>
+              <?php $this->radio('buttons/printfriendly-button-nobg.png'); ?>
+              <?php $this->radio('buttons/printfriendly-button-md.png'); ?>
+              <?php $this->radio('buttons/printfriendly-button-lg.png'); ?>
+            </div>
+            <div id="buttongroup4">
+              <?php $this->radio('buttons/print-button.png'); ?>
+              <?php $this->radio('buttons/print-button-nobg.png'); ?>
+              <?php $this->radio('buttons/print-button-gray.png'); ?>
             </div>
 
-            <div id="custom">
-              <label for="custom-image">
-                <?php echo '<input id="custom-image" class="radio" name="'.$this->option_name.'[button_type]" type="radio" value="custom-image" '.$this->checked( 'button_type', 'custom-image', false ).'/>'; ?>
+            <div id="custom-btn-group" class="clear">
+              <label>
+                <?php echo '<input id="custom-btn" class="radio" name="'.$this->option_name.'[button_type]" type="radio" value="custom-button" '.$this->checked( 'button_type', 'custom-button', false ).'/>'; ?>
                 <?php _e( "Custom Button", $this->hook ); ?>
               </label>
-              <div id="custom-img">
-                <?php _e( "Enter Image URL", $this->hook ); ?><br>
-                <input id="custom_image" type="text" class="clear regular-text" size="30" name="<?php echo $this->option_name; ?>[custom_image]" value="<?php $this->val( 'custom_image' ); ?>" />
-                <div class="description"><?php _e( "Ex: https://www.example.com/<br>Ex: /wp/wp-content/uploads/example.png", $this->hook ); ?>
-                </div>
+
+              <div id="custom-img" style="float: left;">
+                <h2><?php _e( 'Image', $this->hook ); ?></h2><br>
+                <?php $this->radio_custom_image('https://cdn.printfriendly.com/icons/printfriendly-icon-sm.png'); ?>
+                <?php $this->radio_custom_image('https://cdn.printfriendly.com/icons/printfriendly-icon-md.png'); ?>
+                <?php $this->radio_custom_image('https://cdn.printfriendly.com/icons/printfriendly-icon-lg.png'); ?>
+
+                <label class="radio-custom-btn">
+                  <input id="custom-image-rb" type="radio" name="<?php echo $this->option_name ?>[custom_button_icon]" value="custom-image" <?php $this->checked( 'custom_button_icon', 'custom-image'); ?>>
+                  <b><?php _e( 'Use Your Image', $this->hook ); ?></b>
+                  <div id="enter-image-url" style="margin: 10px 0 0 30px">
+                    <?php _e( 'Enter Image URL', $this->hook ); ?><br>
+                    <input id="custom_image" type="text" class="clear regular-text" name="<?php echo $this->option_name; ?>[custom_image]" value="<?php $this->val( 'custom_image' ); ?>" />
+                    <div id="pf-custom-button-error"></div>
+                    <div class="description"><?php _e( "Ex: https://www.example.com/<br>Ex: /wp/wp-content/uploads/example.png", $this->hook ); ?>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="radio-custom-btn">
+                  <input type="radio" name="<?php echo $this->option_name ?>[custom_button_icon]" value="no-image" <?php $this->checked( 'custom_button_icon', 'no-image'); ?>>
+                  <b><?php _e( 'No Image', $this->hook ); ?></b>
+                </label>
               </div>
-              <div id="pf-custom-button-error"></div>
-              <div id="custom-txt" >
+
+              <div id="custom-txt" style="float: left;">
+                <h2><?php _e( 'Text', $this->hook ); ?></h2>
                 <div id="txt-enter">
-                  <?php _e( "Text", $this->hook ); ?><br>
-                  <input type="text" size="30" class="clear regular-text" name="<?php echo $this->option_name; ?>[custom_text]" id="custom_text" value="<?php $this->val( 'custom_text' ); ?>">
+                  <label>
+                    <input id="custom-text-rb" type="radio" name="<?php echo $this->option_name; ?>[custom_button_text]" value="custom-text" <?php $this->checked( 'custom_button_text', 'custom-text'); ?>>
+                    <input type="text" size="10" class="clear regular-text" name="<?php echo $this->option_name; ?>[custom_text]" id="custom_text" value="<?php $this->val( 'custom_text' ); ?>">
+                  </label>
+                  <label>
+                    <input type="radio" name="<?php echo $this->option_name; ?>[custom_button_text]" value="no-text" <?php $this->checked( 'custom_button_text', 'no-text'); ?>>
+                    <b><?php _e( 'No Text', $this->hook ); ?></b>
+                  </label>
                 </div>
-                <div id="txt-color" class="clear">
-                  <?php _e( "Text Color", $this->hook ); ?>
-                  <input type="hidden" name="<?php echo $this->option_name; ?>[text_color]" id="text_color" value="<?php $this->val( 'text_color' ); ?>"/><br>
-                  <div id="colorSelector">
-                    <div style="background-color: <?php echo $this->options['text_color']; ?>;"></div>
+                <div>
+                  <div id="txt-color">
+                    <?php _e( "Text Color", $this->hook ); ?>
+                    <input type="hidden" name="<?php echo $this->option_name; ?>[text_color]" id="text_color" value="<?php $this->val( 'text_color' ); ?>"/><br>
+                    <div id="colorSelector">
+                      <div style="background-color: <?php echo $this->options['text_color']; ?>;"></div>
+                    </div>
+                  </div>
+                  <div id="txt-size">
+                    <?php _e( "Text Size", $this->hook ); ?><br>
+                    <input type="number" id="text_size" min="9" max="25" class="small-text" name="<?php echo $this->option_name; ?>[text_size]" value="<?php $this->val( 'text_size' ); ?>"/>
                   </div>
                 </div>
-                <div id="txt-size">
-                  <?php _e( "Text Size", $this->hook ); ?><br>
-                  <input type="number" id="text_size" min="9" max="25" class="small-text" name="<?php echo $this->option_name; ?>[text_size]" value="<?php $this->val( 'text_size' ); ?>"/>
-                </div>
               </div>
-            <div id="custom-button-preview">
-              <?php $this->custom_button_preview(); ?>
+
+              <div id="custom-button-preview" style="float: left;">
+                <h2><?php _e( 'Preview', $this->hook ); ?></h2>
+                <?php $this->custom_button_preview(); ?>
+              </div>
             </div>
           </fieldset>
           <br class="clear">
@@ -1340,7 +1503,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     <!--Section 2 Button Positioning-->
           <div id="button-positioning">
             <h3><?php _e( "Button Positioning", $this->hook ); ?>
-      <span id="css"><input type="checkbox" name="<?php echo $this->option_name; ?>[enable_css]" value="<?php $this->val('enable_css');?>" <?php $this->checked('enable_css', 'off'); ?> />Do not use CSS for button styles</span>
+      <span id="css"><input type="checkbox" name="<?php echo $this->option_name; ?>[enable_css]" value="<?php $this->val('enable_css');?>" <?php $this->checked('enable_css', 'off'); ?> /><?php _e('Do not use CSS for button styles'); ?></span>
             </h3>
             <div id="button-positioning-options">
               <div id="alignment">
@@ -1421,7 +1584,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         <label for="upload-an-image"><?php _e( "Enter url", $this->hook ); ?></label><input id="upload-an-image" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[image_url]" value="<?php $this->val( 'image_url' ); ?>" />
         <label for="image-tagline"><?php _e( "Text (optional)", $this->hook ); ?></label><input id="image-tagline" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[tagline]" value="<?php $this->val( 'tagline' ); ?>" />
       </div> */ ?>
-            <div class="custom-logo"><label for="Enter_URL">Enter url</label><input id="upload-an-image" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[image_url]" value="<?php $this->val( 'image_url' ); ?>" /><label for="Text__optional_">Text (optional)</label><input id="image-tagline" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[tagline]" value="<?php $this->val( 'tagline' ); ?>" /></div>
+            <div class="custom-logo"><label for="Enter_URL"><?php _e( "Enter url", $this->hook ); ?></label><input id="upload-an-image" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[image_url]" value="<?php $this->val( 'image_url' ); ?>" /><label for="Text__optional_"><?php _e( "Text (optional)", $this->hook ); ?></label><input id="image-tagline" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[tagline]" value="<?php $this->val( 'tagline' ); ?>" /></div>
             <div id="pf-image-error"></div>
             <div id="pf-image-preview"></div>
             <label for="click_to_delete">
@@ -1521,7 +1684,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         <?php
           if (class_exists('WooCommerce')) {
         ?>
-          <span><strong>Not available for woocommerce</strong></span>
+          <span><strong><?php _e( "Not available for woocommerce", $this->hook ); ?></strong></span>
         <?php
         } else {
         ?>
@@ -1540,14 +1703,15 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           <input type="reset" class="button-secondary" value="<?php esc_attr_e( "Cancel", $this->hook ); ?>"/>
         </p>
         <div id="after-submit">
+          <p>
+            <?php _e( sprintf( __( 'If you like <strong>PrintFriendly</strong> please leave us a %s rating. A huge thanks in advance!', 'printfriendly' ), '<a href="https://wordpress.org/support/plugin/printfriendly/reviews?rate=5#new-post" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a>' ), $this->hook ); ?>
+          </p>
           <p><?php _e( "Need professional options for your corporate, education, or agency developed website? Check out", $this->hook ); ?> <a href="https://www.printfriendly.com/pro">PrintFriendly Pro</a>.</p>
           <p>
-            <?php _e( "Like PrintFriendly?", $this->hook ); ?> <a href="https://wordpress.org/extend/plugins/printfriendly/"><?php _e( "Give us a rating", $this->hook ); ?></a>. <?php _e( "Need help or have suggestions?", $this->hook ); ?> <a href="mailto:support@printfriendly.com?subject=Support%20for%20PrintFriendly%20WordPress%20plugin">support@PrintFriendly.com</a>.</p>
+            <?php _e( "Need help or have suggestions?", $this->hook ); ?> <a href="mailto:support@printfriendly.com?subject=Support%20for%20PrintFriendly%20WordPress%20plugin">support@PrintFriendly.com</a>
+          </p>
           </div>
-
         </form>
-      </div>
-
 <?php
     }
   }
