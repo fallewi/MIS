@@ -22,7 +22,7 @@ class BlueAcorn_ProductVideos_Helper_Product extends BlueAcorn_ProductVideos_Hel
     const VIMEO_IFRAME = '<iframe id="video-player" src="http://player.vimeo.com/video/VIDEO_ID?api=1" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     const YOUTUBE_IFRAME = '<iframe id="video-player" src="http://www.youtube.com/embed/VIDEO_ID?SUGGESTED_VIDEOSfeature=player_detailpage" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     const VIMEO_XML_URL = 'http://vimeo.com/api/v2/video/VIDEO_ID.xml';
-    const YOUTUBE_XML_URL = 'http://img.youtube.com/vi/VIDEO_ID/sddefault.jpg';
+    const YOUTUBE_XML_URL = 'http://img.youtube.com/vi/VIDEO_ID/default.jpg';
     const DEFAULT_DEFAULT_IMAGE = "default_default.png";
 
 
@@ -81,7 +81,7 @@ class BlueAcorn_ProductVideos_Helper_Product extends BlueAcorn_ProductVideos_Hel
     }
 
     /**
-     * Returns template ready iframe based on provided url. 
+     * Returns template ready iframe based on provided url.
      * @param $videoObject
      * @return mixed
      */
