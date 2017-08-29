@@ -45,5 +45,6 @@ $_helper = Mage::helper('blueacorn_checkoutcartbestpractice');
             <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
         </span>
     </div>
+    <?php echo $this->getBlockHtml('formkey') ?>
 </form>
 <?php echo $this->getChildHtml('shipping.method.bottom.widget') ?>
