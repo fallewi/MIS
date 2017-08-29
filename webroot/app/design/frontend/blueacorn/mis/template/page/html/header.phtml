@@ -55,6 +55,10 @@
                     <?php echo Mage::getStoreConfig('general/store_information/phone') ?>
                 </p>
 
+                <a href="/locations" class="skip-account location">
+					<span class="location-icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span><span class="label">LOCATIONS</span>
+				</a>
+               
                 <a href="<?php echo $this->helper('customer')->getAccountUrl(); ?>" data-target-element="#header-account" class="skip-link skip-account">
                     <span class="icon"></span>
                     <span class="label"><?php echo $this->__('My Account'); ?></span>

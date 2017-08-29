@@ -115,15 +115,8 @@
     letter-spacing: 1.11px;
     position: relative;
     top: 8px;
-    right: 40%;
+    right: 10%;
 
-    @include bp(max-width, 1250px) {
-        right: 30%;
-    }
-
-    @include bp(max-width, 1024px) {
-        right: 10%;
-    }
 
     @include bp(min-width, $bp-medium + 1) {
         display: none;
