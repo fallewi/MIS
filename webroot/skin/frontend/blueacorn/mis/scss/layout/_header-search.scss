@@ -44,7 +44,7 @@
 
 // ---------------------------------------------
 
-@include bp(min-width, $bp-medium + 1) {
+@include bp(min-width, $bp-xsmall + 1) {
 
     .skip-search {
         display: none;
@@ -62,7 +62,7 @@
 
 // ---------------------------------------------
 
-@include bp(min-width, $bp-medium + 1) {
+@include bp(min-width, $bp-large + 1) {
     #header-search {
         display: block; // Force visibility
         position: absolute;

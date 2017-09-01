@@ -39,6 +39,37 @@
          }
      }
 
+	 &.location{
+		 color: $c-red;
+		 position:relative;
+		 @include bp(min-width, $bp-medium) {
+		 	.label{
+				display:inline-block;
+				padding-left: 10px;
+			 }
+		 }
+		 @include bp(max-width, $bp-medium) {
+			 position:absolute;
+			 right: 110px;
+		 }
+		 .location-icon {
+			 font-size: 17px;
+			 line-height: 15px;
+			 width: 17px;
+			 height: 15px;
+
+			 @include bp(min-width, 1025px) {
+				 padding-bottom: 16px;
+			 }
+
+			 @include bp(max-width, $bp-medium) {
+				 width: 22px;
+				 height: 18px;
+			 }
+			 .fa {padding:0 5px;}
+    	 }
+	 }
+
      .icon {
          @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, -76px, -67px);
          width: 17px;

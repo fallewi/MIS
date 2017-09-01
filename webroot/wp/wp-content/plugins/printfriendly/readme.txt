@@ -3,7 +3,7 @@ Contributors: printfriendly,joostdevalk, jrf
 Tags: print, pdf, email, print button, wp-print, print recipe, print post, print page, print widget, print plugin, printable, wp-pdf, pdf post, pdf page, pdf button, pdf widget, pdf plugin, woocommerce print, woocommerce pdf
 Requires at least: 2.8
 Tested up to: 4.8
-Stable tag: 3.8.8
+Stable tag: 3.12.2
 
 
 The #1 Print, PDF, Email button. Stylish, full featured, customizable. Add custom header, footer, and more.
@@ -139,6 +139,42 @@ You can [hide the Print, PDF, and Email button](https://support.printfriendly.co
 
 
 == Changelog ==
+
+= 3.12.4 =
+* Bug fix, avoid "undefined variable: return"
+
+= 3.12.3 =
+* Bug fix, sometimes custom image didn't display correctly after upgrade
+
+= 3.12.2 =
+* Add title to Printfriendly button and change button image alt
+
+= 3.12.1 =
+* Fix translations
+
+= 3.12.0 =
+* Update custom button UI
+
+= 3.11.2 =
+* Fix button upgrade for pf-icon-both.gif
+
+= 3.11.1 =
+* Bug fix
+
+= 3.11.0 =
+* Update buttons
+
+= 3.10.0 =
+* Change "leave us a rating" message.
+
+= 3.9.2 =
+* Correctly handle spaces in print-only detection
+
+= 3.9.1 =
+* Better print-only detection
+
+= 3.9.0 =
+* Add new button
 
 = 3.8.8 =
 * Bug fix.
