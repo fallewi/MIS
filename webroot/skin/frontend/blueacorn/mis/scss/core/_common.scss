@@ -1438,14 +1438,12 @@ div.messages div.success-msg {
 
 .price-box .old-price,
 .price-box .special-price {
-    display: inline-block;
+    DISPLAY: INLINE-BLOCK;
 
-    .price-label {
-        display: none;
-    }
 
-    .price {
-        display: inline-block;
+
+    .PRICE {
+        DISPLAY: INLINE-BLOCK;
     }
 }
 
@@ -1457,10 +1455,9 @@ div.messages div.success-msg {
 
 .price-box .special-price {
     color: $c-text-primary;
-    padding-left: 1em;
 
     .price-label {
-        color: #D84D3C;
+        color: #d84d3c;
     }
 }
 
