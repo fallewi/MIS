@@ -89,17 +89,18 @@ jQuery(document).ready(function() {
     }
   }).change();
 
-  jQuery('#custom_text').change(function(){
+  jQuery('#custom_text').bind('change keyup', function(){
     pf_custom_text_change();
-  }).change();
+  });
 
-  jQuery('#custom_text').keyup(function(){
+  jQuery("[name='printfriendly_option[custom_button_text]']").change(function(){
     pf_custom_text_change();
   });
 
   function pf_custom_text_change(){
     jQuery('#buttongroup3 span:not(.printandpdf)').text( jQuery('#custom_text').val() );
-    jQuery('#custom span.printfriendly-text2').text( jQuery('#custom_text').val() );
+    var newText = (jQuery("[name='printfriendly_option[custom_button_text]']:checked").val() === 'no-text') ? '' : jQuery('#custom_text').val();
+    jQuery('#custom-btn-group span.printfriendly-text2').text( newText );
   }
 
   function pf_initialize_preview(urlInputSelector, previewSelector) {
@@ -107,11 +108,21 @@ jQuery(document).ready(function() {
     var imgUrl = jQuery.trim(el.val());
     var preview = jQuery(previewSelector + '-preview');
     var error = jQuery(previewSelector + '-error');
+
     el.bind('input paste change keyup', function() {
       setTimeout(function() {
         // ie shows error if we try to merge the two below into a single statement
         var img = jQuery('<img/>');
-        var imgUrl = jQuery.trim(el.val());
+        var customButtonIcon = jQuery("[name='printfriendly_option[custom_button_icon]']:checked").val();
+
+        if (customButtonIcon === 'custom-image') {
+          imgUrl = jQuery('#custom_image').val();
+        } else if (customButtonIcon === 'no-image') {
+          imgUrl = '';
+        } else {
+          imgUrl = customButtonIcon;
+        }
+
         img.load(function() {
             error.html('');
             preview.html('').append(img);})
@@ -129,6 +140,7 @@ jQuery(document).ready(function() {
   }
 
   pf_initialize_preview('#custom_image', '#pf-custom-button');
+  pf_initialize_preview("[name='printfriendly_option[custom_button_icon]']", '#pf-custom-button');
   pf_initialize_preview('#upload-an-image', '#pf-image');
   jQuery('#custom_image, #upload-an-image').change();
   jQuery('#custom_image').bind('focus', function() {
@@ -252,6 +264,13 @@ jQuery(document).ready(function() {
     jQuery('#category_ids').val(ids.join(','));
   });
 
-  // page checkboxes TODO...
+  jQuery('#custom_image').click(function() {
+    jQuery("#custom-image-rb").prop('checked', true);
+    jQuery("#custom-image-rb").trigger("change");
+  });
 
+  jQuery('#custom_text').click(function() {
+    jQuery("#custom-text-rb").prop('checked', true);
+    jQuery("#custom-text-rb").trigger("change");
+  });
 });
