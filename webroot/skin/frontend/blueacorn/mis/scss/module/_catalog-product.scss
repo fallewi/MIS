@@ -224,11 +224,6 @@
         float: left;
     }
 
-    .old-price {
-        .price-label {
-            display: none;
-        }
-    }
 
     .add-to-cart-wrapper {
         background: $brand-light;
@@ -285,6 +280,9 @@
                 margin-top: 12px;
 
                 .old-price .price {
+                    color: $c-text-gray;
+                    font-size:1em;
+                    line-height: 1em;
                     text-decoration: line-through;
                 }
 
