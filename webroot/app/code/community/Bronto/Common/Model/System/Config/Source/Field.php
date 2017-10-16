@@ -25,10 +25,12 @@ class Bronto_Common_Model_System_Config_Source_Field
                 /* @var $fieldObject Bronto_Api_Field */
                 $fieldObject = $api->transferField();
                 foreach ($fieldObject->read() as $field) {
-                    $this->_options[] = array(
-                        'value' => $field->getId(),
-                        'label' => $field->getLabel(),
-                    );
+                    if ($field->hasLabel() && trim($field->getLabel()) !== '') {
+                        $this->_options[] = array(
+                            'value' => $field->getId(),
+                            'label' => $field->getLabel(),
+                        );
+                    }
                 }
             }
         } catch (Exception $e) {

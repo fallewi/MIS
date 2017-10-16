@@ -85,8 +85,22 @@ class Bronto_Common_Helper_Item extends Mage_Core_Helper_Abstract
         return $this->getParentItem($lineItem)->getName();
     }
 
+    /**
+     * $object should be one of:
+     *  - Mage_Sales_Model_Quote
+     *  - Mage_Sales_Model_Order
+     *  - Mage_Sales_Model_Order_Invoice
+     *  - Mage_Sales_Model_Order_Shipment
+     *  - Mage_Sales_Model_Order_Creditmemo
+     *
+     * @param \Mage_Core_Model_Abstract $object
+     */
     public function getFlatItems($object)
     {
+        if ($object instanceof \Mage_Sales_Model_Quote) {
+            return $object->getAllVisibleItems();
+        }
+
         $index = null;
         $lineItems = array();
         foreach ($object->getAllItems() as $lineItem) {
