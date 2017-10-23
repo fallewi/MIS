@@ -25,8 +25,9 @@
  */
 ?>
 <?php $_product = $this->getProduct(); ?>
+<?php $mapRequired = ($_product->getAttributeText('map_required')) ? $_product->getAttributeText('map_required') : '' ?>
 <?php $buttonTitle = Mage::helper('core')->quoteEscape($this->__('Add to Cart')); ?>
-<?php if($_product->isSaleable()): ?>
+<?php if($_product->isSaleable() && $mapRequired != 'No Price No Add to Cart'): ?>
     <div class="add-to-cart">
         <div class="add-to-cart-buttons<?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?> map-add-to<?php endif;?>">
             <button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart" onclick="productAddToCartForm.submit(this)"><span><span><?php echo $buttonTitle ?></span></span></button>

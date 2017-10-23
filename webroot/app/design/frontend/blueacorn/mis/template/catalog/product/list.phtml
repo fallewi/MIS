@@ -171,14 +171,20 @@
                         }
                     }
                     ?>
-                    <?php
-                    if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
-                        echo $this->getPriceHtml($_product, true);
-                    else:
-                        echo '<div class="price-box"><span class="regular-price">';
-                        echo $this->helper('core')->currency($_product->getMsrp(), true, true);
-                        echo '</span></div>';
-                    endif; ?>
+                    <?php $mapRequired = ($_product->getAttributeText('map_required')) ? $_product->getAttributeText('map_required') : '' ?>
+
+                    <?php if($mapRequired != 'No Price No Add to Cart') : ?>
+                        <?php
+                            if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
+                                echo $this->getPriceHtml($_product, true);
+                            else:
+                                echo '<div class="price-box"><span class="regular-price">';
+                                echo $this->helper('core')->currency($_product->getMsrp(), true, true);
+                                echo '</span></div>';
+                            endif; ?>
+
+                    <?php endif ?>
+
                     <div class="actions">
                         <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>
                             <a title="<?php echo $this->quoteEscape($this->__('View Details')) ?>" class="button" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a>
