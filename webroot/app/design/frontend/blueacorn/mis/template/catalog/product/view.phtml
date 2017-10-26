@@ -76,7 +76,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                <?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product) || $mapRequired == "No Price No Add to Cart"): ?>
                     <?php // Placeholder html for Custom dev feature MAP pricing module ?>
                     <div class="map-pricing">
                         <div class="price-info">
@@ -99,44 +99,44 @@
 
                 <?php echo $this->getChildHtml('product_type_data') ?>
                 <?php echo $this->getChildHtml('extrahint') ?>
-
-                <?php if(!$_product->isGrouped() && $_product->isSaleable() && $mapRequired != "No Price No Add to Cart"): ?>
-                    <div class="qty-wrapper">
-                        <label for="qty"><?php echo $this->__('Qty:') ?></label>
-                        <span>X</span>
-                        <input type="text" pattern="\d*" name="qty" id="qty" maxlength="12" value="<?php echo max($this->getProductDefaultQty() * 1, 1) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" />
-                    </div>
-                <?php endif; ?>
-
-                <div class="price-info">
-                    <?php $uom = $_product->getAttributeText('uom'); ?>
-                    <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
-                            <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
-                                <span class="price-text"><?php echo $this->__("PRICE / ".$uom) ?></span>
-                                <?php echo $this->getPriceHtml($_product); ?>
-                                <?php $displayPrice =  Mage::helper('core')->currency($_product->getPrice(),false,false);?>
-                            <?php endif; ?>
-                            <?php echo $this->getChildHtml('bundle_prices') ?>
-                            <?php echo $this->getTierPriceHtml() ?>
-
-                    <?php else: ?>
-
-                        <?php if($mapRequired != "No Price No Add to Cart") : ?>
-                            <span class="price-text"><?php echo $this->__("PRICE / ".$uom) ?></span>
-                            <span class="price map-msrp">
-                                <?php $curr_code = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
-                                <?php echo $curr_code . number_format($_product->getMsrp(), 2); ?>
-                                <?php $displayPrice =  Mage::helper('core')->currency($_product->getMsrp(),false,false);?>
-                            </span>
-
-                        <?php endif; ?>
+                <?php if($mapRequired != "No Price No Add to Cart") : ?>
+                    <?php if(!$_product->isGrouped() && $_product->isSaleable()): ?>
+                        <div class="qty-wrapper">
+                            <label for="qty"><?php echo $this->__('Qty:') ?></label>
+                            <span>X</span>
+                            <input type="text" pattern="\d*" name="qty" id="qty" maxlength="12" value="<?php echo max($this->getProductDefaultQty() * 1, 1) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" />
                         </div>
+                    <?php endif; ?>
 
-                        <?php if ($_product->isSaleable() && $this->hasOptions()):?>
-                            <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
-                        <?php endif;?>
+                    <div class="price-info">
+                        <?php $uom = $_product->getAttributeText('uom'); ?>
+                        <?php if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                                <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
+                                    <span class="price-text"><?php echo $this->__("PRICE / ".$uom) ?></span>
+                                    <?php echo $this->getPriceHtml($_product); ?>
+                                    <?php $displayPrice =  Mage::helper('core')->currency($_product->getPrice(),false,false);?>
+                                <?php endif; ?>
+                                <?php echo $this->getChildHtml('bundle_prices') ?>
+                                <?php echo $this->getTierPriceHtml() ?>
 
-                <?php endif; ?>
+                        <?php else: ?>
+
+
+                                <span class="price-text"><?php echo $this->__("PRICE / ".$uom) ?></span>
+                                <span class="price map-msrp">
+                                    <?php $curr_code = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
+                                    <?php echo $curr_code . number_format($_product->getMsrp(), 2); ?>
+                                    <?php $displayPrice =  Mage::helper('core')->currency($_product->getMsrp(),false,false);?>
+                                </span>
+
+                            <?php endif; ?>
+                            </div>
+
+                            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+                            <?php endif;?>
+
+                    <?php endif; ?>
 
 
                 <?php if ($_product->isSaleable()):?>
@@ -155,11 +155,13 @@
                         </div>
                     <?php endif; ?>
                     <div class="add-to-box">
-                        <?php echo $this->getChildHtml('addtocart') ?>
-                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
-                            <span class="or"><?php echo $this->__('OR') ?></span>
+                        <?php if($mapRequired != "No Price No Add to Cart") : ?>
+                                <?php echo $this->getChildHtml('addtocart') ?>
+                                <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                                    <span class="or"><?php echo $this->__('OR') ?></span>
+                                <?php endif; ?>
+                                <?php echo $this->getChildHtml('addto') ?>
                         <?php endif; ?>
-                        <?php echo $this->getChildHtml('addto') ?>
                     </div>
                     <?php echo $this->getChildHtml('extra_buttons') ?>
                 <?php endif; ?>
