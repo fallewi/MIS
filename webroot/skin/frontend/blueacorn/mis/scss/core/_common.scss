@@ -458,6 +458,19 @@ $button-padding: 17px 60px 16px;
     }
 }
 
+//Request a Quote Fake Button
+.request-a-quote.button {
+    padding: 17px 0 16px;
+    width: 100%;
+    color: $c-blue;
+    margin-bottom: 30px;
+    cursor: default;
+
+    &:hover {
+        background: $c-yellow;
+    }
+}
+
 a.button {
     text-decoration: none;
 }

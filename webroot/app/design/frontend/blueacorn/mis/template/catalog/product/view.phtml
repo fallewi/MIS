@@ -71,8 +71,8 @@
                 <?php $product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
                 <?php $mapRequired = ($product->getAttributeText('map_required')) ? $product->getAttributeText('map_required') : '' ?>
                 <?php if($mapRequired == "No Price No Add to Cart") : ?>
-                    <div class="button btn-cart">
-                        <?php echo "REQUEST A QUOTE" ?>
+                    <div class="button request-a-quote">
+                        <?php echo $this->__('REQUEST A QUOTE') ?>
                     </div>
                 <?php endif; ?>
 
