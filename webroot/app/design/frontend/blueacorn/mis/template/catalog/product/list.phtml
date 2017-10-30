@@ -139,7 +139,6 @@
     <?php $_columnCount = $this->getColumnCount(); ?>
     <ul class="products-grid products-grid--max-<?php echo $_columnCount; ?>-col">
         <?php $i=0; foreach ($_productCollection as $_product): ?>
-            <?php $mapRequired = ($_product->getAttributeText('map_required')) ? $_product->getAttributeText('map_required') : '' ?>
             <?php /*if ($i++%$_columnCount==0): ?>
             <?php endif*/ ?>
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
@@ -176,8 +175,8 @@
                     }
                     ?>
 
-
-                    <?php if($mapRequired != 'No Price No Add to Cart') : ?>
+                    <?php $mapRequired =  Mage::getModel('catalog/product')->load($_product->getId())->getMapRequired() ?>
+                    <?php if($mapRequired != '3') : ?>
                         <?php
                             if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
                                 echo $this->getPriceHtml($_product, true);
