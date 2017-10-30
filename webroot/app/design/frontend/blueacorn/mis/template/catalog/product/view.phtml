@@ -76,23 +76,32 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if(!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product) || $mapRequired == "No Price No Add to Cart"): ?>
+                <?php if (!Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product) || $mapRequired == "No Price No Add to Cart"): ?>
                     <?php // Placeholder html for Custom dev feature MAP pricing module ?>
                     <div class="map-pricing">
                         <div class="price-info">
 
-                            <?php if($mapRequired == "Requires MAP Call" ): ?>
-                            <div>
-                                <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
-                            </div>
-                        <?php elseif($mapRequired == "Requires MAP Email" || $mapRequired == "No Price No Add to Cart"): ?>
+                            <?php if ($mapRequired == "Requires MAP Call"): ?>
+                                <div>
+                                    <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action'); ?></div>
+                                </div>
+                            <?php elseif ($mapRequired == "Requires MAP Email"): ?>
 
-                            <div>
-                                <div class="message map-pricing-bigger"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
-                                <button onclick="mapPricingEmail.addToEmail(this)" id="map_request" class="button">Get Price</button>
-                                <input id="map_email" type="text" name="user_email" class="input-text" placeholder="Enter Email Address"/>
-                            </div>
-                        <?php endif; ?>
+                                <div>
+                                    <div class="message map-pricing-bigger"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/call_to_action_email'); ?></div>
+                                    <button onclick="mapPricingEmail.addToEmail(this)" id="map_request" class="button">
+                                        Get Price
+                                    </button>
+                                    <input id="map_email" type="text" name="user_email" class="input-text"
+                                           placeholder="Enter Email Address"/>
+                                </div>
+                            <?php elseif ($mapRequired == "No Price No Add to Cart"): ?>
+
+                                <div>
+                                    <div class="message"><?php echo Mage::getStoreConfig('blueacorn_specialpricing/general/manufacturer_restricted_action_email'); ?></div>
+
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
