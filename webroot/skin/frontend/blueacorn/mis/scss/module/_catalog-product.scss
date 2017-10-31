@@ -586,7 +586,15 @@
 }
 
 .product-view {
-
+    .messages {
+        .success-msg {
+            li {
+                background-color: #84d7a3;
+                color: #00247B;
+            }
+        }
+    }
+    
     .add-to-box:after,
     .add-to-cart:after {
         @include clearfix;
@@ -595,6 +603,9 @@
     .add-to-cart {
         padding-bottom: 3px;
         margin-bottom: 7px;
+        ul.messages {
+            clear: both;
+        }
     }
 
     /* Set a min-height so that the floated elements break appropriately */
@@ -606,7 +617,6 @@
 
     .product-options-bottom .price-box,
     .add-to-cart .qty-wrapper,
-    .add-to-cart-buttons .button,
     .add-to-cart-buttons .paypal-logo {
         margin-bottom: 10px;
     }

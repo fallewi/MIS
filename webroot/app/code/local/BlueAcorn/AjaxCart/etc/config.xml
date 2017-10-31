@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package     BlueAcorn_AjaxCart
+ * @version
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2017 Blue Acorn, Inc.
+ */
+ -->
+<config>
+	<modules>
+		<BlueAcorn_AjaxCart>
+			<version>1.0.0</version>
+		</BlueAcorn_AjaxCart>
+	</modules>
+	
+	<global>
+		<helpers>
+			<blueacorn_ajaxcart>
+				<class>BlueAcorn_AjaxCart_Helper</class>
+			</blueacorn_ajaxcart>
+		</helpers>
+	</global>
+	
+	<frontend>
+		<layout>
+			<updates>
+				<blueacorn_ajaxcart>
+					<file>blueacorn/ajaxcart.xml</file>
+				</blueacorn_ajaxcart>
+			</updates>
+		</layout>
+		
+		<routers>
+			<checkout>
+				<args>
+					<modules>
+						<BlueAcorn_AjaxCart before="Mage_Checkout">BlueAcorn_AjaxCart_Checkout</BlueAcorn_AjaxCart>
+					</modules>
+				</args>
+			</checkout>
+		</routers>
+	</frontend>
+	
+	<default>
+		<blueacorn_ajaxcart>
+			<general>
+				<enabled>1</enabled>
+			</general>
+		</blueacorn_ajaxcart>
+	</default>
+</config>
