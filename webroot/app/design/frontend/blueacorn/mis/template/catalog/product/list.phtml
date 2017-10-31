@@ -46,6 +46,7 @@
     <?php $_iterator = 0; ?>
     <ol class="products-list" id="products-list">
     <?php foreach ($_productCollection as $_product): ?>
+        <?php $mapRequired = ($_product->getAttributeText('map_required')) ? $_product->getAttributeText('map_required') : '' ?>
         <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
             <?php // Product Image ?>
             <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
@@ -93,12 +94,14 @@
                         ?>
                     </div>
                     <div class="product-secondary">
-                        <?php
-                        if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
-                            echo $this->getPriceHtml($_product, true);
-                        else:
-                            echo $_product->getMsrp();
-                        endif; ?>
+                        <?php if($mapRequired != 'No Price No Add to Cart') : ?>
+                            <?php
+                            if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
+                                echo $this->getPriceHtml($_product, true);
+                            else:
+                                echo $_product->getMsrp();
+                            endif; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="product-secondary">
                         <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>
@@ -171,14 +174,20 @@
                         }
                     }
                     ?>
-                    <?php
-                    if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
-                        echo $this->getPriceHtml($_product, true);
-                    else:
-                        echo '<div class="price-box"><span class="regular-price">';
-                        echo $this->helper('core')->currency($_product->getMsrp(), true, true);
-                        echo '</span></div>';
-                    endif; ?>
+
+                    <?php $mapRequired =  Mage::getModel('catalog/product')->load($_product->getId())->getMapRequired() ?>
+                    <?php if($mapRequired != '3') : ?>
+                        <?php
+                            if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
+                                echo $this->getPriceHtml($_product, true);
+                            else:
+                                echo '<div class="price-box"><span class="regular-price">';
+                                echo $this->helper('core')->currency($_product->getMsrp(), true, true);
+                                echo '</span></div>';
+                            endif; ?>
+
+                    <?php endif ?>
+
                     <div class="actions">
                         <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>
                             <a title="<?php echo $this->quoteEscape($this->__('View Details')) ?>" class="button" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a>
@@ -188,7 +197,7 @@
                             <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
                         <?php endif; ?>
                         <ul class="add-to-links">
-                            <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <?php if ($this->helper('wishlist')->isAllow() && ($mapRequired != 'No Price No Add to Cart')) : ?>
                                 <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
                             <?php endif; ?>
                             <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>

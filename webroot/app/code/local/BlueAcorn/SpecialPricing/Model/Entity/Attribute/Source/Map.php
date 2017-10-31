@@ -11,6 +11,7 @@ class BlueAcorn_SpecialPricing_Model_Entity_Attribute_Source_Map
     const DISABLED = 0;
     const EMAIL = 1;
     const CALL = 2;
+    const NOADDPRICE = 3;
 
     /**
      * Get all attribute options
@@ -22,7 +23,8 @@ class BlueAcorn_SpecialPricing_Model_Entity_Attribute_Source_Map
             $this->_options = array(
                 array('value' => self::DISABLED, 'label' => 'Disabled'),
                 array('value' => self::EMAIL, 'label' => 'Requires MAP Email'),
-                array('value' => self::CALL, 'label' => 'Requires MAP Call')
+                array('value' => self::CALL, 'label' => 'Requires MAP Call'),
+                array('value' => self::NOADDPRICE, 'label' => 'No Price No Add to Cart')
             );
         }
         return $this->_options;
