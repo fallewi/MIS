@@ -586,6 +586,92 @@
 }
 
 .product-view {
+    .block-related {
+        .block-title {
+            margin-bottom: 20px;
+            h2 {
+                font-size: 32px;
+            }
+        }
+    }
+    .related-products-grid {
+        .item {
+            .item-content {
+                border: 1px solid #c1c1c1;
+                padding: 15px;
+                min-height: 182px;
+                position: relative;
+
+                .price-box {
+                    .price {
+                        font-size: 14px;
+                    }
+                }
+                
+            }
+            
+            .product-image {
+                width: 25%;
+                float: left;
+                img {
+                    max-width: 100%;
+                }
+            }
+            .product-details {
+                width: 72%;
+                float: right;
+                padding-left: 3%;
+                .price-box {
+                    
+                }
+            }
+            .actions {
+                clear: both;
+                position: absolute;
+                bottom: 12px;
+                width: 90%;
+                
+                .qty-wrapper {
+                    width: 76px;
+                    float: left;
+                    margin: 0;
+                    label {
+                        display: inline-block;
+                        margin: 0;
+                        position: relative;
+                        top: 7px;
+                        font-size: 12px;
+                    }
+                    .qty {
+                        display: inline-block;
+                        float: right;
+                        height: 42px;
+                        width: 44px;
+                        border: 2px solid #c8c8c8;
+                        
+                        &:focus {
+                            position: relative;
+                        }
+                    }
+                }
+                .add-to-cart-buttons {
+                    display: inline-block;
+                    width: 72%;
+                    padding-left: 3%;
+                    float: right;
+                    clear: none;
+                    .btn-cart {
+                        min-height: 42px;
+                        line-height: 42px;
+                    }
+                }
+            }
+            .clear {
+                clear: both;
+            }
+        }
+    }
+    
     .messages {
         .success-msg {
             li {
@@ -1223,7 +1309,6 @@
 /* Block: Related */
 
 .block-related {
-
     li {
         margin-bottom: $element-spacing;
     }
@@ -1270,8 +1355,6 @@
             &:first-child {
                 margin-left: 0;
                 font-size: $f-size-xl;
-                padding-right: 5px;
-                padding-left: 5px;
             }
         }
         &:after {
@@ -1358,7 +1441,7 @@
         color: $black;
 
         span.price {
-            font-size: 18px !important;
+            font-size: 14px;
         }
     }
 
