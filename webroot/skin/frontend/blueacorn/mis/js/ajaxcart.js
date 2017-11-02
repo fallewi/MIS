@@ -9,11 +9,14 @@ var $j = $j || jQuery.noConflict();
 var BA_AjaxAddToCart = Class.create({
 	init: function() {
 		this.config = {
-			btnLabelAdd:    'Add To Cart',
-			btnLabelAdding: 'Adding',
-			btnLabelAdded:  'Added',
-			cartLink:       '.header-minicart .skip-cart',
-			cartId:         '#header-cart'
+			btnLabelAdd:       'Add to Cart',
+			btnLabelAdding:    'Adding',
+			btnLabelAdded:     'Added',
+			btnLabelRemove:    'Remove from Cart',
+			btnLabelRemoving:  'Removing',
+			btnLabelRemoved:   'Removed',
+			cartLink:          '.header-minicart .skip-cart',
+			cartId:            '#header-cart'
 		};
 		this.setOnClickEvent();
 	},
@@ -31,7 +34,6 @@ var BA_AjaxAddToCart = Class.create({
 				button.prop('disabled', true);
 				btnLabel.end().text($this.config.btnLabelAdding);
 			break;
-			
 			case 'added':
 				button.prop('disabled', false);
 				btnLabel.end().text($this.config.btnLabelAdded);
@@ -39,12 +41,51 @@ var BA_AjaxAddToCart = Class.create({
 				setTimeout(function() {
 					btnLabel.end().text($this.config.btnLabelAdd);
 				},
-				100);
+				1500);
+			break;
+			case 'failed_add':
+				button.prop('disabled', false);
+				btnLabel.end().text($this.config.btnLabelAdd);
+			break;
+			case 'remove':
+				button.prop('disabled', false);
+				button.addClass('cart-remove');
+				button.parent().prev().hide();
+				button.parent().css("width", "100%");
+				
+				btnLabel.end().text($this.config.btnLabelRemove);
+				button.off('click');
+				button.on('click', function(event) {
+					event.preventDefault();
+					$this.removeProduct(button, 'related');
+				});
+			break;
+			case 'removing':
+				button.prop('disabled', true);
+				btnLabel.end().text($this.config.btnLabelRemoving);
+			break;
+			case 'removed':
+				button.prop('disabled', false);
+				button.removeClass('cart-remove');
+				button.parent().css("width", "74%");
+				button.parent().prev().show();
+				btnLabel.end().text($this.config.btnLabelRemoved);
+				
+				button.off('click');
+				button.on('click', function(event) {
+					event.preventDefault();
+					$this.ajaxAddToCartRelated(this);
+				});
+				
+				setTimeout(function() {
+					btnLabel.end().text($this.config.btnLabelAdd);
+				},
+				1500);
 			break;
 		}
 	},
 	
-	addProduct: function(url, params, button) {
+	addProduct: function(url, params, button, type) {
 		var $this = this;
 		
 		$this.onChange('adding', button);
@@ -56,34 +97,159 @@ var BA_AjaxAddToCart = Class.create({
 		}).done(function(result) {
 			try {
 				var jsonData = JSON.parse(result);
+				var msgClass = 'error-msg';
 				if ( jsonData.success ) {
 					$j($this.config.cartId).html(jsonData.carthtml);
 					$j($this.config.cartLink).children('span.count').html(jsonData.qty);
 					$j($this.config.cartLink).children('span.subtotal').html(jsonData.total);
 					$j($this.config.cartLink).removeClass('no-count');
-					
-					$j('#product_addtocart_form .btn-cart').after('<ul class="messages"><li class="success-msg"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>');
-				}
-				else {
-					$j('#product_addtocart_form .btn-cart').after('<ul class="messages"><li class="error-msg"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>');
+					msgClass = 'success-msg';
 				}
 				
-				var messageNode = $j('#product_addtocart_form ul.messages');
-				if ( messageNode.length ) {
-					setTimeout(function() {
-						messageNode.hide('blind', {}, 500);
-						messageNode.remove();
-					}, jsonData.duration);
+				switch ( type ) {
+					case 'related':
+						$this.showMessage(
+							$j('#block-related-list'),
+							'before',
+							'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
+							'.block-related ul.messages',
+							jsonData.duration
+						);
+						
+						if ( jsonData.success ) {
+							$this.onChange('remove', button);
+						}
+						else {
+							$this.onChange('failed_add', button);
+						}
+					break;
+					default:
+						$this.showMessage(
+							button,
+							'after',
+							'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
+							'#product_addtocart_form ul.messages',
+							jsonData.duration
+						);
+						
+						$this.onChange('added', button);
 				}
 			}
 			catch (e) {
 				console.log('Ajax Cart: ' + e.message);
+				
+				$this.onChange('failed_add', button);
 			}
-			$this.onChange('added', button);
 		}).error(function(jqXHR, textStatus, errorThrown) {
-			console.log('Ajax Cart Error: ' + errorThrown);
-			$this.onChange('added', button);
+			switch ( type ) {
+				case 'related':
+					$this.showMessage(
+						$j('#block-related-list'),
+						'before',
+						'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + errorThrown + '</span></li></ul></li></ul>',
+						'.block-related ul.messages',
+						jsonData.duration
+					);
+				break;
+				default:
+					$this.showMessage(
+						button,
+						'after',
+						'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + errorThrown + '</span></li></ul></li></ul>',
+						'#product_addtocart_form ul.messages',
+						jsonData.duration
+					);
+			}
+			
+			$this.onChange('failed_add', button);
 		});
+	},
+	
+	removeProduct: function(button, type) {
+		var $this = this;
+		
+		$this.onChange('removing', button);
+		
+		var url;
+		switch ( type ) {
+			case 'related':
+					var relForm = button.closest('.related_addtocart_form')[0];
+					if ( relForm.length ) {
+						var form = $j('#' + relForm.id);
+						url = form.attr('action');
+						url = url.replace('checkout/cart/add', 'checkout/cart/remove');
+				}
+			break;
+		}
+		
+		$j.ajax({
+			url: url,
+			method: 'POST'
+		}).done(function(result) {
+			try {
+				var jsonData = JSON.parse(result);
+				var msgClass = 'error-msg';
+				if ( jsonData.success ) {
+					$j($this.config.cartId).html(jsonData.carthtml);
+					$j($this.config.cartLink).children('span.count').html(jsonData.qty);
+					$j($this.config.cartLink).children('span.subtotal').html(jsonData.total);
+					$j($this.config.cartLink).removeClass('no-count');
+					msgClass = 'success-msg';
+				}
+				
+				switch ( type ) {
+					case 'related':
+						$this.showMessage(
+							$j('#block-related-list'),
+							'before',
+							'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
+							'.block-related ul.messages',
+							jsonData.duration
+						);
+						
+						$this.onChange('removed', button);
+					break;
+				}
+			}
+			catch (e) {
+				console.log('Ajax Cart: ' + e.message);
+				
+				$this.onChange('removed', button);
+			}
+		}).error(function(jqXHR, textStatus, errorThrown) {
+			switch ( type ) {
+				case 'related':
+					$this.showMessage(
+						$j('#block-related-list'),
+						'before',
+						'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + errorThrown + '</span></li></ul></li></ul>',
+						'.block-related ul.messages',
+						jsonData.duration
+					);
+				break;
+			}
+			
+			$this.onChange('removed', button);
+		});
+	},
+	
+	showMessage: function(msgElem, position, msgText, msgNode, duration) {
+		switch ( position ) {
+			case 'before':
+				msgElem.before(msgText);
+			break;
+			case 'after':
+				msgElem.after(msgText);
+			break;
+		}
+		
+		var msgNodeObject = $j(msgNode);
+		if ( msgNodeObject.length ) {
+			setTimeout(function() {
+				msgNodeObject.hide('blind', {}, 500);
+				msgNodeObject.remove();
+			}, duration);
+		}
 	},
 	
 	ajaxAddToCart: function(button) {
@@ -93,7 +259,20 @@ var BA_AjaxAddToCart = Class.create({
 			var form = $j('#product_addtocart_form');
 			var url = form.attr('action');
 			var params = form.serialize();
-			this.addProduct(url, params, button);
+			this.addProduct(url, params, button, 'default');
+		}
+	},
+	
+	ajaxAddToCartRelated: function(button) {
+		var relForm = button.closest('.related_addtocart_form');
+		if ( relForm.length ) {
+			var varienForm = new VarienForm(relForm.id);
+			if (varienForm.validator.validate()) {
+				var form = $j('#' + relForm.id);
+				var url = form.attr('action');
+				var params = form.serialize();
+				this.addProduct(url, params, $j(button), 'related');
+			}
 		}
 	},
 	
@@ -106,6 +285,14 @@ var BA_AjaxAddToCart = Class.create({
 			event.preventDefault();
 			$this.ajaxAddToCart(button);
 		});
+		
+		var relButtons = $j('.related_addtocart_form .btn-cart');
+		if ( relButtons.length ) {
+			relButtons.on('click', function(event) {
+				event.preventDefault();
+				$this.ajaxAddToCartRelated(this);
+			});
+		}
 	}
 });
 

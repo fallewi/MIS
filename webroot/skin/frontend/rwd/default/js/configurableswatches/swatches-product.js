@@ -671,18 +671,7 @@ Product.ConfigurableSwatches.prototype = {
                 var el = $(el);
                 el.disabled = false;
                 el.removeClassName('out-of-stock');
-                el.removeAttr('onclick');
-                el.on('click', function(event) {
-                    event.preventDefault();
-                    var varienForm = new VarienForm('product_addtocart_form');
-                    
-                    if (varienForm.validator.validate()) {
-                        var form = $j('#product_addtocart_form');
-                        var url = form.attr('action');
-                        var params = form.serialize();
-                        this.addProduct(url, params, el);
-                    }
-                });
+                el.removeAttribute('onclick');
                 el.title = '' + Translator.translate(this._E.cartBtn.txt[index]);
                 el.select('span span').invoke('update', Translator.translate(this._E.cartBtn.txt[index]));
             }.bind(this));

@@ -596,6 +596,9 @@
     }
     .related-products-grid {
         .item {
+            display: inline-block;
+            padding: 1%;
+            
             .item-content {
                 border: 1px solid #c1c1c1;
                 padding: 15px;
@@ -611,16 +614,16 @@
             }
             
             .product-image {
-                width: 25%;
+                width: 22%;
                 float: left;
                 img {
                     max-width: 100%;
                 }
             }
             .product-details {
-                width: 72%;
+                width: 74%;
                 float: right;
-                padding-left: 3%;
+                padding-left: 2%;
                 .price-box {
                     
                 }
@@ -632,7 +635,7 @@
                 width: 90%;
                 
                 .qty-wrapper {
-                    width: 76px;
+                    width: 73px;
                     float: left;
                     margin: 0;
                     label {
@@ -648,6 +651,7 @@
                         height: 42px;
                         width: 44px;
                         border: 2px solid #c8c8c8;
+                        padding: 0 5px;
                         
                         &:focus {
                             position: relative;
@@ -656,14 +660,21 @@
                 }
                 .add-to-cart-buttons {
                     display: inline-block;
-                    width: 72%;
-                    padding-left: 3%;
+                    width: 73%;
+                    padding-left: 2%;
                     float: right;
                     clear: none;
                     .btn-cart {
                         min-height: 42px;
                         line-height: 42px;
+                        &.cart-remove {
+                            background-color: #eaeaea;
+                            &:hover {
+                                background-color: #d1d1d1;
+                            }
+                        }
                     }
+                    
                 }
             }
             .clear {

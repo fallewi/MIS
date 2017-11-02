@@ -32,11 +32,31 @@ if ($_item):
             <input type="checkbox" class="checkbox related-checkbox" id="related-checkbox<?php echo $_item->getId() ?>" name="related_products[]" value="<?php echo $_item->getId() ?>" />
         <?php endif; ?>
     <?php endif; ?>
-    <div class="item-info product">
-        <a href="<?php echo $this->getProductUrl($_item) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->resize(100) ?>" alt="<?php echo $this->escapeHtml($_item->getName()) ?>" title="<?php echo $this->escapeHtml($_item->getName()) ?>" /></a>
-        <div class="product-details">
-            <h3 class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->escapeHtml($_item->getName()) ?></a></h3>
-            <?php echo $this->getPriceHtml($_item, true, '-related') ?>
+    <form action="<?php echo Mage::helper('checkout/cart')->getAddUrl($_item); ?>" method="post" class="related_addtocart_form" id="related_addtocart_form_<?php echo $_item->getId(); ?>">
+        <?php echo $this->getBlockHtml('formkey'); ?>
+        <div class="no-display">
+            <input name="product" type="hidden" value="<?php echo $_item->getId(); ?>">
         </div>
-    </div>
+        <div class="item-info product">
+            <a href="<?php echo $this->getProductUrl($_item) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->resize(100) ?>" alt="<?php echo $this->escapeHtml($_item->getName()) ?>" title="<?php echo $this->escapeHtml($_item->getName()) ?>" /></a>
+            <div class="product-details">
+                <h3 class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->escapeHtml($_item->getName()) ?></a></h3>
+                <?php echo $this->getPriceHtml($_item, true, '-related') ?>
+            </div>
+        </div>
+        <div class="actions">
+            <?php if(!$_item->isComposite() && $_item->isSaleable() && !$_item->getRequiredOptions() ): ?>
+                <div class="qty-wrapper">
+                    <label for="qty">Qty</label>
+                    <input pattern="\d*" name="qty" id="qty" maxlength="12" value="1" title="Qty" class="input-text qty" type="text">
+                </div>
+                <div class="add-to-cart-buttons">
+                    <button type="button" title="Add to Cart" class="button btn-cart"><span><span>Add to Cart</span></span></button>
+                </div>
+            <?php else: ?>
+                <button type="button" title="<?php echo $this->quoteEscape($this->__('View Details')) ?>" class="button btn-small" onclick="setLocation('<?php echo $this->getProductUrl($_item) ?>')"><span><span><?php echo $this->__('View Details') ?></span></span></button>
+            <?php endif; ?>
+            <div class="clear"></div>
+        </div>
+    </form>
 <?php endif;?>

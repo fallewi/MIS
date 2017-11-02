@@ -23,6 +23,16 @@
 	</global>
 	
 	<frontend>
+		<translate>
+			<modules>
+				<BlueAcorn_AjaxCart>
+					<files>
+						<default>BlueAcorn_AjaxCart.csv</default>
+					</files>
+				</BlueAcorn_AjaxCart>
+			</modules>
+		</translate>
+		
 		<layout>
 			<updates>
 				<blueacorn_ajaxcart>

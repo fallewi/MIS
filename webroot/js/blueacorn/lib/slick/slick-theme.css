@@ -63,10 +63,10 @@
 }
 
 .slick-prev {
-    left: -15px;
+    left: -17px;
 }
 [dir='rtl'] .slick-prev {
-    right: -15px;
+    right: -17px;
     left: auto;
 }
 .slick-prev:before {
@@ -77,11 +77,11 @@
 }
 
 .slick-next {
-    right: -15px;
+    right: -17px;
 }
 [dir='rtl'] .slick-next {
     right: auto;
-    left: -15px;
+    left: -17px;
 }
 .slick-next:before {
     content: url('s_arrow_right.png');
@@ -97,10 +97,6 @@
 
 .slick-slider {
     margin: 0 22px 0;
-}
-
-.slick-slider .slick-slide {
-    padding: 1% !important;
 }
 
 .slick-dots {

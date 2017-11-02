@@ -35,26 +35,12 @@
     <ul id="block-related-list" class="related-products-grid">
     <?php $i=0; foreach($this->getItemCollection() as $_item): ?>
         <?php $_compareUrl = $this->helper('catalog/product_compare')->getAddUrl($_item) ?>
-        <li style="width: 25%; padding: 2%; display: inline-block;" class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0): ?> last<?php endif; ?>">
+        <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0): ?> last<?php endif; ?>">
             <div class="item-content">
                 <?php
                     $itemBlock = $this->getChild('catalog.product.related.item')->setItem($_item)->setPosition($i);
                     echo $itemBlock->toHtml();
                 ?>
-                <div class="actions">
-                    <?php if(!$_item->isComposite() && $_item->isSaleable() && !$_item->getRequiredOptions() ): ?>
-                        <div class="qty-wrapper">
-                            <label for="qty">Qty</label>
-                            <input pattern="\d*" name="qty" id="qty" maxlength="12" value="1" title="Qty" class="input-text qty" type="text">
-                        </div>
-                        <div class="add-to-cart-buttons">
-                            <button type="button" title="Add to Cart" class="button btn-cart"><span><span>Add to Cart</span></span></button>
-                        </div>
-                    <?php else: ?>
-                        <button type="button" title="<?php echo $this->quoteEscape($this->__('View Details')) ?>" class="button btn-small" onclick="setLocation('<?php echo $this->getProductUrl($_item) ?>')"><span><span><?php echo $this->__('View Details') ?></span></span></button>
-                    <?php endif; ?>
-                    <div class="clear"></div>
-                </div>
             </div>
         </li>
     <?php endforeach ?>

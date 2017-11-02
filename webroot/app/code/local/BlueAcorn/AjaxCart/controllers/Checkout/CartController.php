@@ -10,16 +10,20 @@
 	class BlueAcorn_AjaxCart_Checkout_CartController extends Mage_Checkout_CartController {
 		
 		protected $_errorMessage = false;
+		protected $_addAction;
 		protected $_product;
 		
 		
 		/**
-		 * Add product to shopping cart action
+		 * Add product to shopping cart
 		 *
-		 * @return Mage_Core_Controller_Varien_Action
+		 * @return $this
 		 */
 		public function addAction() {
+			$this->_addAction = true;
+			
 			if ( !$this->_validateFormKey() ) {
+				$this->_errorMessage = $this->__('Form key validation failed. Please refresh page.');
 				$this->_goBack();
 				return;
 			}
@@ -77,7 +81,63 @@
 		
 		
 		/**
-		 * Add to cart response
+		 * Remove product from shopping cart
+		 *
+		 * @return $this
+		 */
+		public function removeAction() {
+			$this->_addAction = false;
+			
+			if ( !$this->_validateFormKey() ) {
+				$this->_errorMessage = $this->__('Form key validation failed. Please refresh page.');
+				$this->_goBack();
+				return;
+			}
+			
+			$__cart   = $this->_getCart();
+			
+			try {
+				$this->_product = $this->_initProduct();
+				
+				if ( !$this->_product or !$this->_product->getId() ) {
+					$this->_errorMessage = $this->__('The product is not found.');
+					$this->_goBack();
+					return;
+				}
+				
+				$__removed = false;
+				foreach ( $__cart->getItems() as $__item ) {
+					if ( $__item->getProduct()->getId() == $this->_product->getId() ) {
+						$__itemId = $__item->getItemId();
+						$__cart->removeItem($__itemId)->save();
+						$this->_getSession()->setCartWasUpdated(true);
+						$__removed = true;
+						
+						break;
+					}
+				}
+				if ( !$__removed ) {
+					$this->_errorMessage = $this->__('Failed to find this product in cart.');
+				}
+				
+				$this->_errorMessage = false;
+				$this->_goBack();
+			}
+			catch ( Mage_Core_Exception $e ) {
+				$this->_errorMessage = Mage::helper('core')->escapeHtml($e->getMessage());
+				$this->_goBack();
+			}
+			catch ( Exception $e ) {
+				Mage::logException($e);
+				
+				$this->_errorMessage = $this->__('Failed to remove product from shopping cart.');
+				$this->_goBack();
+			}
+		}
+		
+		
+		/**
+		 * Send Ajax Response
 		 *
 		 * @return $this
 		 */
@@ -99,13 +159,18 @@
 					$this->loadLayout();
 					$__ajaxResponse = [
 						'success'  => true,
-						'message'  => $this->__('%s was added to your shopping cart.', $this->_product->getName()),
 						'duration' => $__duration,
 						'qty'      => $this->_getCart()->getSummaryQty(),
 						'SID'      => Mage::getSingleton('core/session')->getSessionId(),
 						'carthtml' => Mage::app()->getLayout()->getBlock('minicart_content')->toHtml(),
 						'total'    => Mage::helper('checkout')->formatPrice($this->_getQuote()->getGrandTotal())
 					];
+					if ( $this->_addAction ) {
+						$__ajaxResponse['message'] = $this->__('%s was added to your shopping cart.', $this->_product->getName());
+					}
+					else {
+						$__ajaxResponse['message'] = $this->__('%s was removed from your shopping cart.', $this->_product->getName());
+					}
 				}
 				
 				$this->getResponse()->setBody(Zend_Json::encode($__ajaxResponse));
