@@ -83,10 +83,15 @@ class Bronto_Common_Model_Observer
 
         // Bug user about registration, only once
         $onBronto = $action->getRequest()->getParam('section') == 'bronto';
-        !Mage::helper(self::SUPPORT_IDENTIFIER)->verifyRegistration($onBronto);
 
-        // Verify API tokens are valid
-        if ($helper->isEnabled() && !$helper->validApiStatus()) {
+        try {
+            Mage::helper(self::SUPPORT_IDENTIFIER)->verifyRegistration($onBronto);
+
+            // Verify API tokens are valid
+            if ($helper->isEnabled() && !$helper->validApiStatus()) {
+                return false;
+            }
+        } catch (\Mage_Core_Exception $e) {
             return false;
         }
 

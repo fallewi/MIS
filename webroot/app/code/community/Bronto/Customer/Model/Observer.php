@@ -90,29 +90,36 @@ class Bronto_Customer_Model_Observer extends Mage_Core_Model_Abstract
         // For each Customer...
         foreach ($customerRows as $customerRow) {
             $customerId = $customerRow->getCustomerId();
-            if ($customer = Mage::getModel('customer/customer')->load($customerId)/* @var $customer Mage_Customer_Model_Customer */) {
-                Mage::helper('bronto_customer')->writeDebug("  Processing Customer ID: {$customerId} for Store ID: {$storeId}");
 
-                $brontoContact = $contactObject->createObject()
-                    ->withStatus(Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL)
-                    ->withEmail($customer->getEmail())
-                    ->withQueueRow($customerRow->getData());
-                /* Process Customer Attributes */
-                try {
-                    $brontoContact = $this->_processAttributes($brontoContact, $customer, $customerAttributes, $store, 'customer');
-                    $brontoContact = $this->_processRewardPoints($brontoContact, $customer, $store);
-                    $brontoContact = $this->_processStoreCredit($brontoContact, $customer, $store);
-                    foreach (Mage::helper('bronto_customer')->getAddressTypes() as $prefix => $methodName) {
-                        $address = $customer->$methodName();
-                        if (!empty($address)) {
-                            $brontoContact = $this->_processAttributes($brontoContact, $address, $addressAttributes, $store, $prefix);
-                        }
+            /** @var Mage_Customer_Model_Customer $customer */
+            $customer = Mage::getModel('customer/customer')->load($customerId);
+
+            Mage::helper('bronto_customer')->writeDebug("  Processing Customer ID: {$customerId} for Store ID: {$storeId}");
+
+            if (!$customer || !$customer->getId()) {
+                $customerRow->delete();
+                continue;
+            }
+
+            $brontoContact = $contactObject->createObject()
+                ->withStatus(Bronto_Api_Model_Contact::STATUS_TRANSACTIONAL)
+                ->withEmail($customer->getEmail())
+                ->withQueueRow($customerRow->getData());
+            /* Process Customer Attributes */
+            try {
+                $brontoContact = $this->_processAttributes($brontoContact, $customer, $customerAttributes, $store, 'customer');
+                $brontoContact = $this->_processRewardPoints($brontoContact, $customer, $store);
+                $brontoContact = $this->_processStoreCredit($brontoContact, $customer, $store);
+                foreach (Mage::helper('bronto_customer')->getAddressTypes() as $prefix => $methodName) {
+                    $address = $customer->$methodName();
+                    if (!empty($address)) {
+                        $brontoContact = $this->_processAttributes($brontoContact, $address, $addressAttributes, $store, $prefix);
                     }
-
-                    $addOrUpdate->addContact($brontoContact);
-                } catch (Exception $e) {
-                    Mage::helper('bronto_customer')->writeError($e);
                 }
+
+                $addOrUpdate->addContact($brontoContact);
+            } catch (Exception $e) {
+                Mage::helper('bronto_customer')->writeError($e);
             }
         }
 
