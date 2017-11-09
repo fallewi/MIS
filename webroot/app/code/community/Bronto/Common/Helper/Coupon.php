@@ -242,7 +242,7 @@ class Bronto_Common_Helper_Coupon extends Bronto_Common_Helper_Data
         $rules = Mage::getModel('salesrule/rule')
             ->getCollection()
             ->setValidationFilter($websiteId, $customerGroupId, $couponCode)
-            ->addFieldToFilter('main_table.coupon_type', array('in' => array(Mage_SalesRule_Model_Rule::COUPON_TYPE_SPECIFIC, Mage_SalesRule_Model_Rule::COUPON_TYPE_AUTO)));
+            ->addFieldToFilter('coupon_type', array('in' => array(Mage_SalesRule_Model_Rule::COUPON_TYPE_SPECIFIC, Mage_SalesRule_Model_Rule::COUPON_TYPE_AUTO)));
         foreach ($rules as $rule) {
             $coupon = Mage::getModel('salesrule/coupon')->loadByCode($couponCode);
             if ($coupon->getUsageLimit() && $coupon->getTimesUsed() >= $coupon->getUsageLimit()) {

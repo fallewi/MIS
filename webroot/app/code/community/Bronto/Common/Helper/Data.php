@@ -57,6 +57,7 @@ class Bronto_Common_Helper_Data
      */
     const XML_PATH_CART_RECOVERY_CODE = 'bronto_cartrecovery/settings/code';
     const XML_PATH_CART_RECOVERY_OTHER = 'bronto_cartrecovery/settings/other';
+    const XML_PATH_CART_RECOVERY_TAX = 'bronto_cartrecovery/settings/tax';
 
     /**
      * Module Human Readable Name
@@ -156,6 +157,16 @@ class Bronto_Common_Helper_Data
     public function getLineItemAttributeCode()
     {
         return $this->getAdminScopedConfig(self::XML_PATH_CART_RECOVERY_OTHER);
+    }
+
+    /**
+     * Gets the tax inclusion attribute value to determine if tax should be included with price values
+     *
+     * @return string
+     */
+    public function isTaxIncluded()
+    {
+        return $this->getAdminScopedConfig(self::XML_PATH_CART_RECOVERY_TAX);
     }
 
     /**

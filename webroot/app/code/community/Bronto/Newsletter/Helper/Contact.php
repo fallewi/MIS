@@ -71,14 +71,8 @@ class Bronto_Newsletter_Helper_Contact extends Bronto_Common_Helper_Contact
     public function getListData($listId, $scope = 'default', $scopeId = 0)
     {
         if ($api = $this->getApi(null, $scope, $scopeId)) {
-            /* @var $listObject Bronto_Api_List */
-            $listObject = $api->getListObject();
             try {
-                foreach ($listObject->readAll(array('id' => $listId))->iterate() as $list/* @var $list Bronto_Api_List_Row */) {
-                    if ($list->id == $listId) {
-                        return $list;
-                    }
-                }
+                return $api->transferMailList()->getById($listId);
             } catch (Exception $e) {
                 Mage::helper('bronto_newsletter')->writeError('Failed to retrieve list: ' . $e->getMessage());
             }

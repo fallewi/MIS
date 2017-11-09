@@ -46,12 +46,24 @@ $youtubeUrl = Mage::getStoreConfig('ba_footer/social/youtube_url');
         <div class="connect-container">
         	<?php echo $this->getChildHtml('newsletter') ?>
             <div class="social-links">
-                <a target="_blank" href="<?php echo $twitterUrl ?>" class="icon twitter-icon"><?php echo $twitterUrl ?></a>
-                <a target="_blank" href="<?php echo $instagramUrl ?>" class="icon instagram-icon"><?php echo $instagramUrl ?></a>
-                <a target="_blank" href="<?php echo $facebookUrl ?>" class="icon facebook-icon"><?php echo $facebookUrl ?></a>
-                <a target="_blank" href="<?php echo $youtubeUrl ?>" class="icon youtube-icon"><?php echo $youtubeUrl ?></a>
+                <a target="_blank" href="<?php echo $twitterUrl ?>" class="icon"><span class="twitter-icon"><i class="fa fa-twitter" aria-hidden="true"></i></span></a>
+                <a target="_blank" href="<?php echo $instagramUrl ?>" class="icon"><span class="instagram-icon"><i class="fa fa-instagram" aria-hidden="true"></i></span></a>
+                <a target="_blank" href="<?php echo $facebookUrl ?>" class="icon"><span class="facebook-icon"><i class="fa fa-facebook-f" aria-hidden="true"></i></span></a>
+                <a target="_blank" href="<?php echo $youtubeUrl ?>" class="icon"><span class="youtube-icon"><i class="fa fa-youtube-play"></i></span></a>
             </div>
         </div>
         <address class="copyright"><?php echo $this->getCopyright() ?></address>
     </div>
 </div>
+<?php
+/*
+<span><i class="fa fa-youtube-play" aria-hidden="true"></i></span>
+
+<style type="text/css">.circle-fa:hover{ opacity: 0.75; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; }	</style>
+<div class="social-links">
+    <a href="/locations" target="_blank" >
+        <span class="circle-fa" style="background-image:none;background-color:#4d597a;border-radius:50%;color:#fff;padding:18px 11px 10px;"><i class="fa fa-youtube-play" aria-hidden="true" style="font-size:28px;"></i></span>
+    </a>
+</div>
+
+*/
