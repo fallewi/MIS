@@ -548,7 +548,8 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
 
             $index = 1;
             $lineItems = Mage::helper('bronto_common/item')->getFlatItems($order);
-            foreach ($lineItems as $item /* @var $item Mage_Sales_Model_Order_Item */) {
+            foreach ($lineItems as $item) {
+                /** @var Mage_Sales_Model_Order_Item $item */
                 $this->_filterOrderItem($item, $index);
                 $index++;
             }
@@ -607,7 +608,8 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         if (!in_array('invoice', $this->_filteredObjects)) {
             $index = 1;
             $lineItems = Mage::helper('bronto_common/item')->getFlatItems($invoice);
-            foreach ($lineItems as $item/* @var $item Mage_Sales_Model_Order_Invoice_Item */) {
+            foreach ($lineItems as $item) {
+                /** @var Mage_Sales_Model_Order_Invoice_Item $item */
                 $this->_filterOrderItem($item, $index);
                 $index++;
             }
@@ -635,7 +637,8 @@ class Bronto_Common_Model_Email_Template_Filter extends Mage_Core_Model_Email_Te
         if (!in_array('shipment', $this->_filteredObjects)) {
             $index = 1;
             $lineItems = Mage::helper('bronto_common/item')->getFlatItems($shipment);
-            foreach ($lineItems as $item/* @var $item Mage_Sales_Model_Order_Shipment_Item */) {
+            foreach ($lineItems as $item) {
+                /** @var Mage_Sales_Model_Order_Shipment_Item $item */
                 $this->_filterOrderItem($item, $index);
                 $index++;
             }

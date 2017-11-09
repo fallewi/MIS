@@ -415,12 +415,20 @@
     }
 
     .icon {
-        @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, 0, -91px);
-        width: 50px;
-        height: 50px;
-        text-indent: -9999em;
-        display: inline-block;
+       // @include retina-image('../images/sprite.png', '../images/sprite@2x.png', $spriteW, $spriteH, 0, -91px);
+        //width: 50px;
+        //height: 50px;
+        //text-indent: -9999em;
         margin-left: 12px;
+        span {
+            display: inline-block;
+            background-color: #4d597a;
+            border-radius: 50%;
+            color: #fff;
+        }
+        i{
+            font-size:28px;
+        }
 
         &:hover {
             @include opacity(.75);
@@ -431,16 +439,19 @@
         }
     }
 
+    .twitter-icon{
+        padding: 11.25px 11px 8px 13px;
+    }
     .instagram-icon {
-        background-position: -60px -91px;
+        padding:10px 13px 9.25px;
     }
 
     .facebook-icon {
-        background-position: -120px -91px;
+        padding:10px 17px 9.25px;
     }
 
     .youtube-icon {
-        background-position: -180px -91px;
+        padding:10px 11px 9.25px;
     }
 }
 
