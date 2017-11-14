@@ -53,6 +53,7 @@
 				}
 				
 				$__cart->save();
+				$this->_getSession()->setData('last_added_product_url', $this->_product->getProductUrl());
 				$this->_getSession()->setCartWasUpdated(true);
 				
 				Mage::dispatchEvent(

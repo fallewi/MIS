@@ -32,10 +32,12 @@ var BA_AjaxAddToCart = Class.create({
 		switch (state) {
 			case 'adding':
 				button.prop('disabled', true);
+				button.addClass('cart-processing');
 				btnLabel.end().text($this.config.btnLabelAdding);
 			break;
 			case 'added':
 				button.prop('disabled', false);
+				button.removeClass('cart-processing');
 				btnLabel.end().text($this.config.btnLabelAdded);
 				
 				setTimeout(function() {
@@ -45,10 +47,13 @@ var BA_AjaxAddToCart = Class.create({
 			break;
 			case 'failed_add':
 				button.prop('disabled', false);
+				button.removeClass('cart-processing');
 				btnLabel.end().text($this.config.btnLabelAdd);
 			break;
 			case 'remove':
 				button.prop('disabled', false);
+				button.removeClass('cart-processing');
+				button.prop('title', $this.config.btnLabelRemove);
 				button.addClass('cart-remove');
 				button.parent().prev().hide();
 				button.parent().css("width", "100%");
@@ -67,6 +72,7 @@ var BA_AjaxAddToCart = Class.create({
 			case 'removed':
 				button.prop('disabled', false);
 				button.removeClass('cart-remove');
+				button.prop('title', $this.config.btnLabelAdd);
 				button.parent().css("width", "74%");
 				button.parent().prev().show();
 				btnLabel.end().text($this.config.btnLabelRemoved);
@@ -264,7 +270,7 @@ var BA_AjaxAddToCart = Class.create({
 	},
 	
 	ajaxAddToCartRelated: function(button) {
-		var relForm = button.closest('.related_addtocart_form');
+		var relForm = $j(button).closest('.related_addtocart_form')[0];
 		if ( relForm.length ) {
 			var varienForm = new VarienForm(relForm.id);
 			if (varienForm.validator.validate()) {
