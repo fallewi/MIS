@@ -62,7 +62,7 @@ class Webshopapps_Wsalogger_Adminhtml_Block_Notification_Grid_Renderer_Notice
     {
         $dots = '';
         if(strlen($row->getDescription())>512) { $dots = ' . . . '; }
-        return '<span class="grid-row-title">' . $row->getTitle() . '</span>'
-            . ($row->getDescription() ? '<br />' . substr($row->getDescription(), 0, 512) . $dots : '');
+        return '<span class="grid-row-title">' . $this->escapeHtml($row->getTitle()) . '</span>'
+            . ($row->getDescription() ? '<br />' . substr($this->escapeHtml($row->getDescription()), 0, 512) . $dots : '');
     }
 }
