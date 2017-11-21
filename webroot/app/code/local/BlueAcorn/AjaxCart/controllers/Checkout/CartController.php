@@ -159,11 +159,11 @@
 				else {
 					$this->loadLayout();
 					$__ajaxResponse = [
-						'success'  => true,
-						'duration' => $__duration,
-						'qty'      => $this->_getCart()->getSummaryQty(),
-						'SID'      => Mage::getSingleton('core/session')->getSessionId(),
 						'carthtml' => Mage::app()->getLayout()->getBlock('minicart_content')->toHtml(),
+						'success'  => (string) true,
+						'duration' => (string) $__duration,
+						'qty'      => (string) $this->_getCart()->getSummaryQty(),
+						'SID'      => Mage::getSingleton('core/session')->getSessionId(),
 						'total'    => Mage::helper('checkout')->formatPrice($this->_getQuote()->getGrandTotal())
 					];
 					if ( $this->_addAction ) {
