@@ -55,8 +55,8 @@ var BA_AjaxAddToCart = Class.create({
 				button.removeClass('cart-processing');
 				button.prop('title', $this.config.btnLabelRemove);
 				button.addClass('cart-remove');
-				button.parent().prev().hide();
 				button.parent().css("width", "100%");
+				button.parent().prev().hide();
 				
 				btnLabel.end().text($this.config.btnLabelRemove);
 				button.off('click');
@@ -102,49 +102,20 @@ var BA_AjaxAddToCart = Class.create({
 			data: params
 		}).done(function(result) {
 			try {
-				var jsonData = JSON.parse(result);
-				var msgClass = 'error-msg';
-				if ( jsonData.success ) {
-					$j($this.config.cartId).html(jsonData.carthtml);
-					$j($this.config.cartLink).children('span.count').html(jsonData.qty);
-					$j($this.config.cartLink).children('span.subtotal').html(jsonData.total);
-					$j($this.config.cartLink).removeClass('no-count');
-					msgClass = 'success-msg';
-				}
+				var jsonData = result;
+				jsonData = JSON.parse(result);
 				
-				switch ( type ) {
-					case 'related':
-						$this.showMessage(
-							$j('#block-related-list'),
-							'before',
-							'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
-							'.block-related ul.messages',
-							jsonData.duration
-						);
-						
-						if ( jsonData.success ) {
-							$this.onChange('remove', button);
-						}
-						else {
-							$this.onChange('failed_add', button);
-						}
-					break;
-					default:
-						$this.showMessage(
-							button,
-							'after',
-							'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
-							'#product_addtocart_form ul.messages',
-							jsonData.duration
-						);
-						
-						$this.onChange('added', button);
-				}
+				$this.addProductAfter(jsonData, button, type);
 			}
 			catch (e) {
-				console.log('Ajax Cart: ' + e.message);
-				
-				$this.onChange('failed_add', button);
+				try {
+					var ejsonData = JSON.parse(result);
+					$this.addProductAfter(ejsonData, button, type);
+				}
+				catch (e) {
+					console.log('Ajax Cart: ' + e.message);
+					$this.onChange('failed_add', button);
+				}
 			}
 		}).error(function(jqXHR, textStatus, errorThrown) {
 			switch ( type ) {
@@ -169,6 +140,48 @@ var BA_AjaxAddToCart = Class.create({
 			
 			$this.onChange('failed_add', button);
 		});
+	},
+	
+	addProductAfter: function(jsonData, button, type) {
+		var $this = this;
+		
+		var msgClass = 'error-msg';
+		if ( jsonData.success ) {
+			$j($this.config.cartId).html(jsonData.carthtml);
+			$j($this.config.cartLink).children('span.count').html(jsonData.qty);
+			$j($this.config.cartLink).children('span.subtotal').html(jsonData.total);
+			$j($this.config.cartLink).removeClass('no-count');
+			msgClass = 'success-msg';
+		}
+		
+		switch ( type ) {
+			case 'related':
+				$this.showMessage(
+					$j('#block-related-list'),
+					'before',
+					'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
+					'.block-related ul.messages',
+					jsonData.duration
+				);
+				
+				if ( jsonData.success ) {
+					$this.onChange('remove', button);
+				}
+				else {
+					$this.onChange('failed_add', button);
+				}
+			break;
+			default:
+				$this.showMessage(
+					button,
+					'after',
+					'<ul class="messages"><li class="' + msgClass + '"><ul><li><span>' + jsonData.message + '</span></li></ul></li></ul>',
+					'#product_addtocart_form ul.messages',
+					jsonData.duration
+				);
+				
+				$this.onChange('added', button);
+		}
 	},
 	
 	removeProduct: function(button, type) {
