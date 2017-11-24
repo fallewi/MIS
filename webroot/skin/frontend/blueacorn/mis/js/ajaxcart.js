@@ -55,8 +55,12 @@ var BA_AjaxAddToCart = Class.create({
 				button.removeClass('cart-processing');
 				button.prop('title', $this.config.btnLabelRemove);
 				button.addClass('cart-remove');
-				button.parent().css("width", "100%");
 				button.parent().prev().hide();
+				button.parent().css("width", "100%");
+				
+				/* Safari fix */
+				button.parent().hide();
+				button.parent().show();
 				
 				btnLabel.end().text($this.config.btnLabelRemove);
 				button.off('click');
@@ -73,7 +77,7 @@ var BA_AjaxAddToCart = Class.create({
 				button.prop('disabled', false);
 				button.removeClass('cart-remove');
 				button.prop('title', $this.config.btnLabelAdd);
-				button.parent().css("width", "74%");
+				button.parent().css("width", "73%");
 				button.parent().prev().show();
 				btnLabel.end().text($this.config.btnLabelRemoved);
 				
@@ -109,6 +113,7 @@ var BA_AjaxAddToCart = Class.create({
 			}
 			catch (e) {
 				try {
+					/* Safari fix */
 					var ejsonData = JSON.parse(result);
 					$this.addProductAfter(ejsonData, button, type);
 				}
