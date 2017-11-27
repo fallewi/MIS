@@ -636,11 +636,11 @@
                 width: 90%;
                 
                 .qty-wrapper {
-                    width: 73px;
+                    width: 72px;
                     float: left;
                     margin: 0;
                     label {
-                        display: inline-block;
+                        display: inline;
                         margin: 0;
                         position: relative;
                         top: 7px;
@@ -650,7 +650,7 @@
                         display: inline-block;
                         float: right;
                         height: 42px;
-                        width: 44px;
+                        width: 40px;
                         border: 2px solid #c8c8c8;
                         padding: 0 5px;
                         
