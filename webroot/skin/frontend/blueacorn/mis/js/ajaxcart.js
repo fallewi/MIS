@@ -56,11 +56,6 @@ var BA_AjaxAddToCart = Class.create({
 				button.prop('title', $this.config.btnLabelRemove);
 				button.addClass('cart-remove');
 				button.parent().prev().hide();
-				button.parent().css("width", "100%");
-				
-				/* Safari fix */
-				button.parent().hide();
-				button.parent().show();
 				
 				btnLabel.end().text($this.config.btnLabelRemove);
 				button.off('click');
@@ -68,6 +63,9 @@ var BA_AjaxAddToCart = Class.create({
 					event.preventDefault();
 					$this.removeProduct(button, 'related');
 				});
+				
+				/* Safari fix */
+				button.parent().animate({"width": "100%"}, 100);
 			break;
 			case 'removing':
 				button.prop('disabled', true);
@@ -260,10 +258,10 @@ var BA_AjaxAddToCart = Class.create({
 	showMessage: function(msgElem, position, msgText, msgNode, duration) {
 		switch ( position ) {
 			case 'before':
-				msgElem.before(msgText);
+				$j(msgText).hide().insertBefore(msgElem).slideDown('slow');
 			break;
 			case 'after':
-				msgElem.after(msgText);
+				$j(msgText).hide().insertAfter(msgElem).slideDown('slow');
 			break;
 		}
 		
