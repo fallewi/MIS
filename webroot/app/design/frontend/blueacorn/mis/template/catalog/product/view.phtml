@@ -250,7 +250,9 @@
         //]]>
         </script>
     </div>
-
+    
+    <?php echo $this->getChildHtml('related_products') ?>
+    
     <div class="product-information-block">
 
     <div class="column column-left">
@@ -343,7 +345,6 @@
     </div>
     </div>
 
-    <?php echo $this->getChildHtml('related_products') ?>
     <?php echo $this->getChildHtml('upsell_products') ?>
 
 </div>

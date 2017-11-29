@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package     BlueAcorn_AjaxCart
+ * @version
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2017 Blue Acorn, Inc.
+ */
+ -->
+<layout>
+	<catalog_product_view>
+		<reference name="head">
+			<action method="addItem" ifconfig="blueacorn_ajaxcart/general/enabled">
+				<type>skin_js</type>
+				<script>js/ajaxcart.js</script>
+			</action>
+		</reference>
+	</catalog_product_view>
+</layout>
