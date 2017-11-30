@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package     BlueAcorn_AjaxCart
+ * @version
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2017 Blue Acorn, Inc.
+ */
+ -->
+<config>
+	<acl>
+		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<blueacorn_ajaxcart>
+										<title>Ajax Cart</title>
+									</blueacorn_ajaxcart>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config> 

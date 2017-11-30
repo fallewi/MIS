@@ -151,6 +151,20 @@
     </product_theme_changes>
 
     <catalog_product_view>
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>blueacorn/lib/slick/slick.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>blueacorn/lib/slick/slick.css</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>blueacorn/lib/slick/slick-theme.css</name>
+            </action>
+        </reference>
         <update handle="product_theme_changes" />
     </catalog_product_view>
 

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @package     BlueAcorn_AjaxCart
+* @version
+* @author      Blue Acorn, Inc. <code@blueacorn.com>
+* @copyright   Copyright © 2017 Blue Acorn, Inc.
+*/
+-->
+<config>
+	<tabs>
+		<blueacorn translate="label" module="blueacorn_ajaxcart">
+			<label>Blue Acorn</label>
+			<sort_order>1000</sort_order>
+		</blueacorn>
+	</tabs>
+	<sections>
+		<blueacorn_ajaxcart translate="label" module="blueacorn_ajaxcart">
+			<label>Ajax Cart</label>
+			<tab>blueacorn</tab>
+			<sort_order>300</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>0</show_in_store>
+			<groups>
+				<general translate="label" module="blueacorn_ajaxcart">
+				<label>General Settings</label>
+				<frontend_type>text</frontend_type>
+				<sort_order>10</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>0</show_in_store>
+					<fields>
+						<enabled translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</enabled>
+						<notification_duration translate="label">
+							<label>Notification duration</label>
+							<frontend_type>text</frontend_type>
+							<validate>validate-digits</validate>
+							<comment>In seconds.</comment>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</notification_duration>
+					</fields>
+				</general>
+			</groups>
+		</blueacorn_ajaxcart>
+	</sections>
+</config>
