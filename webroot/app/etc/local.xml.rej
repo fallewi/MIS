@@ -1,0 +1,16 @@
+--- app/etc/local.xml
++++ app/etc/local.xml
+@@ -63,4 +63,13 @@
+             </adminhtml>
+         </routers>
+     </admin>
++    <stores>
++        <admin>
++            <design>
++                <theme>
++                    <default>missionrs</default>
++                </theme>
++            </design>
++        </admin>
++    </stores>
+ </config>
