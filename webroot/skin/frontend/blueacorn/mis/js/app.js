@@ -1017,9 +1017,16 @@ $j(document).ready(function () {
     if ($j('body.checkout-onepage-index').length) {
         enquire.register('(max-width: ' + bp.large + 'px)', {
             match: function () {
+                var orderSummary = $j('#order-summary');
+                if (orderSummary.hasClass('no-display')) {
+                    orderSummary.removeClass('no-display');
+                }
+                orderSummary.insertBefore($j('#checkoutSteps'));
                 $j('#checkout-step-review').prepend($j('#checkout-progress-wrapper'));
             },
             unmatch: function () {
+                $j('#order-summary').removeClass('no-display');
+                $j('#order-summary').insertBefore($j('#checkout-progress-wrapper-content'));
                 $j('.col-right').prepend($j('#checkout-progress-wrapper'));
             }
         });

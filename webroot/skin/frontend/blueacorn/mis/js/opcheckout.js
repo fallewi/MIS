@@ -141,6 +141,9 @@ Checkout.prototype = {
 
         //Clear other steps if already populated through javascript
         for (var i = stepIndex; i < this.steps.length; i++) {
+            if ( nextStep == 'shipping_method' ) {
+                $('summary-shipping').innerHTML = '-';
+            }
             var nextStep = this.steps[i];
             var progressDiv = nextStep + '-progress-opcheckout';
             if ($(progressDiv)) {
@@ -641,7 +644,11 @@ ShippingMethod.prototype = {
         }
 
         payment.initWhatIsCvvListeners();
-
+        
+        new Ajax.Updater('summary-totals', mageConfig.base_url + 'summary/checkout/totals', {
+            method: 'post'
+        });
+        
         if (response.goto_section) {
             checkout.gotoSection(response.goto_section, true);
             checkout.reloadProgressBlock();

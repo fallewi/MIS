@@ -1,0 +1,14 @@
+<div class="order-summary" id="order-summary">
+	<div class="summary-title">
+		<span class="title"><?php echo $this->__('Order Summary'); ?></span>
+		<span class="summary-price" id="summary-price"><?php echo $this->getGrandTotal(); ?></span>
+		<a class="summary-edit" href="<?php echo $this->getUrl('checkout/cart'); ?>"><?php echo $this->__('Edit'); ?></a>
+	</div>
+	<div class="clear"></div>
+	<ul class="summary-content">
+		<?php foreach ( $this->getItems() as $__item ): ?>
+			<?php echo $this->getItemHtml($__item) ?>
+		<?php endforeach; ?>
+	</ul>
+	<?php echo $this->getChildHtml('checkout.summary.totals'); ?>
+</div>
