@@ -13,7 +13,8 @@
 		 * @return BlueAcorn_CartEstimate_Model_Observer $this
 		 */
 		public function processEstimateAddress(Varien_Event_Observer $observer) {
-			if ( Mage::getSingleton('checkout/cart')->getQuote()->getItemsCount() ) {
+			$__quote = Mage::getSingleton('checkout/cart')->getQuote();
+			if ( $__quote->getItemsCount() and (!$__quote->getShippingAddress()->getPostcode() or !$__quote->getShippingAddress()->getRegionId()) ) {
 				$__helper = Mage::helper('blueacorn_cartestimate');
 				if ( $__helper->getIsEnabled() ) {
 					$__token = $__helper->getAccessToken();
