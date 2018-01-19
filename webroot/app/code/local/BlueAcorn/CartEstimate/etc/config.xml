@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package     BlueAcorn_CartEstimate
+ * @version     1.0.0
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, Inc.
+ */
+ -->
+<config>
+	<modules>
+		<BlueAcorn_CartEstimate>
+			<version>1.0.0</version>
+		</BlueAcorn_CartEstimate>
+	</modules>
+	
+	<global>
+		<helpers>
+			<blueacorn_cartestimate>
+				<class>BlueAcorn_CartEstimate_Helper</class>
+			</blueacorn_cartestimate>
+		</helpers>
+		<models>
+			<blueacorn_cartestimate>
+				<class>BlueAcorn_CartEstimate_Model</class>
+			</blueacorn_cartestimate>
+		</models>
+		<events>
+			<controller_action_predispatch_checkout_cart_index>
+				<observers>
+					<blueacorn_cartestimate>
+						<class>BlueAcorn_CartEstimate_Model_Observer</class>
+						<method>processEstimateAddress</method>
+					</blueacorn_cartestimate>
+				</observers>
+			</controller_action_predispatch_checkout_cart_index>
+		</events>
+	</global>
+</config>

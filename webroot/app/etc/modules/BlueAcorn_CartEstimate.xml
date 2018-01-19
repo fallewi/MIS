@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<BlueAcorn_CartEstimate>
+			<active>true</active>
+			<codePool>local</codePool>
+		</BlueAcorn_CartEstimate>
+	</modules>
+</config>
