@@ -1,0 +1,33 @@
+<div class="order-summary" id="order-summary">
+	<div class="summary-title" id="summary-title">
+		<i></i>
+		<span class="title"><?php echo $this->__('Order Summary'); ?></span>
+		<span class="no-display" id="summary-base-price" style="display: none;"><?php echo $this->getGrandTotal(); ?></span>
+		<span class="summary-price" id="summary-price"><?php echo $this->getGrandTotal(); ?></span>
+		<a class="summary-edit" href="<?php echo $this->getUrl('checkout/cart'); ?>"><?php echo $this->__('Edit'); ?></a>
+	</div>
+	<div class="clear"></div>
+	<a class="summary-edit-mobile" href="<?php echo $this->getUrl('checkout/cart'); ?>"><?php echo $this->__('Edit'); ?></a>
+	<ul class="summary-content scrollbar-inner" id="summary-content">
+		<?php foreach ( $this->getItems() as $__item ): ?>
+			<?php echo $this->getItemHtml($__item) ?>
+		<?php endforeach; ?>
+	</ul>
+	<div class="summary-totals" id="summary-totals">
+		<?php echo $this->getChildHtml('checkout.summary.totals'); ?>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery('#summary-title').click(function() {
+		if ( jQuery(this).hasClass('clickable') ) {
+			jQuery('#order-summary').toggleClass('collapsed');
+		}
+	});
+	jQuery(window).on("load",function() {
+		jQuery("#summary-content").mCustomScrollbar({
+			theme: "dark-3",
+			mouseWheelPixels: 100,
+			scrollInertia: 700
+		});
+	});
+</script>
