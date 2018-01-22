@@ -19,6 +19,12 @@
 		 * @return string
 		 */
 		public function getGrandTotal() {
-			return Mage::helper('core')->currency(Mage::getModel('checkout/session')->getQuote()->getData('grand_total'), true, false);
+			$__quote = Mage::getModel('checkout/session')->getQuote();
+			$__shippingAmount = $__quote->getShippingAddress()->getShippingAmount();
+			if ( $this->getIsKnown() ) {
+				$__shippingAmount = 0;
+			}
+			
+			return Mage::helper('core')->currency($__quote->getData('grand_total') - $__shippingAmount, true, false);
 		}
 	}

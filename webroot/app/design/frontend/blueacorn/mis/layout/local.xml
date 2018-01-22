@@ -188,6 +188,10 @@
 
     <checkout_onepage_index>
         <update handle="checkout_theme_changes" />
+        <reference name="head">
+            <action method="addItem"><type>js</type><name>blueacorn/malihu/jquery.mCustomScrollbar.concat.min.js</name></action>
+            <action method="addItem"><type>js_css</type><name>blueacorn/malihu/jquery.mCustomScrollbar.css</name></action>
+        </reference>
         <reference name="header">
             <remove name="top.menu" />
         </reference>

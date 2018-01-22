@@ -1023,11 +1023,16 @@ $j(document).ready(function () {
                 }
                 orderSummary.insertBefore($j('#checkoutSteps'));
                 $j('#checkout-step-review').prepend($j('#checkout-progress-wrapper'));
+                $j('#summary-title').addClass('clickable');
+                orderSummary.addClass('collapsed');
             },
             unmatch: function () {
-                $j('#order-summary').removeClass('no-display');
-                $j('#order-summary').insertBefore($j('#checkout-progress-wrapper-content'));
+                var orderSummary = $j('#order-summary');
+                orderSummary.removeClass('no-display');
+                orderSummary.insertBefore($j('#checkout-progress-wrapper-content'));
                 $j('.col-right').prepend($j('#checkout-progress-wrapper'));
+                $j('#summary-title').removeClass('clickable');
+                orderSummary.removeClass('collapsed');
             }
         });
     }

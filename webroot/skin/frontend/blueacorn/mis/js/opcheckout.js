@@ -143,6 +143,11 @@ Checkout.prototype = {
         for (var i = stepIndex; i < this.steps.length; i++) {
             if ( nextStep == 'shipping_method' ) {
                 $('summary-shipping').innerHTML = '-';
+                var baseGrandTotal = $('summary-base-price');
+                if ( baseGrandTotal != undefined ) {
+                    $('summary-price').innerHTML = baseGrandTotal.innerHTML;
+                    $('summary-grand-total').innerHTML = baseGrandTotal.innerHTML;
+                }
             }
             var nextStep = this.steps[i];
             var progressDiv = nextStep + '-progress-opcheckout';
@@ -646,7 +651,13 @@ ShippingMethod.prototype = {
         payment.initWhatIsCvvListeners();
         
         new Ajax.Updater('summary-totals', mageConfig.base_url + 'summary/checkout/totals', {
-            method: 'post'
+            method: 'post',
+            onComplete: function() {
+                var summaryTotal = $('summary-grand-total');
+                if ( summaryTotal != undefined ) {
+                    $('summary-price').innerHTML = summaryTotal.innerHTML;
+                }
+            }
         });
         
         if (response.goto_section) {
