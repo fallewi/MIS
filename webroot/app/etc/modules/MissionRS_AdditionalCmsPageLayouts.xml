@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_AdditionalCmsPageLayouts>
+            <codePool>local</codePool>
+            <active>true</active>
+        </MissionRS_AdditionalCmsPageLayouts>
+    </modules>
+</config>
