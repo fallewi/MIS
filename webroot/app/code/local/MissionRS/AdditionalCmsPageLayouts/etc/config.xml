@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MissionRS_AdditionalCmsPageLayouts>
+            <version>0.0.1</version>
+        </MissionRS_AdditionalCmsPageLayouts>
+    </modules>
+    <global>
+        <page>
+            <layouts>
+                <additionalcmspagelayouts module="page" translate="label">
+                    <label>Mrs-Empty</label>
+                    <template>page/mrs-empty.phtml</template>
+                    <layout_handle>mrs-empty</layout_handle>
+                </additionalcmspagelayouts>
+            </layouts>
+        </page>
+    </global>
+</config>
