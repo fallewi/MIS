@@ -652,6 +652,7 @@ ShippingMethod.prototype = {
         
         new Ajax.Updater('summary-totals', mageConfig.base_url + 'summary/checkout/totals', {
             method: 'post',
+            evalScripts: true,
             onComplete: function() {
                 var summaryTotal = $('summary-grand-total');
                 if ( summaryTotal != undefined ) {

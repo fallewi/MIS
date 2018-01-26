@@ -28,6 +28,7 @@
 <div class="page-title">
     <h1><?php echo ($_helper->getSystemConfig(['checkout','checkoutheader']) != "") ? $_helper->getSystemConfig(['checkout','checkoutheader']) : $this->__('Checkout') ?></h1>
 </div>
+<?php echo $this->getMessagesBlock()->addMessages(Mage::getSingleton('checkout/session')->getMessages(true))->toHtml(); ?>
 <?php echo $this->getChildChildHtml('checkout.top.widget') ?>
 <script type="text/javascript" src="<?php echo $this->getJsUrl('varien/accordion.js') ?>"></script>
 <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/opcheckout.js') ?>"></script>

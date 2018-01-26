@@ -587,6 +587,64 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
                 line-height: 36px;
             }
         }
+        
+        .discount-form {
+            padding: 5px 0;
+            
+            &.filled {
+                padding: 0;
+            }
+            
+            .field-wrapper {
+                position: relative;
+                
+                .button-wrapper {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    
+                    .button2 {
+                        span {
+                            line-height: 24px;
+                            height: 28px;
+                            
+                            span {
+                                text-transform: capitalize;
+                                text-decoration: none;
+                                line-height: 24px;
+                                height: 28px;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            .coupon-code {
+                width: 80%;
+                height: 28px;
+                font-size: 12px;
+                color: #313131;
+                
+                &::placeholder {
+                    color: #313131;
+                    opacity: 1;
+                }
+                &:-ms-input-placeholder {
+                    color: #313131;
+                }
+                &::-ms-input-placeholder {
+                    color: #313131;
+                }
+            }
+            
+            .validation-advice {
+                text-align: left;
+                font-size: 11px;
+                margin: 0;
+                float: left;
+                text-transform: capitalize;
+            }
+        }
     }
 }
 
