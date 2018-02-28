@@ -45,6 +45,10 @@ Checkout.prototype = {
         }.bind(this));
 
         this.accordion.disallowAccessToNextSections = true;
+        
+        if ( $$('ul.messages').length ) {
+            this.setMethod();
+        }
     },
 
     /**

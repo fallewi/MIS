@@ -562,6 +562,41 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
                         width: 50px;
                     }
                 }
+                .truncated {
+                    .details {
+                        font-size: 11px;
+                        height: 12px;
+                        line-height: 12px;
+                    }
+                    .item-options {
+                        top: 25px;
+                        left: -15px;
+                        width: 180px;
+                        padding: 5px;
+                        
+                        dt {
+                            font-size: 11px;
+                            padding: 0;
+                            font-style: italic;
+                            font-weight: normal;
+                            line-height: 22px;
+                            margin: 0;
+                            width: 75px;
+                            color: gray;
+                        }
+                        dd {
+                            margin-bottom: 0;
+                            padding: 0;
+                            font-size: 11px;
+                            font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+                        }
+                        
+                        &:after {
+                            left: 28px;
+                            top: -7px;
+                        }
+                    }
+                }
                 .description {
                     font-family: sans-serif;
                     margin-top: 6px;
