@@ -99,10 +99,10 @@ server {
 
 1. (if blueacornui exists) On __Deployment Host__, copy Assets to Deployment Targets
   ```
-  cd /sites/MIS/webroot/skin/frontend/blueacorn/site
-  rsync -zrL --delete-after css/ target_host:/MIS/webroot/skin/frontend/blueacorn/site
-  rsync -zrL --delete-after jsmin/ target_host:/MIS/webroot/skin/frontend/blueacorn/site
-  ```
+  cd /sites/MIS/webroot/skin/frontend/blueacorn/mis
+  rsync -zrL --delete-after css/ blueacorn@173.203.138.86:/home/blueacorn/staging.missionrs.com/webroot/skin/frontend/blueacorn/mis
+rsync -zrL --delete-after jsmin/ blueacorn@173.203.138.86:/home/blueacorn/staging.missionrs.com/webroot/skin/frontend/blueacorn/mis  
+```
 1. On __Deployment Target(s)__, Clear the FPC and Object Cache
   * use n98-magerun -or-
   * use redis-cli (if redis)
