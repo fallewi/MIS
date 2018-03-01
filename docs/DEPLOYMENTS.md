@@ -1,48 +1,23 @@
-Deployments
+MissionRS Deployments
 ===========
+In this document, we will outline the steps to perform a deployment and the branching stategies.
 
-Skel projects leverage "git based" deployments -- meaning git is used
-to set the codebase on remote webservers to a desired version (git ref).
+## Branching
 
-Deployments are typically triggered by the [MIS Jenkins Deployment Job](http://jenkins.badevops.com/job/MIS/), which runs an
-ansible deployment via `bin/deploy` against a specified environment and git ref.
+The following table outlines the branch merging process we use to manage projects.
 
+Branch | environment | Description
+-------|-------------|------------
+develop | none | develop represents the approved code that is production-ready, we typically branch from develop when building features. Ideally, develop and master are similar so when branching from develop for feature work, you should only have your commits and any commits that are slated for production when you merge that feature into master
+unstable/release_x | staging | unstable branches, commonly known as releases, represent non-approved in-progress work. We typically branch these from develop (sometimes we branch form master on projects where develop has commits we do not want to appear on production but this is technically against gitflow) and these are the branches a developer would open a PR into to deliever a feature branch.
+deploy/release_x   | staging or preprod | always branched from master, with the unstable branched merged in. This step gives the deployer the opportunity to fix any merge conflicts that would occur when merging into master, and to deploy this to staging or preprod as a final check. What is in this branch will merge cleanly into master and can be considered a version of the master branch in it's deployed state. This is a very useful convention with larger projects, projects with light work might dispense of this step. 
+master | production  | master represents the code as it exists on production, once a deploy branch is ready, it's merged into master and deployed.
+integration/victor_development | staging/none | This is a branch Victor maintains with his code, when he PRs into this branch, we accept it, and then merge this branch into our unstable/release branch and deploy that branch to staging. Since this branch is based from master, we can optionally merge into master and deploy only his code to production. Typically, before the merge into master we merge the release into develop. It's also valid to merge into master, then merge master into develop and the integration/victor_unstable so these branches have the latest version of the code.
 
-### Ansible Deployment
-
-A per-environment playbook exists to perform deployments which:
-  * executes pre-deployment tasks (such as asset compilation)
-  * manages dependencies
-  * performs the deployment
-  * executes post-deployment tasks (such as cache clearing and notifications).
-
-
-Use `bin/deploy` to deploy, and understand:
-
-* ansible connects to servers using ssh and your private key.
-  * you may pass the password and sudo-password `--ask-pass` and `--sudo-pass` flags.
-* ansible uses the `github-deploy.key.pub` key when interfacing with repositories. ensure it
-   has been added as a [deploy key]((https://github.com/blog/2024-read-only-deploy-keys) to this repository.
-
-##### bin/deploy basics
-
-Keep in mind that deploy is an environment-specific command, and the hosts that get deployed to are in the environment's
-ssh_config. 
-
-When executing `bin/deploy <env>`, the `skel/ansible/<env>.deploy.yml` ansible playbook runs. Playbooks run against
-a set of hosts -- and these hosts are defined in `skel/env/<env>/ssh_config`. 
-
-The ssh_config must be kept up to date. See [ENVIRONMENTS.md](ENVIRONMENTS.md) for more on environments.
-
-Architects are tasked managing this playbook per environment and
-sending changes to [groundcontrol](docs/SKEL.md#groundcontrol) -- although
-its transparent nature allows contributions from anyone.
 
 
 
 ### Manual Deployment
-
-
 #### Terms
 Term | Description
 ---- | -----------
@@ -53,7 +28,7 @@ Assets | Static Assets (javascript, css) compiled on the deployment host and cop
 
 #### Prerequsites
 
-**Manual** provisioning. Automatic provisioning may be handled by ansible scripts.
+**Manual** provisioning.
 
 These steps are run _once_.
 
@@ -112,14 +87,14 @@ server {
   grunt production
 
   # assets are compiled to:
-  #  /sites/MIS/webroot/skin/frontend/blueacorn/site/css/
-  #  /sites/MIS/webroot/skin/frontend/blueacorn/site/jsmin/
+  #  /sites/MIS/webroot/skin/frontend/blueacorn/mis/css/
+  #  /sites/MIS/webroot/skin/frontend/blueacorn/mis/jsmin/
   ```
 
-1. On __Deployment Targets__, checkout desired Deployment Ref'
+1. On __Deployment Targets__, pull the latest code from the branch
   ```
   cd /sites/MIS
-  git fetch && git reset <DEPLOYMENT_REF> --merge
+  git fetch && git pull origin <branch>
   ```
 
 1. (if blueacornui exists) On __Deployment Host__, copy Assets to Deployment Targets
