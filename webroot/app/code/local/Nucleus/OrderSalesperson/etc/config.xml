@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Nucleus_OrderSalesperson>
+            <version>0.0.1</version>
+        </Nucleus_OrderSalesperson>
+    </modules>
+    <global>
+        <models>
+            <nucleus_ordersalesperson>
+                <class>Nucleus_OrderSalesperson_Model</class>
+            </nucleus_ordersalesperson>
+        </models>
+    </global>
+    <frontend>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <nucleus_ordersalesperson>
+                        <class>nucleus_ordersalesperson/observer</class>
+                        <method>afterOrderSubmit</method>
+                    </nucleus_ordersalesperson>
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </frontend>
+</config>
