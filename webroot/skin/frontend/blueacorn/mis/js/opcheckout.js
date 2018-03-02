@@ -46,7 +46,7 @@ Checkout.prototype = {
 
         this.accordion.disallowAccessToNextSections = true;
         
-        if ( $$('ul.messages').length ) {
+        if ( $$('ul.messages').length && $('opc-login') ) {
             this.setMethod();
         }
     },
