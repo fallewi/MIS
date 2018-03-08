@@ -11,18 +11,70 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="" class="a-left" colspan="1"><?php echo $this->__('Shipping'); ?></td>
-			<td style="" class="a-right">
+			<?php if ( !strlen($this->getCouponCode()) ): ?>
+				<td class="a-left" colspan="2">
+					<form id="discount-coupon-form" action="<?php echo $this->getCouponActionUrl(); ?>" method="post">
+						<div class="discount-form">
+							<input type="hidden" name="remove" id="remove-coupone" value="0" />
+							<div class="field-wrapper">
+								<input class="input-text coupon-code" type="text" id="coupon_code" name="coupon_code" placeholder="<?php echo $this->__('Enter Discount Code'); ?>" value="<?php echo $this->escapeHtml($this->getCouponCode()); ?>" />
+								<div class="button-wrapper">
+									<button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply')); ?>" class="button2" onclick="discountForm.submit(false)" value="<?php echo $this->__('Apply'); ?>">
+										<span><span><?php echo $this->__('Apply') ?></span></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</td>
+			<?php else: ?>
+				<td class="a-left" colspan="1">
+					<form id="discount-coupon-form" action="<?php echo $this->getCouponActionUrl(); ?>" method="post">
+						<div class="discount-form filled">
+							<input type="hidden" name="remove" id="remove-coupone" value="0" />
+							<div class="field-wrapper">
+								<span class="coupon-code-value"><?php echo $this->escapeHtml($this->getCouponCode()); ?></span>
+								<div class="button-wrapper">
+									<button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove')); ?>" class="button2 cancel-coupon" onclick="discountForm.submit(true)" value="<?php echo $this->__('Remove'); ?>">
+										<span><span><?php echo $this->__('Remove') ?></span></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</td>
+				<td class="a-right">
+					<span class="price"><?php echo $this->getDiscountAmount(); ?></span>
+				</td>
+			<?php endif; ?>
+			<script type="text/javascript">
+				var discountForm = new VarienForm('discount-coupon-form');
+				window.discountForm.submit = function (isRemove) {
+					if ( isRemove ) {
+						$('remove-coupone').value = "1";
+					}
+					else {
+						$('coupon_code').addClassName('required-entry');
+						$('remove-coupone').value = "0";
+					}
+					
+					return VarienForm.prototype.submit.bind(discountForm)();
+				};
+			</script>
+		</tr>
+		<tr>
+			<td class="a-left" colspan="1"><?php echo $this->__('Shipping'); ?></td>
+			<td class="a-right">
 				<span class="price" id="summary-shipping"><?php echo $this->getShippingAmount(); ?></span>
 			</td>
 		</tr>
 	</tbody>
 	<tfoot>
 		<tr>
-			<td style="" class="a-left" colspan="1">
+			<td class="a-left" colspan="1">
 				<strong><?php echo $this->__('Grand Total'); ?></strong>
 			</td>
-			<td style="" class="a-left">
+			<td class="a-left">
 				<strong><span class="price" id="summary-grand-total"><?php echo $this->getGrandTotal(); ?></span></strong>
 			</td>
 		</tr>

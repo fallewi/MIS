@@ -89,7 +89,6 @@
     <div class="col-2">
         <div>
             <h3><?php echo ($_helper->getCheckoutConfig('stepone', 'headertextlogin') == "" ? $this->__('Login') : $_helper->getCheckoutConfig('stepone', 'headertextlogin')); ?></h3>
-            <?php echo $this->getMessagesBlock()->toHtml() ?>
             <form id="login-form" action="<?php echo $this->getPostAction() ?>" method="post">
             <div class="fieldset">
                 <?php echo $this->getBlockHtml('formkey'); ?>
