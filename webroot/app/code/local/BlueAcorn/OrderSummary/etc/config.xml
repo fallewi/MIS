@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package     BlueAcorn_OrderSummary
+ * @version     1.0.0
+ * @author      Blue Acorn, Inc. <code@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, Inc.
+ */
+ -->
+<config>
+	<modules>
+		<BlueAcorn_OrderSummary>
+			<version>1.0.0</version>
+		</BlueAcorn_OrderSummary>
+	</modules>
+	
+	<global>
+		<blocks>
+			<blueacorn_ordersummary>
+				<class>BlueAcorn_OrderSummary_Block</class>
+			</blueacorn_ordersummary>
+		</blocks>
+		
+		<helpers>
+			<blueacorn_ordersummary>
+				<class>BlueAcorn_OrderSummary_Helper</class>
+			</blueacorn_ordersummary>
+		</helpers>
+	</global>
+	
+	<frontend>
+		<routers>
+			<blueacorn_ordersummary>
+				<use>standard</use>
+				<args>
+					<module>BlueAcorn_OrderSummary</module>
+					<frontName>summary</frontName>
+				</args>
+			</blueacorn_ordersummary>
+		</routers>
+	</frontend>
+</config>

@@ -351,8 +351,13 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 .block-progress {
     border: 0;
     margin: 0;
-    border-left: 1px solid $c-module-border;
     padding-left: 20px;
+    
+    .block-title {
+        font-size: 20px;
+        font-family: "din", "Helvetica Neue", Verdana, Arial, sans-serif;
+        text-transform: uppercase;
+    }
 
     .block-content {
         font-size: $f-size-s;
@@ -407,6 +412,274 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
             @include clearfix;
         }
 
+    }
+}
+
+.order-summary {
+    border: 1px solid #CCCCCC;
+    margin-left: -15px;
+    
+    @include bp(max-width, $bp-large) {
+        margin-left: 0;
+        margin-bottom: 15px;
+        
+        &.collapsed {
+            .summary-edit-mobile, .summary-content, .summary-totals {
+                display: none;
+            }
+            .summary-title {
+                i {
+                    -webkit-transform: rotate(180deg);
+                    -moz-transform: rotate(180deg);
+                    -o-transform: rotate(180deg);
+                    -ms-transform: rotate(180deg);
+                    transform: rotate(180deg);
+                    filter: progid:DXImageTransform.Microsoft.Matrix(M11=-1, M12=0, M21=0, M22=-1, DX=0, DY=0, SizingMethod='auto expand');
+                }
+            }
+        }
+    }
+    
+    .summary-title {
+        position: relative;
+        padding: 15px 15px 0;
+        
+        &.clickable {
+            cursor: pointer;
+        }
+        
+        @include bp(max-width, $bp-large) {
+            padding: 14px 15px 14px;
+        }
+        
+        i {
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            width: 17px;
+            height: 10px;
+            background: url(../images/exp_arr.png);
+            display: none;
+            cursor: pointer;
+            
+            @include bp(max-width, $bp-large) {
+                display: block;
+                right: 15px;
+                top: 18px;
+            }
+        }
+        
+        .title {
+            margin: 0;
+            margin-bottom: 0px;
+            color: #262626;
+            font-family: sans-serif;
+            font-size: 19px;
+            line-height: 24px;
+            font-weight: 400;
+            font-style: normal;
+            text-rendering: optimizeLegibility;
+            display: block;
+            
+            @include bp(max-width, $bp-large) {
+                font-size: 17px;
+                line-height: 19px;
+            }
+        }
+        .summary-edit {
+            position: absolute;
+            right: 20px;
+            top: 16px;
+            font-size: 16px;
+            
+            @include bp(max-width, $bp-large) {
+                display: none;
+            }
+        }
+        .summary-price {
+            font-family: sans-serif;
+            display: none;
+            float: none;
+            font-size: 17px;
+            
+            @include bp(max-width, $bp-large) {
+                display: inline-block;
+                font-size: 15px;
+                position: absolute;
+                right: 60px;
+                top: 14px;
+                font-size: 15px;
+            }
+        }
+    }
+    .summary-edit-mobile {
+        display: none;
+        
+        @include bp(max-width, $bp-large) {
+            display: inline-block;
+            font-size: 15px;
+            padding: 0 15px;
+            margin-top: 10px;
+        }
+    }
+    .summary-content {
+        max-height: 300px;
+        overflow-y: hidden;
+        border-bottom: 1px solid #CCCCCC;
+        margin-top: 10px;
+        width: 98%;
+        padding: 0 15px;
+        
+        .item {
+            .product-image {
+                float: left;
+                min-width: 50px;
+                border: none;
+                padding: 7px;
+                background: #fff;
+            }
+            .product-details {
+                position: relative;
+                margin-bottom: 20px;
+                min-height: 65px;
+                margin-left: 75px;
+                margin-right: 10px;
+                
+                .product-name {
+                    font-size: 12px;
+                    line-height: 1.2;
+                    margin-bottom: 7px;
+                    
+                    a {
+                        font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+                        font-size: 11px;
+                    }
+                }
+                .info-wrapper {
+                    font-family: sans-serif;
+                    font-size: 10px;
+                    .item-qty {
+                        width: 50px;
+                    }
+                }
+                .truncated {
+                    .details {
+                        font-size: 11px;
+                        height: 12px;
+                        line-height: 12px;
+                    }
+                    .item-options {
+                        top: 25px;
+                        left: -15px;
+                        width: 180px;
+                        padding: 5px;
+                        
+                        dt {
+                            font-size: 11px;
+                            padding: 0;
+                            font-style: italic;
+                            font-weight: normal;
+                            line-height: 22px;
+                            margin: 0;
+                            width: 75px;
+                            color: gray;
+                        }
+                        dd {
+                            margin-bottom: 0;
+                            padding: 0;
+                            font-size: 11px;
+                            font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+                        }
+                        
+                        &:after {
+                            left: 28px;
+                            top: -7px;
+                        }
+                    }
+                }
+                .description {
+                    font-family: sans-serif;
+                    margin-top: 6px;
+                    font-size: 10px;
+                    line-height: 13px;
+                }
+            }
+        }
+    }
+    .summary-totals {
+        margin-top: 10px;
+        text-transform: uppercase;
+        padding: 0 15px 10px;
+        
+        table {
+            width: 100%;
+            tbody {
+                font-size: 14px;
+                line-height: 26px;
+            }
+            tfoot {
+                font-size: 15px;
+                line-height: 36px;
+            }
+        }
+        
+        .discount-form {
+            padding: 5px 0;
+            
+            &.filled {
+                padding: 0;
+            }
+            
+            .field-wrapper {
+                position: relative;
+                
+                .button-wrapper {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    
+                    .button2 {
+                        span {
+                            line-height: 24px;
+                            height: 28px;
+                            
+                            span {
+                                text-transform: capitalize;
+                                text-decoration: none;
+                                line-height: 24px;
+                                height: 28px;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            .coupon-code {
+                width: 80%;
+                height: 28px;
+                font-size: 12px;
+                color: #313131;
+                
+                &::placeholder {
+                    color: #313131;
+                    opacity: 1;
+                }
+                &:-ms-input-placeholder {
+                    color: #313131;
+                }
+                &::-ms-input-placeholder {
+                    color: #313131;
+                }
+            }
+            
+            .validation-advice {
+                text-align: left;
+                font-size: 11px;
+                margin: 0;
+                float: left;
+                text-transform: capitalize;
+            }
+        }
     }
 }
 
@@ -703,6 +976,11 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
         font-style: italic;
         font-size: 13px;
         font-family: Georgia, Times, "Times New Roman", serif;
+    }
+    @include bp(max-width, $bp-large) {
+        .page-title {
+            border-bottom: 0;
+        }
     }
 }
 

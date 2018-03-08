@@ -1272,6 +1272,53 @@ div.messages div.success-msg {
 
 }
 
+.catalog-category-view, .catalog-product-compare-index, .sli-search-search-template {
+  .map-pricing-block {
+    margin: 6px 0 10px 0;
+    
+    .map-pricing-text {
+      font-size: 14px;
+      color: #000000;
+      
+      .message {
+        font-size: 14px;
+      }
+    }
+    input {
+      border: 1px solid #00247B;
+      float: left;
+      width: 60%;
+      box-sizing: border-box;
+      height: 32px;
+      margin-top: 5px;
+      border-radius: 0;
+      padding: 0 8px 0 8px;
+      font-size: 12px;
+    }
+    button {
+      width: 40%;
+      box-sizing: border-box;
+      float: right;
+      padding: 8px 0;
+      background: #fff;
+      border: 1px solid #00247B;
+          border-left-width: 1px;
+          border-left-style: solid;
+          border-left-color: rgb(0, 36, 123);
+      border-left-width: 1px;
+      border-left-style: solid;
+      border-left-color: rgb(0, 36, 123);
+      border-left: none;
+      color: #00247B;
+      font-weight: normal;
+      font-size: 12px;
+      letter-spacing: 1px;
+      line-height: 14px;
+      margin-top: 5px;
+    }
+  }
+}
+
 /* -------------------------------------------- *
  * Page Popup
  */
