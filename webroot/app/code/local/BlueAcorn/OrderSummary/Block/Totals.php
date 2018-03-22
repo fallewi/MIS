@@ -45,6 +45,30 @@
 		
 		
 		/**
+		 * @return string
+		 */
+		public function getDiscountAmount() {
+			return Mage::helper('core')->currency($this->__getQuote()->getSubtotal() - $this->__getQuote()->getSubtotalWithDiscount(), true, false);
+		}
+		
+		
+		/**
+		 * @return string
+		 */
+		public function getCouponCode() {
+			return $this->getQuote()->getCouponCode();
+		}
+		
+		
+		/**
+		 * @return string
+		 */
+		public function getCouponActionUrl() {
+			return $this->getUrl('summary/checkout/couponPost', array('_secure' => $this->_isSecure()));
+		}
+		
+		
+		/**
 		 *
 		 */
 		protected function __getQuote() {

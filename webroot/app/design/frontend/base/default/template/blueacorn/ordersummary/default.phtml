@@ -96,7 +96,8 @@
 			</tbody>
 		</table>
 		
-		<?php if ( $_options = $this->getOptionList() ):?>
+		<?php $__orderOptions = $_item->getProduct()->getTypeInstance(true)->getOrderOptions($_item->getProduct()); ?>
+		<?php if ( $_options = $__orderOptions['attributes_info'] ): ?>
 			<div class="truncated">
 				<div class="truncated_full_value">
 					<dl class="item-options">
