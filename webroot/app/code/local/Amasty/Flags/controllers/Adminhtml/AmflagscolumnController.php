@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Flags
  */
 class Amasty_Flags_Adminhtml_AmflagscolumnController extends Mage_Adminhtml_Controller_Action
@@ -125,6 +125,11 @@ class Amasty_Flags_Adminhtml_AmflagscolumnController extends Mage_Adminhtml_Cont
 
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('sales/amflags/columns');
+        $checkOrderFlag = Mage::getSingleton('admin/session')->isAllowed('sales/amflags/columns');
+        if ($checkOrderFlag) {
+            return $checkOrderFlag;
+        } else {
+            return Mage::getSingleton('admin/session')->isAllowed('sales/amordermanagertoolkit/amflags/columns');
+        }
     }
 }
