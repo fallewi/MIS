@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Model_Mysql4_Order_Grid_Collection extends Mage_Sales_Model_Mysql4_Order_Grid_Collection
@@ -22,7 +22,7 @@ class Amasty_Ogrid_Model_Mysql4_Order_Grid_Collection extends Mage_Sales_Model_M
             $where = $this->getSelect()->getPart(Zend_Db_Select::WHERE);
             foreach($where as $ind => $part){
                 $part = strtolower($part);
-                if (strpos($part, 'store_id in') !== FALSE){
+                if (strpos($part, 'store_id in') !== false){
                     $where[$ind] = str_replace("store_id in", "main_table.`store_id` in", $part);
                 }
             }

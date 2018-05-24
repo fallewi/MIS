@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Model_Observer 
@@ -55,10 +55,25 @@ class Amasty_Ogrid_Model_Observer
             }
 
             if ($grid) {
-                
+
+                /** @var Amasty_Ogrid_Helper_Columns $columns */
                 $columns = Mage::helper("amogrid/columns");
-                
-                $columns->prepareOrderCollectionJoins($collection); 
+
+                $requireAttributeJoin = false;
+
+                /** @var Mage_Adminhtml_Block_Widget_Grid_Column $column */
+                foreach ($grid->getColumns() as $column) {
+                    if ($column->getData('amogrid_require_join')) {
+                        $dir = $column->getDir();
+                        $filterValue = $column->getFilter()->getValue();
+                        if ($dir || $filterValue) {
+                            $requireAttributeJoin = true;
+                            break;
+                        }
+                    }
+                }
+
+                $columns->prepareOrderCollectionJoins($collection, array(), $requireAttributeJoin);
                 
                 $columns->removeColumns($grid);
                 
@@ -93,13 +108,13 @@ class Amasty_Ogrid_Model_Observer
         $block = $observer->getBlock();
 
         if ($block instanceof Mage_Adminhtml_Block_Widget_Grid || $block instanceof AW_Marketsuite_Block_Adminhtml_Order_Grid) {
-            
+
             self::$_grid = $block;
             $columns = Mage::helper("amogrid/columns");
             $columns->prepareGrid($block, $export);
 
             $showMessage = Mage::helper('amogrid')->checkNewFields();
-            if ($showMessage) {
+            if ($showMessage && !Mage::app()->getRequest()->getParam('ajax')) {
                 $urlAmogridSettings = Mage::helper("adminhtml")->getUrl("adminhtml/amogrid_settings");
                 $link = '<a href=' . $urlAmogridSettings . ' target="_blank">Order Grid Columns</a>';
                 $message = 'You can add new fields to this grid on the following page: ' . $link;
@@ -114,5 +129,5 @@ class Amasty_Ogrid_Model_Observer
             }
         }
     }
-    
+
 }
