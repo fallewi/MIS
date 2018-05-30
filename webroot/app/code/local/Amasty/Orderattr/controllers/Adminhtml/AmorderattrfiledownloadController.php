@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Adminhtml_AmorderattrfiledownloadController extends Mage_Adminhtml_Controller_Action
@@ -17,8 +17,8 @@ class Amasty_Orderattr_Adminhtml_AmorderattrfiledownloadController extends Mage_
 		$attributeCode = $this->getRequest()->getParam('code');
 		$orderId = $this->getRequest()->getParam('order');
 		$attributeCode = Mage::helper('core')->urlDecode($attributeCode);
-		if(!$attributeCode) {
-			exit();
+		if (!$attributeCode) {
+			Mage::helper('ambase/utils')->_exit();
 		}
 		$orderAttributes = Mage::getModel('amorderattr/attribute')->load($orderId, 'order_id');
 		if($orderAttributes && $orderAttributes->getId()) {
@@ -47,7 +47,7 @@ class Amasty_Orderattr_Adminhtml_AmorderattrfiledownloadController extends Mage_
 			}
 		}
 
-		exit;
+		Mage::helper('ambase/utils')->_exit();
 	}
 
     protected function _isAllowed()

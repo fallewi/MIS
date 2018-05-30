@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 
@@ -46,14 +46,14 @@ $order = Mage::registry('current_order');
                 <button onclick="$('amorderattrs_form').submit()" title="<?php $this->__('Save') ?>" class="button"><span><span><?php echo $this->__('Save') ?></span></span></button>
             </form>
         </div>
+        
+        <script>
+            new VarienForm('amorderattrs_form');
+            $("edit_amorderattrs").observe('click', function() {
+                Effect.toggle('amorderattrs_form_container', 'blind');
+                $(this).toggleClassName("active");
+            });
+        </script>
     <?php endif; ?>
 
 <?php endif; ?>
-
-<script>
-new VarienForm('amorderattrs_form');
-$("edit_amorderattrs").observe('click', function() {
-    Effect.toggle('amorderattrs_form_container', 'blind');
-    $(this).toggleClassName("active");
-});
-</script>
