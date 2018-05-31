@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mage_Adminhtml_Block_Widget_Form
@@ -234,6 +234,13 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
             'label' => Mage::helper('catalog')->__('Default value'),
             'title' => Mage::helper('catalog')->__('Default value'),
             'value' => $model->getDefaultValue(),
+        ));
+
+        $fieldset->addField('tooltip', 'textarea', array(
+            'name' => 'tooltip',
+            'label' => Mage::helper('catalog')->__('Tooltip'),
+            'title' => Mage::helper('catalog')->__('Tooltip'),
+            'value' => $model->getTooltip(),
         ));
 
         $fieldset->addField('is_visible_on_front', 'select', array(
@@ -519,6 +526,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Main extends Mag
             ->addFieldMap($groups->getHtmlId(), $groups->getName())
             ->addFieldMap('show_on_grid','on_grid')
             ->addFieldMap('order_grid_after','grid_after')
+            ->addFieldMap('tooltip','tooltip')
             ->addFieldMap('is_visible_on_front', 'is_visible_on_front')
             ->addFieldMap('is_editable_on_front', 'is_editable_on_front')
             ->addFieldDependence(

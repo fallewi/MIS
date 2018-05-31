@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_Shipping_Methods extends Mage_Core_Model_Abstract
@@ -11,4 +11,3 @@ class Amasty_Orderattr_Model_Shipping_Methods extends Mage_Core_Model_Abstract
         $this->_init('amorderattr/shipping_methods');
     }
 }
-?>

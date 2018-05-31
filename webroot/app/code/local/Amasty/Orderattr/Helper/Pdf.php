@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
@@ -98,6 +97,7 @@ class Amasty_Orderattr_Helper_Pdf extends Mage_Core_Helper_Abstract
                     break;
                 case 'textarea':
                     $text = $orderAttributes->getData($attribute->getAttributeCode());
+                    $text = chunk_split($text);
                     $text = str_replace(array("\r\n", "\n", "\r"), '~~~', $text);
                     $value = array();
                     foreach (explode('~~~', $text) as $str) {

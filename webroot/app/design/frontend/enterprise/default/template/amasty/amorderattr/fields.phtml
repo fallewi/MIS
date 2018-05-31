@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 ?>
@@ -38,6 +38,22 @@
     margin-right: 5px;
     position: relative;
     top: 2px;
+}
+.tooltipicon {
+    display: inline-block;
+}
+.tooltipicon img {
+    height: 20px;
+    width: 20px;
+}
+.tooltip{
+    width: auto;
+    height: auto;
+    border: 1px solid rgba(59, 59, 59, 0.45);
+    border-radius: 5px;
+    color: rgba(0, 0, 0, 0.39);
+    display: none;
+    text-align: center;
 }
 </style>
 
@@ -111,13 +127,13 @@ foreach ($scripts as $index => $row) {
         <td colspan='4' id="td_review">
             <form id="form_review">
  <?php endif; ?>
- 
+
 <ul class="form-list">
     <?php foreach ($this->getFormElements() as $element): ?>
     <li class="fields">
         <div class="input-box">
-        <?php 
-            echo $element->toHtml(); 
+        <?php
+            echo $element->toHtml();
         ?>
         </div>
     </li>

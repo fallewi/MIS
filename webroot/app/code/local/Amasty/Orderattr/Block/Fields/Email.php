@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
@@ -49,6 +49,9 @@ class Amasty_Orderattr_Block_Fields_Email extends Mage_Adminhtml_Block_Template
         $collection->getSelect()->order('checkout_step');
         $attributes = $collection->load();
         $order = $this->getOrder();
+        if (!$order) {
+            return array();
+        }
         
         $shippingMethod = $order->getShippingMethod();
         $attrsForShippingMethods = Mage::app()->getLayout()->createBlock('amorderattr/fields')->getShippingMethods();
