@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 class Amasty_Feed_Block_Adminhtml_Widget_Edit_Tab_Dynamic extends Mage_Adminhtml_Block_Widget_Form
@@ -80,37 +80,40 @@ class Amasty_Feed_Block_Adminhtml_Widget_Edit_Tab_Dynamic extends Mage_Adminhtml
         }
         return $this->_buttons['add'.$code];
     }
-    
+
     public function getDynamicValue($code)
     {
         $res = array();
-        
-        $map = Mage::registry($this->_model)->getData($code);
+
+        $map     = Mage::registry($this->_model)->getData($code);
         $firstEl = current($this->_fields);
-        if ($map){
-            foreach ($map[$firstEl] as $k => $v){
+        if ($map) {
+            foreach ($map[$firstEl] as $k => $v) {
                 $line = array();
-                foreach ($this->_fields as $field){
+                foreach ($this->_fields as $field) {
                     $line[$field] = isset($map[$field][$k]) ? $map[$field][$k] : '';
                 }
                 $res[] = $line;
             }
-            $last = count($res)-1;
-            if (isset($res[$last]) && !$res[$last][$firstEl])
+            $last = count($res) - 1;
+            if (isset($res[$last]) && !$res[$last][$firstEl]) {
                 unset($res[$last]);
+            }
         }
+
         return $res;
-    } 
+    }
 
     public function getSelectedHtml($key, $val)
     {
         $html = '';
-        if ($val == Mage::registry($this->_model)->getData($key)){
+        if ($val == Mage::registry($this->_model)->getData($key)) {
             $html = 'selected="true"';
         }
+
         return $html;
     }
-    
+
     public function getSelectedHtmlMultiselect($key, $val)
     {
         $html = '';
@@ -126,44 +129,44 @@ class Amasty_Feed_Block_Adminhtml_Widget_Edit_Tab_Dynamic extends Mage_Adminhtml
         }
         return $html;
     }
-    
-    public function getValueHtml($key, $defVal='', $skipOnCreatedObject = FALSE)
+
+    public function getValueHtml($key, $defVal = '', $skipOnCreatedObject = false)
     {
         $val = Mage::registry($this->_model)->getData($key);
-        
+
         $skip = $skipOnCreatedObject && !Mage::registry($this->_model)->isObjectNew();
-            
-        
-        if (!$val && !$skip){
+
+        if (!$val && !$skip) {
             $val = $defVal;
         }
+
         return $this->htmlEscape($val);
-    }  
-      
+    }
+
     public function getHideHtml($key, $val)
     {
-        $html = 'display:';
-        $isBlock = FALSE;
-        
-        if (is_array($val)){
-            foreach($val as $v){
+        $html    = 'display:';
+        $isBlock = false;
+
+        if (is_array($val)) {
+            foreach ($val as $v) {
                 $isBlock = (Mage::registry($this->_model)->getData($key) == $v);
-                
-                if($isBlock)
+
+                if ($isBlock) {
                     break;
+                }
             }
         } else {
             $isBlock = (Mage::registry($this->_model)->getData($key) == $val);
         }
-        
-            
-        if ($isBlock){
+
+
+        if ($isBlock) {
             $html .= 'block';
-        }
-        else {
+        } else {
             $html .= 'none';
         }
-            
+
         return $html;
-    }       
+    }
 }

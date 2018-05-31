@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 -->
@@ -17,6 +17,10 @@
                 <type>skin_css</type> 
                 <name>amasty/amfeed/filter.css</name> 
             </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>amasty/amfeed/support.css</name>
+            </action>
             <action method="addJs">
                     <name>amasty/amfeed/amfeed.js</name> 
             </action>
@@ -26,6 +30,7 @@
         </reference>    
         <reference name="content">            
             <block type="amfeed/adminhtml_popup" template="amasty/amfeed/feed/popup.phtml" name="amfeed_overlay" />
+            <block type="amfeed/adminhtml_support" template="amasty/amfeed/support.phtml" name="amfeed_support" />
         </reference>
     </adminhtml_amfeed_profile_index>
     <adminhtml_amfeed_profile_new>
@@ -48,9 +53,17 @@
             <action method="addJs">
                 <name>amasty/amfeed/xmledit.js</name>
             </action>
+            <action method="addJs">
+                <name>amasty/amfeed/ampicker.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>amasty/amfeed/support.css</name>
+            </action>
         </reference>    
         <reference name="content">            
             <block type="amfeed/adminhtml_popup" template="amasty/amfeed/feed/popup.phtml" name="amfeed_overlay" />
+            <block type="amfeed/adminhtml_support" template="amasty/amfeed/support.phtml" name="amfeed_support" />
         </reference>
     </adminhtml_amfeed_profile_new>
     <adminhtml_amfeed_profile_edit>
@@ -74,9 +87,17 @@
             <action method="addJs">
                 <name>amasty/amfeed/xmledit.js</name>
             </action>
+            <action method="addJs">
+                <name>amasty/amfeed/ampicker.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>amasty/amfeed/support.css</name>
+            </action>
         </reference>    
         <reference name="content">            
             <block type="amfeed/adminhtml_popup" template="amasty/amfeed/feed/popup.phtml" name="amfeed_overlay" />
+            <block type="amfeed/adminhtml_support" template="amasty/amfeed/support.phtml" name="amfeed_support" />
         </reference>
     </adminhtml_amfeed_profile_edit>
     <adminhtml_amfeed_field_new>
