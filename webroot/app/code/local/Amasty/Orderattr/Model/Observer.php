@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Model_Observer
@@ -15,14 +15,15 @@ class Amasty_Orderattr_Model_Observer
                                      'MageWorx_Adminhtml_Block_Orderspro_Sales_Order_Grid',
                                      'Excellence_Salesgrid_Block_Adminhtml_Sales_Order_Grid',
                                      'AW_Ordertags_Block_Adminhtml_Sales_Order_Grid',
-                                     'Raveinfosys_Deleteorder_Block_Adminhtml_Sales_Order_Grid');
+                                     'Raveinfosys_Deleteorder_Block_Adminhtml_Sales_Order_Grid',
+                                     'Magik_Magikfees_Block_Adminhtml_Sales_Order_Grid');
     
     protected function _prepareOrderAttributes()
     {
         if (Mage::app()->getRequest()->getPost('amorderattr'))
         {
-            $session = Mage::getSingleton('checkout/type_onepage')->getCheckout();
-            $orderAttributes = $session->getAmastyOrderAttributes();
+            $checkout = Mage::getSingleton('checkout/type_onepage')->getCheckout();
+            $orderAttributes = $checkout->getAmastyOrderAttributes();
             if (!$orderAttributes)
             {
                 $orderAttributes = array();
@@ -30,7 +31,8 @@ class Amasty_Orderattr_Model_Observer
             if (!Mage::registry('attributeClear')){
                 $orderAttributes = array_merge($orderAttributes, Mage::app()->getRequest()->getPost('amorderattr'));
             }
-            $session->setAmastyOrderAttributes($orderAttributes);
+            $checkout->setAmastyOrderAttributes($orderAttributes);
+            Mage::getSingleton('customer/session')->setAmastyOrderAttributes($orderAttributes);
         }
     }
     
@@ -47,8 +49,11 @@ class Amasty_Orderattr_Model_Observer
             if (!$order->getId()) {
                 return false;
             }
-            $session = Mage::getSingleton('checkout/type_onepage')->getCheckout();
-            $orderAttributes = $session->getAmastyOrderAttributes();
+            $checkout = Mage::getSingleton('checkout/type_onepage')->getCheckout();
+            $orderAttributes = $checkout->getAmastyOrderAttributes();
+            if (!$orderAttributes) {
+                $orderAttributes = Mage::getSingleton('customer/session')->getAmastyOrderAttributes();
+            }
             $attributes = Mage::getModel('amorderattr/attribute');
             $attributes->load($order->getId(), 'order_id');
             if ($attributes->getId())
@@ -106,7 +111,7 @@ class Amasty_Orderattr_Model_Observer
             $this->_applyDefaultValues($order, $attributes);
             $attributes->save();
             Mage::register('amorderattr_saved', true, true);
-            $session->setAmastyOrderAttributes(array());
+            $checkout->setAmastyOrderAttributes(array());
             Mage::register('attributeClear',true, true);
         }
     }
@@ -116,18 +121,67 @@ class Amasty_Orderattr_Model_Observer
         if (false !== strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order')
             && 'save' == Mage::app()->getRequest()->getActionName()
             && !Mage::registry('amorderattr_saved')
-            && $orderAttributes = Mage::app()->getRequest()->getPost('amorderattr')) {
+            && $orderAttributes = Mage::app()->getRequest()->getPost('amorderattr'))
+        {
             Mage::getSingleton('adminhtml/session')->setAmastyOrderAttributes($orderAttributes);
+        }
+
+    }
+
+    /**
+     * @param $observer
+     */
+    public function salesOrderPlaceBefore($observer)
+    {
+        $this->_checkRequiredFields();
+    }
+
+    /**
+     * check if all required attributes exist in data
+     */
+    protected function _checkRequiredFields()
+    {
+
+        $checkout = Mage::getSingleton('checkout/type_onepage')->getCheckout();
+        $orderAttributes = $checkout->getAmastyOrderAttributes();
+        if (!$orderAttributes) {
+            $orderAttributes = Mage::getSingleton('customer/session')->getAmastyOrderAttributes();
+        }
+
+        $entityTypeId = Mage::getModel('eav/entity')->setType('order')->getTypeId();
+        $collection = Mage::getModel('eav/entity_attribute')->getCollection()
+            ->addFieldToFilter('is_visible_on_front', 1)
+            ->addFieldToFilter('entity_type_id', $entityTypeId)
+            ->addFieldToFilter('is_required', 1);
+        
+        $currentStore = Mage::app()->getStore()->getId();
+
+        foreach ($collection as $attribute) {
+            $storeIds = explode(',', $attribute->getData('store_ids'));
+            if (!in_array($currentStore, $storeIds)
+            && !in_array(0, $storeIds)) {
+                continue;
+            }
+            $code = $attribute->getAttributeCode();
+            if (!array_key_exists($code, $orderAttributes) || $orderAttributes[$code] == "") {
+                Mage::throwException(
+                    Mage::helper('amorderattr')->__(
+                        'Please fill in required field \"%s\" to complete the checkout.',
+                        $attribute->getFrontendLabel()
+                    )
+                );
+            }
         }
     }
     
     // this will be used when creating/editing order in the backend
     public function onSalesOrderSaveAfter($observer)
     {
-        if (false !== strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order') && 'save' == Mage::app()->getRequest()->getActionName() && !Mage::registry('amorderattr_saved'))
-        {
-            $session = Mage::getSingleton('checkout/type_onepage')->getCheckout();
-            $orderAttributes = $session->getAmastyOrderAttributes();
+        if (false !== strpos(Mage::app()->getRequest()->getControllerName(), 'sales_order')
+            && 'save' == Mage::app()->getRequest()->getActionName() && !Mage::registry('amorderattr_saved')
+        ) {
+            $checkout = Mage::getSingleton('checkout/type_onepage')->getCheckout();
+            $orderAttributes = $checkout->getAmastyOrderAttributes();
 
             $order = $observer->getOrder();
             if (!$order->getId()) {
@@ -137,21 +191,16 @@ class Amasty_Orderattr_Model_Observer
             
             $attributes = Mage::getModel('amorderattr/attribute');
             $attributes->load($order->getId(), 'order_id');
-            if ($attributes->getId())
-            {
+            if ($attributes->getId()) {
                 return false;
             }
             
-            if (is_array($orderAttributes) && !empty($orderAttributes))
-            {
-                foreach ($orderAttributes as $key => $val)
-                {
-                    if ($val)
-                    {
-                        if (is_array($val)){
-                           $val = implode(', ',$val);
-                        }
-                        else {
+            if (is_array($orderAttributes) && !empty($orderAttributes)) {
+                foreach ($orderAttributes as $key => $val) {
+                    if ($val) {
+                        if (is_array($val)) {
+                           $val = implode(', ', $val);
+                        } else {
                             //for attribute type = file
                             $dir = Mage::getBaseDir('media') . DS . 'amorderattr' . DS . 'tmp';
                             $file = $dir . $val;
@@ -184,8 +233,8 @@ class Amasty_Orderattr_Model_Observer
             $attributes->save();
             Mage::register('amorderattr_saved', true, true);
             Mage::getSingleton('adminhtml/session')->setAmastyOrderAttributes(null);
-            $session->setAmastyOrderAttributes(array());
-            Mage::register('attributeClear',true, true);
+            $checkout->setAmastyOrderAttributes(array());
+            Mage::register('attributeClear', true, true);
         }
     }
     
@@ -198,12 +247,11 @@ class Amasty_Orderattr_Model_Observer
             ->where('main_table.is_user_defined = ?', 1)
             ->where('main_table.apply_default = ?', 1);
             
-        if ($collection->getSize() > 0)
-        {
-            foreach ($collection as $attributeToApply)
-            {
-                if (!$attributes->getData($attributeToApply->getAttributeCode()) && $attributeToApply->getDefaultValue())
-                {
+        if ($collection->getSize() > 0) {
+            foreach ($collection as $attributeToApply) {
+                if (!$attributes->getData($attributeToApply->getAttributeCode())
+                    && $attributeToApply->getDefaultValue()
+                ) {
                    $attributes->setData($attributeToApply->getAttributeCode(), $attributeToApply->getDefaultValue());
                 }
             }
@@ -212,7 +260,7 @@ class Amasty_Orderattr_Model_Observer
     
     protected function _getAttributes()
     {
-        if (is_null($this->_attributes)) {
+        if ($this->_attributes === null) {
             $attributes = Mage::getModel('eav/entity_attribute')->getCollection();
             $attributes->addFieldToFilter('entity_type_id', Mage::getModel('eav/entity')->setType('order')->getTypeId());
             $attributes->addFieldToFilter('show_on_grid', 1);
@@ -220,7 +268,13 @@ class Amasty_Orderattr_Model_Observer
         }
         return $this->_attributes;
     }
-    
+
+    /**
+     * @param $collection
+     * @param string $place
+     * @param string $column
+     * @return mixed
+     */
     protected function _prepareCollection($collection, $place = 'order', $column = 'entity_id')
     {
         if ($this->_isJoined($collection->getSelect()->getPart('from')))
@@ -236,13 +290,15 @@ class Amasty_Orderattr_Model_Observer
                 $fields[] = $attribute->getAttributeCode();
             }
             
-            $isVersion14 = ! Mage::helper('ambase')->isVersionLessThan(1,4);
+            $isVersionOneFour = ! Mage::helper('ambase')->isVersionLessThan(1, 4);
             
-            $alias = $isVersion14 ? 'main_table' : 'e';
+            $alias = $isVersionOneFour ? 'main_table' : 'e';
             $collection->getSelect()
                        ->joinLeft(
-                            array('custom_attributes' => Mage::getModel('amorderattr/attribute')->getResource()->getTable('amorderattr/order_attribute')),
-                            "$alias.$column = custom_attributes.order_id",
+                            array(
+                                'custom_attributes' =>
+                                    Mage::getModel('amorderattr/attribute')->getResource()->getTable('amorderattr/order_attribute')),
+                            "$alias . $column = custom_attributes.order_id",
                             $fields
                        );
         }
@@ -539,7 +595,8 @@ class Amasty_Orderattr_Model_Observer
         $blockClass = Mage::getConfig()->getBlockClassName('checkout/onepage_billing');
         //if ($block instanceof Mage_Checkout_Block_Onepage_Billing) {
         if ($blockClass == get_class($block)) {
-            if (!Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
+            if (!Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')
+            || !Mage::getStoreConfig('amscheckout/general/enabled')) {
                 $html = $this->_prepareFrontendHtml($transport, 'billing');
             }
         }
@@ -547,7 +604,8 @@ class Amasty_Orderattr_Model_Observer
         $blockClass = Mage::getConfig()->getBlockClassName('checkout/onepage_shipping');
         //if ($block instanceof Mage_Checkout_Block_Onepage_Shipping) {
         if ($blockClass == get_class($block)) {
-            if (!Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
+            if (!Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')
+            || !Mage::getStoreConfig('amscheckout/general/enabled')) {
                 $html = $this->_prepareFrontendHtml($transport, 'shipping');
             }
         }
@@ -555,7 +613,8 @@ class Amasty_Orderattr_Model_Observer
         $blockClass = Mage::getConfig()->getBlockClassName('checkout/onepage_shipping_method');
         //if ($block instanceof Mage_Checkout_Block_Onepage_Shipping_Method) {
         if ($blockClass == get_class($block)) {
-            if (Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
+            if (Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')
+            && Mage::getStoreConfig('amscheckout/general/enabled')) {
                 $html = $this->_prepareFrontendHtml($transport, 'shipping_method', '</div>', false);
             } else {
                 $html = $this->_prepareFrontendHtml($transport, 'shipping_method');
@@ -565,7 +624,8 @@ class Amasty_Orderattr_Model_Observer
         $blockClass = Mage::getConfig()->getBlockClassName('checkout/onepage_payment');
         //if ($block instanceof Mage_Checkout_Block_Onepage_Payment) {
         if ($blockClass == get_class($block)) {
-            if (Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')) {
+            if (Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')
+            && Mage::getStoreConfig('amscheckout/general/enabled')) {
                 $html = $this->_prepareFrontendHtml($transport, 'payment', '</div>', false);
             } else {
                 $html = $this->_prepareFrontendHtml($transport, 'payment', '</form>');
