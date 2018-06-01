@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
@@ -199,8 +199,14 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
     }
     
     protected function _checkJoin($alias){
-        $from = $this->getSelect()->getPart(Zend_Db_Select::FROM);
-        return isset($from['at_' . $alias]);
+        $magentoVersion = Mage::getVersion();
+        if (version_compare($magentoVersion, '1.6', '>=')) {
+            $from = $this->getSelect()->getPart(Zend_Db_Select::FROM);
+            return isset($from['at_' . $alias]);
+        } else {
+            $from = $this->getSelect()->getPart(Zend_Db_Select::FROM);
+            return isset($from['_table_' . $alias]);
+        }
     }
     
     public function joinCategories(){
@@ -269,7 +275,6 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
             return $this;
         }
 
-        $helper     = Mage::getResourceHelper('core');
         $connection = $this->getConnection();
         $select     = $this->getSelect();
         $joinCond   = join(' AND ', array(
@@ -280,19 +285,19 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
 
         $fromPart = $select->getPart(Zend_Db_Select::FROM);
         if (!isset($fromPart['price_index'])) {
-            $minExpr = $connection->getCheckSql('price_index.min_price IS NOT NULL',
+            $minExpr = $this->getCheckSql('price_index.min_price IS NOT NULL',
                             'price_index.min_price', $defaultPrice);
 
-            $maxExpr = $connection->getCheckSql('price_index.max_price IS NOT NULL',
+            $maxExpr = $this->getCheckSql('price_index.max_price IS NOT NULL',
                             'price_index.max_price', $defaultPrice);
 
-            $maxExpr = $connection->getCheckSql('price_index.max_price IS NOT NULL',
+            $maxExpr = $this->getCheckSql('price_index.max_price IS NOT NULL',
                             'price_index.max_price', $defaultPrice);
 
-            $finalExpr = $connection->getCheckSql('price_index.final_price IS NOT NULL',
+            $finalExpr = $this->getCheckSql('price_index.final_price IS NOT NULL',
                             'price_index.final_price', $defaultPrice);
 
-            $priceExpr = $connection->getCheckSql('price_index.price IS NOT NULL',
+            $priceExpr = $this->getCheckSql('price_index.price IS NOT NULL',
                             'price_index.price', $defaultPrice);
 
             $colls  = array(
@@ -303,6 +308,7 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
                 'default_price' => $priceExpr,
                 'price' => $priceExpr
             );
+
             $tableName = array('price_index' => $this->getTable('catalog/product_index_price'));
             if ($joinLeft) {
                 $select->joinLeft($tableName, $joinCond, $colls);
@@ -318,7 +324,13 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
             $select->setPart(Zend_Db_Select::FROM, $fromPart);
         }
         //Clean duplicated fields
-        $helper->prepareColumnsList($select);
+        $magentoVersion = Mage::getVersion();
+        if (version_compare($magentoVersion, '1.6', '>=')) {
+            $helper = Mage::getResourceHelper('core');
+            $helper->prepareColumnsList($select);
+        } else {
+            Mage::getModel('amfeed/version')->prepareColumnsList($select);
+        }
 
 
         return $this;
@@ -359,6 +371,12 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
     public function joinTaxPercents($store)
     {
         $countryId = Mage::getStoreConfig('general/country/default', $store->getStoreId());
+
+        $cond = new Zend_Db_Expr(
+            'rate_table.tax_calculation_rate_id = tax_table.tax_calculation_rate_id 
+            AND rate_table.tax_country_id = \'' . $countryId . '\''
+        );
+
         $this->joinPrice();
             
         if (!$this->_checkJoin('tax_table')){
@@ -368,9 +386,8 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
                            'tax_table.product_tax_class_id = price_index.tax_class_id',
                            array())
                 ->joinLeft(array('rate_table' => $this->getTable('tax/tax_calculation_rate')),
-                           'rate_table.tax_calculation_rate_id = tax_table.tax_calculation_rate_id',
+                           $cond,
                            array('tax_percents' => 'rate_table.rate'));
-            $this->getSelect()->where('rate_table.tax_country_id = ?', $countryId);
         }
     }
 
@@ -502,6 +519,17 @@ class Amasty_Feed_Model_Mysql4_Product_Collection extends Mage_Catalog_Model_Res
     public function isEnabledFlat()
     {
         return false;
+    }
+
+    public function getCheckSql($expression, $true, $false)
+    {
+        if ($expression instanceof Zend_Db_Expr || $expression instanceof Zend_Db_Select) {
+            $expression = sprintf("IF((%s), %s, %s)", $expression, $true, $false);
+        } else {
+            $expression = sprintf("IF(%s, %s, %s)", $expression, $true, $false);
+        }
+
+        return new Zend_Db_Expr($expression);
     }
 
 //    protected function _productLimitationJoinWebsite()

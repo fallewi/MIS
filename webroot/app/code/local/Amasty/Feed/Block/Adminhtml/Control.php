@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 
@@ -68,8 +68,18 @@ class Amasty_Feed_Block_Adminhtml_Control extends Mage_Core_Block_Template
     }
     
     public function getProductAttributes(){
-        
-        return Mage::helper('amfeed/attribute')->getProductAttributes();
+
+        $attributes = Mage::helper('amfeed/attribute')->getProductAttributes();
+
+        if (isset($attributes['tier_price'])) {
+            unset($attributes['tier_price']);
+        }
+
+        if (isset($attributes['group_price'])) {
+            unset($attributes['group_price']);
+        }
+
+        return $attributes;
     }
     
     public function getCompoundAttributes($checkHasCondition = FALSE, $checkHasFilterCondition = FALSE){
@@ -85,11 +95,13 @@ class Amasty_Feed_Block_Adminhtml_Control extends Mage_Core_Block_Template
             
             $isValid = true;
             
-            if ($checkHasCondition)
+            if ($checkHasCondition) {
                 $isValid = $attribute->hasCondition();
+            }
             
-            if ($checkHasFilterCondition)
+            if ($checkHasFilterCondition) {
                 $isValid = $attribute->hasFilterCondition();;
+            }
             
             if ($isValid){
                 $ret[$code] = $name;
@@ -108,11 +120,13 @@ class Amasty_Feed_Block_Adminhtml_Control extends Mage_Core_Block_Template
 
             $isValid = true;
 
-            if ($checkHasCondition)
+            if ($checkHasCondition) {
                 $isValid = $attribute->hasCondition();
+            }
 
-            if ($checkHasFilterCondition)
+            if ($checkHasFilterCondition) {
                 $isValid = $attribute->hasFilterCondition();;
+            }
 
             if ($isValid){
                 $ret[$code] = $name;

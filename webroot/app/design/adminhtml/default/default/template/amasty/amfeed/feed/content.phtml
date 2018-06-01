@@ -1,8 +1,11 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
+ */
+/**
+ * @var $this Amasty_Feed_Block_Adminhtml_Widget_Edit_Tab_Dynamic
  */
 ?>
 <?php $code = 'Column'; ?>
@@ -554,7 +557,7 @@ function amfeed_isUpload(el){
         <tr>
             <td class="label"><label for="frm_price"><?php echo $this->__('Price Decimals') ?></label></td>
             <td class="value">
-                <input id="frm_price" name="frm_price" value="<?php echo $this->getValueHtml('frm_price')?>" class="input-text" type="text" />
+                <input id="frm_price" name="frm_price" value="<?php echo $this->getValueHtml('frm_price', 0)?>" class="input-text" type="text" />
             </td>
         </tr>
         <tr>

@@ -1,11 +1,16 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */ 
 class Amasty_Feed_Block_Adminhtml_Profile_Edit_Tab_General extends Mage_Adminhtml_Block_Widget_Form
 {
+    /**
+     * @return Mage_Adminhtml_Block_Widget_Form
+     * @throws Exception
+     * @throws Mage_Core_Model_Store_Exception
+     */
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form();
@@ -38,20 +43,22 @@ class Amasty_Feed_Block_Adminhtml_Profile_Edit_Tab_General extends Mage_Adminhtm
             'label'    => $hlp->__('Name'),
             'required' => true,
             'name'     => 'title',
-        )); 
-        
-        $fldInfo->addField('type', 'select', array(
-            'label'    => $hlp->__('Type'),
-            'class'    => 'required-entry',
-            'required' => true,
-            'name'     => 'type',
-            'values'   => array(
-                Amasty_Feed_Model_Profile::TYPE_CSV => $hlp->__('CSV'),
-                Amasty_Feed_Model_Profile::TYPE_XML => $hlp->__('XML'),
-                Amasty_Feed_Model_Profile::TYPE_TXT => $hlp->__('TXT'),
-             ),
-            'onchange' => 'amfeed_toggleContentType()', 
-        ));        
+        ));
+
+        if ($this->getRequest()->getParam('id') === null) {
+            $fldInfo->addField('type', 'select', array(
+                'label' => $hlp->__('Type'),
+                'class' => 'required-entry',
+                'required' => true,
+                'name' => 'type',
+                'values' => array(
+                    Amasty_Feed_Model_Profile::TYPE_CSV => $hlp->__('CSV'),
+                    Amasty_Feed_Model_Profile::TYPE_XML => $hlp->__('XML'),
+                    Amasty_Feed_Model_Profile::TYPE_TXT => $hlp->__('TXT'),
+                ),
+                'onchange' => 'amfeed_toggleContentType()',
+            ));
+        }
         
         $fldInfo->addField('filename', 'text', array(
             'label'    => $hlp->__('Filename'),
@@ -68,12 +75,18 @@ class Amasty_Feed_Block_Adminhtml_Profile_Edit_Tab_General extends Mage_Adminhtm
             'name'     => 'mode',
             'values'   => Mage::getModel('amfeed/source_mode')->toOptionArray()
         ));
+
+        if (!is_array($model->getCronTime())) {
+            $cronTimes = explode(",", $model->getCronTime());
+        } else {
+            $cronTimes = $model->getCronTime();
+        }
         
         $fldInfo->addField('cron_time', 'multiselect', array(
             'label'    => $hlp->__('Cron Execution Time'),
             'name'     => 'cron_time[]',
             'values'   => Mage::getModel('amfeed/source_time')->toOptionArray(),
-            'value' => explode(",", $model->getCronTime()),
+            'value'    => $cronTimes,
             'note'     => $hlp->__('Working only for Hourly/Daily/Weekly/Monthly modes'),
         ));
         

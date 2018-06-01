@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 ?>
@@ -9,7 +9,7 @@
     $attributes = $this->getProductAttributes();
     $conditions = $this->getConditions();
     
-    $other = $this->getCompoundAttributes();
+    $other = $this->getCompoundAttributes(true);
 ?>
 <div id="condition_row" class="condition-default-row">
     <input type="hidden" name="advanced[:value_order][condition][type][]" value="<?php 

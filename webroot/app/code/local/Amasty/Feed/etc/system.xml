@@ -2,7 +2,7 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 -->
@@ -24,6 +24,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
+                    <comment><![CDATA[<a href="https://amasty.com/docs/doku.php?id=magento_1%3Aproduct-feed&utm_source=extension&utm_medium=link&utm_campaign=userguide_product_feed_4#settings_menu" style="background-color: #fff9e9; width:100%; display:block; font-size:14px; color:#ea7601;" target="_blank">What are these settings for? Please check <b>the guide</b>, it's all here.</a>]]></comment>
                     <fields>
                         <max_memory translate="label">
                             <label>Max Memory Used (Mb)</label>
