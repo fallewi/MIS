@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */     
 class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Controller_Abstract
@@ -17,7 +17,6 @@ class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Control
     
     public function generateAction()
     {
-        
         $total = 0;
         $cnt = 0;
         $message     = '';
@@ -48,7 +47,7 @@ class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Control
                 } else if (!$total) {
                     $message = $this->__('There are no products to export. Pleas check the filters and try again.');
                     $isCompleted = true;   
-                } elseif (!$cnt){
+                } elseif (!$cnt) {
                     $message = $this->__('The feed generating has been started. %d products will be exported.', $total);
                 } else {
                     //@todo
@@ -102,10 +101,13 @@ class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Control
     
     protected function prepareForSave($model)
     {
-        if (($model->getType() == Amasty_Feed_Model_Profile::TYPE_CSV) || $model->getType() == Amasty_Feed_Model_Profile::TYPE_TXT) {
+        if ($model->getType() !== null
+            && ($model->getType() == Amasty_Feed_Model_Profile::TYPE_CSV
+            || $model->getType() == Amasty_Feed_Model_Profile::TYPE_TXT)
+        ) {
             $csv = $model->getCsv();
-            if (!$csv || !is_array($csv) || count($csv['name']) < 2){
-                throw new Exception($this->__('Please specify fields'));
+            if (!$csv || !is_array($csv) || count($csv['name']) < 2) {
+                throw new Exception($this->__("Can't save changes: Content > Fields is empty. Please add at least one Column there."));
             }
             
             // the last is alwaus empty
@@ -114,21 +116,20 @@ class Amasty_Feed_Adminhtml_Amfeed_ProfileController extends Amasty_Feed_Control
             unset($csv['type'][count($csv['type'])-1]);
             
             // name is required
-            foreach($csv['name'] as $i => $name){
-                if (!$name){
+            foreach($csv['name'] as $i => $name) {
+                if (!$name) {
                     throw new Exception($this->__('Please provide name for the field #%d', $i+1));
                 }
             }
             
             $model->setCsv($csv);
-        }
-        else {
+        } else {
             $model->setCsv(array()); 
         }
         
         $cond = $model->getCondAdvanced();
         if ($cond) {
-            foreach ($cond['attr'] as $i => $value){
+            foreach ($cond['attr'] as $i => $value) {
                 if (!$value){
                     unset($cond['attr'][$i]);
                 }

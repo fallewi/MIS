@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
@@ -474,15 +474,18 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                 }
                 break;
             case 'price':
-                if ($this->getFrmPrice()) {
-                    
-                    $decPoint = $this->getFrmPriceDecPoint();
-                    $thPoint = $this->getFrmPriceThousandsSep();
-                    
-                    $decPoint = $decPoint === NULL ? '' : $decPoint;
-                    $thPoint = $thPoint === NULL ? '' : $thPoint;
+                if ($this->getFrmPrice() !== null && $this->getFrmPrice() !== '') {
 
-                    if ($value > 0){
+                    $decPoint = $this->getFrmPriceDecPoint();
+                    $thPoint  = $this->getFrmPriceThousandsSep();
+                    if ($decPoint === null) {
+                        $decPoint = '';
+                    }
+                    if ($thPoint === null) {
+                        $thPoint = '';
+                    }
+
+                    if ($value > 0) {
                         $value = $value * $this->getCurrencyRate();
                         $value = number_format($value, intval($this->getFrmPrice()), $decPoint, $thPoint);
                     }
@@ -542,7 +545,9 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                         }
                     }
 
-                    $this->_modifyValue($value, $fields, $idx);
+		    if (!empty($value)) {
+                    	$this->_modifyValue($value, $fields, $idx);
+		    }
 
                     $record[] = $value;
                 }
@@ -995,7 +1000,9 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 
         $fp = fopen($srcFile, 'r');
 
-        curl_setopt($ch, CURLOPT_URL, 'sftp://'.$this->getFtpUser().':'.$this->getFtpPass().'@'.$this->getFtpHost().$dstFile);
+        curl_setopt($ch, CURLOPT_URL, 'sftp://'.$this->getFtpHost().$dstFile);
+        
+        curl_setopt($ch, CURLOPT_USERPWD, $this->getFtpUser().':'.$this->getFtpPass());
 
         curl_setopt($ch, CURLOPT_UPLOAD, 1);
 
@@ -1203,8 +1210,25 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                 $this->setDefaultImage(0)->save();
             }
         }
+        $this->_isUniqueFileName();
         
         return parent::_afterSave();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _isUniqueFileName()
+    {
+        $size = Mage::getModel('amfeed/profile')->getCollection()->addFieldToFilter('filename', $this->getFilename())->getSize();
+        if ($size > 1) {
+            Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('amfeed')
+                ->__('You have feed profile with identical Filename. This may lead to wrong feed file being downloaded
+                when you download feed file via link of from Feeds grid. Automatic upload should still 
+                be working fine though.'));
+        }
+
+        return true;
     }
     
     protected function _beforeDelete()

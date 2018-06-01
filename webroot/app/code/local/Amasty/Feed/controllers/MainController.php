@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
@@ -48,13 +48,18 @@ class Amasty_Feed_MainController extends Mage_Core_Controller_Front_Action
 
     /**
      * @param $fileName
-     * @throws Mage_Core_Exception
+     * @return Mage_Core_Controller_Varien_Action
      */
     protected function _download($fileName)
     {
-        $profile = Mage::getModel('amfeed/profile')->load($fileName, 'filename');
+        $profile = Mage::getModel('amfeed/profile')
+            ->getCollection()
+            ->addFilenameFilter($fileName)
+            ->addNoEmptyFilter();
 
-        if ($profile->getId()){
+        if ($profile->getSize()) {
+            $profile = $profile->getFirstItem();
+
             $this->_prepareDownloadResponse(
                 $profile->getResponseFilename(),
                 array(
