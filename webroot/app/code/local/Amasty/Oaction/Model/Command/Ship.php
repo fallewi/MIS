@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Model_Command_Ship extends Amasty_Oaction_Model_Command_Abstract
@@ -109,7 +109,7 @@ class Amasty_Oaction_Model_Command_Ship extends Amasty_Oaction_Model_Command_Abs
         $data = array();
         $post = explode(',', Mage::app()->getRequest()->getPost($field));
         foreach ($post as $line) {
-            if (strpos($line, '|')){
+            if (false !== strpos($line, '|')) {
                 list($id, $code) = explode('|', $line);
                 $data[$id] = $code;
             }
