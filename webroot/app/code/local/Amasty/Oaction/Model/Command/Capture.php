@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Model_Command_Capture extends Amasty_Oaction_Model_Command_Abstract
@@ -56,7 +56,13 @@ class Amasty_Oaction_Model_Command_Capture extends Amasty_Oaction_Model_Command_
                                 $forRequest[$item->getOrderItemId()] = $item->getQty();
                             }
                         }
-                        $_REQUEST['invoice']['items'] = $forRequest;
+                        $invoiceItems = array('items' => $forRequest);
+                        if (Mage::app()->getRequest()->hasInvoice()) {
+                            $invoiceData = Mage::app()->getRequest()->getInvoice();
+                            Mage::app()->getRequest()->setInvoice(array_merge($invoiceData, $invoiceItems));
+                        } else {
+                            Mage::app()->getRequest()->setInvoice($invoiceItems);
+                        }
                     }
                     //END modification: For compatibility with Klarna
                     
@@ -70,7 +76,13 @@ class Amasty_Oaction_Model_Command_Capture extends Amasty_Oaction_Model_Command_
                     
                     //BEGIN modification: For compatibility with Klarna
                     if ('true' == (string)Mage::getConfig()->getNode('modules/Klarna_KlarnaPaymentModule/active')) {
-                        $_REQUEST['invoice']['items'] = array();
+                        $invoiceItems = array('items' => array());
+                        if (Mage::app()->getRequest()->hasInvoice()) {
+                            $invoiceData = Mage::app()->getRequest()->getInvoice();
+                            Mage::app()->getRequest()->setInvoice(array_merge($invoiceData, $invoiceItems));
+                        } else {
+                            Mage::app()->getRequest()->setInvoice($invoiceItems);
+                        }
                     }
                     //END modification: For compatibility with Klarna
                 }
