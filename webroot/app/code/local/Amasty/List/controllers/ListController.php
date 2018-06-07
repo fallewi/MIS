@@ -1,12 +1,12 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_List
  */ 
 class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 {
-    protected $_customerId = 0;
+    protected $_customerId = 0; //VHC Changed to protected
     
     public function preDispatch()
     {
@@ -37,7 +37,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
     /**
      * Highlight menu and render layout
      */
-    protected function _renderLayoutWithMenu()
+    protected function _renderLayoutWithMenu() //VHC Changed to protected
     {
         $this->loadLayout();
         $this->_initLayoutMessages('customer/session');

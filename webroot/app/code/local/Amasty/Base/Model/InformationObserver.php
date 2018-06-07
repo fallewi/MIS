@@ -53,9 +53,19 @@ class Amasty_Base_Model_InformationObserver
     {
         $html = '';
         if ($content = $this->getBlock()->getAdditionalModuleContent()) {
+            if (is_array($content)) {
+                foreach ($content as $type => $message) {
+                    $html .= '<div class="amasty-additional-content amasty-'
+                        . $type
+                        . '">'
+                        . $message
+                        . '</div>';
+                }
+            } else {
             $html = '<div class="amasty-additional-content">'
                 . $content
             .'</div>';
+        }
         }
 
         return $html;
@@ -211,8 +221,8 @@ class Amasty_Base_Model_InformationObserver
     {
         $html = '<div class="amasty-user-guide">'
             . $this->getBaseHelper()->__(
-                'Confused with configuration?'
-                . ' No worries, please consult the <a target="_blank" href="%s">user guide</a> to properly configure the extension.',
+                'Need help with the settings?'
+                . ' Please consult the <a target="_blank" href="%s">user guide</a> to configure the extension properly.',
                 $this->_getUserGuideLink()
             )
             . '</div>';
