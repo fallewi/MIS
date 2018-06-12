@@ -9,7 +9,7 @@
 <config>
     <modules>
         <Amasty_List>
-            <version>1.2.7</version>
+            <version>1.2.8</version>
         </Amasty_List>
     </modules>
     <global>
@@ -96,7 +96,7 @@
                 </args>
             </amlist>
         </routers>
-        <secure_url>
+	<secure_url>
             <amlist_list>/amlist/list</amlist_list>
         </secure_url>
         <translate>
