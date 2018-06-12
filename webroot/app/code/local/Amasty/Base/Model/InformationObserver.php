@@ -62,10 +62,10 @@ class Amasty_Base_Model_InformationObserver
                         . '</div>';
                 }
             } else {
-            $html = '<div class="amasty-additional-content">'
-                . $content
-            .'</div>';
-        }
+                $html = '<div class="amasty-additional-content">'
+                    . $content
+                    .'</div>';
+            }
         }
 
         return $html;
