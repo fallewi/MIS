@@ -6,7 +6,7 @@
  */
 class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 {
-    private $_customerId = 0;
+    protected $_customerId = 0;
 
     public function preDispatch()
     {
