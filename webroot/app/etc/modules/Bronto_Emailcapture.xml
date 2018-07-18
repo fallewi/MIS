@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Bronto_Emailcapture>
-            <active>true</active>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <Bronto_Common/>
