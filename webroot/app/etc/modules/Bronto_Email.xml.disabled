@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Bronto_Reviews>
-            <active>true</active>
+        <Bronto_Email>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <Bronto_Common/>
             </depends>
-        </Bronto_Reviews>
+        </Bronto_Email>
     </modules>
 </config>

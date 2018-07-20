@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Bronto_Order>
-            <active>true</active>
+        <Bronto_Reminder>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <Bronto_Common/>
+                <Mage_Wishlist/>
+                <Mage_SalesRule/>
             </depends>
-        </Bronto_Order>
+        </Bronto_Reminder>
     </modules>
 </config>
