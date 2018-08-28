@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Bronto_Email>
-            <active>true</active>
+        <Bronto_Emailcapture>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <Bronto_Common/>
+                <Bronto_Reminder/>
             </depends>
-        </Bronto_Email>
+        </Bronto_Emailcapture>
     </modules>
 </config>
