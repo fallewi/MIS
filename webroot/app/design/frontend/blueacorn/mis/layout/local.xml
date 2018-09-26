@@ -151,6 +151,20 @@
     </product_theme_changes>
 
     <catalog_product_view>
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>blueacorn/lib/slick/slick.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>blueacorn/lib/slick/slick.css</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>blueacorn/lib/slick/slick-theme.css</name>
+            </action>
+        </reference>
         <update handle="product_theme_changes" />
     </catalog_product_view>
 
@@ -174,8 +188,26 @@
 
     <checkout_onepage_index>
         <update handle="checkout_theme_changes" />
+        <reference name="head">
+            <action method="addItem"><type>js</type><name>blueacorn/malihu/jquery.mCustomScrollbar.concat.min.js</name></action>
+            <action method="addItem"><type>js_css</type><name>blueacorn/malihu/jquery.mCustomScrollbar.css</name></action>
+        </reference>
         <reference name="header">
             <remove name="top.menu" />
+        </reference>
+        <reference name="checkout.progress.wrapper">
+            <label>Checkout Progress Wrapper</label>
+            <action method="setElementId"><value>checkout-progress-wrapper</value></action>
+            <block type="checkout/onepage_progress" name="checkout.progress" before="-" template="checkout/onepage/progress.phtml">
+                <block type="blueacorn_ordersummary/summary" name="checkout.summary" before="checkout.progress" template="blueacorn/ordersummary/summary.phtml">
+                    <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>blueacorn/ordersummary/default.phtml</template></action>
+                    <block type="blueacorn_ordersummary/totals" name="checkout.summary.totals" template="blueacorn/ordersummary/totals.phtml" />
+                </block>
+                <block type="checkout/onepage_progress" name="billing.progress" template="checkout/onepage/progress/billing.phtml"></block>
+                <block type="checkout/onepage_progress" name="shipping.progress" template="checkout/onepage/progress/shipping.phtml"></block>
+                <block type="checkout/onepage_progress" name="shippingmethod.progress" template="checkout/onepage/progress/shipping_method.phtml"></block>
+                <block type="checkout/onepage_progress" name="payment.progress" template="checkout/onepage/progress/payment.phtml"></block>
+            </block>
         </reference>
     </checkout_onepage_index>
 

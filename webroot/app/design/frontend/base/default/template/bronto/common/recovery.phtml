@@ -1,4 +1,4 @@
-<?php /* @var $this Bronto_Common_Block_Cart_Recovery */ ?>
+<?php /** @var Bronto_Common_Block_Cart_Recovery $this */ ?>
 
 <?php if ($this->shouldWriteDom()) : ?>
   <div id="bronto-cart-recovery-shadow" style="display: none;">
@@ -30,7 +30,7 @@
     </div>
     <div id="bronto-cart-recovery-currency"><?php echo $this->getCurrencyCode(); ?></div>
     <div id="bronto-cart-recovery-discount-amount"><?php echo $this->getDiscountAmount(); ?></div>
-    <div id="bronto-cart-recovery-subtotal"><?php echo $this->getSalesObject()->getSubtotal(); ?></div>
+    <div id="bronto-cart-recovery-subtotal"><?php echo $this->getSubtotal(); ?></div>
     <div id="bronto-cart-recovery-tax-amount"><?php echo $this->getSalesObject()->getTaxAmount(); ?></div>
     <?php if ($this->getSalesObject()->getCustomerEmail()) : ?>
     <div id="bronto-cart-recovery-email-address"><?php echo htmlentities($this->getSalesObject()->getCustomerEmail()); ?></div>

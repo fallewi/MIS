@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_FileController  extends  Mage_Core_Controller_Front_Action
@@ -92,7 +92,7 @@ class Amasty_Orderattr_FileController  extends  Mage_Core_Controller_Front_Actio
                         ->getCustomer()->getId()
             ){
                 $this->_download();
-                exit();
+                Mage::helper('ambase/utils')->_exit();
             }
         }
 
@@ -112,12 +112,13 @@ class Amasty_Orderattr_FileController  extends  Mage_Core_Controller_Front_Actio
             $this->_switchSession($currentSessionName, $currentSessionId);
         }
 
-        exit();
+        Mage::helper('ambase/utils')->_exit();
     }
 
-    protected function _switchSession($namespace, $id = null) {
+    protected function _switchSession($namespace, $id = null)
+    {
         session_write_close();
-        $GLOBALS['_SESSION'] = null;
+        ${'_SESSION'} = null;
         $session = Mage::getSingleton('core/session');
         if ($id) {
             $session->setSessionId($id);
@@ -130,8 +131,8 @@ class Amasty_Orderattr_FileController  extends  Mage_Core_Controller_Front_Actio
         $attributeCode = $this->getRequest()->getParam('code');
         $orderId = $this->getRequest()->getParam('order');
         $attributeCode = Mage::helper('core')->urlDecode($attributeCode);
-        if(!$attributeCode) {
-            exit();
+        if (!$attributeCode) {
+            Mage::helper('ambase/utils')->_exit();
         }
         $orderAttributes = Mage::getModel('amorderattr/attribute')->load($orderId, 'order_id');
         if($orderAttributes && $orderAttributes->getId()) {
@@ -160,7 +161,7 @@ class Amasty_Orderattr_FileController  extends  Mage_Core_Controller_Front_Actio
             }
         }
 
-        exit;
+        Mage::helper('ambase/utils')->_exit();
     }
 
     protected function _addFileAttribute($name , $value, $coreSession = false){

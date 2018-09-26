@@ -1,15 +1,7 @@
 <?php
 
-class Bronto_Common_Model_Container_Cart_Recovery extends Enterprise_PageCache_Model_Container_Abstract
+class Bronto_Common_Model_Container_Cart_Recovery extends Enterprise_PageCache_Model_Container_Advanced_Quote
 {
-    /**
-     * @see parent
-     */
-    protected function _getCacheId()
-    {
-        return 'BRONTO_CART_RECOVERY_' . $this->_getIdentifier() . '_' . rand(0, 99);
-    }
-
     /**
      * @see parent
      */
@@ -30,14 +22,7 @@ class Bronto_Common_Model_Container_Cart_Recovery extends Enterprise_PageCache_M
      */
     protected function _getIdentifier()
     {
-        return microtime();
-    }
-
-    /**
-     * @see parent
-     */
-    protected function _saveCache($data, $id, $tags = array(), $lifetime = null)
-    {
-        return false;
+        return $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CART, '')
+            . $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, '');
     }
 }

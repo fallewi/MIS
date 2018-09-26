@@ -1,13 +1,13 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_List
- */ 
+ */
 class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 {
     protected $_customerId = 0;
-    
+
     public function preDispatch()
     {
         parent::preDispatch();
@@ -15,7 +15,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
             $this->norouteAction();
             return;
         }
-        
+
         $session = Mage::getSingleton('customer/session');
         if (!$session->authenticate($this)) {
             $this->setFlag('', 'no-dispatch', true);
@@ -33,7 +33,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
         }
         $this->_customerId = $session->getCustomer()->getId();
     }
-    
+
     /**
      * Highlight menu and render layout
      */
@@ -47,7 +47,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
         }
         $this->renderLayout();
     }
-    
+
     /**
      * Show list of all customer's lists
      */
@@ -68,10 +68,10 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
             if ($list->getCustomerId() != $this->_customerId){
                 $this->_redirect('*/*/');
                 return;
-            }    
-        } 
+            }
+        }
         Mage::register('current_list', $list);
-        
+
         $this->_renderLayoutWithMenu();
     }
 
@@ -89,10 +89,10 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 	       $list->load($id);
 	       if ($list->getCustomerId() != $this->_customerId){
 	           $this->_redirect('*/*/');
-	           return;    
+	           return;
 	       }
 	    }
-	    
+
 	    $data = $this->getRequest()->getPost();
 		if ($data) {
 			$list->setData($data)->setId($id);
@@ -100,18 +100,18 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 			    $list->setCustomerId($this->_customerId);
 			    $list->setCreatedAt(date('Y-m-d H:i:s'));
 				$list->save();
-                Mage::getSingleton('customer/session')->addSuccess(Mage::helper('amlist')->__('Folder has been successfully saved'));    
+                Mage::getSingleton('customer/session')->addSuccess(Mage::helper('amlist')->__('Folder has been successfully saved'));
 				Mage::getSingleton('customer/session')->setListFormData(false);
-				
-			    $productId = Mage::getSingleton('amlist/session')->getAddProductId(); 
-			    Mage::getSingleton('amlist/session')->setAddProductId(null);  
+
+			    $productId = Mage::getSingleton('amlist/session')->getAddProductId();
+			    Mage::getSingleton('amlist/session')->setAddProductId(null);
 				if ($productId){
 				    $this->_redirect('*/*/addItem', array('product' => $productId, 'list'=>$list->getId()));
 				    return;
 				}
 				$this->_redirect('*/*/edit', array('id' => $list->getId()));
 				return;
-				
+
             } catch (Exception $e) {
                 Mage::getSingleton('customer/session')->addError($e->getMessage());
                 Mage::getSingleton('customer/session')->setListFormData($data);
@@ -122,15 +122,15 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
         Mage::getSingleton('customer/session')->addError(Mage::helper('amlist')->__('Unable to find folder for saving'));
         $this->_redirect('*/*/');
 	}
-	
+
     /**
-     * Delete list 
-     */	
-	public function removeAction() 
+     * Delete list
+     */
+	public function removeAction()
 	{
 	    $id     = (int)$this->getRequest()->getParam('id');
 	    $list   = Mage::getModel('amlist/list')->load($id);
-	    
+
 	    if ($list->getCustomerId() == $this->_customerId){
     		try {
     		    // test !!!
@@ -142,42 +142,42 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 		}
         $this->_redirect('*/*/index');
 	}
-	
-	public function defaultAction() 
+
+	public function defaultAction()
 	{
 	    $id     = (int)$this->getRequest()->getParam('id');
 	    $list   = Mage::getModel('amlist/list')->load($id);
-	    
+
 		try {
     		$list->saveDefault();
     		Mage::getSingleton('customer/session')->addSuccess($this->__('Folder `%s` has been set as default.', $list->getTitle()));
-        } 
+        }
         catch (Exception $e) {
             Mage::getSingleton('customer/session')->addError($e->getMessage());
         }
-        
+
         $this->_redirect('*/*/index');
-	}	
-	
+	}
+
 	/**
-     * Delete a product from a list 
+     * Delete a product from a list
      */
 	public function removeItemAction() {
 	    $id    = (int) $this->getRequest()->getParam('id');
-	    
+
 	    $item  = Mage::getModel('amlist/item');
 	    $item->load($id);
 	    if (!$item->getId()){
 	        $this->_redirect('*/*/');
 	    }
-	    
+
 	    $list = Mage::getModel('amlist/list');
 	    $list->load($item->getListId());
 	    if ($list->getCustomerId() != $this->_customerId){
 	        $this->_redirect('*/*/');
 	        return;
 	    }
-	    
+
         try {
             $item->delete();
     		Mage::getSingleton('customer/session')->addSuccess($this->__('Product has been successfully removed from the folder'));
@@ -186,9 +186,9 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
             Mage::getSingleton('customer/session')->addError($this->__('There was an error while removing item from the folder: %s', $e->getMessage()));
         }
         $this->_redirect('*/*/edit', array('id' => $list->getId()));
-        
+
 	}
-	
+
 
     /**
      * Get request for "add to cart" action
@@ -198,13 +198,13 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
     protected function _getProductRequest()
     {
         $requestInfo = $this->getRequest()->getParams();
-        
+
         $params = Mage::getSingleton('customer/session')->getAmlistParams();
         if ($params && key($params) == $this->getRequest()->getParam('product')){
             $requestInfo = current($params);
             Mage::getSingleton('customer/session')->setAmlistParams(null);
         }
-        
+
         if ($requestInfo instanceof Varien_Object) {
             $request = $requestInfo;
         }
@@ -219,58 +219,58 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
         if (!$request->hasQty()) {
             $request->setQty(1);
         }
-        
+
         return $request;
-    }	
-	
+    }
+
     /**
-     * Add product(s) to the list 
-     */	
- 	public function addItemAction() 
+     * Add product(s) to the list
+     */
+ 	public function addItemAction()
  	{
  	    $session    = Mage::getSingleton('customer/session');
- 	    
+
 	    $productId  = $this->getRequest()->getParam('product');
-	    
+
 	    $list      = Mage::getModel('amlist/list');
 	    $listId    = $this->getRequest()->getParam('list');
-	    
+
 	    if (!$listId){ //get default - last
-	       $listId = $list->getLastListId($this->_customerId); 
+	       $listId = $list->getLastListId($this->_customerId);
 	    }
-	    
+
 	    if (!$listId) { //create new
 	       Mage::getSingleton('amlist/session')->setAddProductId($productId);
 	       $this->_redirect('*/*/edit/');
 	       return;
 	    }
-	    
+
 	    $list->load($listId);
 	    if ($list->getCustomerId() == $this->_customerId){
             try {
                 $product = Mage::getModel('catalog/product')
                     ->setStoreId(Mage::app()->getStore()->getId())
                     ->load($productId);
-                $request = $this->_getProductRequest(); 
-                    
+                $request = $this->_getProductRequest();
+
                 if ($product->getTypeId() == 'grouped'){
                     $cnt = 0; //subproduct count
                     if ($request && !empty($request['super_group'])) {
                         foreach ($request['super_group'] as $subProductId => $qty){
                             if (!$qty)
                                 continue;
-                                
-                            $request = new Varien_Object(); 
+
+                            $request = new Varien_Object();
                             $request->setProduct($subProductId);
-                            $request->setQty($qty);            
-                            
+                            $request->setQty($qty);
+
                             $subProduct = Mage::getModel('catalog/product')
                                 ->setStoreId(Mage::app()->getStore()->getId())
                                 ->load($subProductId);
-                            
+
                             // check if params are valid
                             $customOptions = $subProduct->getTypeInstance()->prepareForCart($request, $subProduct);
-                            
+
                             // string == error during prepare cycle
                             if (is_string($customOptions)) {
                                 $session->setRedirectUrl($product->getProductUrl());
@@ -278,31 +278,31 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
                             }
                             $description = "grouped:" . $productId;
                             $list->addItem($subProductId, $customOptions, $description);
-                            
+
                             $cnt++;
                         }
                     }
-                    
+
                     if (!$cnt) {
                         $session->setRedirectUrl($product->getProductUrl());
                         Mage::throwException($this->__('Please specify the product(s) quantity'));
                     }
 
 
-                } 
+                }
                 else { //if product is not grouped
                     // check if params are valid
                     $customOptions = $product->getTypeInstance()->prepareForCart($request, $product);
-                    
+
                     // string == error during prepare cycle
                     if (is_string($customOptions)) {
                         $session->setRedirectUrl($product->getProductUrl());
                         Mage::throwException($customOptions);
-                    }                
-                    
-                    $list->addItem($productId, $customOptions); 
+                    }
+
+                    $list->addItem($productId, $customOptions);
                 }
-                
+
                 $referer = $session->getBeforeAmlistUrl();
                 if ($referer){
                     $session->setBeforeAmlistUrl(null);
@@ -314,14 +314,14 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
                 if(strpos($referer, '/amlist') !== -1) {
                     $referer = $product->getProductUrl();
                 }
- 
+
 	           $message = $this->__('Product has been successfully added to the folder. Click <a href="%s">here</a> to continue shopping', $referer);
-               
+
 	           $session->setRedirectUrl($product->getProductUrl());
-               $session->addSuccess($message); 
+               $session->addSuccess($message);
                $this->_redirect('*/*/edit', array('id'=>$listId));
-               
-            } 
+
+            }
             catch (Exception $e) {
                 $url =  $session->getRedirectUrl(true);
                 if ($url) {
@@ -329,24 +329,24 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
                     $this->getResponse()->setRedirect($url);
                 }
                 else {
-                    $session->addError($this->__('There was an error while adding item to the list: %s', $e->getMessage()));  
+                    $session->addError($this->__('There was an error while adding item to the list: %s', $e->getMessage()));
                 }
             }
-            
+
 	    }
         //$this->_redirect('*/*/');
 	}
-	
+
     /**
      * Save list's items
-     */	
-	public function updateAction() 
+     */
+	public function updateAction()
 	{
         if (!$this->_validateFormKey()) {
             $this->_redirect('*/*/');
             return;
         }
-        
+
         $listId = $this->getRequest()->getParam('list_id');
 
         $list  = Mage::getModel('amlist/list');
@@ -355,7 +355,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
             $this->_redirect('*/*/');
             return;
         }
-        
+
         $post = $this->getRequest()->getPost();
         if ($post && isset($post['qty']) && is_array($post['qty'])) {
             foreach ($post['qty'] as $itemId => $qty) {
@@ -366,10 +366,10 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
                 try {
                     if (!$qty)
                         $item->delete();
-                    else 
-                    { 
+                    else
+                    {
                         $item->setQty(max(0.01, intVal($qty)));
-                        
+
                         $newListId = isset($post['moveto'][$itemId]) ? $post['moveto'][$itemId] : 0;
                         if ($newListId ){
                             $item->setListId($newListId);
@@ -388,8 +388,8 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
         }
         $this->_redirect('*/*/edit', array('id'=>$listId));
 	}
-        
-    public function cartAction() 
+
+    public function cartAction()
     {
         $messages           = array();
         $urls               = array();
@@ -400,15 +400,15 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
             $this->_redirect('*/*');
             return;
         }
-        
+
         $isPost = $this->getRequest()->isPost();
         $selectedIds = $this->getRequest()->getParam('cb');
         if ($isPost && (!$selectedIds || !is_array($selectedIds))){
             Mage::getSingleton('customer/session')->addNotice(Mage::helper('amlist')->__('Please select products.'));
             $this->_redirect('*/*/edit', array('id'=>$list->getId()));
-            return;            
-        }        
-        
+            return;
+        }
+
         $quote = Mage::getSingleton('checkout/cart');
         foreach ($list->getItems() as $item) {
             if ($isPost && !in_array($item->getId(), $selectedIds))
@@ -418,17 +418,17 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
                 $product = Mage::getModel('catalog/product')
                     ->load($item->getProductId())
                     ->setQty(max(0.01, $qty));
-                    
+
                 $req = unserialize($item->getBuyRequest());
-                $req['qty'] = $product->getQty();			
+                $req['qty'] = $product->getQty();
 
                 $quote->addProduct($product, $req);
-                
-            } 
+
+            }
             catch (Exception $e) {
                 $url = Mage::getSingleton('checkout/session')
                     ->getRedirectUrl(true);
-                
+
                 if ($url) {
                     $url = Mage::getModel('core/url')
                         ->getUrl('catalog/product/view', array(
@@ -438,7 +438,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 
                     $urls[]         = $url;
                     $messages[]     = $e->getMessage();
-                } 
+                }
                 else {
                     Mage::getSingleton('customer/session')->addNotice($e->getMessage());
                     $this->_redirect('*/*/edit', array('id'=>$list->getId()));
@@ -447,7 +447,7 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
             }
         }
         $quote->save();
-        
+
         if ($urls) {
             Mage::getSingleton('checkout/session')->addNotice(array_shift($messages));
             $this->getResponse()->setRedirect(array_shift($urls));
@@ -460,40 +460,40 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
              $this->_redirect('checkout/cart');
         }
     }
-    
+
     // add all products from the cart to the list
     public function laterAction()
     {
  	    try {
     	    $list = Mage::getModel('amlist/list')			    
-    	       ->setTitle('saved cart - ' . date('Y-m-d'))
+    	       ->setTitle($this->__('saved cart - ') . date('Y-m-d'))
     	       ->setCustomerId($this->_customerId)
     	       ->save();
-    	    
+
     	    $quote = Mage::getSingleton('checkout/cart');
     	    foreach ($quote->getItems() as $item){
-    	        
+
                 $option = new Varien_Object();
                 $option
                     ->setValue(serialize(array('qty'=>$item->getQty())))
-                    ->setProductId($item->getProductId())     
+                    ->setProductId($item->getProductId())
                     ->setCode('info_buyRequest');
-                      
-                $request = new Varien_Object();  
-                $request->setCustomOptions(array($option));     	        
-    	        
+
+                $request = new Varien_Object();
+                $request->setCustomOptions(array($option));
+
     	        $list->addItem($item->getProductId(), array($request));
     	    }
-    	    
+
     	    Mage::getSingleton('customer/session')->addSuccess(
     	       $this->__('The cart has been successfully saved')
-    	    );    
+    	    );
 			$this->_redirect('*/*/edit', array('id' => $list->getId()));
- 	    } 
+ 	    }
  	    catch (Exception $e) {
             Mage::getSingleton('customer/session')->addError(
     	       $this->__('There was an error while saving the cart: %s', $e->getMessage())
-    	    ); 
+    	    );
             $this->_redirect('*/*/index');
  	    }
     }
@@ -560,4 +560,20 @@ class Amasty_List_ListController extends Mage_Core_Controller_Front_Action
 
 		$this->_redirect('*/*/index');
 	}
+
+    /**
+     * @return int
+     */
+    public function getCustomerId()
+    {
+        return $this->_customerId;
+    }
+
+    /**
+     * @param int $customerId
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->_customerId = $customerId;
+    }
 }

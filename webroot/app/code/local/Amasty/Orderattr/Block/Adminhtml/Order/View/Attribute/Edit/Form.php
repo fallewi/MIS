@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
@@ -72,10 +72,11 @@ class Amasty_Orderattr_Block_Adminhtml_Order_View_Attribute_Edit_Form extends Ma
 
                 if ('date' == $inputType) {
                     $elementOptions['readonly'] = 1;
-                    if ($orderData[$attribute->getAttributeCode()] === '0000-00-00' ||
-                        $orderData[$attribute->getAttributeCode()] === '0000-00-00 00:00:00' ||
-                        $orderData[$attribute->getAttributeCode()] === '1970-01-01' ||
-                        $orderData[$attribute->getAttributeCode()] === '1970-01-01 00:00:00'
+                    if (!isset($orderData[$attribute->getAttributeCode()])
+                        || ($orderData[$attribute->getAttributeCode()] === '0000-00-00'
+                            || $orderData[$attribute->getAttributeCode()] === '0000-00-00 00:00:00'
+                            || $orderData[$attribute->getAttributeCode()] === '1970-01-01'
+                            ||$orderData[$attribute->getAttributeCode()] === '1970-01-01 00:00:00')
                     ) {
                         $orderData[$attribute->getAttributeCode()] = '';
                     }

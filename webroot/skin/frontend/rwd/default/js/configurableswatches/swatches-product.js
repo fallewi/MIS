@@ -671,7 +671,7 @@ Product.ConfigurableSwatches.prototype = {
                 var el = $(el);
                 el.disabled = false;
                 el.removeClassName('out-of-stock');
-                el.writeAttribute('onclick', this._E.cartBtn.onclick);
+                el.removeAttribute('onclick');
                 el.title = '' + Translator.translate(this._E.cartBtn.txt[index]);
                 el.select('span span').invoke('update', Translator.translate(this._E.cartBtn.txt[index]));
             }.bind(this));

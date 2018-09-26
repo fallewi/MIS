@@ -53,8 +53,10 @@ class Bronto_Common_Helper_Support extends Bronto_Common_Helper_Data
     }
 
     /**
-     * @param $onBronto boolean (optional)
-     * @return boolean
+     * Determines whether the Bronto extension has been registed. If not, a message containing a registration link is displayed.
+     *
+     * @param boolean $onBronto [false] Whether the user is currently in the Bronto section of the admin panel
+     * @return boolean Whether the user is registered
      */
       public function verifyRegistration($onBronto = false) {
         if (!$this->isRegistered()) {
@@ -185,7 +187,7 @@ class Bronto_Common_Helper_Support extends Bronto_Common_Helper_Data
      *
      * @return array
      */
-    public function getDebugInformation($scope = 'default', $scope = 0)
+    public function getDebugInformation($scope = 'default', $scopeId = 0)
     {
         $currentDate   = Mage::getModel('core/date')->date('Y-m-d');
         $brontoModules = $this->getEnabledBrontoModules();
@@ -536,8 +538,7 @@ class Bronto_Common_Helper_Support extends Bronto_Common_Helper_Data
             ));
             $client->post($this->_registrationUrl, $params);
         } catch (Exception $e) {
-            var_dump($e->getMessage());
-            $this->writeError('Registration submission failed: ', $e->getMessage());
+            $this->writeError('Registration submission failed: ' . $e->getMessage());
 
             return false;
         }

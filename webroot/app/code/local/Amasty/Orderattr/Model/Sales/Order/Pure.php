@@ -1,15 +1,16 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
+$autoloader = Varien_Autoload::instance();
 if (Mage::helper('core')->isModuleEnabled('Amasty_Orderattach')) {
-    class Amasty_Orderattr_Model_Sales_Order_Pure extends Amasty_Orderattach_Model_Sales_Order {}
+    $autoloader->autoload('Amasty_Orderattr_Model_Sales_Order_Orderattach');
 } elseif (Mage::helper('core')->isModuleEnabled('Amasty_Deliverydate')) {
-    class Amasty_Orderattr_Model_Sales_Order_Pure extends Amasty_Deliverydate_Model_Sales_Order {}
+    $autoloader->autoload('Amasty_Orderattr_Model_Sales_Order_Deliverydate');
 } elseif (Mage::helper('core')->isModuleEnabled('AdjustWare_Deliverydate')) {
-    class Amasty_Orderattr_Model_Sales_Order_Pure extends AdjustWare_Deliverydate_Model_Rewrite_FrontSalesOrder {}
+    $autoloader->autoload('Amasty_Orderattr_Model_Sales_Order_AdjustWare');
 } else {
     class Amasty_Orderattr_Model_Sales_Order_Pure extends Mage_Sales_Model_Order {}
 }

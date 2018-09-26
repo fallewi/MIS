@@ -227,8 +227,9 @@ class Bronto_Newsletter_Model_Observer
         $contactQueue = Mage::getModel('bronto_newsletter/queue')
             ->getContactRow($subscriber->getId(), $storeId);
 
-        // If ContactQueue status doesn't match subscriber status, replace it
-        if ($status != $contactQueue->getStatus()) {
+        // If ContactQueue status doesn't match subscriber status or
+        // if ContactQueue email doesn't match subscriber email, replace it
+        if ($status != $contactQueue->getStatus() || $email != $contactQueue->getSubscriberEmail()) {
             if ($subscriber->getSubscribeSource() == 'popup') {
                 $contactQueue->setImported(2);
             } else {
@@ -364,7 +365,7 @@ class Bronto_Newsletter_Model_Observer
                 }
 
                 // Don't add contacts to be unsubscribed
-                if (!$contact->hasId() && $contact->getStatus() == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED) {
+                if (!$contact->hasId() && $contact->status == Bronto_Api_Model_Contact::STATUS_UNSUBSCRIBED) {
                     $subscriber->setImported(1)->save();
                     $result['success']++;
                     continue;

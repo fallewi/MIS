@@ -79,6 +79,7 @@ class BlueAcorn_SpecialPricing_EmailController extends Mage_Core_Controller_Fron
             $sender_email = Mage::getStoreConfig('trans_email/ident_'. $email_type . '/email');
             $email_template->setSenderName($sender_name);
             $email_template->setSenderEmail($sender_email);
+            $email_template->addBcc('info@missionrs.com');
 
             Mage::getSingleton('core/session')->addSuccess('Your email has been sent!');
             $email_template->send($customerEmail, $sender_name, $email_variables);

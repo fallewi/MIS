@@ -95,12 +95,18 @@
                     </div>
                     <div class="product-secondary">
                         <?php if($mapRequired != 'No Price No Add to Cart') : ?>
-                            <?php
-                            if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
-                                echo $this->getPriceHtml($_product, true);
-                            else:
-                                echo $_product->getMsrp();
-                            endif; ?>
+                            <?php if ( $mapRequired == "No Price Guest User" and !Mage::getSingleton('customer/session')->isLoggedIn() ): ?>
+                                <div class="map-pricing-block">
+                                    <div class="map-pricing-text">
+                                        <a class="message" href="<?php echo Mage::getUrl('customer/account/login'); ?>"><span><?php echo $this->__('Login'); ?></span></a>
+                                        <span><?php echo $this->__('to view price'); ?></span>
+                                    </div>
+                                </div>
+                            <?php elseif (Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                                <?php echo $this->getPriceHtml($_product, true); ?>
+                            <?php else: ?>
+                                <?php echo $_product->getMsrp(); ?>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </div>
                     <div class="product-secondary">
@@ -139,6 +145,11 @@
     <?php $_columnCount = $this->getColumnCount(); ?>
     <ul class="products-grid products-grid--max-<?php echo $_columnCount; ?>-col">
         <?php $i=0; foreach ($_productCollection as $_product): ?>
+            <?php
+                $mapRequiredValue = Mage::getResourceModel('catalog/product')->getAttributeRawValue($_product->getEntityId(), 'map_required', Mage::app()->getStore()->getStoreId());
+                $productInstance = Mage::getModel('catalog/product')->setStoreId(Mage::app()->getStore()->getStoreId())->setMapRequired($mapRequiredValue); 
+                $mapRequired = $productInstance->getAttributeText('map_required');
+            ?>
             <?php /*if ($i++%$_columnCount==0): ?>
             <?php endif*/ ?>
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
@@ -174,19 +185,24 @@
                         }
                     }
                     ?>
-
-                    <?php $mapRequired =  Mage::getModel('catalog/product')->load($_product->getId())->getMapRequired() ?>
-                    <?php if($mapRequired != '3') : ?>
-                        <?php
-                            if(Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)):
-                                echo $this->getPriceHtml($_product, true);
-                            else:
-                                echo '<div class="price-box"><span class="regular-price">';
-                                echo $this->helper('core')->currency($_product->getMsrp(), true, true);
-                                echo '</span></div>';
-                            endif; ?>
-
-                    <?php endif ?>
+                    <?php if ($mapRequired != 'No Price No Add to Cart') : ?>
+                            <?php if ( $mapRequired == "No Price Guest User" and !Mage::getSingleton('customer/session')->isLoggedIn() ): ?>
+                                <div class="map-pricing-block">
+                                    <div class="map-pricing-text">
+                                        <a class="message" href="<?php echo Mage::getUrl('customer/account/login'); ?>"><span><?php echo $this->__('Login'); ?></span></a>
+                                        <span><?php echo $this->__('to view price'); ?></span>
+                                    </div>
+                                </div>
+                            <?php elseif (Mage::helper('blueacorn_specialpricing')->canLowestPriceBeDisplayed($_product)): ?>
+                                <?php echo $this->getPriceHtml($_product, true); ?>
+                            <?php else: ?>
+                                <div class="price-box">
+                                    <span class="regular-price">
+                                        <?php echo $this->helper('core')->currency($_product->getMsrp(), true, true); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
 
                     <div class="actions">
                         <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>

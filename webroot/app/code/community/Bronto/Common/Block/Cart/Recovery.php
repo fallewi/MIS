@@ -28,6 +28,16 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
     }
 
     /**
+     * Whether tax would be included in the prices
+     *
+     * @return bool
+     */
+    public function isTaxIncluded()
+    {
+        return (bool) Mage::helper('bronto_common')->isTaxIncluded();
+    }
+
+    /**
      * Get the checkout session containing cart and order data
      *
      * @return Mage_Checkout_Model_Session
@@ -269,6 +279,9 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      */
     public function getPrice($lineItem)
     {
+        if ($this->isTaxIncluded()) {
+            return $this->getParentItem($lineItem)->getPriceInclTax();
+        }
         return $this->getParentItem($lineItem)->getPrice();
     }
 
@@ -280,7 +293,42 @@ class Bronto_Common_Block_Cart_Recovery extends Mage_Core_Block_Template
      */
     public function getRowTotal($lineItem)
     {
-        return $this->getParentItem($lineItem)->getRowTotal();
+        if ($this->isTaxIncluded()) {
+            return $this->getParentItem($lineItem)->getBaseRowTotalInclTax();
+        }
+        return $this->getParentItem($lineItem)->getBaseRowTotal();
+    }
+
+    /**
+     * Gets parent item's subtotal
+     *
+     * @return float
+     */
+    public function getSubtotal()
+    {
+        $quote = clone $this->getSalesObject();
+
+        if (!$this->isTaxIncluded()) {
+            return $quote->getSubtotal();
+        }
+
+        $taxBasedOn = Mage::helper('tax')->getTaxBasedOn();
+        $address = $quote->getShippingAddress();
+        if ($taxBasedOn == 'billing') {
+            $address = $quote->getBillingAddress();
+        }
+        if ($taxBasedOn == 'origin' || !$address->getCountry()) {
+            // Set default origin as shipping address to calculate tax
+            $quote->getShippingAddress()
+                ->setCountryId(Mage::getStoreConfig('shipping/origin/country_id'))
+                ->setRegionId(Mage::getStoreConfig('shipping/origin/region_id'))
+                ->setPostcode(Mage::getStoreConfig('shipping/origin/postcode'))
+                ->setCollectShippingRates(true);
+            $quote->save();
+            $address = $quote->getShippingAddress();
+        }
+
+        return $address->getCountry() ? $address->getSubtotalInclTax() : $quote->getSubtotal();
     }
 
     /**

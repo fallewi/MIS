@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Ogrid
  */
 class Amasty_Ogrid_Block_Adminhtml_Sales_Order_Grid_Renderer_Images extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
@@ -15,19 +15,20 @@ class Amasty_Ogrid_Block_Adminhtml_Sales_Order_Grid_Renderer_Images extends Mage
         $images = array();
         $visibleItems = $row->getAllVisibleItems();
         
-        if (is_array($visibleItems)){
-            foreach($visibleItems as $orderItem){
+        if (is_array($visibleItems)) {
+            foreach ($visibleItems as $orderItem) {
                 $product = $orderItem->getProduct();
+                $row->setThumbnail($product->getThumbnail());
                 try{
-                    if ($product && $product->getThumbnail() !== NULL && $product->getThumbnail() != 'no_selection' ){
-                        try{
-                            $images[] = "<img src='". $product->getThumbnailUrl() ."'/>";
-                        }  catch (Exception $e){
+                    if ($product && $product->getThumbnail() !== NULL && $product->getThumbnail() != 'no_selection' ) {
+                        try {
+                            $images[] = "<a href='". $product->getImageUrl() ."' rel=lightbox[zoom]><img src='". $product->getThumbnailUrl() ."'/></a>";
+                        } catch (Exception $e) {
                             
                         }
                         
                     }
-                } catch (Exception $e){
+                } catch (Exception $e) {
                     
                 }
 

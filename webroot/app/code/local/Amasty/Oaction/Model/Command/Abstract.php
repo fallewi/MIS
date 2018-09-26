@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 class Amasty_Oaction_Model_Command_Abstract
@@ -145,7 +145,9 @@ class Amasty_Oaction_Model_Command_Abstract
             $statusCollection = Mage::getResourceModel('amorderstatus/status_collection');
             $statusCollection->addFieldToFilter('is_system', array('eq' => 0));
             foreach ($statusCollection as $statusModel) {
-                if ($statusModel->getAlias() == substr($status, strpos($status, '_') + 1)) {
+                $pos = strpos($status, '_');
+                if (false !== $pos
+                && $statusModel->getAlias() == substr($status, $pos + 1)) {
                     if ($statusModel->getNotifyByEmail()) {
                         $notify = true;
                     }

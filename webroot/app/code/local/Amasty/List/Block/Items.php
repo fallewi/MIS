@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_List
  */ 
 class Amasty_List_Block_Items extends Mage_Catalog_Block_Product_Abstract
@@ -27,7 +27,7 @@ class Amasty_List_Block_Items extends Mage_Catalog_Block_Product_Abstract
 
     public function getProductItemUrl($item){
         $description = $item->getDescr();
-        if( $description != '' && strpos($description, 'grouped') == 0 ){
+        if( $description != '' && strpos($description, 'grouped') === 0 ){
             $groupedId = explode(':', $description);
             if(array_key_exists(1, $groupedId)){
                 $groupedId = trim($groupedId[1]);
@@ -47,7 +47,7 @@ class Amasty_List_Block_Items extends Mage_Catalog_Block_Product_Abstract
 
         $url = $this->helper('catalog/image')->init($product, 'small_image')->resize(113, 113);
         /* if no image and parent exist*/
-        if($item->getGroupedParentProduct() && ($url == '' || strpos($url, 'placeholder')) ){
+        if($item->getGroupedParentProduct() && ($url == '' || strpos($url, 'placeholder') !== false) ){
             $product = $item->getGroupedParentProduct();
             $url = $this->helper('catalog/image')->init($product, 'small_image')->resize(113, 113);
         }

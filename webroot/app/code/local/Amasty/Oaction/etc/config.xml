@@ -2,14 +2,15 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Oaction
  */
 -->
+
 <config>
     <modules>
         <Amasty_Oaction>
-            <version>2.1.2</version>
+            <version>2.1.4</version>
         </Amasty_Oaction>
     </modules>
 
@@ -60,7 +61,7 @@
                         <method>modifyJs</method>
                     </amoaction>
                 </observers>
-            </am_grid_massaction_js>            
+            </am_grid_massaction_js>
             <core_block_abstract_prepare_layout_after>
                 <observers>
                     <amogrid>
@@ -69,7 +70,7 @@
                         <method>modifyOrderGridAfterBlockGenerate</method>
                     </amogrid>
                 </observers>
-            </core_block_abstract_prepare_layout_after>       
+            </core_block_abstract_prepare_layout_after>
         </events>
 
         <translate>
@@ -146,9 +147,9 @@
                                     </children>
                                 </config>
                             </children>
-                        </system> 
+                        </system>
                      </children>
-                </admin> 
+                </admin>
             </resources>
         </acl>
 
@@ -158,7 +159,7 @@
                     <file>amasty/amoaction/amoaction.xml</file>
                 </amoaction>
             </updates>
-        </layout>        
+        </layout>
     </adminhtml>
 
     <global>
@@ -202,7 +203,7 @@
                 <rewrite>
                     <adminhtml_sales_order_grid_massaction>Amasty_Oaction_Block_Adminhtml_Widget_Grid_Massaction</adminhtml_sales_order_grid_massaction>
         	    </rewrite>
-            </enterprise_salesarchive> 
+            </enterprise_salesarchive>
         </blocks>
 
         <helpers>

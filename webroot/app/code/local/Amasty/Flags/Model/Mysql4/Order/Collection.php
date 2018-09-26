@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2015 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Flags
  */
 class Amasty_Flags_Model_Mysql4_Order_Collection extends Mage_Sales_Model_Mysql4_Order_Grid_Collection

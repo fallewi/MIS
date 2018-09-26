@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template        
@@ -355,6 +355,28 @@ class Amasty_Orderattr_Block_Fields extends Mage_Core_Block_Template
                             ) . '
                         );
                         </script>';
+                }
+
+                $tooltip = $attribute->getTooltip();
+                $id = $attribute->getAttributeId();
+                if ($tooltip) {
+                    $helper = Mage::helper('amorderattr');
+                    $js = '<script type="text/javascript">'
+                        . '$(\'tooltipiconid-' . $id . '\').observe(\'click\', function(event) {'
+                        . 'this.previous(\'div\').setStyle({display:\'inline-block\'});'
+                        . 'this.hide();'
+                        . '});'
+                        . '$(\'tooltipid-' . $id . '\').observe(\'click\', function(event) {'
+                        . 'this.hide();'
+                        . 'this.next(\'div\').show();'
+                        . '});'
+                        . '</script>';
+                    $img = Mage::getDesign()->getSkinUrl('images/amshopby-tooltip.png');
+                    $tooltipHTML = '<div class="tooltip" id="tooltipid-' . $id . '">'
+                        . $tooltip . '</div><div class="tooltipicon" id="tooltipiconid-'
+                        . $id . '"><img src="' . $img . '"alt="'
+                        . $helper->__('?') . '" title="' . $helper->__('Tooltip') . '" ></div>';
+                    $afterElementHtml = $tooltipHTML . $afterElementHtml . $js;
                 }
 
                 $element->setAfterElementHtml($afterElementHtml);

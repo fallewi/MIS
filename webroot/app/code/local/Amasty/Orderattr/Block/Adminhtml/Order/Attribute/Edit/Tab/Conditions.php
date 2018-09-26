@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Conditions extends Mage_Adminhtml_Block_Widget_Form
@@ -14,6 +14,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Conditions exten
         foreach($activeCarriers as $carrierCode => $carrierModel)
         {
            $options = array();
+           $carrierTitle = '';
            if( $carrierMethods = $carrierModel->getAllowedMethods() )
            {
                foreach ($carrierMethods as $methodCode => $method)
@@ -53,10 +54,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Conditions exten
         );
         
         $methods = $this->getActiveShippingMethods();
-//        Mage::getSingleton('adminhtml/system_config_source_shipping_allowedmethods')->toOptionArray();
-//        unset($methods[0]);
-//        var_dump(123);
-//        exit(1);
+
         $fieldset->addField('shipping_methods', 'multiselect', array(
             'name'      => 'shipping_methods[]',
             'label'     => Mage::helper('amorderattr')->__('Shipping Methods'),
@@ -69,8 +67,7 @@ class Amasty_Orderattr_Block_Adminhtml_Order_Attribute_Edit_Tab_Conditions exten
         ));
         
         $this->setForm($form);
-//adminhtml/system_config_source_shipping_allmethods
+
         return parent::_prepareForm();
     }
 }
-?>

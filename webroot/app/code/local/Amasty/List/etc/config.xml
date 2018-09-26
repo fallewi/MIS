@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_List
  */
 -->
 <config>
     <modules>
         <Amasty_List>
-            <version>1.2.6</version>
+            <version>1.2.8</version>
         </Amasty_List>
     </modules>
     <global>
@@ -96,6 +96,9 @@
                 </args>
             </amlist>
         </routers>
+	<secure_url>
+            <amlist_list>/amlist/list</amlist_list>
+        </secure_url>
         <translate>
             <modules>
                 <Amasty_List>

@@ -2,14 +2,14 @@
 <!--
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
  * @package Amasty_Orderattr
  */
 -->
 <config>
     <modules>
         <Amasty_Orderattr>
-            <version>3.4.3</version>
+            <version>3.5.1</version>
         </Amasty_Orderattr>
     </modules>
     <admin>
@@ -233,7 +233,7 @@
         </helpers>
 
         <events>
-            <sales_quote_save_after>
+            <sales_quote_address_collect_totals_after>
                 <observers>
                     <amorderattr>
                         <type>singleton</type>
@@ -241,7 +241,7 @@
                         <method>onSalesQuoteSaveAfter</method>
                     </amorderattr>
                 </observers>
-            </sales_quote_save_after>
+            </sales_quote_address_collect_totals_after>
 
             <sales_quote_save_after>
                 <observers>
@@ -271,6 +271,16 @@
                     </amorderattr>
                 </observers>
             </sales_order_save_after>
+
+            <sales_order_place_before>
+                <observers>
+                    <amorderattr_paypal>
+                        <type>singleton</type>
+                        <class>amorderattr/observer</class>
+                        <method>salesOrderPlaceBefore</method>
+                    </amorderattr_paypal>
+                </observers>
+            </sales_order_place_before>
 
             <sales_order_place_after>
                 <observers>

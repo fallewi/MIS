@@ -113,8 +113,16 @@
                         <button type="submit" name="update_cart_action" data-cart-item-update value="update_qty" title="<?php echo $this->quoteEscape($this->__('Update Shopping Cart')); ?>" class="button2 btn-update"><span><span><?php echo $this->__('Update Shopping Cart'); ?></span></span></button>
 
                         <span class="or">-<?php echo $this->__('or'); ?>-</span>
-
-                        <?php if($this->getContinueShoppingUrl()): ?>
+                        
+                        <?php if ( Mage::helper('core')->isModuleEnabled('BlueAcorn_AjaxCart') ): ?>
+                            <?php $__continueShoppingUrl = Mage::helper('blueacorn_ajaxcart')->getContinueShoppingUrl(); ?>
+                            <?php if ( !$__continueShoppingUrl ): ?>
+                                <?php $__continueShoppingUrl = $this->getContinueShoppingUrl(); ?>
+                            <?php endif; ?>
+                            <?php if ( $__continueShoppingUrl ): ?>
+                                <button type="button" title="<?php echo $this->quoteEscape($this->__('Continue Shopping')) ?>" class="button2 btn-continue" onclick="setLocation('<?php echo Mage::helper('core')->quoteEscape($__continueShoppingUrl) ?>')"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+                            <?php endif; ?>
+                        <?php elseif ( $this->getContinueShoppingUrl() ): ?>
                             <button type="button" title="<?php echo $this->quoteEscape($this->__('Continue Shopping')) ?>" class="button2 btn-continue" onclick="setLocation('<?php echo Mage::helper('core')->quoteEscape($this->getContinueShoppingUrl()) ?>')"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
                         <?php endif; ?>
                         <!--[if lt IE 8]>
