@@ -23,7 +23,6 @@ class Ebizmarts_MailChimp_Model_Config
     const GENERAL_MCISSYNCING           = 'mailchimp/general/is_syicing';
     const GENERAL_ECOMMMINSYNCDATEFLAG  = 'mailchimp/general/mcminsyncdateflag';
     const GENERAL_SUBMINSYNCDATEFLAG    = 'mailchimp/general/subminsyncdateflag';
-    const GENERAL_MCSTORE_RESETED       = 'mailchimp/general/mcstore_reset';
     const GENERAL_TWO_WAY_SYNC          = 'mailchimp/general/webhook_active';
     const GENERAL_UNSUBSCRIBE           = 'mailchimp/general/webhook_delete';
     const GENERAL_WEBHOOK_ID            = 'mailchimp/general/webhook_id';
@@ -45,7 +44,7 @@ class Ebizmarts_MailChimp_Model_Config
     const ECOMMERCE_PRODUCT_LAST_ID     = 'mailchimp/ecommerce/product_last_id';
     const ECOMMERCE_ORDER_LAST_ID       = 'mailchimp/ecommerce/order_last_id';
     const ECOMMERCE_CART_LAST_ID        = 'mailchimp/ecommerce/cart_last_id';
-    const ECOMMERCE_PCD_LAST_ID        = 'mailchimp/ecommerce/pcd_last_id';
+    const ECOMMERCE_PCD_LAST_ID         = 'mailchimp/ecommerce/pcd_last_id';
     const ECOMMERCE_RESEND_ENABLED      = 'mailchimp/ecommerce/resend_enabled';
     const ECOMMERCE_RESEND_TURN         = 'mailchimp/ecommerce/resend_turn';
     const ECOMMERCE_CUSTOMER_AMOUNT     = 'mailchimp/ecommerce/customer_batch_amount';
