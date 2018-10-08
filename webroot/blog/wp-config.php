@@ -28,7 +28,8 @@ define('DB_PASSWORD', 'b7f747b5-04d7-416e-91de-5eaeb90dd97c');
 
 
 /** MySQL hostname */
-define('DB_HOST', 'stratus-aurora-1.cluster-c6bwmtzc1vzu.us-east-1.rds.amazonaws.com');
+define('DB_HOST', 'mysql');
+/** stratus-aurora-1.cluster-c6bwmtzc1vzu.us-east-1.rds.amazonaws.com */
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
