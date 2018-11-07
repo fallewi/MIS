@@ -41,37 +41,45 @@ class Shipperhq_Shipper_Model_Carrier_Backup extends Mage_Core_Model_Abstract
     protected $storeId;
     protected $availabilityConfigField = 'active';
 
-    public function getBackupCarrierRates($request)
+    /**
+     * @param      $request
+     * @param bool $lastCheck is this the last check for backup rates as no rates found? No rates will be because of prevent carrier rule
+     * @return bool
+     */
+    public function getBackupCarrierRates($request, $lastCheck = false)
     {
-        $this->storeId = $request->getStoreId();
-        $carrierCode = $this->getBackupCarrierDetails();
-        if(!$carrierCode) {
-            return false;
-        }
-
-        $tempEnabledCarrier = $this->tempSetCarrierEnabled($carrierCode,true);
-        $carrier = $this->getCarrierByCode($carrierCode, $request->getStoreId());
-
-        if (!$carrier) {
-            $this->tempSetCarrierEnabled($carrierCode,false);
-            if (Mage::helper('shipperhq_shipper')->isDebug()) {
-                Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'Unable to activate backup carrier',
-                    $carrierCode);
+        if (!$lastCheck) {
+            $this->storeId = $request->getStoreId();
+            $carrierCode = $this->getBackupCarrierDetails();
+            if (!$carrierCode) {
+                return false;
             }
-            return false;
+
+            $tempEnabledCarrier = $this->tempSetCarrierEnabled($carrierCode, true);
+            $carrier = $this->getCarrierByCode($carrierCode, $request->getStoreId());
+
+            if (!$carrier) {
+                $this->tempSetCarrierEnabled($carrierCode, false);
+                if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                    Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'Unable to activate backup carrier', $carrierCode);
+                }
+
+                return false;
+            }
+
+            $result = $carrier->collectRates($request);
+            if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'Backup carrier result: ', $result);
+            }
+
+            if ($tempEnabledCarrier) {
+                $this->tempSetCarrierEnabled($carrierCode, false);
+            }
+
+            return $result;
         }
 
-        $result = $carrier->collectRates($request);
-        if (Mage::helper('shipperhq_shipper')->isDebug()) {
-            Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'Backup carrier result: ',
-                $result);
-        }
-
-        if ($tempEnabledCarrier) {
-            $this->tempSetCarrierEnabled($carrierCode,false);
-        }
-        return $result;
-
+        return false;
     }
 
     /**

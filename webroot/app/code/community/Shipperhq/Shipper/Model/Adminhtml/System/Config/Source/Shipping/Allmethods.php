@@ -41,7 +41,8 @@ class Shipperhq_Shipper_Model_Adminhtml_System_Config_Source_Shipping_Allmethods
     public function toOptionArray($isActiveOnlyFlag=false)
     {
         $methods = array(array('value'=>'', 'label'=>''));
-        $carriers = Mage::getSingleton('shipping/config')->getAllCarriers();
+        $storeId = Mage::helper('shipperhq_shipper')->getStoreId();
+        $carriers = Mage::getSingleton('shipping/config')->getAllCarriers($storeId);
         foreach ($carriers as $carrierCode=>$carrierModel) {
             if ((!$carrierModel->isActive() && (bool)$isActiveOnlyFlag === true) ||
                 in_array($carrierCode, $this->ignoreCarrierCodes)) {

@@ -79,10 +79,9 @@
             <?php foreach($carrierGroupRates as $cgkey => $_ratesAndShipInfo): ?>
                 <?php $additionalPrefix = 'ma'.$_address->getId(); ?>
                 <?php $shippingPrefix = $_address->getId(); ?>
-                <?php if($isSplit):?>
+                    <!--  SHQ16-2023  removed check for ifSplit - always used carrierGroupId -->
                     <?php $additionalPrefix .= 'ZZ' .$cgkey; ?>
                     <?php $shippingPrefix .= 'ZZ' .$cgkey; ?>
-                <?php endif; ?>
                 <?php $_shippingRateGroups = $_ratesAndShipInfo['shipping']; ?>
                 <div class="col2-set">
                     <h2 class="legend"><?php echo $this->__('Address %s of %s', ($_index+1), $this->getAddressCount()) ; if($isSplit && $_ratesAndShipInfo['carriergroup_text'] != '' ) echo $this->__(' - %s %s of %s ', $_ratesAndShipInfo['carriergroup_text'], $cgCount, $totalCarrierGroups) ?></h2>
@@ -111,7 +110,7 @@
                                     <dl class="sp-methods">
                                         <?php $this->setCurrentAddress($_address); ?>
                                         <?php $shippingCodePrice = array(); ?>
-                                        <?php $_sole = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
+                                        <?php $_soleCarrier = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
                                             <?php $showCarrierNotice = false; ?>
                                             <?php $isPickupCarrier = $this->isPickupCarrier($_rates[0]); ?>
                                             <?php if($pickupPreselected && !$isPickupCarrier): ?>
@@ -124,11 +123,14 @@
                                                     <p class="disclaimer" id="disclaimer_<?php echo $additionalPrefix ?>_<?php echo $code ?>" name="disclaimer_<?php echo $additionalPrefix ?>"><?php echo $_rates[0]->getCustomDescription(); ?></p>
                                                 <?php endif; ?>
                                                 <ul>
+                                                <?php if($calendarRates): ?>
+                                                        <?php echo $this->getCalendarHtml($additionalPrefix, $code, $_soleCarrier) ?>
+                                                    <?php endif ?>
                                                     <?php if($calendarRates || $isPickupCarrier): ?>
                                                         <div id="ship_options_<?php echo $additionalPrefix ?>_<?php echo $code ?>" class="ship_options">
                                                         <div id="radio_choices_<?php echo $additionalPrefix ?>_<?php echo $code ?>">
                                                     <?php endif ?>
-                                                    <?php $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
+                                                    <?php $_sole = $_soleCarrier && count($_rates) == 1; foreach ($_rates as $_rate): ?>
                                                         <li<?php if ($_rate->getErrorMessage()) echo ' class="error-msg"' ?>>
                                                             <?php if ($_rate->getErrorMessage()): ?>
                                                                 <?php echo $this->escapeHtml($_rate->getCarrierTitle()) ?>: <?php echo $this->escapeHtml($_rate->getErrorMessage()) ?>
@@ -142,6 +144,7 @@
                                                                     <input type="radio" name="shipping_method[<?php echo $shippingPrefix ?>]" value="<?php echo $this->htmlEscape($_rate->getCode()) ?>" id="s_method_<?php echo $shippingPrefix ?>_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod($_address)) echo ' checked="checked"' ?> class="radio" />
                                                                 <?php endif; ?>
                                                                 <label for="s_method_<?php echo $shippingPrefix ?>_<?php echo $_rate->getCode() ?>"><?php echo $this->getMethodTitle($_rate->getMethodTitle(), $_rate->getMethodDescription(), true) ?>
+                                                                    <strong>
                                                                     <?php $_excl = $this->getShippingPrice($_address, $_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
                                                                     <?php $_incl = $this->getShippingPrice($_address, $_rate->getPrice(), true); ?>
                                                                     <?php echo $_excl; ?>
@@ -149,10 +152,11 @@
                                                                         (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                                                     <?php endif; ?>
                                                                     <?php if ($_rate->getTooltip()): ?>
-                                                                        <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                                        <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rate->getTooltip()) ?>">
                                                                             <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                                                         </span>
                                                                     <?php endif; ?>
+                                                                    </strong>
                                                                 </label>
                                                             <?php endif ?>
                                                         </li>
@@ -163,7 +167,6 @@
                                                     <?php if($calendarRates): ?>
                                                         </div>
                                                         </div>
-                                                        <?php echo $this->getCalendarHtml($additionalPrefix, $code) ?>
                                                     <?php endif ?>
                                                     <?php if ($isPickupCarrier): ?>
                                                         </div>
@@ -218,8 +221,9 @@
         <?php echo $this->getChildHtml('checkout_billing_items') ?>
         <div class="buttons-set">
             <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->__('Back to Select Addresses') ?></a></p>
-            <button type="submit" title="<?php echo $this->__('Continue to Billing Information') ?>" class="button"><span><span><?php echo $this->__('Continue to Billing Information') ?></span></span></button>
+            <button data-action="checkout-continue-billing" type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Continue to Billing Information')) ?>" class="button"><span><span><?php echo $this->__('Continue to Billing Information') ?></span></span></button>
         </div>
+        <?php echo $this->getBlockHtml('formkey') ?>
     </form>
 </div>
 

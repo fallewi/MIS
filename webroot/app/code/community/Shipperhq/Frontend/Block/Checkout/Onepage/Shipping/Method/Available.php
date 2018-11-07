@@ -47,7 +47,7 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
                 'shipperhq_frontend/checkout_helper',
                 sprintf('%s.helper', $this->getNameInLayout())
             );
-            
+
             $this->_helperBlock->init(array(
                 'calendar_block' => 'shipperhq_calendar/checkout_onepage_shipping_method_calendar',
                 'calendar_template' => 'shipperhq/calendar/checkout/onepage/shipping_method/calendar.phtml',
@@ -102,6 +102,11 @@ class Shipperhq_Frontend_Block_Checkout_Onepage_Shipping_Method_Available extend
     public function getMethodTitle($methodTitle, $methodDescription, $includeContainer)
     {
         return $this->getHelperBlock()->getMethodTitle($methodTitle, $methodDescription, $includeContainer);
+    }
+
+    public function getCarrierName($carrierCode)
+    {
+        return $this->getHelperBlock()->getCarrierName($carrierCode);
     }
 
     public function getShippingPrice($price, $flag, $includeContainer = true)

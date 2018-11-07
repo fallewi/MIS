@@ -172,6 +172,7 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
     public function getOptionValue($accessorialCode, $carrierGroupId = null, $carrierCode = null)
     {
 
+        //check the value returned in selectedValue on saved accessorials (this is saved from checkout selections)
         $freightAcc = $this->getFreightAccessorials($carrierGroupId, $carrierCode);
         if($freightAcc && array_key_exists($accessorialCode,$freightAcc)
             && array_key_exists('selectedValue',$freightAcc[$accessorialCode])
@@ -179,6 +180,7 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
             && !is_null($freightAcc[$accessorialCode]['selectedValue'])) {
             return $freightAcc[$accessorialCode]['selectedValue'];
         }
+        //shipping address is set when values selected at checkout
         $currentVal = Mage::helper('shipperhq_shipper')->getQuote()->getShippingAddress()->getData($accessorialCode);
         if ($currentVal != '' && $currentVal != null) {
             return $currentVal;
@@ -186,6 +188,20 @@ class Shipperhq_Freight_Helper_Data extends Mage_Core_Helper_Abstract
         if($accessorialCode == 'destination_type' && Mage::registry('Shipperhq_Destination_Type') != '') {
             return Mage::registry('Shipperhq_Destination_Type');
         }
+
+        //check selected Freight Carrier options on session - these are saved from cart selections
+        $selectedFreightOptions = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getSelectedFreightCarrier();
+        //destination type is case sensitive in SHQ
+        if (isset($selectedFreightOptions[$accessorialCode]) && $selectedFreightOptions[$accessorialCode] !== '') {
+            if ($accessorialCode === 'destination_type' && $selectedFreightOptions[$accessorialCode] === 'false') {
+                //ignore
+            }
+            else {
+                return strtolower($selectedFreightOptions[$accessorialCode]);
+            }
+        }
+
+        //check default option values
         if($freightAcc && array_key_exists($accessorialCode,$freightAcc)
             && array_key_exists('defaultOptionValue',$freightAcc[$accessorialCode])
             && $freightAcc[$accessorialCode]['defaultOptionValue'] != ''

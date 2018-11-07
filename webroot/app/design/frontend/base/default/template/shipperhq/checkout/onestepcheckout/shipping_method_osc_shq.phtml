@@ -64,7 +64,7 @@
                             <?php endif ?>
                             <label for="s_method<?php echo $carriergroupInsert ?>_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?>
                                 <?php if ($_rates[0]->getTooltip()): ?>
-                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rates[0]->getTooltip() ?>">
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rates[0]->getTooltip()) ?>">
                                         <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                     </span>
                                 <?php endif; ?>
@@ -130,7 +130,7 @@
                                     <?php endif; ?>
                                 </strong>
                                 <?php if ($_rate->getTooltip()): ?>
-                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                    <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rate->getTooltip()) ?>">
                                         <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                     </span>
                                 <?php endif; ?>
@@ -156,7 +156,7 @@
                         <?php endif ?>
                         <label for="s_method_<?php echo $code ?>"><?php echo $this->getCarrierName($code) ?>
                             <?php if ($_rates[0]->getTooltip()): ?>
-                                <span style="float:right;" class="helpcursor" title="<?php echo $_rates[0]->getTooltip() ?>">
+                                <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rates[0]->getTooltip()) ?>">
                                                 <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                             </span>
                             <?php endif; ?>
@@ -211,7 +211,7 @@
 
         var showTooltip = '<?php echo $this->showToolTips(); ?>';
         if(showTooltip == 1) {
-            var tooltipText = '<?php echo $this->getToolTipText() ?>';
+            var tooltipText = '<?php echo $this->__($this->getToolTipText()) ?>';
             var tooltipImgUrl =  '<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>';
             var tooltipHtml =  '<b class="helpcursor" title="' + tooltipText + '"><img src="'
                 + tooltipImgUrl + '"></b>';

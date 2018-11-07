@@ -35,7 +35,11 @@ class Shipperhq_Shipper_Adminhtml_ShqajaxController extends Mage_Adminhtml_Contr
     public function refreshcarriersAction()
     {
         $carrier = Mage::getModel('shipperhq_shipper/carrier_shipper');
-        $refreshResult = $carrier->refreshCarriers();
+
+        $params = $this->getRequest()->getParams();
+        $storeId = (int)$params['store_id'];
+
+        $refreshResult = $carrier->refreshCarriers($storeId, 'store');
         $success = 1;
         $session = Mage::getSingleton('Mage_Adminhtml_Model_Session');
         $session->getMessages(true);
@@ -60,4 +64,10 @@ class Shipperhq_Shipper_Adminhtml_ShqajaxController extends Mage_Adminhtml_Contr
         $result= array('result' =>$success, 'message' =>$message, 'session_messages' => $session_messages);
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('system/config');
+    }
+
 }

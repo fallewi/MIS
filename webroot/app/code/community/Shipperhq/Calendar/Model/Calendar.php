@@ -98,16 +98,20 @@ class Shipperhq_Calendar_Model_Calendar extends Mage_Core_Model_Abstract
                                     'date selected' =>$dateSelected));
                         }
                     }
-                    $_excl = $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), !$isOsc);
+
+                    $_excl = $this->_getShippingPrice($rate->getPrice(), Mage::helper('tax')->displayShippingPriceIncludingTax(), $isOsc);
                     $_incl = $this->_getShippingPrice($rate->getPrice(), true, !$isOsc);
 
-                    $label =  $_excl;
+                    $label =  $this->getMethodTitle($rate->getMethodTitle(), $rate->getMethodDescription(), !$isOsc);
+
+                    $label .= ' <strong><span class="price">'.$_excl.'</span></strong>'; //Should be <shipping_description> <shipping_price> SHQ16-2360
+
                     if (Mage::helper('tax')->displayShippingBothPrices() && $_incl != $_excl)
                     {
                         $label .= ' (' .Mage::helper('shipperhq_shipper')->__('Incl. Tax') .' ' .$_incl .')';
                     }
-                    $label .=  ' ' .$this->getMethodTitle($rate->getMethodTitle(), $rate->getMethodDescription(), !$isOsc);
-                    if ($rate->getTooltip() && !$isOsc) {
+
+                    if ($rate->getTooltip()) {
                         $label .= '<span style="float:right;" class="helpcursor" title="'.$rate->getTooltip().'">
                                        <img src="'.$tooltipImgUrl.'">
                                    </span>';

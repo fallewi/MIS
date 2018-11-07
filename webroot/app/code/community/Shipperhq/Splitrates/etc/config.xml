@@ -109,7 +109,7 @@
                 </observers>
             </controller_action_predispatch_onestepcheckout_ajax_set_methods_separate>
             <!--manually merge shipping rates -->
-            <controller_action_predispatch_checkout_multishipping_shippingPost>
+            <shipperhq_multi_address_checkout_shipping_method>
                 <observers>
                     <shipperhq_splitrates_predispatch_multi_shippingmethod_observer>
                         <type>singleton</type>
@@ -117,7 +117,7 @@
                         <method>predispatchMultishippingShipping</method>
                     </shipperhq_splitrates_predispatch_multi_shippingmethod_observer>
                 </observers>
-            </controller_action_predispatch_checkout_multishipping_shippingPost>
+            </shipperhq_multi_address_checkout_shipping_method>
             <adminhtml_sales_order_create_process_data_before>
                 <observers>
                     <shipperhq_splitrates_save_shipping_methods_observer>

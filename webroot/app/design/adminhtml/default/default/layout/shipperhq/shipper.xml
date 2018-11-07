@@ -38,8 +38,14 @@
 
     <default>
         <reference name="notifications">
-                <block type="shipperhq_shipper/adminhtml_synchronize_notify" name="synchronize_notify" template="shipperhq/shipper/synchronize/notify.phtml"></block>
-                <block type="shipperhq_shipper/adminhtml_carrier_notify" name="carrier_notify" template="shipperhq/shipper/carrier/notify.phtml"></block>
+            <block type="shipperhq_shipper/adminhtml_synchronize_notify" name="synchronize_notify"
+                   template="shipperhq/shipper/synchronize/notify.phtml"/>
+            <block type="shipperhq_shipper/adminhtml_synchronize_notify_modules" name="synchronize_notify_modules"
+                   template="shipperhq/shipper/synchronize/notify/modules.phtml"/>
+            <block type="shipperhq_shipper/adminhtml_carrier_notify" name="carrier_notify"
+                   template="shipperhq/shipper/carrier/notify.phtml"/>
+            <block type="shipperhq_shipper/adminhtml_synchronize_notify_indexes" name="synchronize_notify_indexes"
+                   template="shipperhq/shipper/synchronize/notify/indexes.phtml"/>
         </reference>
     </default>
     <adminhtml_catalog_product_edit>

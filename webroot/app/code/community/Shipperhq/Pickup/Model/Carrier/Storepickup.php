@@ -109,7 +109,7 @@ class Shipperhq_Pickup_Model_Carrier_Storepickup
                 $methodName = $oneRate->name;
             }
         }
-        
+
         $quoteStorage = Mage::helper('shipperhq_shipper')->getQuoteStorage();
         $closestLocationName = false;
 
@@ -121,18 +121,24 @@ class Shipperhq_Pickup_Model_Carrier_Storepickup
             foreach($carrierRate->pickupLocationDetails->pickupLocations as $location) {
                 $locationAsArray =(array)$location;
                 $calendarDetails = (array)$location->calendarDetails;
-                if(!empty($calendarDetails)) {
-                    if($calendarDetails['startDate'] != '') {
-                        $calendarDetails['start'] = $calendarDetails['startDate']/1000;
-                    }
-                    else {
-                        $calendarDetails['start'] = $location->pickupDate/1000;
-                    }
-                }
 
-                else {
+                if(!empty($calendarDetails)) {
+                	if ($calendarDetails['startDate'] != '') {
+						$calendarDetails['start'] = $calendarDetails['startDate']/1000;
+					} else {
+						$pickupDateUTC = $location->pickupDate/1000;
+
+						$calendarDetails['start'] = $pickupDateUTC;
+						Mage::helper('wsalogger/log')->postDebug('ShipperHQ Pickup',
+							'Setting Calendar and Time Slot Start to pickupDate',
+							"Pickup UTC: ".$pickupDateUTC.
+							"<br />Pickup Start: ".$location->pickupDateStr
+						);
+					}
+                } else {
                     $calendarDetails['showDate'] = false;
                 }
+
                 $locationAsArray['calendarDetails'] = $calendarDetails;
                 $locationAsArray['methodName'] = $methodName;
                 $locationAsArray['carrier_id'] = $carrierId;

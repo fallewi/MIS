@@ -37,6 +37,7 @@ class Shipperhq_Splitrates_Block_Onestepcheckout_Checkout extends Idev_OneStepCh
 
             $billing_data = $checkoutHelper->load_exclude_data($billing_data);
             $shipping_data = $checkoutHelper->load_exclude_data($shipping_data);
+            $getCreateAccount = $this->getRequest()->getPost('create_account', false);
 
             //ensure that address fields order is preserved after changing field order
             if (!empty ($billing_data ['street']) && is_array($billing_data ['street'])) {
@@ -247,7 +248,7 @@ class Shipperhq_Splitrates_Block_Onestepcheckout_Checkout extends Idev_OneStepCh
                 $allow_guest_create_account_validation = false;
 
                 if ($this->settings['registration_mode'] == 'allow_guest') {
-                    if (isset($_POST['create_account']) && $_POST['create_account'] == '1') {
+                    if (isset($getCreateAccount) && $getCreateAccount == '1') {
                         $allow_guest_create_account_validation = true;
                     }
                 }
@@ -460,7 +461,7 @@ class Shipperhq_Splitrates_Block_Onestepcheckout_Checkout extends Idev_OneStepCh
                             $this->_saveOrder();
                         } else {
                             // This should not happen, because validation should handle it
-                            die('Validation did not handle it');
+                            Mage::throwException(Mage::helper('checkout')->__('Validation did not handle it'));
                         }
                     } elseif ($registration_mode == 'allow_guest') {
                         $this->setCustomerAfterPlace($this->_getCustomer());
@@ -483,7 +484,7 @@ class Shipperhq_Splitrates_Block_Onestepcheckout_Checkout extends Idev_OneStepCh
                         $this->getQuote()->setCustomerId(null);
                         $this->_saveOrder();
                     } elseif ($this->settings['registration_mode'] == 'allow_guest') {
-                        if (isset($_POST['create_account']) && $_POST['create_account'] == '1') {
+                        if (isset($getCreateAccount) && $getCreateAccount == '1') {
                             $this->getOnepage()->saveCheckoutMethod('register');
                             $this->getQuote()->setCustomerId(null);
                             $this->_saveOrder();

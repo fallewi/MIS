@@ -38,8 +38,12 @@
     //<![CDATA[
     function getAllowedMethods() {
         var elem = $('<?php echo $this->getHtmlId() ?>');
-
+        var storeId = '<?php echo $this->getStoreId() ?>';
+        params = {
+            store_id: storeId
+        };
         new Ajax.Request('<?php echo $this->getAjaxUrl() ?>', {
+            parameters: params,
             onSuccess: function(response) {
 
                 try {

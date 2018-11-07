@@ -32,7 +32,7 @@
 <config>
     <modules>
         <Shipperhq_Freight>
-            <version>0.0.10</version>
+            <version>0.0.11</version>
         </Shipperhq_Freight>
     </modules>
     <global>
@@ -172,7 +172,23 @@
                 </args>
             </shipperhq_freight>
         </routers>
+        <layout>
+            <updates>
+                <shipperhq_calendar>
+                    <file>shipperhq/freight.xml</file>
+                </shipperhq_calendar>
+            </updates>
+        </layout>
     </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <shipperhq_calendar>
+                    <file>shipperhq/freight.xml</file>
+                </shipperhq_calendar>
+            </updates>
+        </layout>
+    </adminhtml>
     <admin>
         <routers>
             <adminhtml>

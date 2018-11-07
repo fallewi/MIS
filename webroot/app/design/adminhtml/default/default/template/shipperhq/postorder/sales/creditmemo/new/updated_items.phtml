@@ -43,8 +43,10 @@
                 <tr class="headings">
                     <th><?php echo $this->helper('sales')->__('Product') ?></th>
                     <th><?php echo $this->helper('sales')->__('Price') ?></th>
+                    <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
                     <th><span class="nobr"><?php echo $this->helper('shipperhq_postorder')->getItemColumnTitle() ?></span></th>
                     <th><span class="nobr"><?php echo $this->helper('shipperhq_postorder')->__('Shipping & Handling') ?></span></th>
+                    <?php endif; ?>
                     <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>
                     <?php if ($this->canReturnToStock()) : ?>
                         <th><span class="nobr"><?php echo $this->helper('sales')->__('Return to Stock') ?></span></th>

@@ -40,26 +40,20 @@
 
     <!-- OPC -->
     <checkout_onepage_index>
-    <reference name="head">
-        <action method="addJs">
-            <name>shipperhq/jquery-loader.js</name>
-        </action>
-        <action method="addItem">
-            <type>skin_css</type>
-            <name>css/shipperhq/calendarbase.css</name>
-        </action>
-    </reference>
-    <reference name="head">
-        <action method="addItem">
-            <type>skin_css</type>
-            <name>css/shipperhq/storepickup.css</name>
-        </action>
-    </reference>
-    <reference name="head">
-        <block type="core/text" name="jquery">
-            <action method="setText"><text helper='shipperhq_pickup/getGoogleApiUrl'/></action>
-        </block>
-    </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/shipperhq/frontend.css</name>
+            </action>
+            <action method="addJs">
+                <name>shipperhq/jquery-loader.js</name>
+            </action>
+        </reference>
+        <reference name="head">
+            <block type="core/text" name="jquery">
+                <action method="setText"><text helper='shipperhq_shipper/getGoogleApiUrl'/></action>
+            </block>
+        </reference>
         <reference name="before_body_end">
             <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
         </reference>
@@ -92,7 +86,7 @@
         </reference>
         <reference name="head">
             <block type="core/text" name="jquery">
-                <action method="setText"><text helper='shipperhq_pickup/getGoogleApiUrl'/></action>
+                <action method="setText"><text helper='shipperhq_shipper/getGoogleApiUrl'/></action>
             </block>
         </reference>
         <reference name="head">
@@ -144,7 +138,7 @@
         </reference>
         <reference name="head">
             <block type="core/text" name="jquery">
-                <action method="setText"><text helper='shipperhq_pickup/getGoogleApiUrl'/></action>
+                <action method="setText"><text helper='shipperhq_shipper/getGoogleApiUrl'/></action>
             </block>
             <action method="addItem">
                 <type>skin_css</type>

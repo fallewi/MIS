@@ -176,10 +176,19 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
                 }
                 continue;
             }
+            $data = $observer->getEvent()->getRequest()->getParams();
+            $suffix = '_ma'.$addressId;
+            $shippingDetails = Mage::helper('shipperhq_shipper')->decodeShippingDetails(
+                $shippingAddress->getCarriergroupShippingDetails()
+            );
+            if(count($shippingDetails) == 1) { //SHQ16-2023 this should be ignored for split shipping
+                $carriergroupId = $shippingDetails[0]['carrierGroupId'];
+                $suffix .= 'ZZ'.$carriergroupId;
+            }
 
-            $pickupLocationId = $observer->getEvent()->getRequest()->getParam('location_id_' .$carrierCode.'_ma'.$addressId);
-            $pickupDate = $observer->getEvent()->getRequest()->getParam('pickup_date_' .$carrierCode .'_ma'.$addressId);
-            $pickupSlot = $observer->getEvent()->getRequest()->getParam('pickup_slot_' .$carrierCode .'_ma'.$addressId);
+            $pickupLocationId = $observer->getEvent()->getRequest()->getParam('location_id_' .$carrierCode.$suffix);
+            $pickupDate = $observer->getEvent()->getRequest()->getParam('pickup_date_' .$carrierCode .$suffix);
+            $pickupSlot = $observer->getEvent()->getRequest()->getParam('pickup_slot_' .$carrierCode .$suffix);
             if(!$pickupLocationId) {
                 continue;
             }
@@ -263,6 +272,16 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
 
     protected function _savePickupInfoToShippingAddress($shippingAddress, $carrierGroupId, $pickupLocationId, $carrierCode, $pickupDate, $pickupSlot = null)
     {
+        if ($pickupDate === '') {
+            if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                Mage::helper('wsalogger/log')->postInfo('Shipperhq_Pickup', 'Saving pickup date',
+                    'Pickup selected but date field is blank for shipping address ID ' .$shippingAddress->getId() .', order in name of ' .$shippingAddress->getName() );
+            }
+        }
+        $shippingAddress->setDispatchDate($pickupDate);
+        $shippingAddress->setDeliveryDate($pickupDate);
+        $shippingAddress->setPickupDate($pickupDate);
+
         $pickupLocation = Mage::helper('shipperhq_pickup')->getLocationDetails($carrierGroupId, $carrierCode, $pickupLocationId);
         if($pickupLocation) {
             $this->saveOriginalShipAddress($shippingAddress);
@@ -272,9 +291,6 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             $shippingAddress->setPickupLocation($pickupLocation['pickupName']);
             $shippingAddress->setPickupLatitude($pickupLocation['latitude']);
             $shippingAddress->setPickupLongitude($pickupLocation['longitude']);
-            $shippingAddress->setDispatchDate($pickupDate);
-            $shippingAddress->setDeliveryDate($pickupDate);
-            $shippingAddress->setPickupDate($pickupDate);
             $shippingAddress->setPickupEmail($pickupLocation['email']);
             $shippingAddress->setPickupContact($pickupLocation['contactName']);
             $shippingAddress->setPickupEmailOption($pickupLocation['emailOption']);
@@ -311,8 +327,8 @@ class Shipperhq_Pickup_Model_Observer extends Mage_Core_Model_Abstract
             $shippingAddress->setCarriergroupShippingDetails($cgDetail)
             ->setCarriergroupShippingHtml(Mage::helper('shipperhq_shipper')->getCarriergroupShippingHtml(
                     $cgDetail));
-            $shippingAddress->save();
         }
+        $shippingAddress->save();
     }
 
     protected function addPickupToCgDetail($encodedDetails, $shippingAddress)

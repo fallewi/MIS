@@ -110,9 +110,16 @@ class Shipperhq_Calendar_Model_Carrier_Calendar
             else {
                 $calendarDetails['start'] = $startDate;
             }
+            $calendarDetails['date_on_rate'] = date(Mage::helper('shipperhq_shipper')->getDateFormat(),$startDate);
             $calendarDetails['carrier_id'] = $carrierId;
             $allCalendarDetails = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getCalendarDetails();
             $allCalendarDetails[$calendarCarrierGroupId][$carrierCode] = $calendarDetails;
+            $allCalendarDetails[$carrierGroupId][$carrierCode] = $calendarDetails;
+
+            if($calendarCarrierGroupId == 0 && array_key_exists($carrierGroupId, $allCalendarDetails)) {
+                $allCalendarDetails[$carrierGroupId][$carrierCode] = $calendarDetails;
+            }
+
             Mage::helper('shipperhq_shipper')->getQuoteStorage()->setCalendarDetails($allCalendarDetails);
             Mage::getSingleton('catalog/session')->setCalendarDetails($allCalendarDetails);
             if (Mage::helper('shipperhq_shipper')->isDebug()) {

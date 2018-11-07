@@ -146,7 +146,7 @@ FreightListener.prototype = {
 
         var url = '<?php echo Mage::helper('adminhtml')->getUrl("*/order_freight/getAccessorialRates", array("_secure"=>true)) ?>';
         document.getElementById('retrieving-rates').innerHTML =
-            "<img src='<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>'> Retrieving rates...";
+            "<img src='<?php echo $this->getSkinUrl('images/ajax-loader-tr.gif') ?>'> Retrieving rates...";
         var carrierCode = '<?php echo $carrierCode; ?>';
         var carrierGroupInsert = '<?php echo $carrierGroupInsert; ?>';
         var carrierGroup = '<?php echo $carrierGroup; ?>';
@@ -248,7 +248,7 @@ FreightListener.prototype = {
         }
 
         document.getElementById('retrieving-rates').innerHTML =
-            "<img src='<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>'> Retrieving rates...";
+            "<img src='<?php echo $this->getSkinUrl('images/ajax-loader-tr.gif') ?>'> Retrieving rates...";
         new Ajax.Request(url, {
             method: 'get',
             onSuccess: freightListener.updateOscRates,

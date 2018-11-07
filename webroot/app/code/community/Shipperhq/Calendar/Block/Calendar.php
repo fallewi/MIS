@@ -43,6 +43,103 @@ class Shipperhq_Calendar_Block_Calendar extends Shipperhq_Frontend_Block_Checkou
         $this->_calendarDetails = $details;
     }
 
+    /**
+     * Gets number of calendars on checkout and optionally returns default carrier
+     * Default carrier right now is first in the list. This will be on sort order which is defined in SHQ dash
+     * Scope here to return cheapest method instead of carrier
+     *
+     * @param        $carriergroupId
+     * @param        $code
+     * @param string $defaultCarrier
+     * @return int
+     */
+    public function getNumberOfCalendarsAndDefault($carriergroupId, $code, &$defaultCarrier = "")
+    {
+        $calendarDetails = $this->getCalendarDetails($carriergroupId, $code);
+
+        if(array_key_exists($carriergroupId, $calendarDetails)) {
+            $key = $carriergroupId;
+        } else {
+            $key = 0;
+        }
+
+        $calendarCount = count($calendarDetails[$key]);
+
+        if ($calendarCount > 1) {
+            $carrierCodes = array_keys($calendarDetails[$key]);
+
+            /**
+             * Don't set default carrier if method is selected. Show the calendar for the
+             * selected method
+             */
+            if($this->getQuote()->getShippingAddress()->getShippingMethod() == "") {
+                $defaultCarrier = $carrierCodes[0];
+            }
+        }
+
+        return $calendarCount;
+    }
+
+    public function isInlineCalendarEnabled()
+    {
+        return Mage::helper('shipperhq_shipper')->useInlineCalendar();
+    }
+
+    public function getDefaultDate($carrierCode, $carrierGroupId)
+    {
+        $dateArr = Mage::helper('shipperhq_shipper')
+            ->getQuoteStorage($this->getQuote())->getDeliveryDateArray();
+
+        //Only doing for inline.
+        if ($this->isInlineCalendarEnabled() && $dateArr != null && count($dateArr)) {
+            $key = $carrierCode.$carrierGroupId;
+            if(array_key_exists($key, $dateArr)) {
+                return $dateArr[$key];
+            }
+        }
+
+        return "";
+    }
+
+    public function getInitialDeliveryDates($carrierCode, $carrierGroupId, &$minDate, &$maxDate, &$getDefaultDate)
+    {
+        if (!$this->isInlineCalendarEnabled()) {
+            return null;
+        }
+
+        $defaultDate = $this->getDefaultDate($carrierCode, $carrierGroupId);
+
+        if ($carrierGroupId == "") {
+            $carrierGroupId = 0;
+        }
+
+        /*if($this->getQuote()->getIsMultiShipping()) {
+            $carrierGroupId = 'ma'.$carrierGroupId;
+        }*/
+
+        $dateSelected = $defaultDate == "" ? "" : $defaultDate;
+
+
+        $params = array(
+            'carrier_code' => $carrierCode,
+            'carriergroup_id' => $carrierGroupId,
+            'date_selected' => $dateSelected,
+            'load_only' => true
+        );
+
+        $rates = Mage::getSingleton('shipperhq_calendar/service_calendar')->getCalendarDatesOnly($params);
+
+        if ($rates) {
+            $deliveryDates = $rates['delivery_dates'];
+            $earliest = array_reverse($deliveryDates);
+            $minDate = array_pop($earliest);
+            $maxDate = array_pop($deliveryDates);
+            $getDefaultDate = $rates['date_selected'];
+        }
+
+        return Mage::helper('core')->jsonEncode($rates);
+    }
+
     public function oneStepCheckoutEnabled()
     {
         return Mage::helper('shipperhq_shipper')->isModuleEnabled('Idev_OneStepCheckout', 'onestepcheckout/general/rewrite_checkout_links');
@@ -73,7 +170,7 @@ class Shipperhq_Calendar_Block_Calendar extends Shipperhq_Frontend_Block_Checkou
     }
 
     public function getCarriergroupInsert($carriergroupId) {
-        if (is_empty($carriergroupId)) {
+        if (empty($carriergroupId)) {
             return '';
         } else {
             return '_'.$carriergroupId;

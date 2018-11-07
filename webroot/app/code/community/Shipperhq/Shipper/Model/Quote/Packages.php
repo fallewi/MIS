@@ -44,8 +44,11 @@ class Shipperhq_Shipper_Model_Quote_Packages
     /**
      * Loads data by quote object
      *
-     * @param Mage_Sales_Model_Quote $quote
+     * @param $addressId
+     * @param $carrierGroupId
+     * @param $carrierCode
      * @return $this
+     * @internal param Mage_Sales_Model_Quote $quote
      */
     public function loadByCarrier($addressId, $carrierGroupId, $carrierCode)
     {

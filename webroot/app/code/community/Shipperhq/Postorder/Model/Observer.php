@@ -47,14 +47,18 @@ class Shipperhq_Postorder_Model_Observer extends Mage_Core_Model_Abstract
                         $shipping_method = $order->getShippingMethod();
                         $rate = $quote->getShippingAddress()->getShippingRateByCode($shipping_method);
                         if($rate) {
-
                             $order->setCarrierType($rate->getCarrierType());
                             list($carrierCode, $method) = explode('_', $shipping_method, 2);
-                            $magentoCarrierCode = Mage::helper('shipperhq_shipper')->mapToMagentoCarrierCode(
-                            $rate->getCarrierType(),$carrierCode);
+                            $magentoCarrierCode = Mage::helper('shipperhq_shipper')
+                                ->mapToMagentoCarrierCode($rate->getCarrierType(),$carrierCode);
+                            $magentoMethodCode = Mage::helper('shipperhq_shipper')->getMagentoUpsMethodCode($method);
+
+                            if($magentoMethodCode) { //SHQ16-2444
+                                $method = $magentoMethodCode;
+                            }
+
                             $newShipMethod = ($magentoCarrierCode .'_' .$method);
                             $order->setShippingMethod($newShipMethod);
-
                         }
                     }
                     break;

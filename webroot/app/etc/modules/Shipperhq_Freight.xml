@@ -7,6 +7,7 @@
             <depends>
                 <Mage_Shipping />
                 <Shipperhq_Shipper />
+                <Shipperhq_Frontend />
             </depends>
         </Shipperhq_Freight>
     </modules>

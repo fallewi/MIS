@@ -37,11 +37,19 @@
 */
 -->
 <layout version="0.1.0">
-    <checkout_onepage_index>
-        <reference name="checkout.onepage.shipping_method">
-            <block type="shipperhq_splitrates/checkout_onepage_shipping_method_available" name="checkout.onepage.shipping_method.available"
-                   as="available" template="shipperhq/checkout/onepage/shipping_method/available.phtml"/>
+    <checkout_onepage_shippingmethod>
+        <remove name="root"/>
+        <block type="shipperhq_splitrates/checkout_onepage_shipping_method_available" name="shq.root" output="toHtml"
+               template="shipperhq/checkout/onepage/shipping_method/available.phtml">
+        </block>
+        <reference name="shq.root">
+            <action method="setTemplate">
+                <template helper='shipperhq_shipper/getAvailableTemplate'/>
+            </action>
         </reference>
+    </checkout_onepage_shippingmethod>
+
+    <checkout_onepage_index>
         <reference name="head">
             <action method="addItem">
                 <type>skin_css</type>
@@ -49,13 +57,6 @@
             </action>
         </reference>
     </checkout_onepage_index>
-    <checkout_onepage_shippingmethod>
-       <reference name="shq.root">
-            <action method="setTemplate">
-                <template helper='shipperhq_shipper/getAvailableTemplate'/>
-            </action>
-        </reference>
-    </checkout_onepage_shippingmethod>
 
     <onestepcheckout_index_index>
         <reference name="head">

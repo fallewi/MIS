@@ -79,7 +79,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
         <div class="shq-input">
             <label class="shq-input">
                 <input type="text"  class="shq-input datepickercalendar" readonly="readonly" value="" id="pickup_date_select<?php echo $carrierCodeInsert . $carriergroupInsert; ?>" name="pickup_date<?php echo $carrierCodeInsert . $carriergroupInsert; ?>"/>
-                <span class="shq-ico-calendar shq-ico-r"></span>
+                <span class="shq-ico-calendar shq-ico-r" id="shq-ico-calendar-img"></span><!--This needs to go-->
             </label>
         </div>
     </div>
@@ -307,6 +307,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 if(!locationDetails.pickup_dates) {
                     $('pickup_date_select_label' +  carrierCodeInsert + carriergroupInsert).hide();
                     $('pickup_date_select' + carrierCodeInsert + carriergroupInsert).hide();
+                    $('shq-ico-calendar-img').hide();
                     $j(".ui-datepicker-trigger").hide();
                 }
                 else {
@@ -345,6 +346,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
             else {
                 $('pickup_date_select_label' + carrierCodeInsert + carriergroupInsert).hide();
                 $('pickup_date_select' + carrierCodeInsert + carriergroupInsert).hide();
+                $('shq-ico-calendar-img').hide();
                 $j(".ui-datepicker-trigger").hide();
             }
 
@@ -438,10 +440,10 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                 if(showAddress != 'hidden') {
                     var street = '';
                     if(locationDetails.street1 != '') {
-                        street = locationDetails.street1 + '</br>';
+                        street = locationDetails.street1 + '<br />';
                     }
                     if (locationDetails.street2) {
-                        street = street + locationDetails.street2 + '</br>';
+                        street = street + locationDetails.street2 + '<br />';
                     }
                     address = address + '<address>';
                     if(showAddress == 'inline') {
@@ -451,20 +453,20 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
                         + locationDetails.city + ', ' + locationDetails.region + ' ' + locationDetails.zip;
 
                     if(locationDetails.phone) {
-                        address = address + '</br> T:' + locationDetails.phone;
+                        address = address + '<br /> T:' + locationDetails.phone;
                     }
 
                     if(locationDetails.fax)  {
-                        address = address + '</br>F: ' + locationDetails.fax;
+                        address = address + '<br />F: ' + locationDetails.fax;
                     }
                     if(locationDetails.email) {
-                        address = address + '</br>E: ' + locationDetails.email;
+                        address = address + '<br />E: ' + locationDetails.email;
                     }
                     if(locationDetails.website) {
-                        address = address + '</br>' + locationDetails.website;
+                        address = address + '<br />' + locationDetails.website;
                     }
                     if(locationDetails.walking_directions) {
-                        address = address +'</br>' + locationDetails.walking_directions;
+                        address = address +'<br />' + locationDetails.walking_directions;
                     }
 
                     address = address + '</address>';
@@ -475,7 +477,7 @@ if (!$this->hasStoreLocations($carriergroupId, $this->getCarrierCode())) {
 
             $('location-address' + carrierCodeInsert + carriergroupInsert).innerHTML = address;
             if (locationDetails.open_hours != null) {
-                var open_hours_display = locationDetails.open_hours.replace(/;/g,"</br>");
+                var open_hours_display = locationDetails.open_hours.replace(/;/g,"<br />");
                 var inHtml = '<strong>' + locationDetails.hoursText + '</strong><br />' +
                     open_hours_display + '<br />' ;
                 $('location-hours' + carrierCodeInsert + carriergroupInsert).innerHTML = inHtml;
