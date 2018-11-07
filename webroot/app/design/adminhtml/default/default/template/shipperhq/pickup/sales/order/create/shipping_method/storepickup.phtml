@@ -484,10 +484,10 @@ function maplocation(transport) {
         if(showAddress != 'hidden') {
             var street = '';
             if(locationDetails.street1 != '') {
-                street = locationDetails.street1 + '</br>';
+                street = locationDetails.street1 + '<br />';
             }
             if (locationDetails.street2) {
-                street = street + locationDetails.street2 + '</br>';
+                street = street + locationDetails.street2 + '<br />';
             }
             address = address + '<ul>';
             if(showAddress == 'inline') {
@@ -495,16 +495,16 @@ function maplocation(transport) {
             }
             address = address + locationDetails.name + '<br/>' + street
                  + locationDetails.city + ', ' + locationDetails.region + ' ' + locationDetails.zip +
-                '</br> T:' + locationDetails.phone;
+                '<br /> T:' + locationDetails.phone;
 
             if(locationDetails.fax)  {
-                address = address + '</br>F: ' + locationDetails.fax;
+                address = address + '<br />F: ' + locationDetails.fax;
             }
             if(locationDetails.email) {
-                address = address + '</br>E: ' + locationDetails.email;
+                address = address + '<br />E: ' + locationDetails.email;
             }
             if(locationDetails.website) {
-                address = address + '</br>' + locationDetails.website;
+                address = address + '<br />' + locationDetails.website;
             }
             address = address + '</p>';
             if(locationDetails.walking_directions) {
@@ -519,7 +519,7 @@ function maplocation(transport) {
 
     $('location-address' + carrierCodeInsert + carriergroupInsert).innerHTML = address;
     if (locationDetails.open_hours != null) {
-        var open_hours_display = locationDetails.open_hours.replace(/;/g,"</br>");
+        var open_hours_display = locationDetails.open_hours.replace(/;/g,"<br />");
         var inHtml = '<strong>' + locationDetails.hoursText + '</strong><br />' +
             open_hours_display + '<br />' ;
         $('location-hours' + carrierCodeInsert + carriergroupInsert).innerHTML = inHtml;

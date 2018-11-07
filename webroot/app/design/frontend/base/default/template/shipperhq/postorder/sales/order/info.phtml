@@ -91,7 +91,7 @@
                                     <?php echo  $_order->formatPrice($_cgs['price']);?>
                                 <?php endif;?>
                                 <?php if (array_key_exists('pickup_date', $_cgs) && $_cgs['pickup_date'] != ''): ?>
-                                    </br>
+                                    <br/>
                                     <?php if(array_key_exists('location_name', $_cgs)): ?>
                                         <?php echo $this->__('Location:') .' '; ?>
                                         <?php echo $_cgs['location_name'] .','; ?>
@@ -103,12 +103,12 @@
                                 <?php endif;?>
                                 <?php if(array_key_exists('dispatch_date', $_cgs) && $_cgs['dispatch_date'] != ''
                                     && !$_order->getDispatchDate()): ?>
-                                    </br>
+                                    <br/>
                                     <?php echo 'Dispatch Date: ' .$_cgs['dispatch_date']; ?>
                                 <?php endif;?>
                                 <?php if(array_key_exists('delivery_date', $_cgs) && $_cgs['delivery_date'] != ''
                                     && !$_order->getDeliveryDate()): ?>
-                                    </br>
+                                    <br/>
                                     <?php echo 'Expected Delivery Date: ' .$_cgs['delivery_date']; ?>
                                     <?php if(array_key_exists('del_slot', $_cgs)): ?>
                                         <?php echo ' Time: ' .str_replace('_', ' - ', $_cgs['del_slot']); ?>
@@ -129,7 +129,7 @@
                                     <?php endforeach; ?>
                                     <?php $options = array(); ?>
                                 <?php endif;?>
-                                </br>
+                                <br/>
                             <?php endforeach; ?>
                             <?php foreach($options as $code => $name): ?>
                                 <?php if($_order->getData($code)): ?>

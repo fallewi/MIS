@@ -186,7 +186,9 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach($mergedResponse->carrierRates as $carrierRate)
         {
-            $mergedCarrierResultWithRates = Mage::helper('shipperhq_shipper')->chooseCarrierAndProcess($carrierRate);
+            $mergedCGDetail= array();
+            $mergedCGDetail['transaction'] = $responseSummary['transactionId'];
+            $mergedCarrierResultWithRates = Mage::helper('shipperhq_shipper')->chooseCarrierAndProcess($carrierRate, null, $mergedCGDetail);
            if(isset($carrierRate->rates)) {
                if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Freight')) {
                    $freightRate = Mage::helper('shipperhq_freight')->isFreightEnabledMergedRate($carrierRate->carrierCode);
@@ -280,7 +282,7 @@ class Shipperhq_Splitrates_Helper_Data extends Mage_Core_Helper_Abstract
             return true;
         }
 
-        if (strpos($carrierGroupId, 'XXXX')) {
+        if (strpos($carrierGroupId, 'XXXX') !== false) {
             return true;
         }
 

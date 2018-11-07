@@ -136,6 +136,15 @@
             </updates>
         </layout>
     </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <shipperhq_calendar>
+                    <file>shipperhq/calendar.xml</file>
+                </shipperhq_calendar>
+            </updates>
+        </layout>
+    </adminhtml>
     <admin>
         <routers>
             <adminhtml>

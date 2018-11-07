@@ -40,7 +40,7 @@
                 <dt><?php echo $this->getCarrierName($code) ?>
                     <?php $showCarrierNotice = false; ?>
                     <?php if ($_showTooltip): ?>
-                        <b class="helpcursor" title="<?php echo $this->getToolTipText() ?>">
+                        <b class="helpcursor" title="<?php echo $this->__($this->getToolTipText()) ?>">
                             <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                         </b>
                         <?php $_showTooltip = false; ?>
@@ -74,9 +74,9 @@
                                         <?php $showCarrierNotice = $_rate->getCarrierNotice(); ?>
                                     <?php endif ?>
                                     <?php if ($_sole) : ?>
-                                        <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                                        <span class="no-display"><input class="shipping_method_shq" name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
                                     <?php else: ?>
-                                        <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> />
+                                        <input class="shipping_method_shq" name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> />
                                     <?php endif ?>
                                     <label for="s_method_<?php echo $_rate->getCode() ?>">
                                         <strong>
@@ -87,7 +87,7 @@
                                                 (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                             <?php endif; ?>
                                             <?php if ($_rate->getTooltip()): ?>
-                                                <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rate->getTooltip()) ?>">
                                                     <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                                 </span>
                                             <?php endif; ?>
@@ -134,7 +134,7 @@
             <?php $_sole = count($_shippingRateGroups['shipping']) == 1; ?>
             <dt class="carrier-group-name"><br><?php echo $_shippingRateGroups['checkout_text']; ?>
                 <?php if ($_showTooltip): ?>
-                    <b class="helpcursor" title="<?php echo $this->getToolTipText() ?>">
+                    <b class="helpcursor" title="<?php echo $this->__($this->getToolTipText()) ?>">
                         <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                     </b>
                 <?php endif ?>
@@ -162,6 +162,10 @@
                         <?php endif ?>
                         <?php $isPickupCarrier = $this->isPickupCarrier($_rates[0]);?>
                         <?php $isFreightCarrier = $this->isFreightCarrier($_rates[0]); ?>
+                        <?php  $_sole = $_sole && count($_rates) == 1; ?>
+                        <?php if ($calendarRates): ?>
+                            <?php echo $this->getCalendarHtml($_carriergroupId, $code, $_sole) ?>
+                        <?php endif; ?>
                         <?php if($_rates[0]->getCustomDescription()): ?>
                             <p class="disclaimer" id="disclaimer_<?php echo $_carriergroupId ?>_<?php echo $code ?>" name="disclaimer_<?php echo $_carriergroupId ?>"><?php echo $_rates[0]->getCustomDescription(); ?></p>
                         <?php endif; ?>
@@ -170,7 +174,7 @@
                         <div id="ship_options_<?php echo $_carriergroupId ?>_<?php echo $code ?>" name="ship_options">
                             <div id="radio_choices_<?php echo $_carriergroupId ?>_<?php echo $code ?>">
                                 <?php endif ?>
-                                <?php  $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
+                                <?php foreach ($_rates as $_rate): ?>
                                     <li>
                                         <?php if ($_rate->getErrorMessage()): ?>
                                             <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
@@ -179,9 +183,9 @@
                                                 <?php $showCarrierNotice = $_rate->getCarrierNotice(); ?>
                                             <?php endif ?>
                                             <?php if ($_sole) : ?>
-                                                <input name="shipping_method_<?php echo $_carriergroupId ?>" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_carriergroupId ?>_<?php echo $_rate->getCode() ?>" />
+                                                <input class="shipping_method_shq" name="shipping_method_<?php echo $_carriergroupId ?>" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_carriergroupId ?>_<?php echo $_rate->getCode() ?>" checked="checked" />
                                             <?php else: ?>
-                                                <input name="shipping_method_<?php echo $_carriergroupId ?>" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_carriergroupId ?>_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getCarrierGroupAddressShippingMethod($_carriergroupId)) echo ' checked="checked"' ?> />
+                                                <input class="shipping_method_shq" name="shipping_method_<?php echo $_carriergroupId ?>" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_carriergroupId ?>_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getCarrierGroupAddressShippingMethod($_carriergroupId)) echo ' checked="checked"' ?> />
                                             <?php endif ?>
                                             <label for="s_method_<?php echo $_carriergroupId ?>_<?php echo $_rate->getCode() ?>"><?php echo $this->getMethodTitle($_rate->getMethodTitle(), $_rate->getMethodDescription(), true) ?>
                                                 <strong>
@@ -193,7 +197,7 @@
                                                         (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                                     <?php endif; ?>
                                                     <?php if ($_rate->getTooltip()): ?>
-                                                        <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                        <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rate->getTooltip()) ?>">
                                                             <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                                         </span>
                                                     <?php endif; ?>
@@ -206,7 +210,6 @@
                                 <?php if($calendarRates): ?>
                                     </div>
                                     </div>
-                                    <?php echo $this->getCalendarHtml($_carriergroupId, $code, $_sole) ?>
                                 <?php endif ?>
                                 <?php if($isPickupCarrier || $isFreightCarrier): ?>
                                     </div>

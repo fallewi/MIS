@@ -131,17 +131,17 @@ if(!empty($checkoutHelper->settings['addressreview']['enable_addressreview'])):?
                         output += '<span>' + location.escapeHTML() + '</span>';
                         if(itemsIncluded && itemsIncluded != '') {
                             var itemText = itemsIncluded.innerHTML;
-                            output +='</br>';
+                            output +='<br />';
                             output += itemText;
 
                         }
 
                         if(pickupDate != '') {
-                            output += '</br><span> Pickup Date: ' + pickupDate.escapeHTML() + '</span>';
+                            output += '<br /><span> Pickup Date: ' + pickupDate.escapeHTML() + '</span>';
                         }
                         if(pickupSlot != '') {
-                            output += '</br><span> Pickup Time: ' + pickupSlot.escapeHTML() + '</span>';
-                            output += '</br>';
+                            output += '<br /><span> Pickup Time: ' + pickupSlot.escapeHTML() + '</span>';
+                            output += '<br />';
                         }
                     }
                 }

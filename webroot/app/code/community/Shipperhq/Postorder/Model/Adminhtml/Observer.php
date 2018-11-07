@@ -33,6 +33,11 @@
 class Shipperhq_Postorder_Model_Adminhtml_Observer extends Mage_Core_Model_Abstract
 {
     public function onBlockHtmlBefore(Varien_Event_Observer $observer) {
+
+        if (!Mage::helper('shipperhq_postorder')->isActive()) {
+            return;
+        }
+
         $block = $observer->getBlock();
         if (!isset($block)) return;
 
@@ -84,6 +89,25 @@ class Shipperhq_Postorder_Model_Adminhtml_Observer extends Mage_Core_Model_Abstr
                     $block->removeButton('order_ship');
                 }
                 break;
+            case 'adminhtml/sales_order_grid':
+                /* block Adminhtml_Sales_Order_Grid */
+                /* @var $block Mage_Adminhtml_Sales_Shipment_Grid */
+                /* Note addColumnAfter doesnt seem to be working here */
+                $block->addColumnAfter('ship_method', array(
+                        'header' => Mage::helper('sales')->__('Shipping Method'),
+                        'index' => 'shipping_description'
+                    ),'status')->addColumnAfter('dispatch_date', array(
+                        'header' => Mage::helper('sales')->__('Dispatch Date'),
+                        'index' => 'dispatch_date'
+                    ),'ship_method')->addColumnAfter('delivery_date', array(
+                        'header' => Mage::helper('sales')->__('Delivery Date'),
+                        'index' => 'delivery_date'
+                    ),'dispatch_date')->addColumnAfter('time_slot', array(
+                        'header' => Mage::helper('sales')->__('Pickup Time Slot'),
+                        'index' => 'time_slot'
+                    ),'delivery_date')
+                    ->sortColumnsByOrder();
+                break;
         }
     }
 
@@ -98,6 +122,22 @@ class Shipperhq_Postorder_Model_Adminhtml_Observer extends Mage_Core_Model_Abstr
         $collection->addFieldToSelect('shipping_name');
         $collection->addFieldToSelect('order_increment_id');
         $collection->addFieldToSelect('order_created_at');
+    }
+
+    public function onSalesOrderGridLoadBefore(Varien_Event_Observer $observer) {
+        $collection = $observer->getOrderGridCollection();
+        if (!isset($collection)) return;
+
+        $collection->join(
+            "sales/order",
+            "main_table.entity_id=`sales/order`.entity_id",
+            array(
+                "shipping_description",
+                "dispatch_date",
+                "delivery_date",
+                "time_slot"
+            )
+        );
     }
 
 }

@@ -54,21 +54,33 @@ class Shipperhq_Shipper_Model_Resource_Order_Packages extends Mage_Core_Model_My
 
         // now save the package items
         try {
-            $condition = $this->_getWriteAdapter()->quoteInto('package_id = ?', $object->getId());
-            $this->_getWriteAdapter()->delete($this->getTable('order_package_items'), $condition);
-            foreach ($object->getData('items') as $item) {
+            $connection = $this->_getWriteAdapter();
+            $itemsTable = $this->getTable('order_package_items');
+            $packageId  = $object->getId();
 
-                $itemInsert = new Varien_Object();
-                $itemInsert->setData('package_id',$object->getId());
-                $itemInsert->setSku($item['sku']);
-                $itemInsert->setWeightPacked($item['weightPacked']);
-                $itemInsert->setQtyPacked($item['qtyPacked']);
-                $this->_getWriteAdapter()->insert($this->getTable('order_package_items'), $itemInsert->getData());
+            $select = $connection->select()
+                ->from($itemsTable, 'COUNT(*)')
+                ->where('package_id = ?', $packageId);
+
+            $itemCount = (int)$connection->fetchOne($select);
+
+            if ($itemCount) {
+                $connection->delete($itemsTable, array('package_id = ?' => $packageId));
             }
-            $this->_getWriteAdapter()->commit();
 
+            // Add new package items
+            $items = array();
+            foreach ($object->getData('items') as $item) {
+                $items[] = array(
+                    'package_id'    => $packageId,
+                    'sku'           => $item['sku'],
+                    'weight_packed' => $item['weightPacked'],
+                    'qty_packed'    => $item['qtyPacked']
+                );
+            }
+            $connection->insertMultiple($itemsTable, $items);
         }
-        catch (Exception  $e) {
+        catch (Exception $e) {
             Mage::throwException($e);
             $this->_getWriteAdapter()->rollBack();
         }

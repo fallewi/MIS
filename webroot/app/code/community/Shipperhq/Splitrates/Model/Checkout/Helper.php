@@ -64,7 +64,7 @@ class Shipperhq_Splitrates_Model_Checkout_Helper
             $carriergroup = $rate['carriergroup'];
             $carrier_code = $rate['carrier_code'];
             $carrier_type = $rate['carrier_type'];
-            if(Mage::helper('shipperhq_pickup')->isPickupEnabledCarrier($carrier_type)) {
+            if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup') && Mage::helper('shipperhq_pickup')->isPickupEnabledCarrier($carrier_type)) {
                 if(array_key_exists('location_id_'.$carrier_code.'_'.$carriergroup, $shippingMethod)) {
                     $thisShipDetails['location_id'] = $shippingMethod['location_id_'.$carrier_code.'_'.$carriergroup];
                     $thisShipDetails['pickup_date'] = $shippingMethod['pickup_date_'.$carrier_code.'_'.$carriergroup];

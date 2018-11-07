@@ -158,3 +158,59 @@
 2.132 - SHQ16-1605 Additional accessorial support
 2.133 - SHQ16-1893 Work around for Magento issue with taxed discounted base totals
 2.134 - SHQ16-1837 Resolved so OSC single methods are saved, SHQ16-1926 support for shqshared carrier in default carrier code logic
+2.135 - SHQ16-1932 Fixed issue with SHQ details saving on item when order shipping method is not SHQ
+2.136 - SHQ16-1932 only display Delivery Date field in email if date is set
+2.137 - SHQ16-1932 Resolved issue with carriergroup_shipping_details not saving to order
+2.138 - SHQ16-1987 Backup carrier improvements
+2.139 - SHQ16-1987 Backup carrier improvements
+2.140 - SHQ16-1986 Date Rule on Split Checkout only applying to one checkout option
+2.141 - SHQ16-2014 Wrong carrier being autoselected
+2.142 - SHQ16-2020 add bcarriergroup breakdown to order comments
+2.143 -  SHQ16-2023 support for multiple calendar instances in multiaddress checkout
+2.144 - SHQ16-2031 SHQ16-1994 Admin CSS not loading and IWD Order Manager Compatibility
+2.145 - SHQ16-2034 Fixed typo in saveOrderAfter code which stopped log appearing in order
+2.146 - SHQ16-2032 Resolve issue with timeslot and hour lead times2.147 - SHQ16-2023 carrier group support in MAC and SHQ16-2019 PNG images
+2.148 - SHQ16-2023 carrier group support in MAC and SHQ16-2019 PNG images
+2.150 - SHQ16-2078 Support lead time in hours for pickup that pushes to next day2.150 - SHQ16-2078 account for lead time in hours
+2.151 - SHQ16-2065 Fixed issue with inside delivery and limited delivery not being deselectable
+2.152 - SHQ16-2110 Added UPS LTL to use carrier type as code mapping
+2.153 - SHQ16-2091 Inline calendar work missing from last release
+2.154 - SHQ16-2163 Date saved to order incorrectly
+2.155 - SHQ16-2172 destination type false by default
+2.156 - SHQ16-2163 Fixed wrong date saved to order and min/max date set incorrectly on calendars
+2.157 - SHQ16-2183 Compatibility with OSC Coupon codes
+2.158 - SHQ16-2215 Added translations for estimated delivery dates
+2.159 - SHQ16-2258 add config option for shipperhq timeout
+2.160 - SHQ16-2215 Translation of carrier name and estimated delivery text
+2.161 - SHQ16-2269 support required fields on customer account carrier
+2.162 - SHQ16-2269 add class to fields shq processing
+2.163 - M2-49: Changes to calendar display on MAC
+2.164 - M2-49 minor change to calendar template insertion on MAC
+2.165 - M2-49 moved calendar templat insertion on multi address shipping
+2.166 - SHQ16-2360 Fixed display order of shipping method vs shipping price when using calendar
+2.167 - SHQ16-SHQ16-2360 Fixed display order of shipping method vs shipping price in multi address checkout
+2.168 - SHQ16-SHQ16-2360 Fixed display order of shipping method vs shipping price in multi address checkout
+2.169 - SHQ16-2371 display options selected in cart when loading checkout,SHQ16-2366 load base currency using store ID
+2.170 - SHQ-2346 Updated must ship freight attribute with a hint
+2.171 - M2-29 correct date default display for inline calendar
+2.172 - SHQ16-2444 Fixed issue preventing label creation within Magento
+2.173 - SHQ16-2391 Fixed calendar was pushing accessorials out of shipping method area on admin
+2.174 - SHQ16-2481 Make calendar visible for users with sub-admin rights
+2.175 - SHQ16-2481 Fixed issue specific to PHP5.4
+2.176 - SHQ18-5 Fix PHP Strict errors in Calendar module
+2.177 - SHQ16-2485 - Fix admin shipping display, SHQ16-2338 Moved calendar display, SHQ16-2501 Fix shipping details for merged rates, SHQ16-2343 Add ip to request, SHQ16-1938 support always_use_single_carrier_title setting
+2.178 - SHQ18-28 Translation for carrier title
+2.179 - SHQ18-78 Add package breakdown to shipment comments,SHQ18-103 Remove Display shipping methods as dropdowns switch from OSC config
+2.180 - SHQ18-81 Simplify package and automatically enable required modules
+2.181 - SHQ18-81 Simplify package and automatically enable required modules
+2.182 - SHQ18-122 Remove AV dependency on fax field
+2.188 - SHQ18-280 - Stop table rate accessorials showing if no rates found
+2.189 - SHQ18-329 Fix deadlocking issue
+2.190 - SHQ18-329 Fix deadlocking issue
+2.191 - SHQ18-329 Fixed issue with PHP5.3
+2.192 - SHQ18-431 Fixed issue with getting ip address from quote before it exists
+2.193 - SHQ18-438 Support for partial quantities
+2.194 - SHQ18-485 Fix deadlocking issue on quote packages
+2.195 - SHQ18-817 PHP 7 Compatibility
+2.196 - SHQ18-890 Fixed issue with pickup calendar available dates
+2.197 - SHQ18-996 Enable refresh carriers per website

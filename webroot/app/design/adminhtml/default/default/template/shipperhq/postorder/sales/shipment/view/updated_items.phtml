@@ -32,7 +32,9 @@
             <thead>
             <tr class="headings">
                 <th><?php echo $this->helper('sales')->__('Product') ?></th>
+                <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
                 <th><span class="nobr"><?php echo $this->helper('shipperhq_postorder')->getItemColumnTitle() ?></span></th>
+                <?php endif; ?>
                 <th class="a-center last"><span class="nobr"><?php echo $this->helper('sales')->__('Qty Shipped') ?></span></th>
             </tr>
             </thead>

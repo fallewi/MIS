@@ -10,6 +10,12 @@
 <layout version="0.1.0">
     <!-- ORDERS -->
     <adminhtml_sales_order_view>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>shipperhq/css/postorder.css</name>
+            </action>
+        </reference>
         <reference name="order_items">
             <action method="setTemplate">
                 <template>shipperhq/postorder/sales/order/view/updated_items.phtml</template>

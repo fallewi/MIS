@@ -117,7 +117,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
         }
 
         $storeId = $magentoRequest->getStore();
-        $shipperHQRequest->setSiteDetails(self::getSiteDetails($storeId));
+        $shipperHQRequest->setSiteDetails(self::getSiteDetails($storeId, $magentoRequest->getIpAddress()));
         $shipperHQRequest->setCredentials(self::getCredentials($storeId));
 
         return $shipperHQRequest;
@@ -128,11 +128,11 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
      *
      * @return string
      */
-    public static function getCredentialsTranslation($storeId = null)
+    public static function getCredentialsTranslation($storeId = null, $ipAddress = null)
     {
         $shipperHQRequest = new \ShipperHQ\WS\Request\Rate\InfoRequest();
         $shipperHQRequest->setCredentials(self::getCredentials($storeId));
-        $shipperHQRequest->setSiteDetails(self::getSiteDetails($storeId));
+        $shipperHQRequest->setSiteDetails(self::getSiteDetails($storeId, $ipAddress));
         return $shipperHQRequest;
     }
 
@@ -174,7 +174,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
      *
      * @return array
      */
-    public static function getSiteDetails($storeId = null)
+    public static function getSiteDetails($storeId = null, $ipAddress = null)
     {
         $edition = 'Community';
         if(method_exists('Mage', 'getEdition')) {
@@ -183,10 +183,14 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
         elseif(Mage::helper('wsalogger')->isEnterpriseEdition()) {
             $edition = 'Enterprise';
         }
+        $mobilePrepend =  Mage::helper('shipperhq_shipper')->isMobile() ? 'm' : '';
+        $ipAddress = is_null($ipAddress) ? $mobilePrepend : $mobilePrepend .$ipAddress;
         $url = Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+
         $siteDetails = new \ShipperHQ\User\SiteDetails('Magento ' . $edition, Mage::getVersion(),
             $url, Mage::getStoreConfig('carriers/shipper/environment_scope', $storeId),
-            (string)Mage::getConfig()->getNode('modules/Shipperhq_Shipper/extension_version'));
+            (string)Mage::getConfig()->getNode('modules/Shipperhq_Shipper/extension_version'),
+            $ipAddress);
 
         return $siteDetails;
     }
@@ -310,8 +314,13 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
             }
 
             //strip out items not required in carriergroup specific request
-            if($selectedCarriergroupId && $magentoItem->getCarriergroupId() != $selectedCarriergroupId) {
+            if(!$childItems && $selectedCarriergroupId && $magentoItem->getCarriergroupId() != $selectedCarriergroupId) {
                 continue;
+            }
+
+            // Custom patch here for support with IWD_OrderManager and getting rates for orders from admin order view
+            if($magentoItem instanceof Mage_Sales_Model_Order_Item) {
+                $magentoItem->setQty($magentoItem->getQtyToShip());
             }
 
             $calculator = Mage::helper('tax')->getCalculator();
@@ -343,12 +352,25 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 }
             }
 
+            $qty = $magentoItem->getQty() ? floatval($magentoItem->getQty()) : 0;
+
+            if ($qty < 1 && $qty > 0) {
+                $qty = 1; //SHQ18-438
+                $weight = $weight * $magentoItem->getQty();
+                Mage::helper('wsalogger/log')->postInfo(
+                    'ShipperHQ_Shipper',
+                    'Item quantity is decimal and less than 1, rounding quantity up to 1. '.
+                    'Setting weight to fractional value',
+                    'SKU: '.$magentoItem->getSku(). ' Weight: '. $weight
+                );
+            }
+
             $formattedItem = array(
                 'id'                          => $id,
                 'sku'                         => $magentoItem->getSku(),
                 'storePrice'                  => $magentoItem->getPrice() ? $magentoItem->getPrice() : 0,
                 'weight'                      => $weight,
-                'qty'                         => $magentoItem->getQty() ? floatval($magentoItem->getQty()): 0,
+                'qty'                         => $qty,
                 'type'                        => $productType,
                 'items'                       => array(), // child items
                 'basePrice'                   => $magentoItem->getBasePrice(),
@@ -356,14 +378,14 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 'taxInclStorePrice'           => $magentoItem->getPriceInclTax() ? $magentoItem->getPriceInclTax() : 0,
                 'rowTotal'                    => $magentoItem->getRowTotal(),
                 'baseRowTotal'                => $magentoItem->getBaseRowTotal(),
-                'discountPercent'             => $magentoItem->getDiscountPercent(),
+                'discountPercent'             => (float)$magentoItem->getDiscountPercent(),
                 'discountedBasePrice'         => $magentoItem->getBasePrice() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()),
                 'discountedStorePrice'        => $magentoItem->getPrice() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()),
                 'discountedTaxInclBasePrice'  => $magentoItem->getBasePriceInclTax() - ($magentoItem->getBaseDiscountAmount()/$magentoItem->getQty()),//SHQ16-1893
                 'discountedTaxInclStorePrice' => $magentoItem->getPriceInclTax() - ($magentoItem->getDiscountAmount()/$magentoItem->getQty()),//SHQ16-1893
                 'attributes'                  => $options? array_merge(self::populateAttributes($stdAttributes, $magentoItem), $options) : self::populateAttributes($stdAttributes, $magentoItem),
                 'baseCurrency'                => $request->getBaseCurrency()->getCurrencyCode(),
-                'packageCurrency'             => $request->getPackageCurrency()->getCurrencyCode(),
+                'packageCurrency'             => is_object($request->getPackageCurrency()) ? $request->getPackageCurrency()->getCurrencyCode() : $request->getPackageCurrency(), // Custom patch here for support with IWD_OrderManager and getting rates for orders from admin order view
                 'storeBaseCurrency'           => Mage::app()->getBaseCurrencyCode(),
                 'storeCurrentCurrency'        => Mage::app()->getStore()->getCurrentCurrencyCode(),
                 'taxPercentage'               => $taxPercentage,
@@ -399,7 +421,7 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
 
                     $childPrices = self::getBundleChildPrices($magentoItem);
 
-                    $discountPercent = $formattedItem['discountPercent'];
+                    $discountPercent = (float)$formattedItem['discountPercent'];
                     $discountDifference = $discountPercent != 0 ? (100 - $discountPercent) / 100 : 1;
 
                     $formattedItem['storePrice'] = $childPrices['storePrice'];
@@ -470,8 +492,14 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
     protected static function getCustomerGroupId($items)
     {
         if(count($items) > 0) {
-            return $items[0]->getQuote()->getCustomerGroupId();
+            // Custom patch here for support with IWD_OrderManager and getting rates for orders from admin order view
+            if ($items[0] instanceof Mage_Sales_Model_Order_Item) {
+                return $items[0]->getOrder()->getCustomerGroupId();
+            } else {
+                return $items[0]->getQuote()->getCustomerGroupId();
+            }
         }
+
         return null;
     }
 
@@ -574,8 +602,10 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
                 if(is_array($attributeValue)) {
                     $valueString = array();
                     foreach($attributeValue as $aValue) {
-                        $admin_value= $attribute->setStoreId(0)->getSource()->getOptionText($aValue);
-                        $valueString[]= is_array($admin_value) ? implode('', $admin_value) : $admin_value;
+						if(strlen($aValue) > 0) {
+							$admin_value = $attribute->setStoreId(0)->getSource()->getOptionText($aValue);
+							$valueString[] = is_array($admin_value) ? implode('', $admin_value) : $admin_value;
+						}
                     }
                     $attributeValue = implode('#', $valueString);
                 }
@@ -607,7 +637,14 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
     protected static function populateCustomOptions($item)
     {
         $option_labels = array();
-        $options = Mage::helper('catalog/product_configuration')->getCustomOptions($item);
+
+        // Custom patch here for support with IWD_OrderManager and getting rates for orders from admin order view
+        if($item instanceof Mage_Sales_Model_Order_Item) {
+            $options = $item->getProduct()->getCustomOptions();
+        } else {
+            $options = Mage::helper('catalog/product_configuration')->getCustomOptions($item);
+        }
+
         $label = '';
         foreach($options as $customOption) {
             $label .= $customOption['label'];
@@ -651,19 +688,26 @@ class Shipperhq_Shipper_Model_Carrier_Convert_ShipperMapper {
     protected static function getSelectedOptions($request)
     {
         $shippingOptions = array();
-        if($request->getQuote() && $shippingAddress = $request->getQuote()->getShippingAddress()) {
+        if ($request->getQuote() && $shippingAddress = $request->getQuote()->getShippingAddress()) {
             $selectedFreightOptions = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getSelectedFreightCarrier();
-            foreach(self::$_shippingOptions as $option) {
+            foreach (self::$_shippingOptions as $option) {
                 //destination type is case sensitive in SHQ
-                if(isset($selectedFreightOptions[$option]) && $selectedFreightOptions[$option] != '') {
-                    //SHQ16-1605
+                if (isset($selectedFreightOptions[$option]) && $selectedFreightOptions[$option] !== '') {
+                    //SHQ16-2172 ignore destination type of false as that is default from frontend
+                    if ($option === 'destination_type' && $selectedFreightOptions[$option] === 'false') {
+                       continue;
+                    }
+                    //SHQ16-1605 use selected value first
                     $shippingOptions[] = array('name'=> $option, 'value' => strtolower($selectedFreightOptions[$option]));
                 }
-                elseif($option == 'destination_type') {
+                elseif ($option === 'destination_type') {
                     $destType =  Mage::registry('Shipperhq_Destination_Type');
                     if(!is_null($destType) && $destType != '') {
                         $shippingOptions[] = array('name'=> 'destination_type', 'value' => strtolower($destType));
                     }
+                } //SHQ16-2172 use value from shipping address for preselected values from cart
+                elseif (!is_null($shippingAddress->getData($option)) && $shippingAddress->getData($option) !== '') {
+                    $shippingOptions[] = array('name'=> $option, 'value' => strtolower($shippingAddress->getData($option)));
                 }
             }
         }

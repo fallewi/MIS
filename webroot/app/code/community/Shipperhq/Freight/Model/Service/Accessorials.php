@@ -114,6 +114,10 @@ class Shipperhq_Freight_Model_Service_Accessorials
                 $carrierGroupId = $single ? 0 :$carrierGroupDetail['carrierGroupId'];
 
                 foreach($carrierGroup->carrierRates as $carrierRate) {
+                    if ($carrierRate->carrierType == "custom" && count($carrierRate->rates) == 0) {
+                        continue;
+                    }
+
                     $carrierCode = $carrierRate->carrierCode;
                     if(isset($carrierRate->availableOptions)) {
                         $options = (array)$carrierRate->availableOptions;
@@ -161,7 +165,7 @@ class Shipperhq_Freight_Model_Service_Accessorials
         $requestedCode =  $params['carrier_code'];
         $requestedCarrierGroup = $params['carrier_group'];
         $isOsc = $params['onestepcheckout'] == 'true';
-        $resultSet='';
+        $resultSet = array();
         $newRates= false;
 
         foreach ($this->_rates as $code => $rates) {
@@ -194,6 +198,7 @@ class Shipperhq_Freight_Model_Service_Accessorials
         $resultSet['shipping_rates'] = $newRates;
         $resultSet['carrier_code'] = $requestedCode;
         $resultSet['carrier_group'] = $requestedCarrierGroup;
+
         return $resultSet;
     }
 
@@ -226,20 +231,21 @@ class Shipperhq_Freight_Model_Service_Accessorials
         foreach ($allAccessorials as $accessorial_code) {
             $value = array_key_exists($accessorial_code, $params) ? $params[$accessorial_code] : null;
             $this->cacheSelectedAccessorialValue($accessorial_code, $requestCarrierGroup, $requestedCode, $value);
-            if(!is_null($value)) {
-                $selectedFreightOptions[$accessorial_code] = $value;
-            }
             if ($accessorial_code == 'destination_type') {
                 $billingAddress->setDestinationType($value);
                 $address->setDestinationType($value);
             } else {
-                if ($value == 'true' || $value == 1) {
+                if ($value === 'true' || $value === 1) {
                     $value = 1;
-                } else {
+                } else if($value === 'false') {
                     $value = 0;
                 }
                 $billingAddress->setData($accessorial_code, (string)$value);
                 $address->setData($accessorial_code, (string)$value);
+            }
+            //SHQ16-2172 - ensure values have been set to 0 and 1
+            if(!is_null($value)) {
+                $selectedFreightOptions[$accessorial_code] = $value;
             }
         }
 
@@ -357,8 +363,10 @@ class Shipperhq_Freight_Model_Service_Accessorials
      * Sets received accessorials to cache
      *
      * @param string|array $requestParams
-     * @param string $response
+     * @param              $result
+     * @param bool         $isCheckout
      *
+     * @return $this
      */
     public function setCachedAccessorials($requestParams, $result, $isCheckout = false)
     {

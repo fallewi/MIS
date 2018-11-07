@@ -48,8 +48,10 @@
             <tr class="headings">
                 <th><?php echo $this->helper('sales')->__('Product') ?></th>
                 <th><span class="nobr"><?php echo $this->helper('sales')->__('Item Status') ?></span></th>
+                <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
                 <th><span class="nobr"><?php echo $this->helper('shipperhq_postorder')->getItemColumnTitle() ?></span></th>
                 <th><span class="nobr"><?php echo $this->helper('shipperhq_postorder')->__('Shipping & Handling') ?></span></th>
+                <?php endif; ?>
                 <th><span class="nobr"><?php echo $this->helper('sales')->__('Original Price') ?></span></th>
                 <th><?php echo $this->helper('sales')->__('Price') ?></th>
                 <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>

@@ -7,7 +7,7 @@
 			<depends>
 				<Mage_Shipping />
                 <Shipperhq_Shipper />
-                <!--<Shipperhq_Frontend />-->
+                <Shipperhq_Frontend />
                 <!--<Shipperhq_Postorder />-->
             </depends>
 		</Shipperhq_Splitrates>

@@ -44,6 +44,7 @@ else {
         'source'                    => 'shipperhq_shipper/source_freight_freightclass',
         'is_configurable'          => 0,
         'unique'                   => false,
+        'user_defined'             => false, //SHQ16-1981 user_defined is false so cant be deleted
         'used_in_product_listing'  => false
     ));
 }
@@ -69,6 +70,7 @@ else {
         'comparable'               => 0,
         'unique'                   => false,
         'used_in_product_listing'  => false,
+        'user_defined'             => true,
         'note'                     => 'Only required to support ABF Freight'
     ));
 
@@ -89,6 +91,7 @@ if(!$installer->getAttribute('catalog_product', 'must_ship_freight')) {
         'filterable'               => 0,
         'comparable'               => 0,
         'unique'                   => false,
+        'user_defined'             => true,
         'used_in_product_listing'  => false
     ));
 }
@@ -107,6 +110,7 @@ $installer->addAttribute('catalog_product', 'shipperhq_nmfc_sub', array(
     'filterable'               => 0,
     'comparable'               => 0,
     'unique'                   => false,
+    'user_defined'			   => true,
     'used_in_product_listing'  => false,
     'note'                     => 'Only required to support ABF Freight'
 ));

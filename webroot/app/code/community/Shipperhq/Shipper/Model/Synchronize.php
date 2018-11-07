@@ -37,6 +37,9 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
     const ADD_ATTRIBUTE_OPTION = 'Add';
     const REMOVE_ATTRIBUTE_OPTION = 'Manual delete required';
     const AUTO_REMOVE_ATTRIBUTE_OPTION = 'Delete';
+    const AUTO_UPDATE_ATTRIBUTE_OPTION = 'Update';
+    const FEATURES_ENABLED_CONFIG = 'carriers/shipper/features_enabled';
+    const MODULES_MISSING_CONFIG = 'carriers/shipper/modules_missing';
     protected $_shipperWSInstance;
     protected $_shipperMapperInstance;
     protected $_prodAttributes;
@@ -286,7 +289,12 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
                 case 'global':
                     if($attribute->code == 'global_settings') {
                         foreach($attribute->attributes as $globalSetting) {
-                            $value = $globalSetting->value == 'true'? 1: 0;
+                            $value = $globalSetting->value;
+
+                            if($value == "true" || $value == "false") {
+                                $value = $value == 'true'? 1:0;
+                            }
+
                             if(Mage::getStoreConfig('carriers/shipper/'.$globalSetting->code) != $value) {
                                 $result[] = array('attribute_type' => 'global_setting',
                                     'attribute_code' => $globalSetting->code,
@@ -300,6 +308,34 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
                     }
                 case 'customer':
                     //compare customer groups
+                    break;
+                case 'feature':
+                    /** @var Shipperhq_Shipper_Helper_Module $moduleHelper */
+                    $moduleHelper = Mage::helper('shipperhq_shipper/module');
+                    $reqFeatures = array_map(function($feature) {
+                        return $feature->code;
+                    }, $attribute->attributes);
+                    $moduleHelper->setEnabledFeatures($reqFeatures);
+                    if ($missing = $moduleHelper->getMissingModules()) {
+                        $missingStr = implode(', ', $missing);
+                        $result[] = array('attribute_type' => 'feature',
+                            'attribute_code' => 'ShipperHQ Disabled Features',
+                            'value'         => "The following modules must be enabled: " . $missingStr,
+                            'option_id'     => $missingStr,
+                            'status'        => self::AUTO_UPDATE_ATTRIBUTE_OPTION,
+                            'date_added'    => date('Y-m-d H:i:s')
+                        );
+                    }
+                    if ($unused = $moduleHelper->getUnusedModules()) {
+                        $unusedStr = implode(', ', $unused);
+                        $result[] = array('attribute_type' => 'feature',
+                            'attribute_code' => 'ShipperHQ Unused Features',
+                            'value'         => "The following modules should be disabled: " . $unusedStr,
+                            'option_id'     => $unusedStr,
+                            'status'        => self::AUTO_UPDATE_ATTRIBUTE_OPTION,
+                            'date_added'    => date('Y-m-d H:i:s')
+                        );
+                    }
                     break;
                 default :
                     break;
@@ -424,6 +460,31 @@ class Shipperhq_Shipper_Model_Synchronize extends Mage_Core_Model_Abstract
             }
         }
 
+        /** @var Shipperhq_Shipper_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('shipperhq_shipper/module');
+        if ($moduleHelper->isModuleStatusUpdateRequired()) {
+            $updated = $moduleHelper->updateModuleStatuses();
+
+            if ($updated) {
+                if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                    $enabledStr = implode(', ', $moduleHelper->getEnabledModules());
+                    Mage::helper('wsalogger/log')->postInfo('Shipperhq_Shipper', 'Modules were updated',
+                        "The following modules are now enabled: $enabledStr");
+                    Mage::getSingleton('core/session')->addSuccess("The following modules are now enabled: $enabledStr");
+                }
+            } else {
+                $reqStr = implode(', ', $moduleHelper->getRequiredModules());
+                if (Mage::helper('shipperhq_shipper')->isDebug()) {
+                    Mage::helper('wsalogger/log')->postCritical('Shipperhq_Shipper', 'Modules were not updated correctly',
+                        "The following modules should be enabled: $reqStr");
+                }
+                if (count($moduleHelper->getMissingModules())) {
+                    // Only raise the user facing error if a required module is missing
+                    Mage::getSingleton('core/session')->addError("Not all required ShipperHQ modules are enabled");
+                    Mage::getSingleton('core/session')->addWarning("Please ensure these modules are enabled: $reqStr");
+                }
+            }
+        }
 
         if ($result >= 0) {
             $this->checkSynchStatus(true);

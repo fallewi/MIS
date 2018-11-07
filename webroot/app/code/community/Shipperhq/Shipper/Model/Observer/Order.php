@@ -95,6 +95,47 @@ class Shipperhq_Shipper_Model_Observer_Order extends Mage_Core_Model_Abstract
     }
 
     /*
+     * Pre-process shipping method data
+     */
+    public function predispatchMultishippingShippingSave($observer)
+    {
+        $controller = $observer->getControllerAction();
+        if ($controller->getRequest()->isPost()) {
+            $shippingMethods = $controller->getRequest()->getPost('shipping_method', '');
+            $addressShippingMethods = array();
+            if(!is_array($shippingMethods)){
+                return;
+            }
+            foreach($shippingMethods as $key => $shippingMethod) {
+                if(strstr($key, 'ZZ')) {
+                    $parts = explode('ZZ', $key);
+                    $carriergroupId = $parts[1];
+                    $addressId = $parts[0];
+                    $addressShippingMethods[$addressId]['shipping_method_'.$carriergroupId] = $shippingMethod;
+                    //SHQ16-2023 remove the carrier group id from the array key
+                    $shippingMethods[$addressId] = $shippingMethod;
+                    unset($shippingMethods[$key]);
+                }
+            }
+            if(empty($addressShippingMethods)) {
+                return;
+            }
+
+            $shippingAddresses = Mage::getSingleton('checkout/session')->getQuote()->getAllShippingAddresses();
+            $postData = $controller->getRequest()->getPost();
+
+            Mage::dispatchEvent('shipperhq_multi_address_checkout_shipping_method', array(
+                'shipping_addresses' => $shippingAddresses,
+                'address_shipping_methods' => $addressShippingMethods,
+                'shipping_methods'   => $shippingMethods,
+                'post_data' => $postData
+            ));
+
+            $controller->getRequest()->setPost('shipping_method',$shippingMethods);
+        }
+    }
+
+    /*
      * Process shipping method and save and perform reserve Order if required
      *
      */
@@ -116,6 +157,7 @@ class Shipperhq_Shipper_Model_Observer_Order extends Mage_Core_Model_Abstract
             if(!is_array($shippingMethods)) {
                 return;
             }
+
             foreach($shippingMethods as $addressId => $shippingMethod) {
                 if (empty($shippingMethod)) {
                     return;
@@ -124,12 +166,17 @@ class Shipperhq_Shipper_Model_Observer_Order extends Mage_Core_Model_Abstract
                 $addresses = $quote->getAllShippingAddresses();
                 $shippingAddress = false;
                 foreach($addresses as $address) {
+
                     if($address->getId() == $addressId) {
                         $shippingAddress = $address;
                         break;
                     }
 
                 }
+                if(!$shippingAddress) {
+                    continue;
+                }
+
                 $rate = $shippingAddress->getShippingRateByCode($shippingMethod);
                 if (!$rate) {
                     continue;

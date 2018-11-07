@@ -68,4 +68,10 @@ class Shipperhq_Pickup_Adminhtml_Shipperhq_Pickup_LocationController extends Mag
         return Mage::getSingleton('adminhtml/session_quote')->getQuote();
     }
 
+    // Contributed by Chevy Arora
+    protected function _isAllowed()
+    {
+        return true;
+    }
+
 }

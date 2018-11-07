@@ -103,6 +103,7 @@
                 <?php endif; ?>
                 <?php if ($this->helper('shipperhq_freight')->isInsideDeliveryEnabled()): ?>
                     <div class="a-left input-checkbox">
+                        <input type="hidden" name="inside_delivery" value="0">
                         <input type="checkbox" name="inside_delivery" id="inside_delivery"
                                value="1" <?php if ($this->helper('shipperhq_freight')->getInsideDelivery()): ?> checked="checked"<?php endif; ?> />
                         <label for="inside_delivery"><?php echo $this->__('Inside Delivery?') ?></label>
@@ -110,6 +111,7 @@
                 <?php endif; ?>
                 <?php if ($this->helper('shipperhq_freight')->isLimitedDeliveryEnabled()): ?>
                     <div class="a-left input-checkbox">
+                        <input type="hidden" name="limited_delivery" value="0">
                         <input type="checkbox" name="limited_delivery" id="limited_delivery"
                                value="1" <?php if ($this->helper('shipperhq_freight')->getLimitedDelivery()): ?> checked="checked"<?php endif; ?> />
                         <label for="limited_delivery"><?php echo $this->__('Limited Access Delivery?') ?></label>
@@ -151,7 +153,7 @@
                                                     (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
                                                 <?php endif; ?>
                                                 <?php if ($_rate->getTooltip()): ?>
-                                                    <span style="float:right;" class="helpcursor" title="<?php echo $_rate->getTooltip() ?>">
+                                                    <span style="float:right;" class="helpcursor" title="<?php echo $this->__($_rate->getTooltip()) ?>">
                                                             <img src="<?php echo $this->getSkinUrl('images/shipperhq/tooltip.jpg') ?>">
                                                         </span>
                                                 <?php endif; ?>
@@ -166,6 +168,7 @@
                 <div class="buttons-set">
                     <button type="submit" title="<?php echo $this->__('Update Total') ?>" class="button" name="do" value="<?php echo $this->__('Update Total') ?>"><span><span><?php echo $this->__('Update Total') ?></span></span></button>
                 </div>
+                <?php echo $this->getBlockHtml('formkey') ?>
             </form>
         <?php endif; ?>
         <script type="text/javascript">
@@ -189,7 +192,7 @@
                     $('postcode').addClassName('required-entry');
                 }
                 return VarienForm.prototype.submit.bind(coShippingMethodForm)();
-            }
+            };
             //]]>
         </script>
     </div>

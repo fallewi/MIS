@@ -124,31 +124,20 @@ class Shipperhq_Splitrates_Model_Observer extends Mage_Core_Model_Abstract
 
     public function predispatchMultishippingShipping($observer)
     {
-        $controller = $observer->getControllerAction();
-        if ($controller->getRequest()->isPost()) {
-            $shippingMethods = $controller->getRequest()->getPost('shipping_method', '');
-            $addressShippingMethods = array();
-            if(!is_array($shippingMethods)){
-                return;
-            }
-            foreach($shippingMethods as $key => $shippingMethod) {
-                if(strstr($key, 'ZZ')) {
-                    $parts = explode('ZZ', $key);
-                    $carriergroupId = $parts[1];
-                    $addressId = $parts[0];
-                    $addressShippingMethods[$addressId]['shipping_method_'.$carriergroupId] = $shippingMethod;
-                    unset($shippingMethods[$key]);
-                }
-            }
-            if(empty($addressShippingMethods)) {
-                return;
-            }
 
-            $shippingAddresses = $this->_getOnepage()->getQuote()->getAllShippingAddresses();
-            $postData = $controller->getRequest()->getPost();
+        $shippingAddresses = $observer->getEvent()->getShippingAddresses();
+        $addressShippingMethods = $observer->getEvent()->getAddressShippingMethods();
+        $shippingMethods = $observer->getEvent()->getShippingMethods();
+        $postData = $observer->getEvent()->getPostData();
 
             foreach($shippingAddresses as $shippingAddress) {
                 if(array_key_exists($shippingAddress->getId(), $addressShippingMethods)) {
+                    $splitRates = count($addressShippingMethods[$shippingAddress->getId()]) > 1;
+                    $showMerged = $shippingAddress->getCheckoutDisplayMerged();
+                    //SHQ16-2023 to continue, it must be split rates and not show merged
+                    if(!$splitRates || $showMerged) {
+                        continue;
+                    }
                     $shippingRateGroups = $shippingAddress->getGroupedAllShippingRates();
 
                     $shippingDetails = Mage::helper('shipperhq_splitrates')->manuallyMergeShippingRates($shippingRateGroups,
@@ -168,7 +157,7 @@ class Shipperhq_Splitrates_Model_Observer extends Mage_Core_Model_Abstract
                                     $multiCheckoutCgKey = 'ma'.$shippingAddress->getId() .'ZZ' .$carriergroup;
                                     $carrier_code = $cgDetails['carrier_code'];
                                     $carrier_type = $cgDetails['carrier_type'];
-                                    if(Mage::helper('shipperhq_pickup')->isPickupEnabledCarrier($carrier_type)) {
+                                    if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup') && Mage::helper('shipperhq_pickup')->isPickupEnabledCarrier($carrier_type)) {
                                         if(array_key_exists('location_id_'.$carrier_code .'_'.$multiCheckoutCgKey, $postData)) {
                                             $thisShipDetails['location_id'] = $postData['location_id_'.$carrier_code .'_'.$multiCheckoutCgKey];
                                             $thisShipDetails['pickup_date'] = $postData['pickup_date_'.$carrier_code .'_'.$multiCheckoutCgKey];
@@ -197,8 +186,8 @@ class Shipperhq_Splitrates_Model_Observer extends Mage_Core_Model_Abstract
                 }
 
             }
-            $controller->getRequest()->setPost('shipping_method',$shippingMethods);
-        }
+//            $controller->getRequest()->setPost('shipping_method',$shippingMethods);
+//        }
     }
 
     /*
