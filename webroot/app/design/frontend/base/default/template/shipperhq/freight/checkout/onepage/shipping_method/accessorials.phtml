@@ -272,6 +272,60 @@ FreightListener.prototype = {
         });
     },
 
+    shippingMethodEvent: function (event) {
+        var element = event.element();
+        //e.g. s_method_shqups_2das
+        var selectedElementId = element.id;
+        //e.g. shqups_2das
+        var lastPartMethodName = selectedElementId.substr(9);
+
+        var indexOfWarehouseEnd = lastPartMethodName.indexOf('_');
+        var methodCarriergroupId = lastPartMethodName.substr(0, indexOfWarehouseEnd);
+        var carriergroupId = methodCarriergroupId;
+        var splitSGroup = methodCarriergroupId.indexOf('XXXX');
+        if (splitSGroup < 1 && (isNaN(methodCarriergroupId) || isNaN(parseInt(methodCarriergroupId)))) {
+            var carriergroupInsert = '';
+            carriergroupId = '';
+            var methodCarriergroupId = '';
+        } else {
+            var carriergroupInsert = '_' + methodCarriergroupId;
+        }
+
+        if(carriergroupId != '') {
+            var carrierPart = lastPartMethodName.replace(carriergroupId +'_', '');
+        } else {
+            var carrierPart = lastPartMethodName;
+        }
+
+        var indexOfcarrierUnderscore = carrierPart.indexOf('_');
+        if(indexOfcarrierUnderscore < 0 ) {
+            var carrierCode = carrierPart;
+        } else {
+            var carrierCode = carrierPart.substr(0, indexOfcarrierUnderscore);
+        }
+        var carrierCodeInsert = '_'  + carrierCode;
+
+        var isCustomerAccountCarrier = false;
+        if($('customer_carrier_ph' + carrierCodeInsert + carriergroupInsert)) {
+            isCustomerAccountCarrier = true;
+        }
+
+        var allCustomerAccountFields = document.getElementsByClassName('customer-account-field');
+        for(var i = 0; i<allCustomerAccountFields.length; i++) {
+            if (isCustomerAccountCarrier) {
+                var required = allCustomerAccountFields[i].hasClassName('required-entry');
+                if(!required) {
+                    allCustomerAccountFields[i].addClassName('required-entry');
+                }
+            } else {
+                var required = allCustomerAccountFields[i].hasClassName('required-entry');
+                if(required) {
+                    allCustomerAccountFields[i].removeClassName('required-entry');
+                }
+            }
+        }
+    },
+
     setUpAccessorialDisplay: function () {
         var accessorialObjects = document.getElementsByClassName('accessorial');
         for(i = 0; i < accessorialObjects.length; i++) {
@@ -280,6 +334,15 @@ FreightListener.prototype = {
             }
             else {
                 accessorialObjects[i].observe('click', this.onChangeAccessorial.bind(this));
+            }
+        }
+
+        var shippingRadios = document.getElementsByName('shipping_method');
+        var shippingRadiosTest = document.getElementsByClassName("shipping_method_shq");
+        for(i = 0; i < shippingRadiosTest.length; i++) {
+            shippingRadiosTest[i].observe('click', this.shippingMethodEvent.bind(this));
+            if (shippingRadiosTest.length == 1) {
+                shippingRadiosTest[i].click();
             }
         }
     },

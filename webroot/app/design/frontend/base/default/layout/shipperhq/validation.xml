@@ -48,11 +48,31 @@
                 <name>shipperhq/jquery-loader.js</name>
             </action>
         </reference>
+
         <reference name="checkout.onepage">
             <block type="shipperhq_validation/checkout_onepage_billing" name="shipperhq_validation.billing" as="billing"
                    template="shipperhq/validation/checkout/onepage/choose_billing.phtml">
                 <block type="checkout/onepage_billing" name="checkout.onepage.billing" as="billingorig"
-                       template="checkout/onepage/billing.phtml"/>
+                       template="persistent/checkout/onepage/billing.phtml">
+                    <block type="core/text_list" name="form.additional.info">
+                        <block type="captcha/captcha" name="captcha.guest.checkout">
+                            <reference name="head">
+                                <action method="addJs"><file>mage/captcha.js</file></action>
+                            </reference>
+                            <action method="setFormId"><formId>guest_checkout</formId></action>
+                            <action method="setImgWidth"><width>230</width></action>
+                            <action method="setImgHeight"><width>50</width></action>
+                        </block>
+                        <block type="captcha/captcha" name="captcha.register.during.checkout">
+                            <reference name="head">
+                                <action method="addJs"><file>mage/captcha.js</file></action>
+                            </reference>
+                            <action method="setFormId"><formId>register_during_checkout</formId></action>
+                            <action method="setImgWidth"><width>230</width></action>
+                            <action method="setImgHeight"><width>50</width></action>
+                        </block>
+                    </block>
+                </block>
             </block>
             <block type="shipperhq_validation/checkout_onepage_shipping" name="shipperhq_validation.shipping"
                    as="shipping" template="shipperhq/validation/checkout/onepage/choose_shipping.phtml">
@@ -60,6 +80,7 @@
                        template="checkout/onepage/shipping.phtml"/>
             </block>
         </reference>
+
         <reference name="before_body_end">
             <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end"/>
         </reference>

@@ -37,6 +37,44 @@
 */
 -->
 <layout version="0.1.0">
+    <!-- OPC -->
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/shipperhq/frontend.css</name>
+            </action>
+            <action method="addJs">
+                <name>shipperhq/jquery-loader.js</name>
+            </action>
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_shippingmethod>
+        <remove name="root"/>
+        <block type="shipperhq_frontend/checkout_onepage_shipping_method_available" name="shq.root" output="toHtml"
+               template="shipperhq/checkout/onepage/shipping_method/available.phtml">
+        </block>
+        <reference name="shq.root">
+            <action method="setTemplate">
+                <template helper='shipperhq_shipper/getAvailableTemplate'/>
+            </action>
+        </reference>
+    </checkout_onepage_shippingmethod>
+    <checkout_onepage_progress_shipping_method>
+        <!-- Mage_Checkout -->
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <block type="shipperhq_frontend/checkout_onepage_progress" name="root" output="toHtml" template="checkout/onepage/progress/shipping_method.phtml">
+            <action method="setInfoTemplate"><method></method><template></template></action>
+        </block>
+    </checkout_onepage_progress_shipping_method>
+
+    <!-- Catalog -->
     <catalog_product_view>
         <reference name="head">
             <action method="addJs">
@@ -44,22 +82,27 @@
             </action>
             <action method="addItem">
                 <type>skin_css</type>
-                <name>css/shipperhq/calendarbase.css</name>
+                <name>css/shipperhq/frontend.css</name>
             </action>
         </reference>
         <reference name="before_body_end">
             <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end"/>
         </reference>
     </catalog_product_view>
+
+    <!--MAC-->
     <checkout_multishipping>
         <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/shipperhq/frontend.css</name>
+            </action>
             <action method="addJs">
                 <name>shipperhq/jquery-loader.js</name>
             </action>
-            <action method="addItem">
-                <type>skin_css</type>
-                <name>css/shipperhq/calendarbase.css</name>
-            </action>
+            <block type="core/text" name="jquery">
+                <action method="setText"><text helper='shipperhq_shipper/getGoogleApiUrl'/></action>
+            </block>
         </reference>
         <reference name="before_body_end">
             <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
@@ -85,6 +128,7 @@
             </block>
         </reference>
     </checkout_multishipping_shipping>
+
     <checkout_multishipping_overview>
         <reference name="checkout_overview">
             <action method="setTemplate">
@@ -92,15 +136,55 @@
             </action>
         </reference>
     </checkout_multishipping_overview>
-    <checkout_onepage_progress_shipping_method>
-        <!-- Mage_Checkout -->
-        <remove name="right"/>
-        <remove name="left"/>
 
-        <block type="shipperhq_frontend/checkout_onepage_progress" name="root" output="toHtml" template="checkout/onepage/progress/shipping_method.phtml">
-            <action method="setInfoTemplate"><method></method><template></template></action>
-        </block>
-    </checkout_onepage_progress_shipping_method>
+    <!-- IWD OPC -->
+    <opc_index_index>
+        <undate handle="checkout_onepage_index"/>
+    </opc_index_index>
 
+    <!-- OSC -->
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addItem">
+            <type>skin_css</type>
+            <name>css/shipperhq/frontend.css</name>
+            </action>
+        </reference>
+        <reference name="head">
+            <block type="core/text" name="jquery">
+                <action method="setText"><text helper='shipperhq_shipper/getGoogleApiUrl'/></action>
+            </block>
+        </reference>
+        <reference name="head">
+            å<action method="addJs">
+                <name>shipperhq/jquery-loader.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/shipperhq/frontend.css</name>
+            </action>
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" template="shipperhq/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
+        </reference>
+        <reference name="onestepcheckout.checkout">
+            <block type="shipperhq_frontend/checkout_onepage_shipping_method_available" name="choose-shipping-method-orig"
+                   template="shipperhq/checkout/onestepcheckout/shipping_method_osc_shq.phtml" as="choose-shipping-method">
+                <action method="setTemplate">
+                    <template helper='shipperhq_shipper/getOnestepcheckoutShippingTemplate'/>
+                </action>
+            </block>
+        </reference>
+    </onestepcheckout_index_index>
 
+    <onestepcheckout_ajax_save_billing>
+        <reference name="billing">
+            <block type="shipperhq_frontend/checkout_onepage_shipping_method_available" name="choose-shipping-method-orig"
+                   template="shipperhq/checkout/onestepcheckout/shipping_method_osc_shq.phtml" as="choose-shipping-method">
+                <action method="setTemplate">
+                    <template helper='shipperhq_shipper/getOnestepcheckoutShippingTemplate'/>
+                </action>
+            </block>
+        </reference>
+    </onestepcheckout_ajax_save_billing>
 </layout>

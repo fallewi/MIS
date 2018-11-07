@@ -48,27 +48,38 @@ class Shipperhq_Shipper_Model_Resource_Quote_Packages extends Mage_Core_Model_My
         return $this;
     }
 
-
     protected function _afterSave(Mage_Core_Model_Abstract $object) {
         parent::_afterSave($object);
 
         // now save the package items
         try {
-            $condition = $this->_getWriteAdapter()->quoteInto('package_id = ?', $object->getId());
-            $this->_getWriteAdapter()->delete($this->getTable('quote_package_items'), $condition);
-            foreach ($object->getData('items') as $item) {
-                $item = (array)$item;
-                $itemInsert = new Varien_Object();
-                $itemInsert->setData('package_id',$object->getId());
-                $itemInsert->setSku($item['sku']);//$itemInsert->setSku($item->sku);
-                $itemInsert->setWeightPacked($item['weightPacked']);//$itemInsert->setWeightPacked($item->weightPacked);
-                $itemInsert->setQtyPacked($item['qtyPacked']);//$itemInsert->setQtyPacked($item->qtyPacked);
-                $this->_getWriteAdapter()->insert($this->getTable('quote_package_items'), $itemInsert->getData());
-            }
-            $this->_getWriteAdapter()->commit();
+            $connection = $this->_getWriteAdapter();
+            $itemsTable = $this->getTable('quote_package_items');
+            $packageId  = $object->getId();
 
+            $select = $connection->select()
+                ->from($itemsTable, 'COUNT(*)')
+                ->where('package_id = ?', $packageId);
+
+            $itemCount = (int)$connection->fetchOne($select);
+
+            if ($itemCount) {
+                $connection->delete($itemsTable, array('package_id = ?' => $packageId));
+            }
+
+            // Add new package items
+            $items = array();
+            foreach ($object->getData('items') as $item) {
+                $items[] = array(
+                    'package_id'    => $packageId,
+                    'sku'           => $item['sku'],
+                    'weight_packed' => $item['weightPacked'],
+                    'qty_packed'    => $item['qtyPacked']
+                );
+            }
+            $connection->insertMultiple($itemsTable, $items);
         }
-        catch (Exception  $e) {
+        catch (Exception $e) {
             Mage::throwException($e);
             $this->_getWriteAdapter()->rollBack();
         }

@@ -90,7 +90,7 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
         $form = $observer->getForm();
 
         $elementIds = array('shipperhq_volume_weight', 'shipperhq_poss_boxes', 'shipperhq_master_boxes'
-           , 'shipperhq_volume_weight');
+        , 'shipperhq_volume_weight');
         foreach($elementIds as $element_id)
         {
             $element = $form->getElement($element_id);
@@ -110,7 +110,7 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
     public function prepareProductEditFormDimensional($observer)
     {
 
-       $profileElement = $observer->getEvent()->getProductElement();
+        $profileElement = $observer->getEvent()->getProductElement();
         // make the element dependent on shipperhq_dim_group
         $dependencies = Mage::app()->getLayout()->createBlock('adminhtml/widget_form_element_dependence',
             'adminhtml_recurring_profile_edit_form_dependence')->addFieldMap('shipperhq_dim_group', 'product[shipperhq_dim_group]')
@@ -142,7 +142,7 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
         $addresses = $quote->getAllAddresses();
         foreach($addresses as $address)
         {
-           $address->setIsCheckout(1);
+            $address->setIsCheckout(1);
         }
     }
 
@@ -172,9 +172,9 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
         $quoteStorage = Mage::helper('shipperhq_shipper')->getQuoteStorage($quote);
         $shipping = $quote->getShippingAddress();
         if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Shipper', 'carriers/shipper/active')
-           && Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Splitrates')
+            && Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Splitrates')
             && !$shipping->getIsCheckout()) {
-           $shipping->setCollectShippingRates(true);
+            $shipping->setCollectShippingRates(true);
         } //SHQ16-1134
         $shipping->setIsCheckout(1);
         $billing = $quote->getBillingAddress();
@@ -189,6 +189,11 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
     public function saveOrderAfter($observer)
     {
         $order = $observer->getOrder();
+        $shippingMethod = $order->getShippingMethod();
+
+        if (!preg_match('/^shq|^shipper_|^multicarrier/', $shippingMethod)) {//SHQ16-1932
+            $this->removeShqDetailsFromOrder($order);
+        }
 
         if(Mage::getStoreConfig('carriers/shipper/active'))
         {
@@ -209,6 +214,7 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                 if(is_null($orderId)) {
                     return;
                 }
+                $transactionId = false;
                 $carrierGroupDetail = Mage::helper('shipperhq_shipper')->decodeShippingDetails(
                     $shippingAddress->getCarriergroupShippingDetails());
                 if(is_array($carrierGroupDetail)){
@@ -242,10 +248,18 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                             }
                         }
 
-                        //SHIPPERHQ-1635
-                        $order->addStatusToHistory($order->getStatus(), 'ShipperHQ Transaction ID: ' . $carrierGroup['transaction'], false);
-                        $order->save();
+                        if(array_key_exists('transaction', $carrierGroup)) {
+                            $transactionId = $carrierGroup['transaction'];
+                        }
                     }
+                    //SHQ16-2476
+                    $carrierGroupText = strip_tags($order->getCarriergroupShippingHtml(), "<br><b><strong>");
+                    $order->addStatusToHistory($order->getStatus(), $carrierGroupText, false);
+                    if ($transactionId) {
+                        //SHIPPERHQ-1635
+                        $order->addStatusToHistory($order->getStatus(), 'ShipperHQ Transaction ID: ' . $transactionId, false);
+                    }
+                    $order->save();
                 } else {
                     $shippingMethod = $order->getShippingMethod();
                     if($rate = $quote->getShippingAddress()->getShippingRateByCode($shippingMethod)) {
@@ -285,6 +299,21 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
         catch (Exception $e) {
             Mage::logException($e);
         }
+    }
+
+    /**
+     * Called when shipping method is not from SHQ
+     * Will remove SHQ elements from order to stop them being displayed
+     *
+     * @param $order
+     */
+    protected function removeShqDetailsFromOrder($order)
+    {
+        $order->setDispatchDate(null);
+        $order->setDeliveryDate(null);
+        $order->setCarriergroupShippingDetails(null);
+        $order->setCarriergroupShippingHtml(null);
+        $order->save();
     }
 
     /*
@@ -457,7 +486,9 @@ class Shipperhq_Shipper_Model_Observer extends Mage_Core_Model_Abstract
                     if(is_array($shipDescriptionArray) && isset($cgDetail['carrierTitle'])) {
                         $shipDescriptionArray[0] = $cgDetail['carrierTitle'] .' ';
                         $newShipDescription = implode('-', $shipDescriptionArray);
-                        $order->setShippingDescription($newShipDescription);
+                        if(!Mage::helper('shipperhq_shipper')->getAlwaysShowSingleCarrierTitle()) {
+                            $order->setShippingDescription($newShipDescription);
+                        }
                     }
                     $cgArray[$key] = $cgDetail;
                 }

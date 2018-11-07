@@ -41,7 +41,7 @@ class SiteDetails
     public $websiteUrl;
     public $environmentScope;
     public $appVersion;
-
+    public $ipAddress;
 
     const LIVE = 'LIVE';
     const DEV = 'DEVELOPMENT';
@@ -53,13 +53,14 @@ class SiteDetails
     * @param null $ecommerceVersion
     * @param null $websiteUrl
     */
-   function __construct($ecommerceCart = null, $ecommerceVersion = null, $websiteUrl = null, $environmentScope = null, $appVersion = null)
+   function __construct($ecommerceCart = null, $ecommerceVersion = null, $websiteUrl = null, $environmentScope = null, $appVersion = null, $ipAddress = null)
    {
-      $this->ecommerceCart = $ecommerceCart;
-      $this->ecommerceVersion = $ecommerceVersion;
-      $this->websiteUrl = $websiteUrl;
-      $this->environmentScope = $environmentScope;
-      $this->appVersion = $appVersion;
+       $this->ecommerceCart = $ecommerceCart;
+       $this->ecommerceVersion = $ecommerceVersion;
+       $this->websiteUrl = $websiteUrl;
+       $this->environmentScope = $environmentScope;
+       $this->appVersion = $appVersion;
+       $this->ipAddress = $ipAddress;
    }
 
    /**
@@ -128,6 +129,22 @@ class SiteDetails
     public function getAppVersion()
     {
         return $this->appVersion;
+    }
+
+    /**
+     * @return null
+     */
+    public function getIpAddress()
+    {
+        return $this->ipAddress;
+    }
+
+    /**
+     * @param null $ipAddress
+     */
+    public function setIpAddress($ipAddress)
+    {
+        $this->ipAddress = $ipAddress;
     }
 
 }

@@ -136,17 +136,39 @@ class Shipperhq_Pickup_Helper_Date {
 
     public function getLocationTimeSlots($location, $locationId, $date)
     {
-        if(!array_key_exists('calendarDetails', $location)
-            || !array_key_exists('timeSlots', $location['calendarDetails']))
-            {
-                return false;
-            }
+        if (!array_key_exists('calendarDetails', $location) || !array_key_exists('timeSlots', $location['calendarDetails'])) {
+            return false;
+        }
+
         $dateFormat = Mage::helper('shipperhq_shipper')->getDateFormat();
+        $zendDateFormat = Mage::helper('shipperhq_shipper')->getZendDateFormat();
         $today = date($dateFormat);
-         $isToday = false;
-         if($today == $date) {
-             $isToday = true;
-         }
+        $isToday = false;
+        $exactStartTimeStamp = 0;
+        $pickupDateTimestamp = $location['pickupDate']/1000;
+        $selectedDate = Mage::app()->getLocale()->date(
+            $pickupDateTimestamp,
+            null,
+            null,
+            true
+        )->toString($zendDateFormat);
+
+        $currentTime = 0;
+
+        if ($today == $date) {
+            $isToday = true;
+            $exactStartTimeStamp = $location['calendarDetails']['start']; //account for same day delivery with lead time in hours
+            //if we are generating slots for today, make sure we don't offer any in the past and we account for lead time in hours
+            $currentTime = Mage::app()->getLocale()->storeTimeStamp();
+            $currentTime = $currentTime > $exactStartTimeStamp ? $currentTime : $exactStartTimeStamp;
+        }
+
+        //if we are generating slots for the date that matches the default date, there may be lead time in hours,
+        //lets account for that by setting the currentTime to be the pickupDate
+        if(!$isToday && $selectedDate == $date) {
+            $currentTime =  $pickupDateTimestamp;
+        }
+
         $timeSlotDetail = (array)$location['calendarDetails']['timeSlots'];
         $timeSlots = array();
 
@@ -159,50 +181,54 @@ class Shipperhq_Pickup_Helper_Date {
         array_multisort($sortTime, SORT_ASC, $timeSlotDetail);
 
         //for implementation of date/day based slot detail in future
-        foreach($timeSlotDetail as $timeSlotDetail) {
-             $start = $timeSlotDetail['timeStart'];
-             $end =  $timeSlotDetail['timeEnd'];
-             $interval = $timeSlotDetail['interval'];
+        foreach ($timeSlotDetail as $timeSlotDetail) {
+            $start = $timeSlotDetail['timeStart'];
+            $end = $timeSlotDetail['timeEnd'];
+            $interval = $timeSlotDetail['interval'];
 
-             $startTime = strtotime($start);
-             $endTime = strtotime($end);
+            $startTime = Mage::app()->getLocale()->utcDate(null, $date.' '.$start, true)->getTimestamp();
+            $endTime   = Mage::app()->getLocale()->utcDate(null, $date.' '.$end, true)->getTimestamp();
 
-             if(!$startTime || !$endTime) {
+            if (!$startTime || !$endTime) {
                 continue;
-             }
+            }
 
-             $currentTime = 0;
-             //if we are generating slots for today, make sure we don't offer any in the past
-             //and we account for lead time in hours
-             if($isToday) {
-                 $currentTime = Mage::app()->getLocale()->storeTimeStamp();
-             }
+            //if interval is half or full day then calculate those intervals
+            if ($interval <= 2) {
+                $interval = (($endTime - $startTime) / 60) / $interval;
+            }
 
-             //if interval is half or full day then calculate those intervals
-             if($interval <= 2) {
-                 $interval = (($endTime - $startTime)/60)/$interval;
-             }
-             $intStartTime = $startTime;
-             $intEndTime = $startTime;
-             $intervalString = '+' . $interval . ' minutes';
-             while ($endTime > $intStartTime) {
-                 $intEndTime = strtotime($intervalString, $intStartTime);
-                 if ($intEndTime > $endTime) {
-                     $intEndTime = $endTime;
-                 }
-                 //will ignore any time slots in the past
-                 if($intStartTime > $currentTime) {
-                     $timeSlots[date('H:i:s', $intStartTime) . '_' . date('H:i:s', $intEndTime)] = date('g:i a', $intStartTime) . ' - ' . date('g:i a', $intEndTime);
-                 }
-                 $intStartTime = $intEndTime;
+            $intStartTime = $startTime;
+            $intEndTime = $startTime;
 
-             }
+            while ($endTime > $intStartTime) {
+                $intEndTime = Mage::app()->getLocale()->date($intStartTime, null, null, true)
+                    ->addMinute($interval)
+                    ->getTimestamp();
+
+                if ($intEndTime > $endTime) {
+                    $intEndTime = $endTime;
+                }
+
+                //will ignore any time slots in the past
+                if ($intStartTime > $currentTime) {
+                    $intStartTimeCode = Mage::app()->getLocale()->date($intStartTime, null, null, true)->toString('H:m:s');
+                    $intEndTimeCode   = Mage::app()->getLocale()->date($intEndTime, null, null, true)->toString('H:m:s');
+
+                    $intStartTimeDisplay = Mage::app()->getLocale()->date($intStartTime, null, null, true)->toString('h:m a');
+                    $intEndTimeDisplay   = Mage::app()->getLocale()->date($intEndTime, null, null, true)->toString('h:m a');
+
+                    $timeSlots[$intStartTimeCode.'_'.$intEndTimeCode] = $intStartTimeDisplay.' - '.$intEndTimeDisplay;
+                }
+
+                $intStartTime = $intEndTime;
+            }
         }
-         if(count($timeSlots) == 0) {
-             return false;
-         }
+
+        if (count($timeSlots) == 0) {
+            return false;
+        }
+
         return $timeSlots;
-
     }
-
 }

@@ -75,6 +75,25 @@ class Shipperhq_Calendar_Model_Service_Calendar
         }
         $resultSet['carriergroup_id']=$passedInCarriergroupId;
 
+        $inline = Mage::helper('shipperhq_shipper')->useInlineCalendar();
+
+        if($osc && $dateSelected != "" && $inline) {
+
+            $dateSelectedArray = Mage::helper('shipperhq_shipper')->getQuoteStorage($quote)->getDeliveryDateArray();
+
+            if ($dateSelectedArray == null) {
+                $dateSelectedArray = array();
+            }
+
+            $key = $carrierCode.$carriergroupId;
+
+            $dateSelectedArray[$key] = $dateSelected;
+
+            Mage::helper('shipperhq_shipper')
+                ->getQuoteStorage($quote)->setDeliveryDateArray($dateSelectedArray);
+        }
+
+        //This is used with/for PVR
         Mage::helper('shipperhq_shipper')
             ->getQuoteStorage($quote)
             ->setSelectedDeliveryArray(null);
@@ -89,6 +108,10 @@ class Shipperhq_Calendar_Model_Service_Calendar
         $dateSelected = $parameters['date_selected'];
         $loadOnly = $parameters['load_only'];
         $passedInCarriergroupId = $carriergroupId;
+
+        //Multiaddress checkout support
+        $addressId = false;
+        Mage::helper('shipperhq_shipper')->extractAddressIdAndCarriergroupId($addressId, $carriergroupId);
 
         $allCalendarDetails = Mage::getSingleton('core/session')->getAllCalendarDetails();
         $calendarDetails = false;
@@ -105,7 +128,7 @@ class Shipperhq_Calendar_Model_Service_Calendar
                 array('carrierCode' =>$carrierCode, 'carriergroup' => $carriergroupId, 'date selected' =>$dateSelected, 'load only ' => $loadOnly));
         }
         $resultSet = array();
-        $resultSet['date_selected'] = $dateSelected;
+        $resultSet['date_selected'] = $dateSelected != '' ? $dateSelected : $calendarDetails['date_on_rate'];
         $resultSet['carriergroup_id'] = $carriergroupId;
         $resultSet['carrier_code'] = $carrierCode;
 

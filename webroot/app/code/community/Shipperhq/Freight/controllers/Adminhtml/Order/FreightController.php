@@ -137,4 +137,9 @@ class Shipperhq_Freight_Adminhtml_Order_FreightController extends Mage_Adminhtml
         return Mage::getSingleton('adminhtml/session_quote')->getQuote();
     }
 
+    protected function _isAllowed()
+    {
+        return true;
+    }
+
 }

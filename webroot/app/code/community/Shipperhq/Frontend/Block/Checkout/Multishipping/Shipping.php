@@ -63,9 +63,9 @@ class Shipperhq_Frontend_Block_Checkout_Multishipping_Shipping extends Mage_Chec
         return $this->_helperBlock;
     }
 
-    public function getCalendarHtml($carriergroup, $code)
+    public function getCalendarHtml($carriergroup, $code, $sole = false)
     {
-        return $this->getHelperBlock()->getCalendarHtml($carriergroup, $code);
+        return $this->getHelperBlock()->getCalendarHtml($carriergroup, $code, $sole);
     }
 
     public function getStorepickupHtml($carrierCode, $carrierType, $carriergroup = null)

@@ -71,8 +71,10 @@ if(addressValEnabled) {
         var ajaxLoader = '<div class="loading-ajax-login" id="address-validation-loading" style="display:none;" name="address_val_loading"></div>';
 
         $("billing:telephone").insert({after:dialog});
-        $("billing:fax").insert({after:validStr});
-        $("billing:fax").insert({after:destinationType});
+        // SHQ18-122 billing:postcode is probably the least likely field to be absent, so let's hook off of it
+        var parentUl = $("billing:postcode").up('ul');
+        parentUl.insert({bottom:validStr});
+        parentUl.insert({bottom:destinationType});
         $("billing:use_for_shipping_yes").insert({before:ajaxLoader});
 
         $("shipping:telephone").insert({after:shipValidStr});

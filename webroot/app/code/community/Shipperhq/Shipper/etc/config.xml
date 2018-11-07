@@ -32,8 +32,8 @@
 <config>
     <modules>
         <Shipperhq_Shipper>
-            <version>0.0.34</version>
-            <extension_version>2.134</extension_version>
+            <version>0.0.36</version>
+            <extension_version>2.197</extension_version>
             <!-- implemented in module file -->
             <!--  <active>true</active>
               <codePool>community</codePool>
@@ -157,6 +157,14 @@
                     </shipperhq_shipper_osc_update_cart>
                 </observers>
             </controller_action_postdispatch_onestepcheckout_ajax_updatecart>
+            <controller_action_postdispatch_onestepcheckout_ajax_add_coupon>
+                <observers>
+                    <shipperhq_shipper_osc_add_coupon>
+                        <class>shipperhq_shipper/observer</class>
+                        <method>oscUpdateCart</method>
+                    </shipperhq_shipper_osc_add_coupon>
+                </observers>
+            </controller_action_postdispatch_onestepcheckout_ajax_add_coupon>
             <!-- set checkout flag for rates processing -->
             <controller_action_predispatch_checkout_onepage_saveBilling>
                 <observers>
@@ -282,6 +290,15 @@
                 </observers>
             </checkout_controller_onepage_save_shipping_method>
             <!--save shipping details and reserve order process MAC -->
+            <controller_action_predispatch_checkout_multishipping_shippingPost>
+                <observers>
+                    <shipperhq_shipper_predispatch_save_shipping_method_multi>
+                        <type>singleton</type>
+                        <class>shipperhq_shipper/observer_order</class>
+                        <method>predispatchMultishippingShippingSave</method>
+                    </shipperhq_shipper_predispatch_save_shipping_method_multi>
+                </observers>
+            </controller_action_predispatch_checkout_multishipping_shippingPost>
             <checkout_controller_multishipping_shipping_post>
                 <observers>
                     <shipperhq_shipper_save_shipping_method_multi>
@@ -331,11 +348,11 @@
             <!--save item detail -->
             <sales_convert_quote_item_to_order_item>
                 <observers>
-                    <shipperhq_splitrates_quoteitem_orderitem>
+                    <shipperhq_shipper_quoteitem_orderitem>
                         <type>singleton</type>
                         <class>shipperhq_shipper/observer</class>
                         <method>salesConvertQuoteItemToOrderItem</method>
-                    </shipperhq_splitrates_quoteitem_orderitem>
+                    </shipperhq_shipper_quoteitem_orderitem>
                 </observers>
             </sales_convert_quote_item_to_order_item>
         </events>
@@ -470,11 +487,11 @@
     <frontend>
         <translate>
             <modules>
-                <shipperhq_shipper>
+                <Shipperhq_Shipper>
                     <files>
                         <default>Shipperhq_Shipper.csv</default>
                     </files>
-                </shipperhq_shipper>
+                </Shipperhq_Shipper>
             </modules>
         </translate>
     </frontend>
@@ -513,6 +530,15 @@
                     </shipperhq_shipper_save_shipment_observer>
                 </observers>
             </sales_order_shipment_save_after>
+            <sales_order_shipment_save_before>
+                <observers>
+                    <shipperhq_shipper_add_shipment_comment>
+                        <type>model</type>
+                        <class>shipperhq_shipper/observer_shipment</class>
+                        <method>addShipmentComment</method>
+                    </shipperhq_shipper_add_shipment_comment>
+                </observers>
+            </sales_order_shipment_save_before>
         </events>
     </adminhtml>
     <default>
@@ -527,7 +553,7 @@
                     DTAzdo8+0u4DbuvI5NgP8V711uNH6COXD/e821CQSmY6gfOzH1enxEVmexG2sPbEQQGDbEelSQ4=
                 </password>
                 <invalid_credentials_supplied>0</invalid_credentials_supplied>
-                <url>http://sandbox.shipperhq.com/v1/</url>
+                <url></url>
                 <live_url>http://api.shipperhq.com/v1/</live_url>
                 <secure_url>https://api.shipperhq.com/v1/</secure_url>
                 <model>shipperhq_shipper/carrier_shipper</model>
@@ -547,6 +573,7 @@
                 <is_enterprise>0</is_enterprise>
                 <delivery_comments>0</delivery_comments>
                 <delivery_comments_text>Enter your delivery comments here...</delivery_comments_text>
+                <disable_unused_modules>0</disable_unused_modules>
             </shipper>
             <shipperadmin>
                 <active>1</active>

@@ -35,6 +35,31 @@ class Shipperhq_Shipper_Model_Observer_Shipment extends Mage_Core_Model_Abstract
 {
     protected $_shipperWSInstance = null;
 
+    public function addShipmentComment($observer) {
+        if (Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Shipper', 'carriers/shipper/active')) {
+            $shipment = $observer->getShipment();
+            $order = $shipment->getOrder();
+
+            $carrierGroupDetail = Mage::helper('shipperhq_shipper')
+                ->decodeShippingDetails(
+                    $order->getCarriergroupShippingDetails()
+                );
+            if($carrierGroupDetail) {
+                $carrierGroupDetail = (array)$carrierGroupDetail;
+                foreach ($carrierGroupDetail as $carrierGroup) {
+                    if (!isset($carrierGroup['carrierGroupId'])) {
+                        continue;
+                    }
+                    $packages = Mage::getSingleton('shipperhq_shipper/order_packages')
+                        ->loadByCarriergroup($order->getId(), $carrierGroup['carrierGroupId']);
+                    if ($packageText = Mage::helper('shipperhq_shipper')->getPackageBreakdownText($packages, $carrierGroup['name'])) {
+                        $shipment->addComment($packageText);
+                    }
+                }
+            }
+        }
+    }
+
     /*
      * Process shipment additional information
      *

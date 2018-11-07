@@ -71,9 +71,11 @@ deferredShipperHQCode(function () {
 
     $("shipping:telephone").insert({after:dialogPlaceholder});
     $("shipping:telephone").insert({after:noneDialogPlaceholder});
-    $("shipping:fax").insert({after:validStr});
-    $("shipping:fax").insert({after:destinationType});
-    $("shipping:fax").insert({after:updatedAddress});
+    // SHQ18-122 billing:postcode is probably the least likely field to be absent, so let's hook off of it
+    var parentUl = $("shipping:postcode").up('ul');
+    parentUl.insert({bottom:validStr});
+    parentUl.insert({bottom:destinationType});
+    parentUl.insert({bottom:updatedAddress});
 
     //This is the logic and config for the jQuery popup. $j is jQuery, $ and $$ is prototype in this file
     $j(function() {
@@ -84,6 +86,8 @@ deferredShipperHQCode(function () {
             autoOpen: false,
             height: "auto",
             width: "auto",
+            maxWidth: 600, //This is set here so it can be altered by fluidDialog()
+            fluid: true,
             draggable:true,
             title: "<?php echo Mage::helper('shipperhq_validation')->__('Address Validation')/*getTitleText()*/; ?>",
             modal: true,
@@ -110,6 +114,8 @@ deferredShipperHQCode(function () {
             autoOpen: false,
             height: "auto",
             width: "auto",
+            maxWidth: 600, //This is set here so it can be altered by fluidDialog()
+            fluid: true,
             draggable:true,
             title: "<?php echo Mage::helper('shipperhq_validation')->__('Address Not Validated')/*getTitleText()*/; ?>",
             modal: true,
@@ -126,6 +132,40 @@ deferredShipperHQCode(function () {
                 }
             }
         });
+
+        // on window resize run function
+        $j(window).resize(function () {
+            fluidDialog();
+        });
+
+        // catch dialog if opened within a viewport smaller than the dialog width
+        $j(document).on("dialogopen", ".ui-dialog", function (event, ui) {
+            fluidDialog();
+        });
+
+        function fluidDialog() {
+            var $visible = $j(".ui-dialog:visible");
+            // each open dialog
+            $visible.each(function () {
+                var $this = $j(this);
+                var dialog = $this.find(".ui-dialog-content").data("ui-dialog");
+                // if fluid option == true
+                if (dialog.options.fluid) {
+                    var wWidth = $j(window).width();
+                    // check window width against dialog width
+                    if (wWidth < (parseInt(dialog.options.maxWidth) + 50))  {
+                        // keep dialog from filling entire screen
+                        $this.css("max-width", "90%");
+                    } else {
+                        // fix maxWidth bug
+                        $this.css("max-width", dialog.options.maxWidth + "px");
+                    }
+                    //reposition dialog
+                    dialog.option("position", dialog.options.position);
+                }
+            });
+
+        }
     });
 
     Event.observe($('shipping:street1'), 'change', function(){

@@ -38,6 +38,7 @@
 class Shipperhq_Calendar_Model_Observer extends Mage_Core_Model_Abstract
 {
 
+
     /**
      * Save the dates selected on shipping address in admin
      *
@@ -100,6 +101,13 @@ class Shipperhq_Calendar_Model_Observer extends Mage_Core_Model_Abstract
             if($shippingAddress) {
                 $data = $observer->getEvent()->getRequest()->getParams();
                 $suffix = '_ma'.$addressId;
+                $shippingDetails = Mage::helper('shipperhq_shipper')->decodeShippingDetails(
+                    $shippingAddress->getCarriergroupShippingDetails()
+                );
+                if(count($shippingDetails) == 1) { //SHQ16-2023 this should be ignored for split shipping
+                    $carriergroupId = $shippingDetails[0]['carrierGroupId'];
+                    $suffix .= 'ZZ'.$carriergroupId;
+                }
                 $result = $this->saveDeliveryInfoToShippingAddress($shippingAddress, $shipping_method, $data, $suffix);
             }
         }

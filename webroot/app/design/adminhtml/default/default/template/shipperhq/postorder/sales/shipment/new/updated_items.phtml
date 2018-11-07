@@ -36,7 +36,9 @@
             <thead>
             <tr class="headings">
                 <th><?php echo $this->helper('sales')->__('Product') ?></th>
+                <?php if (Mage::helper('shipperhq_postorder')->isActive()): ?>
                 <th><span class="nobr"><?php echo $this->helper('shipperhq_postorder')->getItemColumnTitle() ?></span></th>
+                <?php endif; ?>
                 <th class="a-center"><?php echo $this->helper('sales')->__('Qty') ?></th>
                 <th<?php if ($this->isShipmentRegular()): ?> class="last"<?php endif; ?>><span class="nobr"><?php echo $this->helper('sales')->__('Qty to Ship') ?></span></th>
 

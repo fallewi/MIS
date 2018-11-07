@@ -518,10 +518,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
             }
             return true;
         }
-        if (self::$_debug) {
-            Mage::helper('wsalogger/log')->postDebug('ShipperHQ Pickup','This carrier is not pickup enabled ',
-                'Carrier: ' .$rate->getCode() .', Type : ' .$rate->getCarrierType());
-        }
+
         return false;
     }
 
@@ -537,11 +534,6 @@ class Shipperhq_Frontend_Block_Checkout_Helper
                    );
             }
             return true;
-        }
-        if (self::$_debug) {
-            Mage::helper('wsalogger/log')->postDebug('ShipperHQ Freight','Carrier is NOT freight enabled',
-                'Carrier : ' . $rate->getCode() .', Is freight rate : ' .$rate->getFreightRate()
-            );
         }
         return false;
     }
@@ -767,11 +759,7 @@ class Shipperhq_Frontend_Block_Checkout_Helper
 
     public function getCarrierName($carrierCode)
     {
-        if ($name = Mage::getStoreConfig('carriers/'.$carrierCode.'/title', $this->getQuote()->getStoreId())) {
-            return $name;
-        }
-
-        return $carrierCode;
+        return Mage::helper('shipperhq_shipper')->getCarrierName($carrierCode);
     }
 
     public function getAddressShippingMethod()

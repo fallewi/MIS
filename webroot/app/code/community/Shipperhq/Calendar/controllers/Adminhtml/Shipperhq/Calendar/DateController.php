@@ -74,4 +74,9 @@ class Shipperhq_Calendar_Adminhtml_Shipperhq_Calendar_DateController extends Mag
     {
         return Mage::getSingleton('adminhtml/session_quote')->getQuote();
     }
+
+    protected function _isAllowed()
+    {
+        return true;
+    }
 }

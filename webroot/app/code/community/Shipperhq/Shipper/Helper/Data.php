@@ -54,11 +54,13 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_quote;
 
     public $magentoCarrierCodes =
-        array( 'ups' => 'ups',
-            'fedEx' => 'fedex',
-            'usps' => 'usps',
-            'dhl' => 'dhl',
-            'dhlint' => 'dhlint'
+        array(
+            'ups'        => 'ups',
+            'fedEx'      => 'fedex',
+            'usps'       => 'usps',
+            'dhl'        => 'dhl',
+            'dhlint'     => 'dhlint',
+            'upsFreight' => 'upsfreight'
         );
 
     CONST CALENDAR_DATE_OPTION = 'calendar';
@@ -73,6 +75,8 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
      * Check is module exists and enabled in global config.
      *
      * @param $moduleName
+     * @param null $enabledLocation
+     * @return bool
      */
     public function isModuleEnabled($moduleName = null,$enabledLocation=null)
     {
@@ -291,6 +295,12 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         $this->getQuoteStorage()->setShipperhqPackages($sessionPackages);
     }
 
+    /**
+     * @param $addressId
+     * @param $carrierGroupId
+     * @param $carrier_code
+     * @deprecated SHQ16-1722 - Now stored against the session until order is placed
+     */
     protected function cleanUpPackages($addressId, $carrierGroupId, $carrier_code)
     {
         try{
@@ -357,9 +367,8 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 }
                 $boxText .= $this->getProductBreakdownText($box);
             }
-            $boxText .= '</br>';
+            $boxText .= '<br />';
         }
-        $boxText .= 'Transaction ID: ' .$this->getTransactionId();
         return $boxText;
     }
 
@@ -374,7 +383,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
                 foreach ($box['items'] as $item) {
                     $productText .= ' SKU=' .$item['qtyPacked'] .' * '.$item['sku'] .' ' .$item['weightPacked'] .$weightUnit;
                     if(isset($item['indVolume'])) {
-                        $productText .= ': Individual Volume =' .$box['indVolume'].':';
+                        $productText .= ': Individual Volume =' .$item['indVolume'].':';
                     }
                     if(isset($item['volumePacked'])) {
                         $productText .= ': Volume Packed =' .$item['volumePacked'].':';
@@ -414,7 +423,10 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         if (!in_array($code, $allowedCurrencies)) {
             return false;
         }
-        $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrency()->getCode();
+        $storeId = $this->getQuote()->getStoreId();
+        $baseCurrencyCode = $storeId ? Mage::app()->getStore($storeId)->getBaseCurrencyCode() :
+            Mage::app()->getStore()->getBaseCurrency()->getCode();
+
         if (!$this->_baseCurrencyRate) {
             $this->_baseCurrencyRate = Mage::getModel('directory/currency')
                 ->load($code)
@@ -449,19 +461,14 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Determine template to use based on cart attributes
+     * Determine template to use for checkout shipping method display
+     * Used during layout updates from Frontend module
      *
-     * @return boolean
+     * @return string
      */
     public function getAvailableTemplate()
     {
-
-        $splitRates = $this->getQuote()->getShippingAddress()->getSplitRates();
-        if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Splitrates')
-            &&  $splitRates == 1) {
-            return 'shipperhq/checkout/onepage/shipping_method/available.phtml';
-        }
-        elseif($this->isModuleEnabled('Shipperhq_Pickup')) {
+        if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Shipper')) {
             return 'shipperhq/checkout/onepage/shipping_method/available.phtml';
         }
         return 'checkout/onepage/shipping_method/available.phtml';
@@ -480,6 +487,11 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         return 'checkout/multishipping/shipping.phtml';
     }
 
+    /**
+     * Set template for Multi Address Overview if enabled
+     *
+     * @return string
+     */
     public function getMultiAddressOverviewTemplate()
     {
         if(Mage::getStoreConfig('carriers/shipper/active')) {
@@ -597,7 +609,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     {
         if (self::$_wsTimeout==NULL) {
             $timeout =  Mage::getStoreConfig('carriers/shipper/ws_timeout');
-            if(!is_numeric($timeout) || $timeout < 30) {
+            if(!is_numeric($timeout)) {
                 $timeout = 30;
             }
             self::$_wsTimeout = $timeout;
@@ -812,8 +824,10 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
         $rate = $address->getShippingRateByCode($shippingMethodChosen);
-        if($rate && Mage::helper('shipperhq_pickup')->isPickupEnabledCarrier($rate->getCarrierType())) {
-            return $rate->getCarrier();
+        if($rate &&
+            $this->isModuleEnabled('Shipperhq_Pickup') &&
+            Mage::helper('shipperhq_pickup')->isPickupEnabledCarrier($rate->getCarrierType())) {
+                return $rate->getCarrier();
         }
         return false;
     }
@@ -863,6 +877,14 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         return $storeDimComments;
     }
 
+    public function getAlwaysShowSingleCarrierTitle() {
+        $result = false;
+        if (Mage::getStoreConfig('carriers/shipper/ALWAYS_SHOW_SINGLE_CARRIER_TITLE')) {
+            $result = Mage::getStoreConfig('carriers/shipper/ALWAYS_SHOW_SINGLE_CARRIER_TITLE');
+        }
+        return $result;
+    }
+
     public function isCityRequired()
     {
         return $this->isCityEnabled();
@@ -883,6 +905,15 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         return $title;
     }
 
+    public function getCarrierName($carrierCode)
+    {
+        if ($name = Mage::getStoreConfig('carriers/'.$carrierCode.'/title', $this->getQuote()->getStoreId())) {
+            return $this->__($name);
+        }
+
+        return $carrierCode;
+    }
+
     /**
      * Returns price formatted with OSC design elements
      *
@@ -898,7 +929,7 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
     public function getOscFormattedTooltip($tooltip)
     {
         $formattedTooltip = '<span style="float:right;" class="helpcursor" title="'.$tooltip.'">
-                                <img src="http://www.localhost.com/92/shqclient/skin/frontend/base/default/images/shipperhq/tooltip.jpg">
+                                <img src="'.Mage::getDesign()->getSkinUrl("images/shipperhq/tooltip.jpg").'">
                              </span>';
 
         return $formattedTooltip;
@@ -1003,46 +1034,137 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         return $result;
     }
 
+    public function useInlineCalendar()
+    {
+        $result = false;
+        if(Mage::getStoreConfig('carriers/shipper/CALENDAR_DISPLAY') == "Inline") {
+            $result = true;
+        }
+        return $result;
+    }
+
     public function isConfirmOrderRequired($carrierType)
     {
         return $carrierType == 'gso';
     }
 
-    public function getCarriergroupShippingHtml($encodedDetails)
+    public function getCarriergroupShippingHtml($encodedDetails, $order = null)
     {
-        $decodedDetails = $this->decodeShippingDetails($encodedDetails);
-        $htmlText='<br/>';
-        foreach ($decodedDetails as $shipLine) {
+        $displayValues = array('destination_type', 'customer_carrier', 'customer_carrier_ph', 'customer_carrier_account');
 
-            if(!is_array($shipLine) || !array_key_exists('name', $shipLine)) {
-                continue;
-            }
-            $htmlText .= $shipLine['name'].
-                ' : '.$shipLine['carrierTitle'].' - '. $shipLine['methodTitle'].' ';
-            $htmlText .= " ". $this->getQuote()->getStore()->formatPrice($shipLine['price']).'<br/>';
-            if(array_key_exists('pickup_date', $shipLine)) {
-                $htmlText .= Mage::helper('shipperhq_shipper')->__('Location') .' : ' .$shipLine['location_name'];
-                $htmlText .= Mage::helper('shipperhq_shipper')->__(' Date') .' : ' .$shipLine['pickup_date'];
-                if(array_key_exists('pickup_slot', $shipLine)) {
-                    $htmlText .= Mage::helper('shipperhq_shipper')->__(' Time : ') .str_replace('_', ' - ', $shipLine['pickup_slot']);
-                }
-                $htmlText.= '<br/>';
-            }
-            else if(array_key_exists('delivery_date', $shipLine)) {
-                $htmlText .= Mage::helper('shipperhq_shipper')->__(' Delivery Date') .' : ' .$shipLine['delivery_date'];
-                if(array_key_exists('del_slot', $shipLine)) {
-                    $htmlText .= Mage::helper('shipperhq_shipper')->__(' Time : ') .str_replace('_', ' - ',$shipLine['del_slot']);
-                }
-                $htmlText.= '<br/>';
-            }
-
+        if($this->isModuleEnabled('Shipperhq_Freight')) {
+            $options = Mage::helper('shipperhq_freight')->getAllNamedOptions();
         }
-        return $htmlText;
+        else {
+            $options = array();
+        }
+        //defaults
+        $pickupDate = !is_null($order) ? $order->getPickupDate() : false;
+        $timeSlot =  !is_null($order) ? $order->getTimeslot() : false;
+        $pickupLocation = !is_null($order) ? $order->getPickupLocation() : false;
+        $dispatchDate = !is_null($order) ? $order->getDispatchDate() : false;
+        $deliveryDate = !is_null($order) ? $order->getDeliveryDate() : false;
+
+        $cginfo =  $this->decodeShippingDetails($encodedDetails);
+        $carriergroupText = '';
+        foreach ($cginfo as $cgrp) {
+            if (is_array($cgrp)) {
+                //SHQ16-2023 reset to be values set on order
+                $displayPickupDate = $pickupDate;
+                $displayTimeSlot = $timeSlot;
+                $displayPickupLocation = $pickupLocation;
+                $displayDispatchDate = $dispatchDate;
+                $displayDeliveryDate = $deliveryDate;
+
+                $carriergroupText .= $cgrp['name'];
+                $carriergroupText .= '<strong>: ' . $cgrp['carrierTitle'];
+                $carriergroupText .= ' - ' . $cgrp['methodTitle'];
+                $price =  !is_null($order) ? $order->formatPrice($cgrp['price']) : $this->getQuote()->getStore()->formatPrice($cgrp['price']);
+                $carriergroupText .= ' ' . $price  . ' </strong>';
+                if ((array_key_exists('carrierName', $cgrp) && $cgrp['carrierName'] != '')) {
+                    $carriergroupText .= '<br /> Carrier: ';
+                    $carriergroupText .= '' . strtoupper($cgrp['carrierName']);
+                }
+
+                if ((array_key_exists('pickup_date', $cgrp) && $cgrp['pickup_date'] != '')) {
+                    $displayPickupDate = $cgrp['pickup_date'];
+                }
+                if ($displayPickupDate) {
+                    $carriergroupText .= '<br /> Pickup : ';
+                    if (array_key_exists('location_name', $cgrp)) {
+                        $displayPickupLocation = $cgrp['location_name'];
+                    }
+                    if ($displayPickupLocation) {
+                        $carriergroupText .= '' . $displayPickupLocation;
+                    }
+                    $carriergroupText .= ' ' . $displayPickupDate;
+                    if (array_key_exists('pickup_slot', $cgrp)) {
+                        $displayTimeSlot = $cgrp['pickup_slot'];
+                        $displayTimeSlot = str_replace('_', ' - ', $cgrp['pickup_slot']);
+                    }
+                    if ($displayTimeSlot) {
+                        $carriergroupText .= ' ' . $displayTimeSlot . ' ';
+                    }
+                }
+                if (array_key_exists('dispatch_date', $cgrp)) {
+                    $displayDispatchDate = $cgrp['dispatch_date'];
+                }
+                if ($displayDispatchDate) {
+                    $carriergroupText .= '<br />' . Mage::helper('shipperhq_shipper')->__('Dispatch Date') . ' : ' . $displayDispatchDate;
+                }
+
+                if (array_key_exists('delivery_date', $cgrp)) {
+                    $displayDeliveryDate = $cgrp['delivery_date'];
+                }
+                if ($displayDeliveryDate) {
+                    $carriergroupText .= '<br />' . Mage::helper('shipperhq_shipper')->__('Delivery Date') . ' : ' . $displayDeliveryDate;
+                    if (array_key_exists('del_slot', $cgrp)) {
+                        $displayTimeSlot = $cgrp['del_slot'];
+                        $displayTimeSlot = str_replace('_', ' - ', $cgrp['del_slot']);
+                    }
+                    if ($displayTimeSlot) {
+                        $carriergroupText .= ' ' . $displayTimeSlot . ' ';
+                    }
+                }
+                foreach ($options as $code => $name) {
+                    $value = false;
+                    if (array_key_exists($code, $cgrp) && $cgrp[$code] != '') {
+                        $value = $cgrp[$code];
+                    }
+                    //SHQ16-1605 limit to display to selected carrier group only
+//                        elseif($order->getData($code)) {
+//                            $value = $order->getData($code);
+//                        }
+                    if ($value) {
+                        $carriergroupText .= '<br />' . $name;
+                        if (in_array($code, $displayValues)) {
+                            $carriergroupText .= ': ' . $value;
+                        }
+                    }
+                }
+                if (array_key_exists('freightQuoteId', $cgrp) && $cgrp['freightQuoteId'] != '') {
+                    $carriergroupText .= ' Quote Id: ' . $cgrp['freightQuoteId'];
+                }
+                $carriergroupText .= '<br/><br/>';
+            }
+        }
+        return $carriergroupText;
     }
 
     public function setShippingOnItems($shippingDetails, $shippingAddress)
     {
         $itemsGrouped = $this->getItemsGroupedByCarrierGroup($shippingAddress->getAllItems());
+
+        if(!count($shippingDetails)) {//SHQ16-1932
+            foreach($itemsGrouped as $cgItemsGrouped) {
+                foreach ($cgItemsGrouped as $item) {
+                    $item->setCarriergroupShipping(null);
+                }
+            }
+
+            return null;
+        }
+
         foreach($shippingDetails as $carrierGroupDetail)
         {
             if(is_array($carrierGroupDetail) && array_key_exists('carrierTitle', $carrierGroupDetail)) {
@@ -1102,6 +1224,39 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
         }
+    }
+
+    public function isMobile()
+    {
+        $isMobile = Zend_Http_UserAgent_Mobile::match(
+            Mage::helper('core/http')->getHttpUserAgent(),
+            $_SERVER
+        );
+        return $isMobile;
+    }
+
+    public function getGoogleApiUrl()
+    {
+
+        if (!Mage::getStoreConfig('carriers/shipper/active')) {
+            return '';
+        }
+        $locationDisplayOptions = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getPickupDisplayConfig();
+        $hasApiKey = false;
+
+        if(!is_null($locationDisplayOptions) && array_key_exists('google_api_key', $locationDisplayOptions) && $locationDisplayOptions['google_api_key'] != '') {
+            $hasApiKey =  trim($locationDisplayOptions['google_api_key']);
+        }
+
+        if ($hasApiKey) {
+            $url = "//maps.googleapis.com/maps/api/js?key=" .$hasApiKey;
+        }
+        else {
+            $url = "//maps.google.com/maps/api/js";
+        }
+        $text = '<script type="text/javascript" src=' . $url . '></script>';
+
+        return $text;
     }
 
     protected function _getOptionId($attribute, $value)
@@ -1167,4 +1322,44 @@ class Shipperhq_Shipper_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return $url;
     }
+
+    public function getMagentoUpsMethodCode($shqUpsMethodCode)
+    {
+        $shqCodeToUpsCode = array(
+            '1DA' => '01',
+            '2DA' => '02',
+            'GND' => '03',
+            'XPR' => '07',
+            'XPD' => '08',
+            'STD' => '11',
+            '3DS' => '12',
+            '1DP' => '13',
+            '1DM' => '14',
+            'XDM' => '54',
+            '2DM' => '59'
+        );
+
+        if(!isset($shqCodeToUpsCode[$shqUpsMethodCode])) {
+            return false;
+        } else {
+            return $shqCodeToUpsCode[$shqUpsMethodCode];
+        }
+    }
+
+    public function getStoreId() {
+        $store_id = 0;
+
+        if (strlen($code = Mage::getSingleton('adminhtml/config_data')->getStore())) // store level
+        {
+            $store_id = (int)Mage::getModel('core/store')->load($code)->getId();
+        }
+        elseif (strlen($code = Mage::getSingleton('adminhtml/config_data')->getWebsite())) // website level
+        {
+            $website_id = Mage::getModel('core/website')->load($code)->getId();
+            $store_id = (int)Mage::app()->getWebsite($website_id)->getDefaultStore()->getId();
+        }
+
+        return $store_id;
+    }
+
 }

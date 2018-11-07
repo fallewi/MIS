@@ -72,30 +72,6 @@ class Shipperhq_Pickup_Helper_Data extends Mage_Core_Helper_Abstract
         return $carrierType == Mage::getModel('shipperhq_pickup/carrier_storepickup')->getAccessPointCarrierCode();
     }
 
-    public function getGoogleApiUrl()
-    {
-
-        if (!Mage::getStoreConfig('carriers/shipper/active')) {
-            return '';
-        }
-        $locationDisplayOptions = Mage::helper('shipperhq_shipper')->getQuoteStorage()->getPickupDisplayConfig();
-        $hasApiKey = false;
-
-        if(!is_null($locationDisplayOptions) && array_key_exists('google_api_key', $locationDisplayOptions) && $locationDisplayOptions['google_api_key'] != '') {
-            $hasApiKey =  trim($locationDisplayOptions['google_api_key']);
-        }
-
-        if ($hasApiKey) {
-            $url = "//maps.googleapis.com/maps/api/js?key=" .$hasApiKey. "&sensor=false";
-        }
-        else {
-            $url = "//maps.google.com/maps/api/js?sensor=true";
-        }
-        $text = '<script type="text/javascript" src=' . $url . '></script>';
-
-        return $text;
-    }
-
     public function calculateShippingRatesForPickup($carrierType)
     {
         if($this->isUpsAccessPointCarrier($carrierType)) {

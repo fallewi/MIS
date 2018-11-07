@@ -116,7 +116,8 @@ class Shipperhq_Frontend_Model_Checkout_Type_Multishipping extends Mage_Checkout
      */
     protected function _addShippingItem($quoteItemId, $data)
     {
-        if(!Mage::helper('shipperhq_pickup')->preselectPickupEnabled()) {
+        if(!Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Pickup') ||
+            !Mage::helper('shipperhq_pickup')->preselectPickupEnabled()) {
             return parent::_addShippingItem($quoteItemId, $data);
         }
 

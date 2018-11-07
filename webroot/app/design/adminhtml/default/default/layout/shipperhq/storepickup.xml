@@ -42,29 +42,9 @@
            <action method="addJs">
                 <name>shipperhq/jquery-loader.js</name>
             </action>
-          <!--   <action method="addItem">
-                <type>skin_js</type>
-                <name>jquery-ui/js/jquery-1.7.1.min.js</name>
-            </action>
-            <action method="addItem">
-                <type>skin_js</type>
-                <name>jquery-ui/js/jquery-ui-1.8.18.custom.min.js</name>
-            </action>
-            <action method="addItem">
-                <type>skin_js</type>
-                <name>jquery-ui/js/jquery-fix.js</name>
-            </action>
             <action method="addItem">
                 <type>skin_css</type>
-                <name>jquery-ui/css/ui-lightness/jquery-ui-1.8.18.custom.css</name>
-            </action>-->
-            <action method="addItem">
-                <type>skin_css</type>
-                <name>css/shipperhq/calendarbase.css</name>
-            </action>
-            <action method="addItem">
-                <type>skin_css</type>
-                <name>css/shipperhq/storepickup.css</name>
+                <name>shipperhq/css/storepickup.css</name>
             </action>
         </reference>
         <update handle="shipperhq_admin_order_create_block"/>
@@ -83,7 +63,7 @@
                    template="shipperhq/frontend/sales/order/create/shipping_method/available.phtml">
             </block>
             <block type="core/text" name="jquery">
-                <action method="setText"><text helper='shipperhq_pickup/getGoogleApiUrl'/></action>
+                <action method="setText"><text helper='shipperhq_shipper/getGoogleApiUrl'/></action>
             </block>
             <block type="core/template" template="shipperhq/frontend/js/bottom.phtml" name="shipperhq.jquery.bottom.end" />
         </reference>

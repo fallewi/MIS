@@ -69,7 +69,7 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
             $shipDetails = Mage::helper('shipperhq_shipper')->decodeShippingDetails($encDetails);
             foreach ($shipDetails as $shipItem) {
                 $sendEmail = $shipItem['emailOption'];
-                $pickupEmail = $shipItem['pickup_email_option'];
+                $pickupEmail = array_key_exists('pickup_email_option', $shipItem) ? $shipItem['pickup_email_option'] : null;
                 $shipment = null;
 
                 if (($sendEmail == self::SHIPPERHQ_SEND_EMAIL_ORDER && $eventName == 'sales_order_place_after') ||
@@ -136,9 +136,9 @@ class Shipperhq_Postorder_Helper_Email extends Mage_Core_Helper_Abstract
             }
             $shippingDescription.= '<br/>';
         }
-        else if(array_key_exists('delivery_date', $shipItem)) {
+        else if(array_key_exists('delivery_date', $shipItem) && $shipItem['delivery_date'] != '') {
             $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Delivery Date') .' : ' .$shipItem['delivery_date'];
-            if(array_key_exists('del_slot', $shipItem)) {
+            if(array_key_exists('del_slot', $shipItem)  && $shipItem['del_slot'] != '') {
                 $shippingDescription .= Mage::helper('shipperhq_shipper')->__(' Time : ') .$shipItem['del_slot'];
             }
             $shippingDescription.= '<br/>';

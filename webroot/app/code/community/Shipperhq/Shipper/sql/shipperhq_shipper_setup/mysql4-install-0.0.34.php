@@ -53,7 +53,7 @@ $this->addAttribute('catalog_product', 'shipperhq_shipping_group', array(
     'comparable'               => 0,
     'is_configurable'          => 0,
     'unique'                   => false,
-    'user_defined'			   => false,
+    'user_defined'			   => false, //SHQ16-1981 user_defined is false so cant be deleted
     'used_in_product_listing'  => false
 ));
 
@@ -73,7 +73,7 @@ $this->addAttribute('catalog_product', 'shipperhq_warehouse', array(
     'comparable'               => 0,
     'is_configurable'          => 0,
     'unique'                   => false,
-    'user_defined'			   => false,
+    'user_defined'			   => false, //SHQ16-1981 user_defined is false so cant be deleted
     'used_in_product_listing'  => false
 ));
 
@@ -223,7 +223,7 @@ $this->addAttribute('catalog_product', 'ship_separately', array(
     'used_in_product_listing'  => false
 ));
 
-/* ------ shipperhq_dim_group -------- */
+/* ------ shipperhq_dim_group --------*/
 $this->addAttribute('catalog_product', 'shipperhq_dim_group', array(
     'type'                     => 'varchar',
     'input'                    => 'select',
@@ -239,7 +239,7 @@ $this->addAttribute('catalog_product', 'shipperhq_dim_group', array(
     'comparable'               => 0,
     'is_configurable'          => 0,
     'unique'                   => false,
-    'user_defined'			   => true,
+    'user_defined'			   => false, //SHQ16-1981 user_defined is false so cant be deleted
     'used_in_product_listing'  => false
 ));
 
@@ -297,7 +297,8 @@ $this->addAttribute('catalog_product', 'ship_height', array(
     'used_in_product_listing'  => false
 ));
 
-/* ------ shipperhq_poss_boxes -------- */
+
+/* ------ shipperhq_poss_boxes -------- SHQ16-1981 user_defined is false so cant be deleted */
 $this->addAttribute('catalog_product', 'shipperhq_poss_boxes', array(
     'type'                     => 'varchar',
     'backend'                  => 'eav/entity_attribute_backend_array',
@@ -313,7 +314,7 @@ $this->addAttribute('catalog_product', 'shipperhq_poss_boxes', array(
     'comparable'               => 0,
     'is_configurable'          => 0,
     'unique'                   => false,
-    'user_defined'			   => true,
+    'user_defined'			   => false, //SHQ16-1981 user_defined is false so cant be deleted
     'used_in_product_listing'  => false
 ));
 
@@ -405,12 +406,8 @@ $entityTypeId = $installer->getEntityTypeId('catalog_product');
 
 $attributeSetArr = $installer->getAllAttributeSetIds($entityTypeId);
 
-if(Mage::helper('shipperhq_shipper')->isModuleEnabled('Shipperhq_Splitrates')) {
-    $stdAttributeCodes = array('shipperhq_shipping_group' => '1', 'shipperhq_warehouse' => '10');
-}
-else {
-    $stdAttributeCodes = array('shipperhq_shipping_group' => '1');
-}
+
+$stdAttributeCodes = array('shipperhq_shipping_group' => '1', 'shipperhq_warehouse' => '10');
 $dimAttributeCodes = array('ship_separately' => '2',
     'shipperhq_dim_group' => '1',
     'ship_length' => '10',

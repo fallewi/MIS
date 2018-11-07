@@ -61,11 +61,13 @@ class Shipperhq_Shipper_Block_Adminhtml_Carrier_Refreshcarriers
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
+        $storeId = Mage::helper('shipperhq_shipper')->getStoreId();
         $originalData = $element->getOriginalData();
         $this->addData(array(
             'button_label' => Mage::helper('customer')->__($originalData['button_label']),
             'html_id' => $element->getHtmlId(),
-            'ajax_url' => Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/Shqajax/refreshcarriers')
+            'ajax_url' => Mage::getSingleton('adminhtml/url')->getUrl('adminhtml/Shqajax/refreshcarriers'),
+            'store_id' => $storeId
         ));
 
         return $this->_toHtml();

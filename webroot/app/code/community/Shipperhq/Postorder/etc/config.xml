@@ -92,6 +92,14 @@
                     </shipperhq_postorder_adminhtml_shipment_grid_before_observer>
                 </observers>
             </sales_order_shipment_grid_collection_load_before>
+            <sales_order_grid_collection_load_before>
+                <observers>
+                    <shipperhq_postorder_adminhtml_order_grid_before_observer>
+                        <class>shipperhq_postorder/adminhtml_observer</class>
+                        <method>onSalesOrderGridLoadBefore</method>
+                    </shipperhq_postorder_adminhtml_order_grid_before_observer>
+                </observers>
+            </sales_order_grid_collection_load_before>
 
         </events>
         <resources>
