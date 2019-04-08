@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Shipperhq_Postorder>
-            <active>true</active>
+        <Shipperhq_Pickup>
+            <active>false</active>
             <codePool>community</codePool>
             <depends>
                 <Mage_Shipping />
                 <Shipperhq_Shipper />
+                <Shipperhq_Frontend />
             </depends>
-        </Shipperhq_Postorder>
+        </Shipperhq_Pickup>
     </modules>
 </config>
