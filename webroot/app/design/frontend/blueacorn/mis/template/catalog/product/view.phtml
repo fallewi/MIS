@@ -58,7 +58,7 @@
             <div class="product-shop">
 
                 <?php if($_product->getAttributeText('free_shipping') == 'Yes'): ?>
-                    <div class="free-shipping"><?php echo $this->__("Eligible for Free Shipping") ?></div>
+                    <div class="free-shipping"><?php echo $this->__("Eligible for Free Shipping *") ?></div>
                 <?php endif ?>
 
                 <?php echo $this->getChildHtml('alert_urls') ?>
@@ -287,6 +287,9 @@
         <div class="column-container ships-from">
             <h2><?php echo $this->__("Shipping") ?></h2>
             <div class="detail">
+				<?php if($_product->getAttributeText('free_shipping') == 'Yes'): ?>
+                    <p>* Free Shipping where available.</p>
+                <?php endif ?>
                 <?php if ($this->displayProductStockStatus()): ?>
                     <?php if ($_product->isAvailable()):
                         $strLeadTime = $_product->getResource()->getAttribute('lead_time')->getFrontend()->getValue($_product);
