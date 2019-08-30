@@ -1,0 +1,53 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Xsearch
+ */
+?>
+<style>
+    .am_search_popup {
+        border: 1px solid #<?php echo Mage::getStoreConfig('amxsearch/theme/border');?>;
+        border-top-width: 1px;
+        width: <?php echo Mage::getStoreConfig('amxsearch/autocomplete/width');?>px;
+    }
+
+    .am_search_popup div.am_element:hover,
+    .am_search_popup div.am-category:hover,
+    .am_search_popup div.am_element.active,
+    .am_search_popup div.am-category.active {
+        background: #<?php echo Mage::getStoreConfig('amxsearch/theme/hover');?>;
+    }
+
+    .amhighlight {
+        background: #<?php echo Mage::getStoreConfig('amxsearch/theme/highlight');?>;
+    }
+
+    .am_search_popup div.am_element .am_title,
+    .am_search_popup div.am_element .regular-price .price,
+    .am_search_popup div.am_element,
+    .am_search_popup div.am_element a,
+    .am_search_popup div.am-category a {
+        color: #<?php echo Mage::getStoreConfig('amxsearch/theme/color');?>;
+    }
+
+    .am_search_popup div.am_element:hover .am_title,
+    .am_search_popup div.am_element:hover .regular-price .price,
+    .am_search_popup div.am_element:hover,
+    .am_search_popup div.am_element:hover a,
+    .am_search_popup div.am_element.active .am_title,
+    .am_search_popup div.am_element.active .regular-price .price,
+    .am_search_popup div.am_element.active,
+    .am_search_popup div.am_element.active a,
+    .am_search_popup div.am-category:hover a,
+    .am_search_popup div.am-category.active a {
+        color: #<?php echo Mage::getStoreConfig('amxsearch/theme/hover_color');?>;
+    }
+</style>
+<!--[if IE 8]>
+<style>
+    .am_search_popup {
+        margin-top: -10px;
+    }
+</style>
+<![endif]-->
