@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
  * @package Amasty_Base
  */
 
@@ -16,6 +16,8 @@ class Amasty_Base_Model_InformationObserver
     protected $_block;
 
     protected $_moduleLink;
+
+    protected $_moduleData = array();
 
     public function addInformationContent($observer)
     {
@@ -147,7 +149,7 @@ class Amasty_Base_Model_InformationObserver
                 $module = array_shift($module);
             }
 
-            if (isset($module['version']) && $module['version'] > (string)$currentVer) {
+            if (isset($module['version']) && version_compare($currentVer, $module['version'], '<')) {
                 $result = false;
             }
         }
@@ -156,13 +158,28 @@ class Amasty_Base_Model_InformationObserver
     }
 
     /**
-     * @param $currentVer
-     * @return bool
+     * @return string
      */
     protected function _getModuleLink()
     {
         if (!$this->_moduleLink) {
             $this->_moduleLink = '';
+            $module = $this->_getModuleData();
+            if ($module && isset($module['url']) && $module['url']) {
+                $this->_moduleLink = $module['url'];
+            }
+        }
+
+        return $this->_moduleLink;
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getModuleData()
+    {
+        if (!$this->_moduleData) {
+            $this->_moduleData = array();
             $allExtensions = Amasty_Base_Helper_Module::getAllExtensions();
             if ($allExtensions && isset($allExtensions[$this->getBlock()->getModuleCode()])) {
                 $module = $allExtensions[$this->getBlock()->getModuleCode()];
@@ -170,14 +187,11 @@ class Amasty_Base_Model_InformationObserver
                     $module = array_shift($module);
                 }
 
-                if (isset($module['url']) && $module['url']) {
-                    $this->_moduleLink = $module['url'];
-                }
+                $this->_moduleData = $module;
             }
         }
 
-
-        return $this->_moduleLink;
+        return $this->_moduleData;
     }
 
     /**
@@ -251,10 +265,15 @@ class Amasty_Base_Model_InformationObserver
         foreach ($conflicts as $type) {
             foreach ($type as $class) {
                 if (isset($class['rewrite'])) {
-                    foreach ($class['rewrite'] as $conflict) {
-                        $classes = $this->_getModuleConflict($conflict);
-                        if ($classes) {
-                            $result[] = $classes;
+                    foreach ($class['rewrite'] as $rewriteKey => $conflict) {
+                        $codePool = $class['codePool'][$rewriteKey];
+
+                        if (!$this->_conflictResolved($codePool, $conflict)) {
+                            $classes = $this->_getModuleConflict($conflict);
+
+                            if ($classes) {
+                                $result[] = $classes;
+                            }
                         }
                     }
                 }
@@ -268,6 +287,33 @@ class Amasty_Base_Model_InformationObserver
 
 
         return $result;
+    }
+
+    protected function _conflictResolved($codePool, $rewrites)
+    {
+        $isConflictResolved = false;
+        krsort($rewrites);
+
+        $extendsClasses = $rewrites;
+
+        foreach ($rewrites as $rewriteIndex => $class) {
+            unset($extendsClasses[$rewriteIndex]);
+
+            if (count($extendsClasses) > 0) {
+                $classPath = Amasty_Base_Model_Conflict::getClassPath($codePool[$rewriteIndex], $rewrites[$rewriteIndex]);
+                $pureClassName = Amasty_Base_Model_Conflict::getPureClassName($class);
+                $lines = file($classPath);
+
+                foreach ($lines as $line) {
+                    if (strpos($line, $pureClassName) !== false) {
+                        $isConflictResolved = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $isConflictResolved;
     }
 
     /**
@@ -288,7 +334,9 @@ class Amasty_Base_Model_InformationObserver
 
         if ($isConflict) {
             foreach ($conflict as $class) {
-                if (strpos($class, 'Amasty') === false) {
+                if (strpos($class, 'Amasty') === false
+                    && strpos($class, "Mageplace") === false
+                ) {
                     $array = explode('_', $class);
                     if (count($array) >= 2) {
                         $conflictModules[] = implode('_', array($array[0], $array[1]));
@@ -314,7 +362,7 @@ class Amasty_Base_Model_InformationObserver
     protected function _showModuleExistingConflicts()
     {
         $messages = array();
-        foreach ($this->getBlock()->getKnownConflictExtensions() as $moduleName) {
+        foreach ($this->getKnownConflictExtensions() as $moduleName) {
             if (Mage::helper('core')->isModuleEnabled($moduleName)) {
                 $messages[] = $this->getBaseHelper()->__(
                     'Our extension is not compatible with the %s. '
@@ -336,6 +384,25 @@ class Amasty_Base_Model_InformationObserver
         }
 
         return $html;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getKnownConflictExtensions()
+    {
+        $conflicts = $this->getBlock()->getKnownConflictExtensions();
+
+        $module = $this->_getModuleData();
+        if ($module && isset($module['conflictExtensions']) && $module['conflictExtensions']) {
+            $fromSite = $module['conflictExtensions'];
+            $conflictsFromSite = str_replace(' ', '', $fromSite);
+            $conflictsFromSite = explode(',', $conflictsFromSite);
+            $conflicts = array_merge($conflicts, $conflictsFromSite);
+            $conflicts = array_unique($conflicts);
+        }
+
+        return $conflicts;
     }
 
     /**
