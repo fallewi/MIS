@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <data>
+        <!-- Rename file to experimental_features.xml to enable quote export support. -->
+    </data>
+</config>
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            vPGjkQHqxXo20xCC7zQ8CGcLxhRkBY+cGe1+8TjDIvI=
+ * Last Modified: 2013-02-10T14:48:03+01:00
+ * File:          app/code/local/Xtento/OrderExport/etc/xtento/experimental_features.xml.disabled
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->
