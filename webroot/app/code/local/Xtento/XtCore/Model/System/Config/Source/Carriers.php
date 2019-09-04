@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Product:       Xtento_XtCore (1.1.7)
- * ID:            Local Deploy
- * Packaged:      2016-10-18T22:31:59+02:00
+ * Product:       Xtento_XtCore
+ * ID:            vPGjkQHqxXo20xCC7zQ8CGcLxhRkBY+cGe1+8TjDIvI=
  * Last Modified: 2012-07-17T23:15:30+02:00
  * File:          app/code/local/Xtento/XtCore/Model/System/Config/Source/Carriers.php
- * Copyright:     Copyright (c) 2016 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
  */
 
 class Xtento_XtCore_Model_System_Config_Source_Carriers

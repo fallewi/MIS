@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Product:       Xtento_XtCore (1.1.7)
- * ID:            Local Deploy
- * Packaged:      2016-10-18T22:31:59+02:00
- * Last Modified: 2015-01-02T21:51:12+01:00
+ * Product:       Xtento_XtCore
+ * ID:            vPGjkQHqxXo20xCC7zQ8CGcLxhRkBY+cGe1+8TjDIvI=
+ * Last Modified: 2019-05-07T22:24:17+02:00
  * File:          app/code/local/Xtento/XtCore/Helper/Utils.php
- * Copyright:     Copyright (c) 2016 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
  */
 
 class Xtento_XtCore_Helper_Utils extends Mage_Core_Helper_Abstract
@@ -30,7 +29,27 @@ class Xtento_XtCore_Helper_Utils extends Mage_Core_Helper_Abstract
         '1.13.0.2' => '1.8.0.0',
         '1.13.1.0' => '1.8.1.0',
         '1.14.0.0' => '1.9.0.0',
-        '1.14.0.1' => '1.9.0.1'
+        '1.14.0.1' => '1.9.0.1',
+        '1.14.1.0' => '1.9.1.0',
+        '1.14.1.1' => '1.9.1.1',
+        '1.14.2.0' => '1.9.2.0',
+        '1.14.2.1' => '1.9.2.1',
+        '1.14.2.2' => '1.9.2.2',
+        '1.14.2.3' => '1.9.2.3',
+        '1.14.2.4' => '1.9.2.4',
+        '1.14.3.0' => '1.9.3.0',
+        '1.14.3.1' => '1.9.3.1',
+        '1.14.3.2' => '1.9.3.2',
+        '1.14.3.3' => '1.9.3.3',
+        '1.14.3.4' => '1.9.3.4',
+        '1.14.3.5' => '1.9.3.5',
+        '1.14.3.6' => '1.9.3.6',
+        '1.14.3.7' => '1.9.3.7',
+        '1.14.3.8' => '1.9.3.8',
+        '1.14.3.9' => '1.9.3.9',
+        '1.14.3.10' => '1.9.3.10',
+        '1.14.4.0' => '1.9.4.0',
+        '1.14.4.1' => '1.9.4.1'
     );
 
     protected $_versionCorrelationPE_CE = array(
@@ -55,6 +74,7 @@ class Xtento_XtCore_Helper_Utils extends Mage_Core_Helper_Abstract
         if (in_array('Enterprise_CatalogPermissions', $this->_modules)) {
             // Detected enterprise edition
             if (!isset($this->_versionCorrelationEE_CE[$version1])) {
+                $version1 = str_replace(array('1.11.', '1.12.', '1.13.', '1.14.'), array('1.6.', '1.7.', '1.8.', '1.9.'), $version1);
                 return version_compare($version1, $version2, $operator);
             } else {
                 return version_compare($this->_versionCorrelationEE_CE[$version1], $version2, $operator);
@@ -180,5 +200,74 @@ class Xtento_XtCore_Helper_Utils extends Mage_Core_Helper_Abstract
             $transport = new Zend_Mail_Transport_Smtp(Mage::getStoreConfig(AW_Customsmtp_Helper_Config::XML_PATH_SMTP_HOST), $config);
         }
         return $transport;
+    }
+
+    /**
+     * @param $moduleName
+     * @param $dataModelName
+     *
+     * @return string
+     */
+    public function getExtensionStatusString($moduleName, $dataModelName)
+    {
+        // Set up cache, using the Magento cache doesn't make sense as it won't cache if cache is disabled
+        try {
+            $cacheBackend = new Zend_Cache_Backend();
+            $cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 43200), array('cache_dir' => $cacheBackend->getTmpDir()));
+        } catch (Exception $e) {
+            return '';
+        }
+        $cacheKey = 'extstatus_' . $moduleName;
+        if ($moduleName !== '') {
+            $moduleVersion = (string)@Mage::getConfig()->getNode()->modules->{$moduleName}->version;
+            if (!empty($moduleVersion)) {
+                $cacheKey .= '_' . str_replace('.', '_', $moduleVersion);
+            }
+        }
+        $cacheKey .= substr(md5(__DIR__), 0, 10); // Unique per Magento installation
+        // Is the response cached?
+        $cachedHtml = $cache->load($cacheKey);
+        #$cachedHtml = false; // Test: disable cache
+        if ($cachedHtml !== false && $cachedHtml !== '') {
+            $storeJson = $cachedHtml;
+        } else {
+            try {
+                $dataModel = Mage::getSingleton($dataModelName);
+                $dataModel->afterLoad();
+                // Fetch info whether updates for the module are available
+                $url = 'ht' . 'tp://w' . 'ww.' . 'xte' . 'nto.' . 'co' . 'm/li' . 'cense/status';
+                $version = Mage::getVersion();
+                $extensionVersion = $dataModel->getValue();
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $streamContext = stream_context_create(array('http' => array('timeout' => 5)));
+                    $storeJson = file_get_contents($url . '?version=' . $version . '&d=' . $extensionVersion, false, $streamContext);
+                } else {
+                    $client = new Zend_Http_Client($url, array('timeout' => 5));
+                    $client->setParameterGet('version', $version);
+                    $client->setParameterGet('d', $extensionVersion);
+                    $response = $client->request('GET');
+                    // Post version
+                    /*$client = new Zend_Http_Client($url, array('timeout' => 5));
+                    $client->setParameterPost('version', $version);
+                    $client->setParameterPost('d', $extensionVersion);
+                    $response = $client->request('POST');*/
+                    $storeJson = $response->getBody();
+                }
+                $cache->save($storeJson, $cacheKey);
+            } catch (Exception $e) {
+                $cache->save('<!-- Empty/error response -->', $cacheKey);
+                return '';
+            }
+        }
+        if (preg_match('/There has been an error processing your request/', $storeJson)) {
+            return '';
+        }
+        $storeJson = @json_decode($storeJson, true);
+        if (isset($storeJson['html'])) {
+            $statusHtml = $storeJson['html'];
+        } else {
+            return '';
+        }
+        return $statusHtml;
     }
 }

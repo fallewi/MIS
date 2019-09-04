@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Product:       Xtento_XtCore (1.1.7)
- * ID:            Local Deploy
- * Packaged:      2016-10-18T22:31:59+02:00
+ * Product:       Xtento_XtCore
+ * ID:            vPGjkQHqxXo20xCC7zQ8CGcLxhRkBY+cGe1+8TjDIvI=
  * Last Modified: 2013-10-30T18:32:49+01:00
  * File:          app/code/local/Xtento/XtCore/Model/Observer/Cron.php
- * Copyright:     Copyright (c) 2016 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
  */
 
 class Xtento_XtCore_Model_Observer_Cron

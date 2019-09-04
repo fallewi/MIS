@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Product:       Xtento_XtCore (1.1.7)
- * ID:            Local Deploy
- * Packaged:      2016-10-18T22:31:59+02:00
- * Last Modified: 2014-07-02T19:53:22+02:00
+ * Product:       Xtento_XtCore
+ * ID:            vPGjkQHqxXo20xCC7zQ8CGcLxhRkBY+cGe1+8TjDIvI=
+ * Last Modified: 2019-05-07T21:49:11+02:00
  * File:          app/code/local/Xtento/XtCore/Block/System/Config/Form/Xtento/Debug.php
- * Copyright:     Copyright (c) 2016 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
  */
 
 class Xtento_XtCore_Block_System_Config_Form_Xtento_Debug extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
@@ -33,9 +32,45 @@ class Xtento_XtCore_Block_System_Config_Form_Xtento_Debug extends Mage_Adminhtml
         }
 
         $debugInfo[] = "Public Server IP Address: $ipAddress";
+        $debugInfo[] = "PHP Version: " . phpversion();
         $debugInfo[] = "PHP memory_limit: " . ini_get('memory_limit');
         $debugInfo[] = "PHP max_execution_time: " . ini_get('max_execution_time');
         $debugInfo[] = "Magento Base Path: " . Mage::getBaseDir();
+
+        // PHP Info
+        ob_start();
+        phpinfo();
+        $phpinfoString = ob_get_contents();
+        ob_get_clean();
+        $phpinfoString = preg_replace('#^.*<body>(.*)</body>.*$#ms', '$1', $phpinfoString);
+        $phpinfoString = preg_replace('#>(on|enabled|active)#i', '><span style="color:#090">$1</span>', $phpinfoString);
+        $phpinfoString = preg_replace('#>(off|disabled)#i', '><span style="color:#f00">$1</span>', $phpinfoString);
+        $phpinfoString = "
+                <style type='text/css'>
+                    #phpinfo { margin-top: 15px; }
+                    #phpinfo pre {margin: 0; font-family: monospace;}
+                    #phpinfo a:link {color: #009; text-decoration: none; background-color: #fff;}
+                    #phpinfo a:hover {text-decoration: underline;}
+                    #phpinfo table {border-collapse: collapse; border: 0; width: 98%; box-shadow: 1px 2px 3px #ccc;}
+                    #phpinfo .center {text-align: center;}
+                    #phpinfo .center table {margin: 1em auto; text-align: left;}
+                    #phpinfo .center th {text-align: center !important;}
+                    #phpinfo td, th {border: 1px solid #666; font-size: 75%; vertical-align: baseline; padding: 4px 5px;}
+                    #phpinfo h1 {font-size: 150%;}
+                    #phpinfo h2 {font-size: 125%;}
+                    #phpinfo .p {text-align: left;}
+                    #phpinfo .e {background-color: #ccf; width: 300px; font-weight: bold;}
+                    #phpinfo .h {background-color: #99c; font-weight: bold;}
+                    #phpinfo .v {background-color: #ddd; max-width: 300px; overflow-x: auto; word-wrap: break-word;}
+                    #phpinfo .v i {color: #999;}
+                    #phpinfo img {float: right; border: 0;}
+                    #phpinfo hr {width: 98%; background-color: #ccc; border: 0; height: 1px;}
+                </style>
+                <div id='phpinfo'>
+                    $phpinfoString
+                </div>
+                ";
+        $debugInfo[] = $phpinfoString;
 
         $headerHtml = str_replace('<table cellspacing="0" class="form-list">', implode("<br/>", $debugInfo) . '<table cellspacing="0" class="form-list">', $headerHtml);
         return $headerHtml;

@@ -37,3 +37,14 @@ Xtento_XtCore
 
 ===== 1.1.7 =====
  + Catching exception for removed payment methods when calling getMethodInstance in payment helper
+
+===== 1.1.8 =====
+ + Added warning in module configuration at System > Configuration if module output is disabled via "Disable Module Output" at System > Configuration > Advanced > Advanced
+
+===== 1.1.9 =====
+ * Fixed version detection Magento CE/EE, important for all modules
+
+===== 1.2.0 =====
+ + Added additional debug information in XtCore configuration section
+ * Bugfix release
+ * Removed unnecessary admin URL retrieval
