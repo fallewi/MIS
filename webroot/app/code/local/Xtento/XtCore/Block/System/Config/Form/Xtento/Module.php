@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Product:       Xtento_XtCore (1.1.7)
- * ID:            Local Deploy
- * Packaged:      2016-10-18T22:31:59+02:00
- * Last Modified: 2014-04-08T19:16:02+02:00
+ * Product:       Xtento_XtCore
+ * ID:            vPGjkQHqxXo20xCC7zQ8CGcLxhRkBY+cGe1+8TjDIvI=
+ * Last Modified: 2019-05-07T21:48:12+02:00
  * File:          app/code/local/Xtento/XtCore/Block/System/Config/Form/Xtento/Module.php
- * Copyright:     Copyright (c) 2016 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
  */
 
 class Xtento_XtCore_Block_System_Config_Form_Xtento_Module extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
@@ -25,15 +24,17 @@ class Xtento_XtCore_Block_System_Config_Form_Xtento_Module extends Mage_Adminhtm
             // Get data model
             $dataModelName = @current($this->getGroup()->data_model);
             $cacheKey = 'info_' . @current(explode("/", $dataModelName));
-            if (@current($this->getGroup()->module_name) !== false) {
-                $moduleVersion = (string)@Mage::getConfig()->getNode()->modules->{current($this->getGroup()->module_name)}->version;
+            $moduleName = @current($this->getGroup()->module_name);
+            if ($moduleName !== false) {
+                $moduleVersion = (string)@Mage::getConfig()->getNode()->modules->{$moduleName}->version;
                 if (!empty($moduleVersion)) {
                     $cacheKey .= '_' . str_replace('.', '_', $moduleVersion);
                 }
             }
+            $cacheKey .= substr(md5(Mage::getBaseUrl()), 0, 10);
             // Is the response cached?
             $cachedHtml = $cache->load($cacheKey);
-            #$cachedHtml = false; // Test: disable cache
+            //$cachedHtml = false; // Test: disable cache
             if ($cachedHtml !== false && $cachedHtml !== '') {
                 $storeHtml = $cachedHtml;
             } else {
@@ -65,6 +66,9 @@ class Xtento_XtCore_Block_System_Config_Form_Xtento_Module extends Mage_Adminhtm
             }
             if (preg_match('/There has been an error processing your request/', $storeHtml)) {
                 return $headerHtml;
+            }
+            if (Mage::getStoreConfig('advanced/modules_disable_output/' . $moduleName)) {
+                $storeHtml = "<div style='padding: 5px; border: 1px solid #000; line-height: 20px; color: red; font-size: 14px; font-weight: bold'>Warning: The modules output has been disabled at System > Configuration > Advanced > Advanced. You may not see the module in the backend/frontend.</div><br/>" . $storeHtml;
             }
             $headerHtml = str_replace('</div><table cellspacing="0" class="form-list">', $storeHtml . '</div><table cellspacing="0" class="form-list">', $headerHtml); // below 1.6
             $headerHtml = str_replace('</span><table cellspacing="0" class="form-list">', $storeHtml . '</span><table cellspacing="0" class="form-list">', $headerHtml); // after 1.7
