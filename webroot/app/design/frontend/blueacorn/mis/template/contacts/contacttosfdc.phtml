@@ -14,12 +14,24 @@ if(empty($captcha)||!isset($captcha))
     echo $strResponse;
 }
 
+$google_url = "https://www.google.com/recaptcha/api/siteverify";
 $secretKey = "6LeNFsUSAAAAAOqA-NrvC8MYaGSqJPTmUaKrNsVp";
 $ip = $_SERVER['REMOTE_ADDR'];
-$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretKey."&response=".$captcha."&remoteip=".$ip);
-$responseKeys = json_decode($response,true);
 
-if(intval($responseKeys["success"]) !== 1)
+$url = $google_url."?secret=".$secretKey."&response=".$captcha."&remoteip=".$ip;
+$curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, TRUE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, TRUE); 
+    $curlData = curl_exec($curl);
+
+curl_close($curl);
+
+$responseKeys = json_decode($curlData, TRUE);
+
+if($responseKeys["success"] == "false")
 {
     echo '<h2>Something went wrong.</h2>';
 }
