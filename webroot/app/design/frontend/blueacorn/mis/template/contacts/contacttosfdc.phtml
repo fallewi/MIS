@@ -1,10 +1,10 @@
 <?php
-if(isset($_POST['g-recaptcha-response']))
+if(isset($_POST["g-recaptcha-response"]))
 {
-    $captcha=$_POST['g-recaptcha-response'];
+    $captcha=$_POST["g-recaptcha-response"];
 }
 
-if(!$captcha)
+if(empty($captcha)||!isset($captcha))
 {
     $strResponse = "<div id=\"content\" class=\"error-msg\">";
     $strResponse .= "<h2>Thank You For Trying to Contact Us</h2>";
