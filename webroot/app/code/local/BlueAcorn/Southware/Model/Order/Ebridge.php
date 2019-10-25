@@ -19,8 +19,8 @@ class BlueAcorn_Southware_Model_Order_Ebridge
                                 <GetDocumentList xmlns="eBridge.WebServices">
                                   <login>'.$soapUser.'</login>
                                   <password>'.$soapPassword.'</password>
-                                  <status>New</status>
-                                  <docType>ORDERS</docType>
+                                  <status>All</status>
+                                  <docType>Shipment</docType>
                                   <partner>Mission Restaurant Supply</partner>
                                   <fromDate>'.Mage::getModel('core/date')->date('Y-m-d').'</fromDate>
                                   <toDate>'.Mage::getModel('core/date')->date('Y-m-d',time()+86400).'</toDate>
