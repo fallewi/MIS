@@ -223,7 +223,14 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
             $customerSWId = $customer->getData('southware_customer_id');
             if(empty($customerSWId))
             {
-                $customerSWId = $order->custom('guest_sw_customer_id');
+                if($customer->getData('group_id') == 0)
+				{
+					$customerSWId = "999998";
+				}
+				else
+				{
+					$customerSWId = $order->custom('guest_sw_customer_id');	
+				}
             }
             $orderSWId = $order->custom('southware_order_id');
             $request->setComment1($customerSWId) // set comment1 to be the Southware Customer ID
