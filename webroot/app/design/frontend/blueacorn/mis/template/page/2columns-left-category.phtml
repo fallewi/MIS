@@ -40,6 +40,13 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
         $_imgHtml = '<p class="category-image"><img src="'.$_imgUrl.'" alt="'.$catalog_view_block->escapeHtml($_category->getName()).'" title="'.$catalog_view_block->escapeHtml($_category->getName()).'" /></p>';
         $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
     }
+	$_descriptionText = '';
+	if($_description=$_category->getDescription()){
+		$_descriptionText  = "<div class=\"category-description std\">";
+		$_descriptionText .= $_helper->categoryAttribute($_category, $_description, 'description');
+		$_descriptionText .= "</div>";
+	}
+
 }
 ?>
 
@@ -93,11 +100,7 @@ if (in_array('catalog_category_view', $this->getLayout()->getUpdate()->getHandle
                     <?php echo $this->getChildHtml('content') ?>
                 </div>
                 <div class="col-left sidebar"><?php echo $this->getChildHtml('left') ?></div>
-                <?php if($_description=$catalog_view_block->getCurrentCategory()->getDescription()): ?>
-                    <div class="category-description std">
-                        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
-                    </div>
-                <?php endif; ?>
+                <?php echo $_descriptionText ; ?>
             </div>
         </div>
         <?php echo $this->getChildHtml('footer_before') ?>
