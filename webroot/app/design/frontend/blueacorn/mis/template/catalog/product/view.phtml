@@ -129,7 +129,7 @@
                                     <?php if($_product->getTypeID() !== "bundle" && !$_product->isGrouped() && $_product->isSaleable()): ?>
                                         <span class="price-text"><?php echo $this->__("PRICE / ".$uom) ?></span>
                                         <?php echo $this->getPriceHtml($_product); ?>
-                                        <?php $displayPrice =  Mage::helper('core')->currency($_product->getPrice(),false,false);?>
+                                        <?php $displayPrice =  Mage::helper('core')->currency($_product->getFinalPrice(),false,false);?>
                                     <?php endif; ?>
                                     <?php echo $this->getChildHtml('bundle_prices') ?>
                                     <?php echo $this->getTierPriceHtml() ?>
