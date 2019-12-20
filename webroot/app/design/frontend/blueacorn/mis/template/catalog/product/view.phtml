@@ -349,7 +349,27 @@
             </div>
         <?php endif;?>
         <?php echo  $this->getLayout()->createBlock('amfile/file')->setTemplate('amfile/files.phtml')->toHtml(); ?>
-    </div>
+    
+		<?php if($_product->getAttributeText('ca_prop_65') == 'Yes'): ?>
+			<a href="/info/p65.html" class="info" data-fancybox-type="iframe"><i class="fa fa-exclamation-triangle" style="color:orange;"></i> Attention CA Residents: <span class="warning__link-text">Prop 65 Warning <i class="icon-right-open"></i></span></a>
+			<script>
+				jQuery(document).ready(function($){
+					$(".info").fancybox({
+						maxWidth	: 400,
+						maxHeight	: 200,
+						fitToView	: false,
+						width		: '70%',
+						height		: '70%',
+						autoSize	: false,
+						closeClick	: false,
+						openEffect	: 'none',
+						closeEffect	: 'none'
+					});
+				});
+			</script>
+		
+		<?php endif; ?>
+	</div>
     </div>
 
     <?php echo $this->getChildHtml('upsell_products') ?>
