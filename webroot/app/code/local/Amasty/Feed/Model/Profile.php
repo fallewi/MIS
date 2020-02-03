@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
@@ -42,6 +42,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     
     protected $_productGallery;
     protected $_productUrls;
+    protected $_productGroupPrice;
     
     protected $_productParentData;
     protected $_productChildData;
@@ -102,13 +103,17 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         
         return $this->_productChildCollection;
     }
-    
-    function getSuperAttributesCollection(){
-        
-        if (!$this->_productSuperAttributesCollection){
-            $this->_productSuperAttributesCollection = Mage::getResourceModel('catalog/product_type_configurable_attribute_collection');
+
+    function getSuperAttributesCollection()
+    {
+        if (!$this->_productSuperAttributesCollection) {
+            $attribute_ids = $this->_attributesCollection->getAllIds();
+
+            $this->_productSuperAttributesCollection =
+                Mage::getResourceModel('catalog/product_type_configurable_attribute_collection')
+                    ->addFieldToFilter('main_table.attribute_id', array('in' => $attribute_ids));
         }
-        
+
         return $this->_productSuperAttributesCollection;
     }
     
@@ -271,7 +276,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         if (!$this->_fields) {
             if (($this->getType() == self::TYPE_CSV) || ($this->getType() == self::TYPE_TXT)) 
             {
-                $this->_fields = unserialize($this->getCsv());
+                $this->_fields = Mage::helper('amfeed')->unserialize($this->getCsv());
             } else if ($this->getType() == self::TYPE_XML) {
                 $feedXML = Mage::helper('amfeed')->parseXml($this->getXmlBody());
                 $this->_fields = $feedXML["fields"];
@@ -314,6 +319,8 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 
         } else if (isset($productData[$code])){
             $ret = $productData[$code];
+        } elseif ($code == 'group_price') {
+            $ret = $this->_getGroupPrice($productData);
         }
         
         return $ret;
@@ -427,6 +434,11 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         }
 
         return $ret;
+    }
+    
+    protected function _getGroupPrice($productData)
+    {
+        return $this->_productGroupPrice[$productData['entity_id']];
     }
     
     protected function _modifyValue(&$value, $fields, $idx){
@@ -545,9 +557,9 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
                         }
                     }
 
-		    if (!empty($value)) {
-                    	$this->_modifyValue($value, $fields, $idx);
-		    }
+                    if (!empty($value)) {
+                        $this->_modifyValue($value, $fields, $idx);
+                    }
 
                     $record[] = $value;
                 }
@@ -627,13 +639,20 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         
         return $ret;
     }
-    
+
     function loadAttributesCollection(){
         if (!$this->_attributesCollection) {
+            $fields = $this->_getFields();
+
             $this->_attributesCollection = Mage::getResourceModel('catalog/product_attribute_collection')
                     ->addVisibleFilter()
                     ->addStoreLabel($this->getStoreId());
+
+            if (isset($fields['attr'])) {
+                $this->_attributesCollection->addFieldToFilter('main_table.attribute_code', array('in' => $fields['attr']));
+            }
         }
+
         return $this->_attributesCollection;
     }
     
@@ -717,7 +736,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         }
         
         if (count($this->_resultData) < $this->getStepSize()){
-            @rename($this->getMainPath() . $this->getExportKey(), $this->getMainPath());
+            @rename($this->getMainPath() . $this->getExportKey(), $this->getMainPath() . $this->getFileExt());
             
             $this->setExportKey(NULL);
             $this->setExportStep(NULL);
@@ -818,6 +837,17 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         
         foreach($urlProductParentData as $productId => $url){
             $this->_productUrls[$productId] = $url;
+        }
+    }
+
+    protected function _prepareGroupPrice()
+    {
+        $fields = $this->_getFields();
+
+        if (in_array('group_price', $fields['attr'])) {
+            foreach ($this->getProductCollection() as $product) {
+                $this->_productGroupPrice[$product->getId()] = $this->_prepareProductGroupPrice($product);
+            }
         }
     }
     
@@ -924,6 +954,8 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         $this->_prepareCategories();
         
         $this->_prepareUrls();
+
+        $this->_prepareGroupPrice();
         
         $this->_generateData();
         
@@ -1155,7 +1187,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
     {
         if ($id = $this->getId()) {
             $temp = Mage::getModel('amfeed/profile')->load($id);
-            $tempPath = Mage::helper('amfeed')->getDownloadPath('feeds', $temp->getRealFilename());
+            $tempPath = Mage::helper('amfeed')->getDownloadPath('feeds', $temp->getRealFilename() . $this->getFileExt());
             if (file_exists($tempPath)) {
                 $deleted = false;
                 if (($temp->getType() != $this->getType())) {
@@ -1211,7 +1243,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
             }
         }
         $this->_isUniqueFileName();
-        
+
         return parent::_afterSave();
     }
 
@@ -1230,7 +1262,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 
         return true;
     }
-    
+
     protected function _beforeDelete()
     {
         if ($this->getDefaultImage()) { // delete default image
@@ -1343,7 +1375,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 
     public function getRealFilename()
     {
-        return 'export_' . $this->getId();
+        return $this->getFilename();
     }
 
     public function getOutputFilename()
@@ -1373,7 +1405,7 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
 
     public function compress()
     {
-        $filename = $this->getRealFilename();
+        $filename = $this->getRealFilename() . $this->getFileExt();
         $outputFilename = $filename;
         $compressor = null;
 
@@ -1407,5 +1439,36 @@ class Amasty_Feed_Model_Profile extends Amasty_Feed_Model_Filter
         }
 
         return $outputFilename;
+    }
+
+    protected function _prepareProductGroupPrice($product)
+    {
+        $websiteId = Mage::app()->getStore()->getWebsiteId();
+        $groupPrices = $product->getData('group_price');
+        $matchedPrices = array();
+
+        if (is_null($groupPrices)) {
+            $attribute = $product->getResource()->getAttribute('group_price');
+
+            if ($attribute) {
+                $attribute->getBackend()->afterLoad($product);
+                $groupPrices = $product->getData('group_price');
+            }
+        }
+
+        if (is_null($groupPrices) || !is_array($groupPrices)) {
+            return $product->getPrice();
+        }
+
+        foreach ($groupPrices as $groupPrice) {
+            if ($groupPrice['website_id'] == $websiteId
+                || ($groupPrice['website_id'] == 0
+                    && !isset($matchedPrices[$groupPrice['cust_group']]))
+            ) {
+                $matchedPrices[$groupPrice['cust_group']] = $groupPrice['website_price'];
+            }
+        }
+
+        return implode(',', $matchedPrices);
     }
 }

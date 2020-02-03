@@ -1,7 +1,7 @@
 <?php
     /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
     $installer = $this;
@@ -67,7 +67,7 @@
         file_put_contents($pathXML, $xml);
         
         
-        $csv = unserialize($csv);
+        $csv = Mage::helper('amfeed')->unserialize($csv);
         
 
         if ($csv){

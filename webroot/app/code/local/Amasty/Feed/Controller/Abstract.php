@@ -2,11 +2,12 @@
 
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */
 class Amasty_Feed_Controller_Abstract extends Mage_Adminhtml_Controller_Action
 {
+    const FEED_KNOWLEDGE_URL = 'https://amasty.com/knowledge-base/topic-product-feed.html#6976';
     protected $_title     = 'Feed';
     protected $_modelName = 'profile';
     protected $_dynamic   = array();
@@ -36,6 +37,15 @@ class Amasty_Feed_Controller_Abstract extends Mage_Adminhtml_Controller_Action
 
     public function editAction()
     {
+        Mage::getSingleton('adminhtml/session')
+            ->addNotice(
+                Mage::helper('amfeed')->__(
+                    'Please keep in mind that your feed may not pass Google validation. Refer to 
+                        <a href=\'%s\' target=\'_blank\'>this article</a> and double check your feed',
+                    self::FEED_KNOWLEDGE_URL
+                )
+            );
+
         $id    = (int)$this->getRequest()->getParam('id');
         $model = Mage::getModel('amfeed/' . $this->_modelName)->load($id);
 
@@ -69,7 +79,7 @@ class Amasty_Feed_Controller_Abstract extends Mage_Adminhtml_Controller_Action
     protected function prepareForEdit($model)
     {
         foreach ($this->_dynamic as $field) {
-            $model->setData($field, unserialize($model->getData($field)));
+            $model->setData($field, Mage::helper('amfeed')->unserialize($model->getData($field)));
         }
 
         return true;
@@ -84,6 +94,10 @@ class Amasty_Feed_Controller_Abstract extends Mage_Adminhtml_Controller_Action
         $typeFeed = $feed ? $model->getType() : $this->getRequest()->getParam('type');
 
         if ($data) {
+            if($typeFeed == Amasty_Feed_Model_Profile::TYPE_XML) {
+                $data['xml_header'] = $this->editXMLHeader($data['xml_header']);
+            }
+
             $model->setData($data)->setId($id)->setType($typeFeed);
             try {
                 $this->prepareForSave($model);
@@ -122,6 +136,25 @@ class Amasty_Feed_Controller_Abstract extends Mage_Adminhtml_Controller_Action
                 ->__('Unable to find a record to save')
         );
         $this->_redirect('*/*');
+    }
+
+    /**
+     * @param string $header
+     *
+     * @return string
+     */
+    protected function editXMLHeader($header)
+    {
+        $tagXmlCreateAt = '<created_at>{{DATE}}</created_at>';
+
+        $countCreateAtInHeader = substr_count($header, $tagXmlCreateAt);
+        if ($countCreateAtInHeader > 1) {
+            $header = str_replace($tagXmlCreateAt, '', $header) . $tagXmlCreateAt;
+        } elseif ($countCreateAtInHeader == 0) {
+            $header = $header . $tagXmlCreateAt;
+        }
+
+        return $header;
     }
 
     protected function prepareForSave($model)
