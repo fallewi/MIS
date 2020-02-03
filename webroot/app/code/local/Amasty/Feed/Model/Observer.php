@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Observer
@@ -107,7 +107,7 @@ class Amasty_Feed_Model_Observer
             $fileContent = @file_get_contents($configData->getFilePath());
             if ($fileContent){
                 
-                $importObjects = unserialize($fileContent);
+                $importObjects = Mage::helper('amfeed')->unserialize($fileContent);
                 
                 if (is_array($importObjects) && count($importObjects) > 0){
                     $message = 'Following templates has been installed:';

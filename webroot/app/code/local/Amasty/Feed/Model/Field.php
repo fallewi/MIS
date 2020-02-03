@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Field extends Amasty_Feed_Model_Filter
@@ -23,7 +23,7 @@ class Amasty_Feed_Model_Field extends Amasty_Feed_Model_Filter
     }
     
     public function getMappingConfig(){
-        return unserialize($this->getMapping());
+        return Mage::helper('amfeed')->unserialize($this->getMapping());
     }
     
     public function getAdvencedAttributes(){

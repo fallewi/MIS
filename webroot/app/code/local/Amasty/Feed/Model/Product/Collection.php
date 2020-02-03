@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2018 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
  * @package Amasty_Feed
  */  
 class Amasty_Feed_Model_Product_Collection extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
@@ -351,7 +351,7 @@ class Amasty_Feed_Model_Product_Collection extends Mage_Catalog_Model_Resource_E
             if (!($urlRewrites = Mage::app()->loadCache($this->_cacheConf['prefix'] . 'urlrewrite'))) {
                 $urlRewrites = null;
             } else {
-                $urlRewrites = unserialize($urlRewrites);
+                $urlRewrites = Mage::helper('amfeed')->unserialize($urlRewrites);
             }
         }
 
@@ -628,7 +628,7 @@ class Amasty_Feed_Model_Product_Collection extends Mage_Catalog_Model_Resource_E
         }
         
         if (($feed->getType() == Amasty_Feed_Model_Profile::TYPE_CSV) || ($feed->getType() == Amasty_Feed_Model_Profile::TYPE_TXT)) {
-            $fields = unserialize($feed->getCsv());
+            $fields = Mage::helper('amfeed')->unserialize($feed->getCsv());
         }
         
         if ($feed->getType() == Amasty_Feed_Model_Profile::TYPE_XML) {
